@@ -37,15 +37,12 @@ public final class NetworkUtilities {
             }
 
             String json = buffer.toString();
-            //Log.i("TAG",json);
             JSONObject parentObject = new JSONObject(json);
             JSONObject data = parentObject.getJSONObject("data");
 
             Log.i("TAG",data.toString());
 
             return data.toString();
-
-
 
 
 
