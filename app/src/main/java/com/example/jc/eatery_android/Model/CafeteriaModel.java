@@ -9,14 +9,21 @@ import java.util.HashMap;
  */
 
 public class CafeteriaModel {
+
+    //latitude+longitude for map(later)
     String latitude;
     String longitude;
-    Date date;
+
     String meal_type;
+
     String start_time;
     String end_time;
+
     boolean is_diningHall;
-    HashMap<String,ArrayList<String>> menu;
+
+    //menu for dining hall, for Map<Date: Map<Category:menu>>
+    HashMap<Date,HashMap<String,ArrayList<String>>> menu;
+    //menu for non dining hall
     ArrayList<String> second_menu;
     ArrayList<String> pay_methods;
 
@@ -36,13 +43,6 @@ public class CafeteriaModel {
         this.longitude = longitude;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public String getMeal_type() {
         return meal_type;
@@ -76,11 +76,11 @@ public class CafeteriaModel {
         this.is_diningHall = is_diningHall;
     }
 
-    public HashMap<String, ArrayList<String>> getMenu() {
+    public HashMap<Date, HashMap<String, ArrayList<String>>> getMenu() {
         return menu;
     }
 
-    public void setMenu(HashMap<String, ArrayList<String>> menu) {
+    public void setMenu(HashMap<Date, HashMap<String, ArrayList<String>>> menu) {
         this.menu = menu;
     }
 

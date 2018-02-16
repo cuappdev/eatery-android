@@ -30,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
 
             NetworkUtilities.getJson();
-
-
             return null;
 
 

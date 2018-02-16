@@ -2,6 +2,8 @@ package com.example.jc.eatery_android.NetworkUtils;
 
 import android.util.Log;
 
+import com.example.jc.eatery_android.Model.CafeteriaModel;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -9,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by JC on 2/15/18.
@@ -17,7 +20,7 @@ import java.net.URL;
 public final class NetworkUtilities {
     private final static String URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
 
-    public static String getJson(){
+    public static ArrayList<CafeteriaModel> getJson(){
 
         try {
             URL url = new URL(URI);
@@ -42,14 +45,14 @@ public final class NetworkUtilities {
 
             Log.i("TAG",data.toString());
 
-            return data.toString();
+            return null;
 
 
 
         }catch(Exception e){
             e.printStackTrace();
+            return null;
         }
 
-        return null;
     }
 }
