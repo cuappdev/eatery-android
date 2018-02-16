@@ -26,13 +26,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected String doInBackground(String... params) {
 
 
             NetworkUtilities.getJson();
 
 
-                return null;
+            return null;
 
 
         }

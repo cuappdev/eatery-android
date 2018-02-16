@@ -68,7 +68,7 @@ public class CafeteriaModel {
         this.end_time = end_time;
     }
 
-    public boolean isIs_diningHall() {
+    public boolean getIs_diningHall() {
         return is_diningHall;
     }
 
