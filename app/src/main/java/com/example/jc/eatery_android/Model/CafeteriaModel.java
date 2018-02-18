@@ -21,9 +21,11 @@ public class CafeteriaModel {
     boolean is_diningHall;
     ArrayList<String> pay_methods;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
+    CafeteriaArea area;
 
     public CafeteriaModel(String lattitude, String longitude, String name, String nickName,
-                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu  ){
+                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu,
+                          CafeteriaArea area){
         this.lattitude = lattitude;
         this.longitude = longitude;
         this.name = name;
@@ -31,11 +33,13 @@ public class CafeteriaModel {
         this.is_diningHall = is_diningHall;
         this.pay_methods = pay_methods;
         this.weeklyMenu = weeklyMenu;
+        this.area = area;
     }
 
-
-
-
-
-
+    public enum CafeteriaArea {
+        NORTH,
+        CENTRAL,
+        WEST;
+    }
 }
+
