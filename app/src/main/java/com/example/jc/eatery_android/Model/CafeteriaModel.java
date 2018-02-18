@@ -1,5 +1,7 @@
 package com.example.jc.eatery_android.Model;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,92 +13,29 @@ import java.util.HashMap;
 public class CafeteriaModel {
 
     //latitude+longitude for map(later)
-    String latitude;
+
+    String lattitude;
     String longitude;
-
-    String meal_type;
-
-    String start_time;
-    String end_time;
-
+    String name;
+    String nickName;
     boolean is_diningHall;
-
-    //menu for dining hall, for Map<Date: Map<Category:menu>>
-    HashMap<Date,HashMap<String,ArrayList<String>>> menu;
-    //menu for non dining hall
-    ArrayList<String> second_menu;
     ArrayList<String> pay_methods;
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
 
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
+    public CafeteriaModel(String lattitude, String longitude, String name, String nickName,
+                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu  ){
+        this.lattitude = lattitude;
         this.longitude = longitude;
-    }
-
-
-    public String getMeal_type() {
-        return meal_type;
-    }
-
-    public void setMeal_type(String meal_type) {
-        this.meal_type = meal_type;
-    }
-
-    public String getStart_time() {
-        return start_time;
-    }
-
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
-    }
-
-    public String getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
-    }
-
-    public boolean getIs_diningHall() {
-        return is_diningHall;
-    }
-
-    public void setIs_diningHall(boolean is_diningHall) {
+        this.name = name;
+        this. nickName = nickName;
         this.is_diningHall = is_diningHall;
-    }
-
-    public HashMap<Date, HashMap<String, ArrayList<String>>> getMenu() {
-        return menu;
-    }
-
-    public void setMenu(HashMap<Date, HashMap<String, ArrayList<String>>> menu) {
-        this.menu = menu;
-    }
-
-    public ArrayList<String> getSecond_menu() {
-        return second_menu;
-    }
-
-    public void setSecond_menu(ArrayList<String> second_menu) {
-        this.second_menu = second_menu;
-    }
-
-    public ArrayList<String> getPay_methods() {
-        return pay_methods;
-    }
-
-    public void setPay_methods(ArrayList<String> pay_methods) {
         this.pay_methods = pay_methods;
+        this.weeklyMenu = weeklyMenu;
     }
+
+
+
+
+
+
 }
