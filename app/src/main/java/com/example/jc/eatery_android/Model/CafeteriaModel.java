@@ -91,5 +91,10 @@ public class CafeteriaModel {
         this.area = area;
     }
 
+    public enum CafeteriaArea {
+        NORTH,
+        CENTRAL,
+        WEST;
+    }
 }
 
