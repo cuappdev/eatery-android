@@ -1,19 +1,21 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
+import android.util.Log;
+
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -62,6 +64,7 @@ public final class NetworkUtilities {
 
 
             for(int i=0; i<eateries.length();i++){
+                Log.i("model", "in");
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setName(child.getString("name"));
@@ -99,7 +102,7 @@ public final class NetworkUtilities {
                     for(int k = 0; k< days.length(); k++){
                         ArrayList<MealModel> mealModelArray = new ArrayList<>();
                         JSONObject mealPeriods = days.getJSONObject(k);
-                        Date date = new SimpleDateFormat("YYYY-MM-DD").parse(mealPeriods.getString("date"));
+                        String date = mealPeriods.getString("date");
                         JSONArray events = mealPeriods.getJSONArray("events");
                         MealModel mealModel = new MealModel();
                         for(int l =0; l<events.length(); l++ ){
@@ -144,16 +147,23 @@ public final class NetworkUtilities {
             }
 
 
-            //Log.i("TAG",data.toString());
 
-            return null;
-
+            return list;
 
 
-        }catch(Exception e){
+
+        }catch(IOException e){
             e.printStackTrace();
+            Log.i("model","IO error");
             return null;
         }
+        catch(JSONException e){
+            Log.i("model","JSON error");
+
+            return null;
+
+        }
+
 
     }
 }

@@ -40,20 +40,21 @@ public class CafeteriaModel {
         this.weeklyMenu = weeklyMenu;
         this.area = area;
     }*/
-    public String toString(){
-        String info = "Name/nickName: " + name + "/" + nickName;
-        String locationString = "Location: " + location.toString() + ", Area: " + area ;
-        String payMethodsString = "Pay Methods: " + pay_methods.toString();
-        String menuString = "";
-        if(is_diningHall){
-            menuString = weeklyMenu.toString();
-        }
-        else{
-            menuString = cafeMenu.toString();
-        }
-        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
-
-    }
+//    @Override
+//    public String toString(){
+//        String info = "Name/nickName: " + name + "/" + nickName;
+//        String locationString = "Location: " + location.toString() + ", Area: " + area ;
+//        String payMethodsString = "Pay Methods: " + pay_methods.toString();
+//        String menuString = "";
+//        if(is_diningHall){
+//            menuString = weeklyMenu.toString();
+//        }
+//        else{
+//            menuString = cafeMenu.toString();
+//        }
+//        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
+//
+//    }
 
     public Location getLocation() {
         return location;

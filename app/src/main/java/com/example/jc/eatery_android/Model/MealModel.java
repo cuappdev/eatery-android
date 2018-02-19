@@ -1,7 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -11,7 +10,7 @@ import java.util.HashMap;
 public class MealModel {
 
 
-    private Date date;
+    private String date;
     private String start;
     private String end;
     private String type;
@@ -29,23 +28,23 @@ public class MealModel {
         type = mealType;
     }*/
 
-    public String toString(){
-        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
-        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            info = info + " " + key + ": " + value.toString() + "\n";
-        }
-        return info;
+//    public String toString(){
+//        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
+//        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
+//            String key = entry.getKey();
+//            Object value = entry.getValue();
+//            info = info + " " + key + ": " + value.toString() + "\n";
+//        }
+//        return info;
+//
+//    }
 
-    }
 
-
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

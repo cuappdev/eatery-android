@@ -1,10 +1,14 @@
 package com.example.jc.eatery_android;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.NetworkUtils.NetworkUtilities;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +33,11 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
 
-            NetworkUtilities.getJson();
+            ArrayList<CafeteriaModel> test = NetworkUtilities.getJson();
+            for(CafeteriaModel object : test){
+                Log.i("model",object.getNickName());
+            }
+
             return null;
 
 
