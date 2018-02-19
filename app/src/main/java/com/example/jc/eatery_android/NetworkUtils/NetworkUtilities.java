@@ -1,6 +1,7 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.example.jc.eatery_android.Model.MealModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,7 +11,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 
 /**
@@ -71,11 +74,34 @@ public final class NetworkUtilities {
                     JSONObject method = methods.getJSONObject(j);
                     cafeteriaModel.getPay_methods().add(method.getString("descrshort"));
                 }
-                if(diningHall.contains(child.getString("name"))){
+                if(diningHall.contains(child.getInt("id"))){
                     cafeteriaModel.setIs_diningHall(true);
+
                 }
                 if(cafeteriaModel.getIs_diningHall()){
-                    
+                    JSONArray days = child.getJSONArray("operatingHours");
+                    for(int k = 0; k< days.length(); k++){
+                        JSONObject mealPeriods = days.getJSONObject(k);
+                        Date date = new SimpleDateFormat("YYYY-MM-DD").parse(mealPeriods.getString("date"));
+                        JSONArray events = mealPeriods.getJSONArray("events");
+                        for(int l =0; l<events.length(); l++ ){
+                            JSONObject meal = events.getJSONObject(l);
+                            MealModel mealModel = new MealModel();
+                            mealModel.setDate(date);
+                            mealModel.setStart(meal.getString("start"));
+                            mealModel.setEnd(meal.getString("end"));
+
+
+
+
+                        }
+
+
+
+                        MealModel currentMealModel = new MealModel();
+                        currentMealModel.setDate(date);
+                        currentMealModel =
+                    }
                 }
 
 
