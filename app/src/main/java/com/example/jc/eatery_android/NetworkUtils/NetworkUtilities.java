@@ -14,6 +14,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -69,6 +70,7 @@ public final class NetworkUtilities {
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
+                ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
                 cafeteriaModel.setPay_methods(payMethods);
                 for(int j=0; j< methods.length();j++){
                     JSONObject method = methods.getJSONObject(j);
@@ -80,31 +82,36 @@ public final class NetworkUtilities {
                 }
                 if(cafeteriaModel.getIs_diningHall()){
                     JSONArray days = child.getJSONArray("operatingHours");
+                    //operatingHours = one day
                     for(int k = 0; k< days.length(); k++){
+                        ArrayList<MealModel> mealModelArray = new ArrayList<>();
                         JSONObject mealPeriods = days.getJSONObject(k);
                         Date date = new SimpleDateFormat("YYYY-MM-DD").parse(mealPeriods.getString("date"));
                         JSONArray events = mealPeriods.getJSONArray("events");
+                        MealModel mealModel = new MealModel();
                         for(int l =0; l<events.length(); l++ ){
-                            JSONObject meal = events.getJSONObject(l);
-                            MealModel mealModel = new MealModel();
+                            JSONObject meal = events.getJSONObject(l); //created a single meal (ie lunch)
                             mealModel.setDate(date);
                             mealModel.setStart(meal.getString("start"));
                             mealModel.setEnd(meal.getString("end"));
-
-
-
-
+                            HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
+                            JSONArray menu = meal.getJSONArray("menu");
+                            for (int m = 0; m < meal.length(); m++) {
+                                JSONObject stations = menu.getJSONObject(m);
+                                String category = stations.getString("category");
+                                ArrayList<String> itemsArray = new ArrayList<>();
+                                JSONArray items = stations.getJSONArray("items");
+                                for (int n = 0; n < items.length(); n++) {
+                                    itemsArray.add(items.getJSONObject(n).getString("item"));
+                                }
+                                mealMenu.put(category, itemsArray);
+                            }
+                            mealModel.setMenu(mealMenu);
+                            mealModelArray.add(mealModel);
                         }
-
-
-
-                        MealModel currentMealModel = new MealModel();
-                        currentMealModel.setDate(date);
-                        currentMealModel =
+                        weeklyMenu.add(mealModelArray);
                     }
                 }
-
-
             }
 
 
