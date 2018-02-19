@@ -47,6 +47,10 @@ public class MealModel {
     private String type;
     private HashMap<String, ArrayList<String>> menu;
 
+    public MealModel(){
+
+    }
+
     public MealModel(Date mealDate, String startTime, String endTime, HashMap<String, ArrayList<String>> mealMenu, String mealType){
         date = mealDate;
         start = startTime;
