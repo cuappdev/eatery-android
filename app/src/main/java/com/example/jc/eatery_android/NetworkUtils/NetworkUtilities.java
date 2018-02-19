@@ -111,6 +111,7 @@ public final class NetworkUtilities {
                         }
                         weeklyMenu.add(mealModelArray);
                     }
+                    cafeteriaModel.setWeeklyMenu(weeklyMenu);
                 }
             }
 
