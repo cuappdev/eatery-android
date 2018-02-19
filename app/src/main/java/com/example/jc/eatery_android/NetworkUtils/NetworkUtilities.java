@@ -1,9 +1,8 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
-import android.util.Log;
-
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -12,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by JC on 2/15/18.
@@ -42,8 +42,47 @@ public final class NetworkUtilities {
             String json = buffer.toString();
             JSONObject parentObject = new JSONObject(json);
             JSONObject data = parentObject.getJSONObject("data");
+            JSONArray eateries = data.getJSONArray("eateries");
+            ArrayList<CafeteriaModel> list = new ArrayList<>();
+            HashSet<Integer> diningHall = new HashSet<Integer>();
+            diningHall.add(31);
+            diningHall.add(25);
+            diningHall.add(26);
+            diningHall.add(27);
+            diningHall.add(29);
+            diningHall.add(3);
+            diningHall.add(20);
+            diningHall.add(4);
+            diningHall.add(5);
+            diningHall.add(30);
 
-            Log.i("TAG",data.toString());
+
+            for(int i=0; i<eateries.length();i++){
+                CafeteriaModel cafeteriaModel = new CafeteriaModel();
+                JSONObject child = eateries.getJSONObject(i);
+                cafeteriaModel.setName(child.getString("name"));
+                cafeteriaModel.setLattitude(child.getDouble("latitude"));
+                cafeteriaModel.setLongitude(child.getDouble("longitude"));
+                cafeteriaModel.setNickName(child.getString("nameshort"));
+                JSONArray methods = child.getJSONArray("payMethods");
+                ArrayList<String> payMethods = new ArrayList<String>();
+                cafeteriaModel.setPay_methods(payMethods);
+                for(int j=0; j< methods.length();j++){
+                    JSONObject method = methods.getJSONObject(j);
+                    cafeteriaModel.getPay_methods().add(method.getString("descrshort"));
+                }
+                if(diningHall.contains(child.getString("name"))){
+                    cafeteriaModel.setIs_diningHall(true);
+                }
+                if(cafeteriaModel.getIs_diningHall()){
+                    
+                }
+
+
+            }
+
+
+            //Log.i("TAG",data.toString());
 
             return null;
 
