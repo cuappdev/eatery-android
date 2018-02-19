@@ -1,5 +1,7 @@
 package com.example.jc.eatery_android.Model;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 
 /**
@@ -10,14 +12,57 @@ public class CafeteriaModel {
 
     //latitude+longitude for map(later)
 
-    double lattitude;
-    double longitude;
+
+
+
     String name;
     String nickName;
     boolean is_diningHall;
-    ArrayList<String> pay_methods;
-    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeteriaArea area;
+    ArrayList<String> pay_methods;
+    Location location = new Location("");
+    ArrayList<String> cafeMenu= new ArrayList();
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
+
+
+
+
+    public CafeteriaModel(){
+
+    }
+    /*public CafeteriaModel(double lattitude, double longitude, String name, String nickName,
+                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu  ){
+        setLocation(lattitude, longitude);
+        this.name = name;
+        this.nickName = nickName;
+        this.is_diningHall = is_diningHall;
+        this.pay_methods = pay_methods;
+        this.weeklyMenu = weeklyMenu;
+        this.area = area;
+    }*/
+    public String toString(){
+        String info = "Name/nickName: " + name + "/" + nickName;
+        String locationString = "Location: " + location.toString() + ", Area: " + area ;
+        String payMethodsString = "Pay Methods: " + pay_methods.toString();
+        String menuString = "";
+        if(is_diningHall){
+            menuString = weeklyMenu.toString();
+        }
+        else{
+            menuString = cafeMenu.toString();
+        }
+        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
+
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Double lat, Double lng) {
+        this.location.setLongitude(lng);
+        this.location.setLatitude(lat);
+    }
 
     public ArrayList<String> getCafeMenu() {
         return cafeMenu;
@@ -27,23 +72,6 @@ public class CafeteriaModel {
         this.cafeMenu = cafeMenu;
     }
 
-    ArrayList<String> cafeMenu= new ArrayList();
-
-    public double getLattitude() {
-        return lattitude;
-    }
-
-    public void setLattitude(double lattitude) {
-        this.lattitude = lattitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
 
     public String getName() {
         return name;
@@ -85,19 +113,11 @@ public class CafeteriaModel {
         this.weeklyMenu = weeklyMenu;
     }
 
-    public CafeteriaModel(){
-
+    public CafeteriaArea getArea() {
+        return area;
     }
 
-    public CafeteriaModel(double lattitude, double longitude, String name, String nickName,
-                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu  ){
-        this.lattitude = lattitude;
-        this.longitude = longitude;
-        this.name = name;
-        this. nickName = nickName;
-        this.is_diningHall = is_diningHall;
-        this.pay_methods = pay_methods;
-        this.weeklyMenu = weeklyMenu;
+    public void setArea(CafeteriaArea area) {
         this.area = area;
     }
 

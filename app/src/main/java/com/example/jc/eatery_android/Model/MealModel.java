@@ -9,6 +9,38 @@ import java.util.HashMap;
  */
 
 public class MealModel {
+
+
+    private Date date;
+    private String start;
+    private String end;
+    private String type;
+    private HashMap<String, ArrayList<String>> menu;
+
+    public MealModel(){
+
+    }
+
+    /*public MealModel(Date mealDate, String startTime, String endTime, HashMap<String, ArrayList<String>> mealMenu, String mealType){
+        date = mealDate;
+        start = startTime;
+        end = endTime;
+        menu = mealMenu;
+        type = mealType;
+    }*/
+
+    public String toString(){
+        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
+        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            info = info + " " + key + ": " + value.toString() + "\n";
+        }
+        return info;
+
+    }
+
+
     public Date getDate() {
         return date;
     }
@@ -41,22 +73,12 @@ public class MealModel {
         this.menu = menu;
     }
 
-    private Date date;
-    private String start;
-    private String end;
-    private String type;
-    private HashMap<String, ArrayList<String>> menu;
-
-    public MealModel(){
-
+    public String getType() {
+        return type;
     }
 
-    public MealModel(Date mealDate, String startTime, String endTime, HashMap<String, ArrayList<String>> mealMenu, String mealType){
-        date = mealDate;
-        start = startTime;
-        end = endTime;
-        menu = mealMenu;
-        type = mealType;
+    public void setType(String type) {
+        this.type = type;
     }
 
 

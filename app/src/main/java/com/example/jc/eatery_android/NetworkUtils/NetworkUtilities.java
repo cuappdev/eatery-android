@@ -65,14 +65,26 @@ public final class NetworkUtilities {
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setName(child.getString("name"));
-                cafeteriaModel.setLattitude(child.getDouble("latitude"));
-                cafeteriaModel.setLongitude(child.getDouble("longitude"));
+                cafeteriaModel.setLocation(child.getDouble("latitude"),child.getDouble("longitude"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
                 ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
                 ArrayList<String> cafeItems = new ArrayList<>();
                 cafeteriaModel.setPay_methods(payMethods);
+                String area = child.getJSONObject("campusArea").getString("descrshort");
+                if(area.equalsIgnoreCase("north")){
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
+
+                }
+                else if(area.equalsIgnoreCase("west")){
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.WEST);
+
+                }
+                else{
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.CENTRAL);
+
+                }
                 for(int j=0; j< methods.length();j++){
                     JSONObject method = methods.getJSONObject(j);
                     cafeteriaModel.getPay_methods().add(method.getString("descrshort"));
@@ -95,6 +107,7 @@ public final class NetworkUtilities {
                             mealModel.setDate(date);
                             mealModel.setStart(meal.getString("start"));
                             mealModel.setEnd(meal.getString("end"));
+                            mealModel.setType(meal.getString("descr"));
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
                             for (int m = 0; m < meal.length(); m++) {
