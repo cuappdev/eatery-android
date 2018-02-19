@@ -19,6 +19,16 @@ public class CafeteriaModel {
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeteriaArea area;
 
+    public ArrayList<String> getCafeMenu() {
+        return cafeMenu;
+    }
+
+    public void setCafeMenu(ArrayList<String> cafeMenu) {
+        this.cafeMenu = cafeMenu;
+    }
+
+    ArrayList<String> cafeMenu= new ArrayList();
+
     public double getLattitude() {
         return lattitude;
     }

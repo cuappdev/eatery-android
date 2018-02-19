@@ -71,6 +71,7 @@ public final class NetworkUtilities {
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
                 ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
+                ArrayList<String> cafeItems = new ArrayList<>();
                 cafeteriaModel.setPay_methods(payMethods);
                 for(int j=0; j< methods.length();j++){
                     JSONObject method = methods.getJSONObject(j);
@@ -112,6 +113,20 @@ public final class NetworkUtilities {
                         weeklyMenu.add(mealModelArray);
                     }
                     cafeteriaModel.setWeeklyMenu(weeklyMenu);
+                }
+                else{
+                    JSONArray diningItems = child.getJSONArray("diningItems");
+                    for(int z = 0; z<diningItems.length(); z++ ){
+                        JSONObject item = diningItems.getJSONObject(z);
+                        cafeItems.add(item.getString("item"));
+                        //Trillium does not have dining items so we will have to hard code it in later
+
+                    }
+                    cafeteriaModel.setCafeMenu(cafeItems);
+
+
+
+
                 }
             }
 
