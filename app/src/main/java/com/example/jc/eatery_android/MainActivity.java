@@ -34,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             ArrayList<CafeteriaModel> test = NetworkUtilities.getJson();
-            for(CafeteriaModel object : test){
-                Log.i("model",object.getNickName());
-            }
+            Log.i("tag",""+test.size());
 
             return null;
 

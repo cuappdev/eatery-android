@@ -64,7 +64,6 @@ public final class NetworkUtilities {
 
 
             for(int i=0; i<eateries.length();i++){
-                Log.i("model", "in");
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setName(child.getString("name"));
@@ -113,7 +112,7 @@ public final class NetworkUtilities {
                             mealModel.setType(meal.getString("descr"));
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
-                            for (int m = 0; m < meal.length(); m++) {
+                            for (int m = 0; m < menu.length(); m++) {
                                 JSONObject stations = menu.getJSONObject(m);
                                 String category = stations.getString("category");
                                 ArrayList<String> itemsArray = new ArrayList<>();
@@ -140,10 +139,8 @@ public final class NetworkUtilities {
                     }
                     cafeteriaModel.setCafeMenu(cafeItems);
 
-
-
-
                 }
+                list.add(cafeteriaModel);
             }
 
 
