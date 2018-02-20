@@ -14,7 +14,7 @@ public class CafeteriaModel {
 
 
 
-
+    int id;
     String name;
     String nickName;
     boolean is_diningHall;
@@ -22,7 +22,7 @@ public class CafeteriaModel {
     ArrayList<String> pay_methods;
     Location location = new Location("");
     ArrayList<String> cafeMenu= new ArrayList();
-    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
 
 
 
@@ -30,31 +30,14 @@ public class CafeteriaModel {
     public CafeteriaModel(){
 
     }
-    /*public CafeteriaModel(double lattitude, double longitude, String name, String nickName,
-                          boolean is_diningHall,ArrayList<String> pay_methods,ArrayList<ArrayList<MealModel>> weeklyMenu  ){
-        setLocation(lattitude, longitude);
-        this.name = name;
-        this.nickName = nickName;
-        this.is_diningHall = is_diningHall;
-        this.pay_methods = pay_methods;
-        this.weeklyMenu = weeklyMenu;
-        this.area = area;
-    }*/
-//    @Override
-//    public String toString(){
-//        String info = "Name/nickName: " + name + "/" + nickName;
-//        String locationString = "Location: " + location.toString() + ", Area: " + area ;
-//        String payMethodsString = "Pay Methods: " + pay_methods.toString();
-//        String menuString = "";
-//        if(is_diningHall){
-//            menuString = weeklyMenu.toString();
-//        }
-//        else{
-//            menuString = cafeMenu.toString();
-//        }
-//        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
-//
-//    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Location getLocation() {
         return location;

@@ -50,7 +50,7 @@ public final class NetworkUtilities {
             JSONObject data = parentObject.getJSONObject("data");
             JSONArray eateries = data.getJSONArray("eateries");
             ArrayList<CafeteriaModel> list = new ArrayList<>();
-            HashSet<Integer> diningHall = new HashSet<Integer>();
+            HashSet<Integer> diningHall = new HashSet<>();
             diningHall.add(31);
             diningHall.add(25);
             diningHall.add(26);
@@ -66,6 +66,7 @@ public final class NetworkUtilities {
             for(int i=0; i<eateries.length();i++){
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
+                cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
                 cafeteriaModel.setLocation(child.getDouble("latitude"),child.getDouble("longitude"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));

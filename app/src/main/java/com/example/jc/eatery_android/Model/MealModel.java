@@ -20,24 +20,7 @@ public class MealModel {
 
     }
 
-    /*public MealModel(Date mealDate, String startTime, String endTime, HashMap<String, ArrayList<String>> mealMenu, String mealType){
-        date = mealDate;
-        start = startTime;
-        end = endTime;
-        menu = mealMenu;
-        type = mealType;
-    }*/
 
-//    public String toString(){
-//        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
-//        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
-//            String key = entry.getKey();
-//            Object value = entry.getValue();
-//            info = info + " " + key + ": " + value.toString() + "\n";
-//        }
-//        return info;
-//
-//    }
 
 
     public String getDate() {
