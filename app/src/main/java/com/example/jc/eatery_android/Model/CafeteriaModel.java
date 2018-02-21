@@ -48,6 +48,21 @@ public class CafeteriaModel {
         this.location.setLatitude(lat);
     }
 
+    public String stringTo(){
+        String info = "Name/nickName: " + name + "/" + nickName;
+        String locationString = "Location: " + location.toString() + ", Area: " + area ;
+        String payMethodsString = "Pay Methods: " + pay_methods.toString();
+        String menuString = "";
+        if(is_diningHall){
+            menuString = weeklyMenu.toString();
+        }
+        else{
+            menuString = cafeMenu.toString();
+        }
+        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
+
+    }
+
     public ArrayList<String> getCafeMenu() {
         return cafeMenu;
     }

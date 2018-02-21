@@ -20,6 +20,18 @@ public class MealModel {
 
     }
 
+    public String stringTo() {
+        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
+        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            info = info + " " + key + ": " + value.toString() + "\n";
+        }
+        return info;
+    }
+
+
+
 
 
 
