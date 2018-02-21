@@ -54,7 +54,12 @@ public class CafeteriaModel {
         String payMethodsString = "Pay Methods: " + pay_methods.toString();
         String menuString = "";
         if(is_diningHall){
-            menuString = weeklyMenu.toString();
+            for(ArrayList<MealModel> meal:weeklyMenu ){
+                for(MealModel mealIndiv : MealModel){
+                    menuString = menuString + mealIndiv.stringTo();
+                }
+
+            }
         }
         else{
             menuString = cafeMenu.toString();
