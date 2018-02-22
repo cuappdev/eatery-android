@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
             }*/
 
             for (CafeteriaModel object : test) {
-                Log.i("tag", object.stringTo());
+                if(object.getName().equals("Cook House Dining Room"))
+                    Log.i("tag", object.stringTo());
             }
 
 
