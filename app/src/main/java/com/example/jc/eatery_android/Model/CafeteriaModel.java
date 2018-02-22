@@ -55,7 +55,7 @@ public class CafeteriaModel {
         String menuString = "";
         if(is_diningHall){
             for(ArrayList<MealModel> meal:weeklyMenu ){
-                for(MealModel mealIndiv : MealModel){
+                for(MealModel mealIndiv : meal){
                     menuString = menuString + mealIndiv.stringTo();
                 }
 

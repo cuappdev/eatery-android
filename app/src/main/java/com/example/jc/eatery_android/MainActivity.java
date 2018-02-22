@@ -35,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
             ArrayList<CafeteriaModel> test = NetworkUtilities.getJson();
 
-            for(CafeteriaModel object : test){
+          /*  for(CafeteriaModel object : test){
                 Log.i("tag",""+object.getId()+" "+object.getIs_diningHall()+" "+object.getNickName());
+            }*/
+
+            for (CafeteriaModel object : test) {
+                Log.i("tag", object.stringTo());
             }
 
 

@@ -104,13 +104,17 @@ public final class NetworkUtilities {
                         JSONObject mealPeriods = days.getJSONObject(k);
                         String date = mealPeriods.getString("date");
                         JSONArray events = mealPeriods.getJSONArray("events");
-                        MealModel mealModel = new MealModel();
+
+                        //loops through each meal in one dining hall
                         for(int l =0; l<events.length(); l++ ){
-                            JSONObject meal = events.getJSONObject(l); //created a single meal (ie lunch)
+                            MealModel mealModel = new MealModel();
+                            JSONObject meal = events.getJSONObject(l); //created a single meal object(ie lunch)
                             mealModel.setDate(date);
                             mealModel.setStart(meal.getString("start"));
                             mealModel.setEnd(meal.getString("end"));
                             mealModel.setType(meal.getString("descr"));
+
+                            //mealMenu = hashmap of items in single meal
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
                             for (int m = 0; m < menu.length(); m++) {
@@ -139,7 +143,6 @@ public final class NetworkUtilities {
 
                     }
                     cafeteriaModel.setCafeMenu(cafeItems);
-
                 }
                 list.add(cafeteriaModel);
             }
