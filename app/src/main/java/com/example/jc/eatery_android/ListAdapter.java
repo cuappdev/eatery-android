@@ -45,6 +45,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
         //set all the textView, ImageView in card view here
+        //
 
     }
 
