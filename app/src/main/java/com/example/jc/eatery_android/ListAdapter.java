@@ -19,6 +19,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     //needs to implment this method in MainActivity
+
     public interface ListAdapterOnClickHandler {
         void onClick(int position);
     }
@@ -81,6 +82,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         public void onClick(View v) {
             int adapterPositoin = getAdapterPosition();
             mListAdapterOnClickHandler.onClick(adapterPositoin);
+
+            //TODO: add intent
         }
     }
 }
