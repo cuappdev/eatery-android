@@ -1,5 +1,6 @@
 package com.example.jc.eatery_android;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler{
 
     public RecyclerView mRecyclerView;
+    public ArrayList<CafeteriaModel> cafeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,13 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
 
     @Override
     public void onClick(int position) {
-        Toast.makeText(this,""+position,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,""+cafeList.size(),Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this,MenuActivity.class);
+
+        intent.putExtra("testData", cafeList);
+
+        startActivity(intent);
     }
 
     public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>>{
@@ -42,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
 
 
-            ArrayList<CafeteriaModel> cafeList = NetworkUtilities.getJson();
+            cafeList = NetworkUtilities.getJson();
             return cafeList;
 
 

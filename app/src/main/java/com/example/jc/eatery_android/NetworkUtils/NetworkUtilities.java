@@ -62,13 +62,12 @@ public final class NetworkUtilities {
             diningHall.add(5);
             diningHall.add(30);
 
-
+            //got rid of location
             for(int i=0; i<eateries.length();i++){
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
-                cafeteriaModel.setLocation(child.getDouble("latitude"),child.getDouble("longitude"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
