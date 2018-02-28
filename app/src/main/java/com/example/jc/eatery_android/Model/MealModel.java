@@ -76,6 +76,4 @@ public class MealModel implements Serializable{
         this.type = type;
     }
 
-
-
 }

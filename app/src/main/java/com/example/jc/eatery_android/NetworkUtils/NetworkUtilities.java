@@ -145,12 +145,7 @@ public final class NetworkUtilities {
                 }
                 list.add(cafeteriaModel);
             }
-
-
-
             return list;
-
-
 
         }catch(IOException e){
             e.printStackTrace();
@@ -161,9 +156,6 @@ public final class NetworkUtilities {
             Log.i("model","JSON error");
 
             return null;
-
         }
-
-
     }
 }

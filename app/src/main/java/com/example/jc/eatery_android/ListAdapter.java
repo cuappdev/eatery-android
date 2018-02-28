@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jc.eatery_android.Model.CafeteriaModel;
+
+import java.util.ArrayList;
+
 /**
  * Created by JC on 2/22/18.
  */
@@ -18,28 +22,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
+    private ArrayList<CafeteriaModel> cafeList;
     //needs to implment this method in MainActivity
 
     public interface ListAdapterOnClickHandler {
         void onClick(int position);
     }
 
-    public ListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count) {
+    public ListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
         mContext = context;
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
-
+        cafeList = list;
     }
 
     @Override
     public ListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         //set this to layout of cardview
-        int layoutId= R.layout.custom_row;
+        int layoutId= R.layout.card_item;
 
         View view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
         view.setFocusable(true);
-
 
         return new ListAdapterViewHolder(view);
     }
@@ -47,11 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
-        holder.mText.setText("does it work");
-        holder.mText2.setText("Yes it does");
-        holder.mImage.setImageResource(R.drawable.sample);
-
-
+        holder.cafeName.setText(cafeList.get(position).getName());
     }
 
     @Override
@@ -64,18 +64,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
 
         //define all textView + ImageViews in here
 
-        TextView mText;
-        TextView mText2;
-        ImageView mImage;
+        TextView cafeName;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
-            mText = itemView.findViewById(R.id.cv_text1);
-            mText2 = itemView.findViewById(R.id.cv_text2);
-            mImage = itemView.findViewById(R.id.cv_image1);
+            cafeName = (TextView) itemView.findViewById(R.id.cafe_name);
 
             itemView.setOnClickListener(this);
-
         }
 
         @Override
