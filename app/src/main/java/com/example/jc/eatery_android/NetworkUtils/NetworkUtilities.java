@@ -138,7 +138,7 @@ public final class NetworkUtilities {
                     for(int z = 0; z<diningItems.length(); z++ ){
                         JSONObject item = diningItems.getJSONObject(z);
                         cafeItems.add(item.getString("item"));
-                        //Trillium does not have dining items so we will have to hard code it in later
+                        //trillium does not have dining items so we will have to hard code it in later
 
                     }
                     cafeteriaModel.setCafeMenu(cafeItems);

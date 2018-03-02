@@ -1,6 +1,9 @@
 package com.example.jc.eatery_android;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +55,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
         holder.cafeName.setText(cafeList.get(position).getName());
+
+        String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
+
+        Log.i("TAG", imageLocation);
+        int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
+        Drawable res = mContext.getResources().getDrawable(imageRes);
+        //Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), imageRes);
+        holder.cafeImage.setImageDrawable(res);
     }
 
     @Override
@@ -65,10 +76,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         //define all textView + ImageViews in here
 
         TextView cafeName;
+        ImageView cafeImage;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
             cafeName = (TextView) itemView.findViewById(R.id.cafe_name);
+            cafeImage = (ImageView) itemView.findViewById(R.id.cafe_image);
 
             itemView.setOnClickListener(this);
         }
