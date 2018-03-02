@@ -31,11 +31,6 @@ public class MealModel implements Serializable{
         return info;
     }
 
-
-
-
-
-
     public String getDate() {
         return date;
     }

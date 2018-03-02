@@ -25,10 +25,6 @@ public class CafeteriaModel implements Serializable{
     ArrayList<String> cafeMenu = new ArrayList();
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
 
-
-
-
-
     public int getId() {
         return id;
     }

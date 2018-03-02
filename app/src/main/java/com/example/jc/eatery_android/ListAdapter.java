@@ -1,6 +1,7 @@
 package com.example.jc.eatery_android;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -57,12 +60,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         holder.cafeName.setText(cafeList.get(position).getName());
 
         String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
-
-        Log.i("TAG", imageLocation);
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
-        Drawable res = mContext.getResources().getDrawable(imageRes);
+        //Drawable res = mContext.getResources().getDrawable(imageRes);
         //Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), imageRes);
-        holder.cafeImage.setImageDrawable(res);
+        holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
+                imageRes, 300, 300));
+        //holder.cafeTime.setText(cafeList.get(position));
     }
 
     @Override
@@ -76,12 +79,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         //define all textView + ImageViews in here
 
         TextView cafeName;
+        TextView cafeTime;
         ImageView cafeImage;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
             cafeName = (TextView) itemView.findViewById(R.id.cafe_name);
             cafeImage = (ImageView) itemView.findViewById(R.id.cafe_image);
+            cafeTime = (TextView) itemView.findViewById(R.id.cafe_time);
 
             itemView.setOnClickListener(this);
         }
@@ -93,5 +98,44 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
 
             //TODO: add intent
         }
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(res, resId, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 }
