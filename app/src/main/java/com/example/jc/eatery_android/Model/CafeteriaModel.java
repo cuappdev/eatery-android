@@ -1,16 +1,17 @@
 package com.example.jc.eatery_android.Model;
 
-import android.location.Location;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by JC on 2/15/18.
  */
 
-public class CafeteriaModel {
+public class CafeteriaModel implements Serializable{
 
     //latitude+longitude for map(later)
+
+
 
 
 
@@ -20,16 +21,9 @@ public class CafeteriaModel {
     boolean is_diningHall;
     CafeteriaArea area;
     ArrayList<String> pay_methods;
-    Location location = new Location("");
-    ArrayList<String> cafeMenu= new ArrayList();
+    //Location location = new Location("");
+    ArrayList<String> cafeMenu = new ArrayList();
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
-
-
-
-
-    public CafeteriaModel(){
-
-    }
 
     public int getId() {
         return id;
@@ -38,7 +32,7 @@ public class CafeteriaModel {
     public void setId(int id) {
         this.id = id;
     }
-
+/*
     public Location getLocation() {
         return location;
     }
@@ -46,25 +40,24 @@ public class CafeteriaModel {
     public void setLocation(Double lat, Double lng) {
         this.location.setLongitude(lng);
         this.location.setLatitude(lat);
-    }
+    }*/
 
-    public String stringTo(){
+    public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
-        String locationString = "Location: " + location.toString() + ", Area: " + area ;
+        String locationString = "Location: " +  ", Area: " + area;
         String payMethodsString = "Pay Methods: " + pay_methods.toString();
         String menuString = "";
-        if(is_diningHall){
-            for(ArrayList<MealModel> meal:weeklyMenu ){
-                for(MealModel mealIndiv : meal){
+        if (is_diningHall) {
+            for (ArrayList<MealModel> meal : weeklyMenu) {
+                for (MealModel mealIndiv : meal) {
                     menuString = menuString + mealIndiv.stringTo();
                 }
 
             }
-        }
-        else{
+        } else {
             menuString = cafeMenu.toString();
         }
-        return info + "\n" + locationString + "\n" + payMethodsString + "\n" +"Menu" + "\n" + menuString;
+        return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
 
     }
 
@@ -130,5 +123,6 @@ public class CafeteriaModel {
         CENTRAL,
         WEST;
     }
+
 }
 

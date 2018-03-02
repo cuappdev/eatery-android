@@ -1,5 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * Created by abdullahislam on 2/18/18.
  */
 
-public class MealModel {
+public class MealModel implements Serializable{
 
 
     private String date;
@@ -29,11 +30,6 @@ public class MealModel {
         }
         return info;
     }
-
-
-
-
-
 
     public String getDate() {
         return date;
@@ -74,7 +70,5 @@ public class MealModel {
     public void setType(String type) {
         this.type = type;
     }
-
-
 
 }

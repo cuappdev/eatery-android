@@ -62,13 +62,12 @@ public final class NetworkUtilities {
             diningHall.add(5);
             diningHall.add(30);
 
-
+            //got rid of location
             for(int i=0; i<eateries.length();i++){
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
-                cafeteriaModel.setLocation(child.getDouble("latitude"),child.getDouble("longitude"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
@@ -139,19 +138,14 @@ public final class NetworkUtilities {
                     for(int z = 0; z<diningItems.length(); z++ ){
                         JSONObject item = diningItems.getJSONObject(z);
                         cafeItems.add(item.getString("item"));
-                        //Trillium does not have dining items so we will have to hard code it in later
+                        //trillium does not have dining items so we will have to hard code it in later
 
                     }
                     cafeteriaModel.setCafeMenu(cafeItems);
                 }
                 list.add(cafeteriaModel);
             }
-
-
-
             return list;
-
-
 
         }catch(IOException e){
             e.printStackTrace();
@@ -162,9 +156,6 @@ public final class NetworkUtilities {
             Log.i("model","JSON error");
 
             return null;
-
         }
-
-
     }
 }
