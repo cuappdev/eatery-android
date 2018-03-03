@@ -32,6 +32,7 @@ public final class NetworkUtilities {
             URL url = new URL(URI);
             BufferedReader reader = null;
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            long lastModified = connection.getLastModified();
             connection.connect();
 
             InputStream stream = connection.getInputStream();
