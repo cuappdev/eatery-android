@@ -8,9 +8,26 @@ import java.util.HashMap;
  */
 
 public class CafeModel {
+
     ArrayList<String> cafeMenu = new ArrayList();
     HashMap<String, ArrayList<String>> hours;
     public CafeModel(){
-
     }
+
+    public ArrayList<String> getCafeMenu() {
+        return cafeMenu;
+    }
+
+    public void setCafeMenu(ArrayList<String> cafeMenu) {
+        this.cafeMenu = cafeMenu;
+    }
+
+    public HashMap<String, ArrayList<String>> getHours() {
+        return hours;
+    }
+
+    public void setHours(HashMap<String, ArrayList<String>> hours) {
+        this.hours = hours;
+    }
+
 }

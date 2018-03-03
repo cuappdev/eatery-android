@@ -138,7 +138,25 @@ public final class NetworkUtilities {
                         cafeItems.add(item.getString("item"));
 
                     }
-                    //cafeteriaModel.setCafeMenu(cafeItems);
+                    cafe.setCafeMenu(cafeItems);
+                    HashMap<String, ArrayList<String>> cafeHours = new HashMap<String, ArrayList<String>>();
+
+                    JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
+                    for(int j=0; i<operatingHours.length(); i++){
+                        String date = operatingHours.getJSONObject(i).getString("date");
+                        ArrayList<String> hours = new ArrayList<String>();
+
+                        JSONArray events = operatingHours.getJSONObject(i).getJSONArray("events");
+                        if(events.length()!=0){
+                            hours.add(events.getJSONObject(0).getString("start"));
+                            hours.add(events.getJSONObject(0).getString("end"));
+
+                        }
+                        cafeHours.put(date, hours);
+
+                    }
+                    cafe.setHours(cafeHours);
+                    cafeteriaModel.setCafeInfo(cafe);
                 }
                 list.add(cafeteriaModel);
             }

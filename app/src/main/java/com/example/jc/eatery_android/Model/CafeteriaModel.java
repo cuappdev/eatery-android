@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class CafeteriaModel implements Serializable{
 
     //latitude+longitude for map(later)
+    //Location location = new Location("");
 
     int id;
     String name;
@@ -19,20 +20,10 @@ public class CafeteriaModel implements Serializable{
     CafeteriaArea area;
     ArrayList<String> pay_methods;
     String buildingLocation;
-    //Location location = new Location("");
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
     CafeModel cafeInfo = new CafeModel();
-
-
-/*
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Double lat, Double lng) {
-        this.location.setLongitude(lng);
-        this.location.setLatitude(lat);
-    }*/
+    //TODO: Add methods to get if open or closed
+    //TODO: Add methods to get next open or next close
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -105,6 +96,25 @@ public class CafeteriaModel implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+
+    public CafeModel getCafeInfo() {
+        return cafeInfo;
+    }
+
+    public void setCafeInfo(CafeModel cafeInfo) {
+        this.cafeInfo = cafeInfo;
+    }
+
+    /*
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Double lat, Double lng) {
+        this.location.setLongitude(lng);
+        this.location.setLatitude(lat);
+    }*/
+
 
     public CafeteriaArea getArea() {
         return area;
