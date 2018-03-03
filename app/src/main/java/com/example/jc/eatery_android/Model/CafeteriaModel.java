@@ -5,15 +5,13 @@ import java.util.ArrayList;
 
 /**
  * Created by JC on 2/15/18.
+ * This represents a single Cafeteria (either a cafe or a dining hall)
  */
 
 public class CafeteriaModel implements Serializable{
 
     //latitude+longitude for map(later)
-
-
-
-
+    //Location location = new Location("");
 
     int id;
     String name;
@@ -21,26 +19,11 @@ public class CafeteriaModel implements Serializable{
     boolean is_diningHall;
     CafeteriaArea area;
     ArrayList<String> pay_methods;
-    //Location location = new Location("");
-    ArrayList<String> cafeMenu = new ArrayList();
+    String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-/*
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Double lat, Double lng) {
-        this.location.setLongitude(lng);
-        this.location.setLatitude(lat);
-    }*/
+    CafeModel cafeInfo = new CafeModel();
+    //TODO: Add methods to get if open or closed
+    //TODO: Add methods to get next open or next close
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -55,20 +38,11 @@ public class CafeteriaModel implements Serializable{
 
             }
         } else {
-            menuString = cafeMenu.toString();
+            //menuString = cafeMenu.toString();
         }
         return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
 
     }
-
-    public ArrayList<String> getCafeMenu() {
-        return cafeMenu;
-    }
-
-    public void setCafeMenu(ArrayList<String> cafeMenu) {
-        this.cafeMenu = cafeMenu;
-    }
-
 
     public String getName() {
         return name;
@@ -109,6 +83,38 @@ public class CafeteriaModel implements Serializable{
     public void setWeeklyMenu(ArrayList<ArrayList<MealModel>> weeklyMenu) {
         this.weeklyMenu = weeklyMenu;
     }
+    public String getBuildingLocation() {
+        return buildingLocation;
+    }
+
+    public void setBuildingLocation(String buildingLocation) {
+        this.buildingLocation = buildingLocation;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public CafeModel getCafeInfo() {
+        return cafeInfo;
+    }
+
+    public void setCafeInfo(CafeModel cafeInfo) {
+        this.cafeInfo = cafeInfo;
+    }
+
+    /*
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Double lat, Double lng) {
+        this.location.setLongitude(lng);
+        this.location.setLatitude(lat);
+    }*/
+
 
     public CafeteriaArea getArea() {
         return area;

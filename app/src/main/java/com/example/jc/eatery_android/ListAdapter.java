@@ -54,6 +54,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
+
         holder.cafeName.setText(cafeList.get(position).getName());
 
         String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
