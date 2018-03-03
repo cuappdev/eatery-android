@@ -1,6 +1,9 @@
 package com.example.jc.eatery_android.Data;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -23,10 +26,10 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper{
                 "CREATE TABLE " + CafeteriaContract.CafeteriaEntry.TABLE_NAME + " (" +
 
 
-                        CafeteriaContract.CafeteriaEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        CafeteriaContract.CafeteriaEntry.COLUMN_ID + " INTEGER NOT NULL, " +
 
 
-                        CafeteriaContract.CafeteriaEntry.COLUMN_DATA + " TEXT NOT NULL "  +
+                        CafeteriaContract.CafeteriaEntry.COLUMN_DATA + " TEXT NOT NULL"  +
 
                         ");";
         db.execSQL(SQL_CREATE_TABLE);
@@ -38,4 +41,52 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+ CafeteriaContract.CafeteriaEntry.TABLE_NAME);
         onCreate(db);
     }
+
+    public boolean addData(String json){
+        ContentValues values = new ContentValues();
+        values.put(CafeteriaContract.CafeteriaEntry.COLUMN_ID,1);
+        values.put(CafeteriaContract.CafeteriaEntry.COLUMN_DATA,json);
+        SQLiteDatabase db = getWritableDatabase();
+        long result = db.insert(CafeteriaContract.CafeteriaEntry.TABLE_NAME,null,values);
+        db.close();
+        return result == -1 ? false: true;
+    }
+
+    public void removeData(){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM "+ CafeteriaContract.CafeteriaEntry.TABLE_NAME+" WHERE "+ CafeteriaContract.CafeteriaEntry._ID + " =1 ");
+
+    }
+    public long getProfilesCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, CafeteriaContract.CafeteriaEntry.TABLE_NAME);
+        db.close();
+        return count;
+    }
+
+    public String databaseToString(){
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM "+ CafeteriaContract.CafeteriaEntry.TABLE_NAME+" WHERE 1";
+
+        //Cursor point to a location in your results
+        //rawQuery can do SELECT etc
+        //CURSOR points to first in the queried result
+        Cursor c  = db.rawQuery(query,null);
+        c.moveToFirst();
+
+        while(c.moveToNext()){
+            if(c.getString(c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA))!=null){
+                dbString += (c.getString(c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA)))+" ";
+            }
+
+        }
+
+        db.close();
+
+        return dbString;
+    }
+
+
+
 }

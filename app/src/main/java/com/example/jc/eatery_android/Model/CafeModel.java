@@ -1,5 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
  * Created by abdullahislam on 3/2/18.
  */
 
-public class CafeModel {
+public class CafeModel implements Serializable{
 
     ArrayList<String> cafeMenu = new ArrayList();
     HashMap<String, ArrayList<String>> hours;

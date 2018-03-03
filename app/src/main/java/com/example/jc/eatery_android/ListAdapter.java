@@ -64,6 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
                 imageRes, 300, 300));
         //holder.cafeTime.setText(cafeList.get(position));
+
     }
 
     @Override
