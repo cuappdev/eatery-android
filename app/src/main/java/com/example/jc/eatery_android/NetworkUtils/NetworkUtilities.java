@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
+import com.example.jc.eatery_android.Model.CafeModel;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +70,7 @@ public final class NetworkUtilities {
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
+                cafeteriaModel.setBuildingLocation(child.getString("location"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
@@ -77,15 +80,12 @@ public final class NetworkUtilities {
                 String area = child.getJSONObject("campusArea").getString("descrshort");
                 if(area.equalsIgnoreCase("north")){
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
-
                 }
                 else if(area.equalsIgnoreCase("west")){
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.WEST);
-
                 }
                 else{
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.CENTRAL);
-
                 }
                 for(int j=0; j< methods.length();j++){
                     JSONObject method = methods.getJSONObject(j);
@@ -93,7 +93,6 @@ public final class NetworkUtilities {
                 }
                 if(diningHall.contains(child.getInt("id"))){
                     cafeteriaModel.setIs_diningHall(true);
-
                 }
                 if(cafeteriaModel.getIs_diningHall()){
                     JSONArray days = child.getJSONArray("operatingHours");
@@ -103,7 +102,6 @@ public final class NetworkUtilities {
                         JSONObject mealPeriods = days.getJSONObject(k);
                         String date = mealPeriods.getString("date");
                         JSONArray events = mealPeriods.getJSONArray("events");
-
                         //loops through each meal in one dining hall
                         for(int l =0; l<events.length(); l++ ){
                             MealModel mealModel = new MealModel();
@@ -112,7 +110,6 @@ public final class NetworkUtilities {
                             mealModel.setStart(meal.getString("start"));
                             mealModel.setEnd(meal.getString("end"));
                             mealModel.setType(meal.getString("descr"));
-
                             //mealMenu = hashmap of items in single meal
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
@@ -134,14 +131,14 @@ public final class NetworkUtilities {
                     cafeteriaModel.setWeeklyMenu(weeklyMenu);
                 }
                 else{
+                    CafeModel cafe = new CafeModel();
                     JSONArray diningItems = child.getJSONArray("diningItems");
                     for(int z = 0; z<diningItems.length(); z++ ){
                         JSONObject item = diningItems.getJSONObject(z);
                         cafeItems.add(item.getString("item"));
-                        //trillium does not have dining items so we will have to hard code it in later
 
                     }
-                    cafeteriaModel.setCafeMenu(cafeItems);
+                    //cafeteriaModel.setCafeMenu(cafeItems);
                 }
                 list.add(cafeteriaModel);
             }
