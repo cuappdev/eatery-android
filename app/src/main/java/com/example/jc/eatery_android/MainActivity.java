@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()&& dbHelper.getProfilesCount()!=0){
-            cafeList = JsonUtilities.parseJson(dbHelper.databaseToString());
+            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
             Log.i("testie","in here");
         }
 
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
             boolean hey = dbHelper.addData(json);
-            //Log.i("testie",""+hey);
-            Log.i("testie",""+dbHelper.getProfilesCount());
+            Log.i("testie",""+hey);
+            Log.i("testie",""+dbHelper.getLastRow());
             cafeList = JsonUtilities.parseJson(json);
 
             return cafeList;
