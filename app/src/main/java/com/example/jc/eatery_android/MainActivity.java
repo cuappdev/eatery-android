@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
         Intent intent = new Intent(this,MenuActivity.class);
 
         intent.putExtra("testData", cafeList);
+        intent.putExtra("locName", cafeList.get(position).getNickName());
 
         startActivity(intent);
     }

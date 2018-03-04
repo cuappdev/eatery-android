@@ -54,10 +54,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
+        holder.cafeName.setText(cafeList.get(position).getNickName());
 
-        holder.cafeName.setText(cafeList.get(position).getName());
-
-        String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
+        String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
+        Log.i("TAG 1", imageLocation);
+        //String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
         //Drawable res = mContext.getResources().getDrawable(imageRes);
         //Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), imageRes);
@@ -69,7 +70,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
 
     @Override
     public int getItemCount() {
-        Log.i("Tag",""+mCount);
+        //Log.i("Tag",""+mCount);
         return mCount;
     }
 
@@ -135,5 +136,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeResource(res, resId, options);
+    }
+
+    public static String convertName(String str) {
+        if (str.equals("104West!")) return "west";
+
+        str = str.replaceAll("[&\']", "");
+        str = str.replaceAll(" ", "_");
+        str = str.replaceAll("é", "e");
+        str = str.toLowerCase();
+        return str;
     }
 }
