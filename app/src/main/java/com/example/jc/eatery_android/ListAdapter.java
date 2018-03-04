@@ -54,7 +54,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
-        holder.cafeName.setText(cafeList.get(position).getName());
+        holder.cafeName.setText(cafeList.get(position).getNickName());
 
         String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
         Log.i("TAG 1", imageLocation);
