@@ -34,13 +34,27 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
 
 
         ConnectionUtilities con = new ConnectionUtilities(this);
-        if(!con.isNetworkAvailable()&& dbHelper.getProfilesCount()!=0){
+        if(!con.isNetworkAvailable()){
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
-            Log.i("testie","in here");
+            Log.i("newtestie","no connection");
+            Log.i("newtestie",dbHelper.getLastRow());
+            Log.i("newtestie",""+cafeList.size());
+
+            mRecyclerView = findViewById(R.id.cafe_list);
+
+            mRecyclerView.setHasFixedSize(true);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
+            mRecyclerView.setLayoutManager(layoutManager);
+
+            ListAdapter listAdapter = new ListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
+            mRecyclerView.setAdapter(listAdapter);
         }
 
+        else {
+            Log.i("newtestie","yes connection");
+            new ProcessJson().execute("");
+        }
 
-        new ProcessJson().execute("");
 
 
     }
