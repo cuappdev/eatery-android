@@ -1,34 +1,3 @@
 <resources>
     <string name="app_name">eatery-android</string>
-
-    <string-array name="cafe_loc">
-        <item>west</item>
-        <item>amit_bhatia_libe_cafe</item>
-        <item>atrium_cafe</item>
-        <item>bear_necessities</item>
-        <item>becker_house_dining</item>
-        <item>big_red_barn</item>
-        <item>bus_stop_bagels</item>
-        <item>cafe_jennie</item>
-        <item>carols_cafe</item>
-        <item>cook_house_dining</item>
-        <item>cornell_dairy_bar</item>
-        <item>frannys</item>
-        <item>goldies_cafe</item>
-        <item>green_dragon</item>
-        <item>hot_dog_cart</item>
-        <item>ivy_room</item>
-        <item>jansens_dining</item>
-        <item>jansens_market</item>
-        <item>keeton_house_dining</item>
-        <item>marthas_cafe</item>
-        <item>mattins_cafe</item>
-        <item>north_star_dining</item>
-        <item>okenshields</item>
-        <item>risley_dining</item>
-        <item>robert_purcell_marketplace_eatery</item>
-        <item>rose_house_dining</item>
-        <item>rustys</item>
-        <item>trillium</item>
-    </string-array>
 </resources>

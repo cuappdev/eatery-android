@@ -12,8 +12,6 @@ import java.util.ArrayList;
 public class CafeteriaModel implements Serializable{
 
     //latitude+longitude for map(later)
-    //Location location = new Location("");
-
     int id;
     String name;
     String nickName;
