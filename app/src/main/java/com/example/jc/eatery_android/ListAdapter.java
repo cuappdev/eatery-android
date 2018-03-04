@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -57,7 +54,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
-        holder.cafeName.setText(cafeList.get(position).getNickName());
+        holder.cafeName.setText(cafeList.get(position).getName());
 
         String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
         Log.i("TAG 1", imageLocation);
@@ -68,6 +65,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
                 imageRes, 300, 300));
         //holder.cafeTime.setText(cafeList.get(position));
+
     }
 
     @Override
@@ -98,7 +96,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
             int adapterPositoin = getAdapterPosition();
             mListAdapterOnClickHandler.onClick(adapterPositoin);
 
-            //TODO: add intent
         }
     }
 
