@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
         new ProcessJson().execute("");
 
 
+
     }
 
     @Override
@@ -65,7 +66,10 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
             Log.i("testie",""+hey);
             Log.i("testie",""+dbHelper.getLastRow());
             cafeList = JsonUtilities.parseJson(json);
+            /*for(CafeteriaModel bob :cafeList){
+                Log.i("test", bob.getName());
 
+            }*/
             return cafeList;
         }
 

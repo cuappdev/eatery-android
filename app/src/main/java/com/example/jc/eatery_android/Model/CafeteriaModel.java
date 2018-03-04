@@ -3,6 +3,7 @@ package com.example.jc.eatery_android.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
 /**
  * Created by JC on 2/15/18.
  * This represents a single Cafeteria (either a cafe or a dining hall)
@@ -20,7 +21,7 @@ public class CafeteriaModel implements Serializable{
     CafeteriaArea area;
     ArrayList<String> pay_methods;
     String buildingLocation;
-    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
     //TODO: Add methods to get if open or closed
     //TODO: Add methods to get next open or next close
@@ -43,6 +44,25 @@ public class CafeteriaModel implements Serializable{
         return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
 
     }
+/*
+    public boolean isOpen(){
+        if(is_diningHall){
+            for(ArrayList day: weeklyMenu){
+
+                if(day.size()>0)
+            }
+        }
+        else{
+
+        }
+
+    }
+
+    public string closeTime(){
+
+
+    }*/
+
 
     public String getName() {
         return name;

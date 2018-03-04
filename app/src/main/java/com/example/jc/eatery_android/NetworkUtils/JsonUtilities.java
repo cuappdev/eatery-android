@@ -1,5 +1,7 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
+import android.util.Log;
+
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
@@ -41,6 +43,7 @@ public final class JsonUtilities {
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
+                Log.i("test", cafeteriaModel.getName());
                 cafeteriaModel.setBuildingLocation(child.getString("location"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
@@ -110,11 +113,11 @@ public final class JsonUtilities {
                     HashMap<String, ArrayList<String>> cafeHours = new HashMap<String, ArrayList<String>>();
 
                     JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
-                    for (int j = 0; i < operatingHours.length(); i++) {
-                        String date = operatingHours.getJSONObject(i).getString("date");
+                    for (int c = 0; c < operatingHours.length(); c++) {
+                        String date = operatingHours.getJSONObject(c).getString("date");
                         ArrayList<String> hours = new ArrayList<String>();
 
-                        JSONArray events = operatingHours.getJSONObject(i).getJSONArray("events");
+                        JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
                         if (events.length() != 0) {
                             hours.add(events.getJSONObject(0).getString("start"));
                             hours.add(events.getJSONObject(0).getString("end"));
