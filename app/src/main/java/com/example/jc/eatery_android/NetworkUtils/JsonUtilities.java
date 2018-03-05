@@ -40,6 +40,7 @@ public final class JsonUtilities {
             diningHall.add(5);
             diningHall.add(30);
             SimpleDateFormat mealTime = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
+            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd");
 
             //got rid of location
             for (int i = 0; i < eateries.length(); i++) {
@@ -47,7 +48,7 @@ public final class JsonUtilities {
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
-                Log.i("test", cafeteriaModel.getName());
+                //Log.i("test", cafeteriaModel.getName());
                 cafeteriaModel.setBuildingLocation(child.getString("location"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
@@ -95,9 +96,8 @@ public final class JsonUtilities {
                             mealModel.setStart(mealTime.parse(start));
                             mealModel.setEnd(mealTime.parse(end));
                             mealModel.setType(meal.getString("descr"));
-                            Log.i("test", mealModel.getStart().toString());
-                            Log.i("test", mealModel.getEnd().toString());
-
+                            //Log.i("test", mealModel.getStart().toString());
+                            //Log.i("test", mealModel.getEnd().toString());
                             //mealMenu = hashmap of items in single meal
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
@@ -126,20 +126,34 @@ public final class JsonUtilities {
 
                     }
                     cafe.setCafeMenu(cafeItems);
-                    HashMap<String, ArrayList<String>> cafeHours = new HashMap<String, ArrayList<String>>();
+                    HashMap<Date, ArrayList<Date>> cafeHours = new HashMap<Date, ArrayList<Date>>();
 
                     JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
                     for (int c = 0; c < operatingHours.length(); c++) {
                         String date = operatingHours.getJSONObject(c).getString("date");
-                        ArrayList<String> hours = new ArrayList<String>();
+                        Date dateFinal = dateF.parse(date);
+                        //Log.i("test", dateFinal.toString());
+                        ArrayList<Date> hours = new ArrayList<Date>();
 
                         JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
                         if (events.length() != 0) {
-                            hours.add(events.getJSONObject(0).getString("start"));
-                            hours.add(events.getJSONObject(0).getString("end"));
+                            String startTime = events.getJSONObject(0).getString("start");
+                            String endTime = events.getJSONObject(0).getString("end");
+                            if(startTime.length()==6){
+                                startTime = "0"+startTime;
+                            }
+                            if(endTime.length()==6){
+                                endTime = "0"+endTime;
+                            }
+                            String start = date + " " + startTime;
+                            String end = date + " " + endTime;
+                            hours.add(mealTime.parse(start));
+                            hours.add(mealTime.parse(end));
+                            //Log.i("test", start.toString());
+                            //Log.i("test", end.toString());
 
                         }
-                        cafeHours.put(date, hours);
+                        cafeHours.put(dateFinal, hours);
 
                     }
                     cafe.setHours(cafeHours);
