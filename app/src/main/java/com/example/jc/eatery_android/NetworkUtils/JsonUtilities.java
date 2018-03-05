@@ -10,7 +10,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -36,6 +39,7 @@ public final class JsonUtilities {
             diningHall.add(4);
             diningHall.add(5);
             diningHall.add(30);
+            SimpleDateFormat mealTime = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
 
             //got rid of location
             for (int i = 0; i < eateries.length(); i++) {
@@ -78,10 +82,22 @@ public final class JsonUtilities {
                         for (int l = 0; l < events.length(); l++) {
                             MealModel mealModel = new MealModel();
                             JSONObject meal = events.getJSONObject(l); //created a single meal object(ie lunch)
-                            mealModel.setDate(date);
-                            mealModel.setStart(meal.getString("start"));
-                            mealModel.setEnd(meal.getString("end"));
+                            String startTime = meal.getString("start");
+                            String endTime = meal.getString("end");
+                            if(startTime.length()==6){
+                                startTime = "0"+startTime;
+                            }
+                            if(endTime.length()==6){
+                                endTime = "0"+endTime;
+                            }
+                            String start = date + " " + startTime;
+                            String end = date + " " + endTime;
+                            mealModel.setStart(mealTime.parse(start));
+                            mealModel.setEnd(mealTime.parse(end));
                             mealModel.setType(meal.getString("descr"));
+                            Log.i("test", mealModel.getStart().toString());
+                            Log.i("test", mealModel.getEnd().toString());
+
                             //mealMenu = hashmap of items in single meal
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
@@ -133,6 +149,10 @@ public final class JsonUtilities {
             }
             return list;
         }catch(JSONException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch(ParseException e){
             e.printStackTrace();
             return null;
         }

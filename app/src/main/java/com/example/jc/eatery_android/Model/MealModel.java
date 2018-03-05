@@ -2,6 +2,7 @@ package com.example.jc.eatery_android.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -11,9 +12,8 @@ import java.util.HashMap;
 public class MealModel implements Serializable{
 
 
-    private String date;
-    private String start;
-    private String end;
+    private Date start;
+    private Date end;
     private String type;
     private HashMap<String, ArrayList<String>> menu;
 
@@ -22,7 +22,7 @@ public class MealModel implements Serializable{
     }
 
     public String stringTo() {
-        String info = type + " on " + date.toString() + " from: " + start + " to: " + end + "\n";
+        String info = type + " on " + " from: " + start.toString() + " to: " + end.toString() + "\n";
         for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
@@ -31,27 +31,21 @@ public class MealModel implements Serializable{
         return info;
     }
 
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
-    public String getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public String getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 
