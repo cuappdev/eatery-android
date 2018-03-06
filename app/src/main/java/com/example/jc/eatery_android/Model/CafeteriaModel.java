@@ -2,6 +2,8 @@ package com.example.jc.eatery_android.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
 /**
@@ -42,20 +44,42 @@ public class CafeteriaModel implements Serializable{
         return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
 
     }
-/*
-    public boolean isOpen(){
-        if(is_diningHall){
-            for(ArrayList day: weeklyMenu){
 
-                if(day.size()>0)
+    public boolean isOpen(){
+        Date now = new Date();
+        if(is_diningHall){
+            for(ArrayList<MealModel> day: weeklyMenu){
+                if(day.size()>0){
+                    MealModel firstMeal = day.get(0);
+                    if(firstMeal.getStart().getDate()==now.getDate()){
+                        for(MealModel meal: day){
+                            if(meal.getStart().before(now)&& meal.getEnd().after(now)){
+                                return true;
+                            }
+                        }
+                    }
+                }
             }
+            return false;
         }
         else{
+            HashMap<Date, ArrayList<Date>> hours = cafeInfo.getHours();
+            for(Date day: hours.keySet()){
+                if(day.getDate() == now.getDate()){
+                    if(hours.get(day).size()>1){
+                        ArrayList<Date> hour = hours.get(day);
+                        if(hour.get(0).after(now) && hour.get(1).before(now)){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
 
         }
 
     }
-
+/*
     public string closeTime(){
 
 
@@ -147,6 +171,12 @@ public class CafeteriaModel implements Serializable{
         CENTRAL,
         WEST;
     }
+    /*
+    public enum CafeteriaStatus{
+        OPEN,
+        CLOSED,
+        CLOSINGSOON
+    }*/
 
 }
 
