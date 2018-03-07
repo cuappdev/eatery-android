@@ -62,7 +62,7 @@ public class CafeteriaModel implements Serializable{
         return -1;
     }
 
-    public boolean isOpen(){
+    public String isOpen(){
         Date now = new Date();
         if(is_diningHall){
             for(ArrayList<MealModel> day: weeklyMenu){
@@ -72,13 +72,13 @@ public class CafeteriaModel implements Serializable{
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
                                 closeTime = meal.getEnd();
-                                return true;
+                                return "Open";
                             }
                         }
                     }
                 }
             }
-            return false;
+            return "Closed";
         }
         else{
             HashMap<Date, ArrayList<Date>> hours = cafeInfo.getHours();
@@ -88,12 +88,12 @@ public class CafeteriaModel implements Serializable{
                         ArrayList<Date> hour = hours.get(day);
                         if(hour.get(0).after(now) && hour.get(1).before(now)){
                             closeTime = hour.get(1);
-                            return true;
+                            return "Open";
                         }
                     }
                 }
             }
-            return false;
+            return "Closed";
 
         }
 
