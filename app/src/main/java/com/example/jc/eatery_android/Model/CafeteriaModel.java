@@ -23,6 +23,7 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
+    Date closeTime; //This field is only updated if the location is open and the method isOpen is called
     //TODO: Add methods to get if open or closed
     //TODO: Add methods to get next open or next close
 
@@ -45,6 +46,22 @@ public class CafeteriaModel implements Serializable{
 
     }
 
+    public int indexOfCurrentDay(){
+        Date now = new Date();
+        if(is_diningHall){
+            for(int i=0; i< weeklyMenu.size(); i++){
+                ArrayList<MealModel> day = weeklyMenu.get(i);
+                if(day.size()>0){
+                    MealModel firstMeal = day.get(0);
+                    if(firstMeal.getStart().getDate()==now.getDate()){
+                        return i;
+                        }
+                    }
+                }
+            }
+        return -1;
+    }
+
     public boolean isOpen(){
         Date now = new Date();
         if(is_diningHall){
@@ -54,12 +71,13 @@ public class CafeteriaModel implements Serializable{
                     if(firstMeal.getStart().getDate()==now.getDate()){
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
+                                closeTime = meal.getEnd();
                                 return true;
                             }
                         }
                     }
                 }
-            }
+            }ge
             return false;
         }
         else{
@@ -69,6 +87,7 @@ public class CafeteriaModel implements Serializable{
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
                         if(hour.get(0).after(now) && hour.get(1).before(now)){
+                            closeTime = hour.get(1);
                             return true;
                         }
                     }
@@ -79,11 +98,7 @@ public class CafeteriaModel implements Serializable{
         }
 
     }
-/*
-    public string closeTime(){
 
-
-    }*/
 
 
     public String getName() {
