@@ -1,11 +1,17 @@
 package com.example.jc.eatery_android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -14,10 +20,15 @@ import android.widget.TextView;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    ArrayList<CafeteriaModel> cafeList;
+    CafeteriaModel cafeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,22 +36,59 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Intent intent = getIntent();
-        ArrayList<CafeteriaModel> cafeList = null;
         String cafeName = (String) intent.getSerializableExtra("locName");
         cafeLoc = (TextView)findViewById(R.id.ind_name);
         cafeLoc.setText(cafeName);
 
         cafeName = "@drawable/" + convertName(cafeName);
-        Log.i("TAG 4", cafeName);
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
+        cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
+        Log.i("TAG 4",cafeData.getWeeklyMenu().get(0).get(0).stringTo());
 
         cafeImage = (ImageView) findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
 
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        //setupViewPager(viewPager);
 
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private Context mContext;
+
+        public ViewPagerAdapter(Context context, FragmentManager manager) {
+            super(manager);
+            mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Bundle b = new Bundle();
+            b.putInt("position", position);
+            MenuFragment f = new MenuFragment();
+            f.setArguments(b);
+            return f;
+        }
+
+        @Override
+        public int getCount() {
+            return cafeData.getWeeklyMenu().get(0).size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return cafeData.getWeeklyMenu().get(0).get(position).getType();
+        }
 
     }
 

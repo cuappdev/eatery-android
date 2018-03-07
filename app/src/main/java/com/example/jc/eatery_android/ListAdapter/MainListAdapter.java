@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.example.jc.eatery_android.ListAdapter;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.example.jc.eatery_android.R;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * Created by JC on 2/22/18.
  */
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterViewHolder>{
+public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAdapterViewHolder>{
 
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
@@ -32,7 +33,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListAdapterVie
         void onClick(int position);
     }
 
-    public ListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
+    public MainListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
         mContext = context;
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
