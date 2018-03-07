@@ -77,7 +77,7 @@ public class CafeteriaModel implements Serializable{
                         }
                     }
                 }
-            }ge
+            }
             return false;
         }
         else{
