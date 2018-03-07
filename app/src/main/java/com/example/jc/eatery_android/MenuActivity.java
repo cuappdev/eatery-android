@@ -72,6 +72,7 @@ public class MenuActivity extends AppCompatActivity {
             ft.commit();*/
             viewPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
+            linLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView tv = new TextView(this);
                 tv.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
@@ -80,6 +81,9 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         if (cafeData.getIs_diningHall()) {
+            viewPager.setVisibility(View.VISIBLE);
+            tabLayout.setVisibility(View.VISIBLE);
+            linLayout.setVisibility(View.GONE);
             setupViewPager(viewPager);
 
             if (cafeData.getIs_diningHall()) {
@@ -105,6 +109,7 @@ public class MenuActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             Bundle b = new Bundle();
             b.putInt("position", position);
+            b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(0));
             MenuFragment f = new MenuFragment();
             f.setArguments(b);
             return f;

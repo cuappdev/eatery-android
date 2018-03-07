@@ -7,10 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.example.jc.eatery_android.Model.MealModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -18,8 +24,8 @@ import com.example.jc.eatery_android.Model.CafeteriaModel;
  */
 public class MenuFragment extends Fragment {
     int position;
-    CafeModel cafeData = null;
-    TextView textView;
+    ArrayList<MealModel> menus;
+    LinearLayout linear;
 
     public MenuFragment() {
     }
@@ -27,28 +33,35 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        cafeData = (CafeModel) getArguments().getSerializable("cafeData");
+        menus = (ArrayList<MealModel>) getArguments().getSerializable("cafeData");
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
         try {
             position = getArguments().getInt("position");
         } catch (Exception e) {
 
         }
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
 
-    }
+        linear = view.findViewById(R.id.linearFragment);
+        Log.i("TAG", menus.get(position).stringTo());
+        for (HashMap.Entry<String, ArrayList<String>> entry : menus.get(position).getMenu().entrySet()) {
+            String key = entry.getKey();
+            List<String> value = entry.getValue();
+            TextView tv = new TextView(getContext());
+            tv.setText(key);
+            tv.setAllCaps(true);
+            linear.addView(tv);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        textView = view.findViewById(R.id.menuTemp);
-        Log.i("TAG 2", Integer.toString(position));
-        if (position == 0) {
-
-            for (int i = 0; i < cafeData.getCafeMenu().size(); i++) {
-                Log.i("TAG 2", cafeData.getCafeMenu().get(i));
-                textView.setText(cafeData.getCafeMenu().get(i));
+            for (int i = 0; i < value.size(); i++) {
+                TextView tv2 = new TextView(getContext());
+                tv2.setText(value.get(i));
+                linear.addView(tv2);
             }
-            textView.setText(cafeData.getCafeMenu().toString());
         }
+
+        // Inflate the layout for this fragment
+        return view;
+
     }
+
+
 }
