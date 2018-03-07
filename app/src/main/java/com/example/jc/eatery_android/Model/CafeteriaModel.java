@@ -23,7 +23,7 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
-    Date closeTime; //This field is only updated if the location is open and the method isOpen is called
+    String closeTime; //This field is only updated if the location is open and the method isOpen is called
     //TODO: Add methods to get if open or closed
     //TODO: Add methods to get next open or next close
 
@@ -71,7 +71,7 @@ public class CafeteriaModel implements Serializable{
                     if(firstMeal.getStart().getDate()==now.getDate()){
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
-                                closeTime = meal.getEnd();
+                                closeTime = meal.getEnd().toString();
                                 return "Open";
                             }
                         }
@@ -87,7 +87,7 @@ public class CafeteriaModel implements Serializable{
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
                         if(hour.get(0).after(now) && hour.get(1).before(now)){
-                            closeTime = hour.get(1);
+                            closeTime = hour.get(1).toString();
                             return "Open";
                         }
                     }
