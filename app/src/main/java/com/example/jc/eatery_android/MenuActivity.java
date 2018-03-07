@@ -109,7 +109,7 @@ public class MenuActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             Bundle b = new Bundle();
             b.putInt("position", position);
-            b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(0));
+            b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()));
             MenuFragment f = new MenuFragment();
             f.setArguments(b);
             return f;
