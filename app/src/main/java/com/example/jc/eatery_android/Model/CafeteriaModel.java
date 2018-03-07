@@ -95,7 +95,7 @@ public class CafeteriaModel implements Serializable{
                 if(day.getDate() == now.getDate()){
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
-                        if(hour.get(0).after(now) && hour.get(1).before(now)){
+                        if(hour.get(0).before(now) && hour.get(1).after(now)){
                             closeTime = hour.get(1).toString();
                             return "Open";
                         }
