@@ -56,7 +56,8 @@ public class MenuActivity extends AppCompatActivity {
         cafeIsOpen = findViewById(R.id.ind_open);
         cafeClosingHours = findViewById(R.id.ind_closingHours);
 
-        cafeIsOpen.setText(cafeData.get);
+        cafeIsOpen.setText(cafeData.isOpen());
+        
 
         cafeImage = (ImageView) findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
