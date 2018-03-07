@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
+import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.NetworkUtils.ConnectionUtilities;
 import com.example.jc.eatery_android.NetworkUtils.JsonUtilities;
@@ -18,7 +19,7 @@ import com.example.jc.eatery_android.NetworkUtils.NetworkUtilities;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ListAdapter.ListAdapterOnClickHandler{
+public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler{
 
     public RecyclerView mRecyclerView;
     public ArrayList<CafeteriaModel> cafeList;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
 
-            ListAdapter listAdapter = new ListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
+            MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
         Intent intent = new Intent(this,MenuActivity.class);
 
         intent.putExtra("testData", cafeList);
+        intent.putExtra("cafeInfo", cafeList.get(position));
         intent.putExtra("locName", cafeList.get(position).getNickName());
 
         startActivity(intent);
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ListA
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
 
-            ListAdapter listAdapter = new ListAdapter(getApplicationContext(), MainActivity.this,result.size(), cafeList);
+            MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,result.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
     }
