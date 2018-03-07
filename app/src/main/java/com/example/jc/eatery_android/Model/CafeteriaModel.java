@@ -23,6 +23,15 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
+
+    public String getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(String closeTime) {
+        this.closeTime = closeTime;
+    }
+
     String closeTime; //This field is only updated if the location is open and the method isOpen is called
     //TODO: Add methods to get if open or closed
     //TODO: Add methods to get next open or next close
