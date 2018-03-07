@@ -56,6 +56,10 @@ public class MenuFragment extends Fragment {
                 tv2.setText(value.get(i));
                 linear.addView(tv2);
             }
+
+            TextView blank = new TextView(getContext());
+            blank.setText(" ");
+            linear.addView(blank);
         }
 
         // Inflate the layout for this fragment
