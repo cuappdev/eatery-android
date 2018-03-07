@@ -11,10 +11,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -25,6 +30,7 @@ import java.util.List;
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
+    LinearLayout linLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ArrayList<CafeteriaModel> cafeList;
@@ -44,18 +50,42 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
-        Log.i("TAG 4",cafeData.getWeeklyMenu().get(0).get(0).stringTo());
 
         cafeImage = (ImageView) findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        //setupViewPager(viewPager);
 
+        viewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //tabLayout.setupWithViewPager(viewPager);
+        linLayout = (LinearLayout) findViewById(R.id.linear);
+
+        if (!cafeData.getIs_diningHall()) {
+            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Bundle b = new Bundle();
+            Log.i("TAG 5", cafeData.getCafeInfo().toString());
+            b.putSerializable("cafeData", cafeData.getCafeInfo());
+            MenuFragment f = new MenuFragment();
+            f.setArguments(b);
+            ft.replace(R.id.pager, f);
+            ft.commit();*/
+            viewPager.setVisibility(View.GONE);
+            tabLayout.setVisibility(View.GONE);
+            for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
+                TextView tv = new TextView(this);
+                tv.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
+                linLayout.addView(tv);
+            }
+        }
+
+        if (cafeData.getIs_diningHall()) {
+            setupViewPager(viewPager);
+
+            if (cafeData.getIs_diningHall()) {
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
