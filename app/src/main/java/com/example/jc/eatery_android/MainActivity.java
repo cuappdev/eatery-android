@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
@@ -58,6 +58,23 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
 
 
+
+    }
+
+
+    public void filterClick(View view){
+
+        int id = view.getId();
+
+        switch(id){
+            case R.id.northButton:
+
+                break;
+            case R.id.westButton:
+                break;
+            case R.id.centralButton:
+                break;
+        }
 
     }
 
