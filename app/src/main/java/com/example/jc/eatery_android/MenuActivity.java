@@ -30,6 +30,8 @@ import java.util.List;
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
+    TextView cafeClosingHours;
+    TextView cafeIsOpen;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -50,6 +52,12 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
+
+        cafeIsOpen = findViewById(R.id.ind_open);
+        cafeClosingHours = findViewById(R.id.ind_closingHours);
+
+        cafeIsOpen.setText(cafeData.isOpen());
+        cafeClosingHours.setText(cafeData.getCloseTime());
 
         cafeImage = (ImageView) findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
@@ -109,7 +117,7 @@ public class MenuActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             Bundle b = new Bundle();
             b.putInt("position", position);
-            b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(0));
+            b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()));
             MenuFragment f = new MenuFragment();
             f.setArguments(b);
             return f;
@@ -117,12 +125,12 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return cafeData.getWeeklyMenu().get(0).size();
+            return cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return cafeData.getWeeklyMenu().get(0).get(position).getType();
+            return cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).get(position).getType();
         }
 
     }

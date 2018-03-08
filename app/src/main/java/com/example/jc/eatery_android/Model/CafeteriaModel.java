@@ -23,6 +23,16 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
+
+    public String getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(String closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    String closeTime; //This field is only updated if the location is open and the method isOpen is called
     //TODO: Add methods to get if open or closed
     //TODO: Add methods to get next open or next close
 
@@ -45,7 +55,23 @@ public class CafeteriaModel implements Serializable{
 
     }
 
-    public boolean isOpen(){
+    public int indexOfCurrentDay(){
+        Date now = new Date();
+        if(is_diningHall){
+            for(int i=0; i< weeklyMenu.size(); i++){
+                ArrayList<MealModel> day = weeklyMenu.get(i);
+                if(day.size()>0){
+                    MealModel firstMeal = day.get(0);
+                    if(firstMeal.getStart().getDate()==now.getDate()){
+                        return i;
+                        }
+                    }
+                }
+            }
+        return -1;
+    }
+
+    public String isOpen(){
         Date now = new Date();
         if(is_diningHall){
             for(ArrayList<MealModel> day: weeklyMenu){
@@ -54,13 +80,14 @@ public class CafeteriaModel implements Serializable{
                     if(firstMeal.getStart().getDate()==now.getDate()){
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
-                                return true;
+                                closeTime = meal.getEnd().toString();
+                                return "Open";
                             }
                         }
                     }
                 }
             }
-            return false;
+            return "Closed";
         }
         else{
             HashMap<Date, ArrayList<Date>> hours = cafeInfo.getHours();
@@ -68,22 +95,19 @@ public class CafeteriaModel implements Serializable{
                 if(day.getDate() == now.getDate()){
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
-                        if(hour.get(0).after(now) && hour.get(1).before(now)){
-                            return true;
+                        if(hour.get(0).before(now) && hour.get(1).after(now)){
+                            closeTime = hour.get(1).toString();
+                            return "Open";
                         }
                     }
                 }
             }
-            return false;
+            return "Closed";
 
         }
 
     }
-/*
-    public string closeTime(){
 
-
-    }*/
 
 
     public String getName() {

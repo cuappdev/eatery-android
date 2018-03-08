@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
     @Override
     public void onClick(int position) {
-        Toast.makeText(this,""+cafeList.size(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,""+cafeList.size(),Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this,MenuActivity.class);
 

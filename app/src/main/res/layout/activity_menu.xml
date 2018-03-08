@@ -40,6 +40,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_closingHours"
+                    android:id="@+id/ind_open"
+                    android:text="OPEN??"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ind_open"
                     android:id="@+id/ind_building"
                     android:text="Building"/>
                 <TextView
