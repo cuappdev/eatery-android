@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +7,70 @@
     tools:context="com.example.jc.eatery_android.MainActivity"
     >
 
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scroll"
+        android:layout_below="@+id/search">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/linear">
+
+            <Button
+                android:id="@+id/northButton"
+                android:layout_width="60dp"
+
+                android:layout_height="40dp"
+                android:background="@drawable/button"
+                android:text="North"
+                android:textAllCaps="false"
+                android:textColor="#26C5FF"
+                android:textSize="15sp"
+                android:onClick="filterClick"/>
+
+            <Button
+                android:id="@+id/westButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+
+                android:background="@drawable/button"
+                android:text="West"
+
+                android:textAllCaps="false"
+                android:textColor="#26C5FF"
+                android:textSize="15sp"
+                android:layout_marginLeft="15dp"
+                android:onClick="filterClick"/>
+
+            <Button
+                android:id="@+id/centralButton"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/button"
+
+                android:text="Central"
+                android:textAllCaps="false"
+                android:textColor="#26C5FF"
+                android:textSize="15sp"
+                android:layout_marginLeft="15dp"
+                android:onClick="filterClick"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cafe_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false" />
+        android:layout_below="@+id/scroll"
+        android:clipToPadding="false"
+        android:onClick="filterClick" />
 
-</android.widget.FrameLayout>
+</android.widget.RelativeLayout>

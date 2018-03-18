@@ -1,14 +1,15 @@
 package com.example.jc.eatery_android;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
@@ -23,7 +24,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
     public RecyclerView mRecyclerView;
     public ArrayList<CafeteriaModel> cafeList;
+    public ArrayList<CafeteriaModel> currentList;
     public CafeteriaDbHelper dbHelper;
+    public MainListAdapter listAdapter;
+    public boolean northPressed = false;
+    public boolean centralPressed = false;
+    public boolean westPressed = false;
+    public Button northButton;
+    public Button westButton;
+    public Button centralButton;
 
     //TODO: saves version of cafeList for when there's no wifi
     @Override
@@ -31,33 +40,141 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new CafeteriaDbHelper(this);
+        mRecyclerView = findViewById(R.id.cafe_list);
+        northButton = findViewById(R.id.northButton);
+        westButton = findViewById(R.id.westButton);
+        centralButton = findViewById(R.id.centralButton);
+
 
 
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
-            Log.i("newtestie","no connection");
-            Log.i("newtestie",dbHelper.getLastRow());
-            Log.i("newtestie",""+cafeList.size());
+            currentList = cafeList;
 
-            mRecyclerView = findViewById(R.id.cafe_list);
+
 
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
 
-            MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
+            listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
 
         else {
-            Log.i("newtestie","yes connection");
             new ProcessJson().execute("");
         }
 
 
 
+
+    }
+
+
+    public void filterClick(View view){
+
+        int id = view.getId();
+
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        switch(id){
+            case R.id.northButton:
+                if(!northPressed) {
+                    northButton.setTextColor(Color.RED);
+                    northPressed = true;
+                    centralPressed = false;
+                    westPressed = false;
+                    westButton.setTextColor(Color.parseColor("#26C5FF"));
+                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
+                    ArrayList<CafeteriaModel> northList = new ArrayList<>();
+                    for(CafeteriaModel model : cafeList){
+                        if(model.getArea()== CafeteriaModel.CafeteriaArea.NORTH){
+                            northList.add(model);
+                        }
+                    }
+                    currentList = northList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+
+                    break;
+                }
+                else{
+                    northButton.setTextColor(Color.parseColor("#26C5FF"));
+                    northPressed = false;
+                    currentList = cafeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                }
+
+
+
+            case R.id.centralButton:
+                if(!centralPressed){
+                    centralButton.setTextColor(Color.RED);
+                    centralPressed = true;
+                    northPressed = false;
+                    westPressed = false;
+                    westButton.setTextColor(Color.parseColor("#26C5FF"));
+                    northButton.setTextColor(Color.parseColor("#26C5FF"));
+                    ArrayList<CafeteriaModel> centralList = new ArrayList<>();
+                    for(CafeteriaModel model : cafeList){
+                        if(model.getArea()== CafeteriaModel.CafeteriaArea.CENTRAL){
+                            centralList.add(model);
+                        }
+                    }
+                    currentList = centralList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+
+                }else{
+                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
+                    centralPressed = false;
+                    currentList = cafeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                }
+
+
+
+
+            case R.id.westButton:
+                if(!westPressed){
+                    westButton.setTextColor(Color.RED);
+                    westPressed = true;
+                    centralPressed = false;
+                    northPressed = false;
+                    northButton.setTextColor(Color.parseColor("#26C5FF"));
+                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
+                    ArrayList<CafeteriaModel> westList = new ArrayList<>();
+                    for(CafeteriaModel model : cafeList){
+                        if(model.getArea()== CafeteriaModel.CafeteriaArea.WEST){
+                            westList.add(model);
+                        }
+                    }
+                    currentList = westList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                }else{
+                    westButton.setTextColor(Color.parseColor("#26C5FF"));
+                    westPressed = false;
+                    currentList = cafeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                }
+
+
+
+
+                break;
+        }
 
     }
 
@@ -67,9 +184,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         Intent intent = new Intent(this,MenuActivity.class);
 
-        intent.putExtra("testData", cafeList);
-        intent.putExtra("cafeInfo", cafeList.get(position));
-        intent.putExtra("locName", cafeList.get(position).getNickName());
+        intent.putExtra("testData", currentList);
+        intent.putExtra("cafeInfo", currentList.get(position));
+        intent.putExtra("locName", currentList.get(position).getNickName());
 
         startActivity(intent);
     }
@@ -80,13 +197,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
             boolean hey = dbHelper.addData(json);
-            Log.i("testie",""+hey);
-            Log.i("testie",""+dbHelper.getLastRow());
-            cafeList = JsonUtilities.parseJson(json);
-            /*for(CafeteriaModel bob :cafeList){
-                Log.i("test", bob.getName());
 
-            }*/
+            cafeList = JsonUtilities.parseJson(json);
+            currentList = cafeList;
+
             return cafeList;
         }
 
@@ -94,13 +208,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         protected void onPostExecute(ArrayList<CafeteriaModel> result) {
             super.onPostExecute(result);
 
-            mRecyclerView = findViewById(R.id.cafe_list);
-
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
 
-            MainListAdapter listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,result.size(), cafeList);
+            listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,result.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
     }
