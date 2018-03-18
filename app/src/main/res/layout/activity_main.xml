@@ -10,7 +10,8 @@
     <SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -25,39 +26,44 @@
 
             <Button
                 android:id="@+id/northButton"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
 
-                android:layout_height="40dp"
+                android:layout_marginLeft="50dp"
                 android:background="@drawable/button"
+                android:onClick="filterClick"
+                android:padding="8dp"
                 android:text="North"
                 android:textAllCaps="false"
-                android:textColor="#26C5FF"
-                android:textSize="15sp"
-                android:onClick="filterClick"/>
+                android:textColor="#CACCCC"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/westButton"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:padding="8dp"
+
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
 
                 android:background="@drawable/button"
+                android:onClick="filterClick"
                 android:text="West"
-
                 android:textAllCaps="false"
-                android:textColor="#26C5FF"
-                android:textSize="15sp"
-                android:layout_marginLeft="15dp"
-                android:onClick="filterClick"/>
+                android:textColor="#CACCCC"
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/centralButton"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
                 android:background="@drawable/button"
+                android:padding="8dp"
 
                 android:text="Central"
                 android:textAllCaps="false"
-                android:textColor="#26C5FF"
+                android:textColor="#CACCCC"
                 android:textSize="15sp"
                 android:layout_marginLeft="15dp"
                 android:onClick="filterClick"/>

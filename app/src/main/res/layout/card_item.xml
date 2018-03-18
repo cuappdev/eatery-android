@@ -10,9 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv"
-        app:cardElevation="2dp"
+        app:cardElevation="3dp"
         app:cardPreventCornerOverlap="true"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"

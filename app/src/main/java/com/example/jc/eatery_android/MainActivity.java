@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
@@ -33,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button northButton;
     public Button westButton;
     public Button centralButton;
+    public SearchView searchView;
 
-    //TODO: saves version of cafeList for when there's no wifi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +45,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         northButton = findViewById(R.id.northButton);
         westButton = findViewById(R.id.westButton);
         centralButton = findViewById(R.id.centralButton);
-
-
-
+        searchView = findViewById(R.id.search);
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
             currentList = cafeList;
-
-
 
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
@@ -68,10 +65,20 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         }
 
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                listAdapter.getFilter().filter(query);
+                return false;
+            }
 
-
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                listAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
-
 
     public void filterClick(View view){
 
@@ -112,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
 
 
-
             case R.id.centralButton:
                 if(!centralPressed){
                     centralButton.setTextColor(Color.RED);
@@ -141,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     break;
                 }
 
-
-
-
             case R.id.westButton:
                 if(!westPressed){
                     westButton.setTextColor(Color.RED);
@@ -170,9 +173,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.notifyDataSetChanged();
                 }
 
-
-
-
                 break;
         }
 
@@ -180,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
     @Override
     public void onClick(int position) {
-        //Toast.makeText(this,""+cafeList.size(),Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this,MenuActivity.class);
 
@@ -196,11 +195,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         @Override
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
-            boolean hey = dbHelper.addData(json);
-
+            boolean insert = dbHelper.addData(json);
             cafeList = JsonUtilities.parseJson(json);
             currentList = cafeList;
-
             return cafeList;
         }
 
