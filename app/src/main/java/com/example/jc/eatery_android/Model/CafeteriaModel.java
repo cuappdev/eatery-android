@@ -13,7 +13,16 @@ import java.util.HashMap;
 
 public class CafeteriaModel implements Serializable{
 
+    public boolean isHardCoded() {
+        return isHardCoded;
+    }
+
+    public void setHardCoded(boolean hardCoded) {
+        isHardCoded = hardCoded;
+    }
+
     //latitude+longitude for map(later)
+    boolean isHardCoded;
     int id;
     String name;
     String nickName;
@@ -72,6 +81,9 @@ public class CafeteriaModel implements Serializable{
     }
 
     public String isOpen(){
+        if(isHardCoded){
+            return "Closed";
+        }
         Date now = new Date();
         if(is_diningHall){
             for(ArrayList<MealModel> day: weeklyMenu){
@@ -149,6 +161,7 @@ public class CafeteriaModel implements Serializable{
     public void setWeeklyMenu(ArrayList<ArrayList<MealModel>> weeklyMenu) {
         this.weeklyMenu = weeklyMenu;
     }
+
     public String getBuildingLocation() {
         return buildingLocation;
     }
@@ -156,9 +169,11 @@ public class CafeteriaModel implements Serializable{
     public void setBuildingLocation(String buildingLocation) {
         this.buildingLocation = buildingLocation;
     }
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -170,6 +185,7 @@ public class CafeteriaModel implements Serializable{
     public void setCafeInfo(CafeModel cafeInfo) {
         this.cafeInfo = cafeInfo;
     }
+
 
     /*
     public Location getLocation() {

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
-            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
+            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             currentList = cafeList;
 
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             String json = NetworkUtilities.getJson();
             boolean hey = dbHelper.addData(json);
 
-            cafeList = JsonUtilities.parseJson(json);
+            cafeList = JsonUtilities.parseJson(json, getApplicationContext());
             currentList = cafeList;
 
             return cafeList;

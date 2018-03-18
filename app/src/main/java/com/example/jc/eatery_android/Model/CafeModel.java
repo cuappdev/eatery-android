@@ -11,8 +11,11 @@ import java.util.HashMap;
 
 public class CafeModel implements Serializable{
 
+
     ArrayList<String> cafeMenu = new ArrayList();
     HashMap<Date, ArrayList<Date>> hours;
+    HashMap<String, ArrayList<Date>> hoursH;
+
     public CafeModel(){
     }
 
@@ -31,5 +34,14 @@ public class CafeModel implements Serializable{
     public void setHours(HashMap<Date, ArrayList<Date>> hours) {
         this.hours = hours;
     }
+
+    public HashMap<String, ArrayList<Date>> getHoursH() {
+        return hoursH;
+    }
+
+    public void setHoursH(HashMap<String, ArrayList<Date>> hoursH) {
+        this.hoursH = hoursH;
+    }
+
 
 }
