@@ -63,6 +63,7 @@ public class MenuFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
+        Log.d("FLOW", "4");
         return view;
 
     }

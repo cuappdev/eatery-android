@@ -8,10 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
-import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.NetworkUtils.ConnectionUtilities;
 import com.example.jc.eatery_android.NetworkUtils.JsonUtilities;
@@ -31,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         dbHelper = new CafeteriaDbHelper(this);
-
-
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){

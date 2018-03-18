@@ -6,26 +6,21 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
@@ -34,7 +29,7 @@ public class MenuActivity extends AppCompatActivity {
     TextView cafeIsOpen;
     LinearLayout linLayout;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private CustomPager customPager;
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
 
@@ -45,7 +40,7 @@ public class MenuActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String cafeName = (String) intent.getSerializableExtra("locName");
-        cafeLoc = (TextView)findViewById(R.id.ind_name);
+        cafeLoc = findViewById(R.id.ind_name);
         cafeLoc.setText(cafeName);
 
         cafeName = "@drawable/" + convertName(cafeName);
@@ -59,26 +54,18 @@ public class MenuActivity extends AppCompatActivity {
         cafeIsOpen.setText(cafeData.isOpen());
         cafeClosingHours.setText(cafeData.getCloseTime());
 
-        cafeImage = (ImageView) findViewById(R.id.ind_image);
+        cafeImage = findViewById(R.id.ind_image);
+        cafeImage.setBackgroundColor(0xFFff0000);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
 
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        linLayout = (LinearLayout) findViewById(R.id.linear);
+        customPager = findViewById(R.id.pager);
+        tabLayout = findViewById(R.id.tabs);
+        linLayout = findViewById(R.id.linear);
 
         if (!cafeData.getIs_diningHall()) {
-            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Bundle b = new Bundle();
-            Log.i("TAG 5", cafeData.getCafeInfo().toString());
-            b.putSerializable("cafeData", cafeData.getCafeInfo());
-            MenuFragment f = new MenuFragment();
-            f.setArguments(b);
-            ft.replace(R.id.pager, f);
-            ft.commit();*/
-            viewPager.setVisibility(View.GONE);
+            customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
             linLayout.setVisibility(View.VISIBLE);
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
@@ -89,28 +76,43 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         if (cafeData.getIs_diningHall()) {
-            viewPager.setVisibility(View.VISIBLE);
+            customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
             linLayout.setVisibility(View.GONE);
-            setupViewPager(viewPager);
+            setupViewPager(customPager);
 
             if (cafeData.getIs_diningHall()) {
-                tabLayout.setupWithViewPager(viewPager);
+                tabLayout.setupWithViewPager(customPager);
             }
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(CustomPager customPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(), getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        customPager.setAdapter(adapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private Context mContext;
+        private int mCurrentPosition = -1;
 
         public ViewPagerAdapter(Context context, FragmentManager manager) {
             super(manager);
             mContext = context;
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            super.setPrimaryItem(container, position, object);
+            if (position != mCurrentPosition) {
+                if (mCurrentPosition == -1) position = 0;
+                Fragment fragment = (Fragment) object;
+                CustomPager pager = (CustomPager) container;
+                if (fragment != null && fragment.getView() != null) {
+                    mCurrentPosition = position;
+                    pager.measureCurrentView(fragment.getView());
+                }
+            }
         }
 
         @Override
@@ -120,21 +122,28 @@ public class MenuActivity extends AppCompatActivity {
             b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()));
             MenuFragment f = new MenuFragment();
             f.setArguments(b);
+            Log.d("FLOW", "1");
             return f;
         }
 
         @Override
         public int getCount() {
-            return cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size();
+            int n = 0;
+            try {
+                n = cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size();
+            } catch (Exception e) {
+                n = 0;
+            }
+            return n;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             return cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).get(position).getType();
         }
-
     }
 
+    /**Returns scaled size for images**/
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -158,6 +167,7 @@ public class MenuActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
+
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
@@ -174,7 +184,10 @@ public class MenuActivity extends AppCompatActivity {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+
+    /** Gets name of corresponding picture to cafe**/
     public static String convertName(String str) {
+        //Android does not allow image names to begin with a number
         if (str.equals("104West!")) return "west";
 
         str = str.replaceAll("[&\']", "");

@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android.ListAdapter;
+package com.example.jc.eatery_android;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.R;
 
 import java.util.ArrayList;
 
