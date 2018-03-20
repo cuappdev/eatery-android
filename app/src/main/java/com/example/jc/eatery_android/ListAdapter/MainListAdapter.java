@@ -45,8 +45,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
         mCount = count;
-        cafeList = list;
-        cafeListFiltered = cafeList;
+        cafeListFiltered = list;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     for (CafeteriaModel model : cafeList) {
 
-                        if (model.getName().contains(charString)) {
+                        if (model.getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(model);
                         }
                     }
@@ -97,7 +96,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 cafeListFiltered = (ArrayList<CafeteriaModel>) filterResults.values;
-                Log.i("TESTIE",""+cafeListFiltered.size());
                 mCount = cafeListFiltered.size();
                 notifyDataSetChanged();
             }
