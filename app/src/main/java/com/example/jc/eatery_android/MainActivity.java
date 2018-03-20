@@ -33,9 +33,13 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public boolean northPressed = false;
     public boolean centralPressed = false;
     public boolean westPressed = false;
+    public boolean swipesPressed = false;
+    public boolean brbPressed = false;
     public Button northButton;
     public Button westButton;
     public Button centralButton;
+    public Button swipesButton;
+    public Button brbButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         northButton = findViewById(R.id.northButton);
         westButton = findViewById(R.id.westButton);
         centralButton = findViewById(R.id.centralButton);
+        swipesButton = findViewById(R.id.swipes);
+        brbButton = findViewById(R.id.brb);
+
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         switch(id){
             case R.id.northButton:
+                //north button is pressed
                 if(!northPressed) {
                     northButton.setTextColor(Color.BLACK);
                     northPressed = true;
@@ -97,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                     break;
                 }
+                //north button is not pressed
                 else{
                     northButton.setTextColor(Color.parseColor("#CACCCC"));
                     northPressed = false;
@@ -108,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
 
             case R.id.centralButton:
+                //central button is pressed
                 if(!centralPressed){
                     centralButton.setTextColor(Color.BLACK);
                     centralPressed = true;
@@ -126,7 +136,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.notifyDataSetChanged();
                     break;
 
-                }else{
+                }
+                //central button is not pressed
+                else{
                     centralButton.setTextColor(Color.parseColor("#CACCCC"));
                     centralPressed = false;
                     currentList = cafeList;
@@ -136,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
 
             case R.id.westButton:
+                //west button is pressed
                 if(!westPressed){
                     westButton.setTextColor(Color.BLACK);
                     westPressed = true;
@@ -153,15 +166,120 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.setList(currentList,currentList.size());
                     listAdapter.notifyDataSetChanged();
                     break;
-                }else{
+                }
+                //west button is not pressed
+                else{
                     westButton.setTextColor(Color.parseColor("#CACCCC"));
                     westPressed = false;
                     currentList = cafeList;
                     listAdapter.setList(currentList,currentList.size());
                     listAdapter.notifyDataSetChanged();
+                    break;
                 }
 
-                break;
+            case R.id.swipes:
+                //swipe button is pressed
+                if(!swipesPressed){
+                    swipesButton.setTextColor(Color.BLACK);
+                    swipesPressed = true;
+                    brbPressed = false;
+                    brbButton.setTextColor(Color.parseColor("#CACCCC"));
+                    //if north is also pressed, north + swipe
+                    ArrayList<CafeteriaModel> swipeList = new ArrayList<>();
+                    if(northPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.NORTH && model.getPay_methods().contains("Meal Plan - Swipe")){
+                                swipeList.add(model);
+                            }
+                        }
+                    }
+                    else if(westPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.WEST && model.getPay_methods().contains("Meal Plan - Swipe")){
+                                swipeList.add(model);
+                            }
+                        }
+                    }
+                    else if(centralPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.CENTRAL && model.getPay_methods().contains("Meal Plan - Swipe")){
+                                swipeList.add(model);
+                            }
+                        }
+                    }
+                    else{
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getPay_methods().contains("Meal Plan - Swipe")){
+                                swipeList.add(model);
+                            }
+                        }
+                    }
+                    currentList = swipeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                }
+                else{
+                    swipesButton.setTextColor(Color.parseColor("#CACCCC"));
+                    swipesPressed = false;
+                    currentList = cafeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+
+                }
+            case R.id.brb:
+                //brb pressed
+                if(!brbPressed){
+                    brbButton.setTextColor(Color.BLACK);
+                    brbPressed = true;
+                    swipesPressed = false;
+                    swipesButton.setTextColor(Color.parseColor("#CACCCC"));
+
+                    ArrayList<CafeteriaModel> brbList = new ArrayList<>();
+
+                    if(northPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.NORTH && model.getPay_methods().contains("Cornell Card")){
+                                brbList.add(model);
+                            }
+                        }
+                    }
+                    else if(westPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.WEST && model.getPay_methods().contains("Cornell Card")){
+                                brbList.add(model);
+                            }
+                        }
+                    }
+                    else if(centralPressed){
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getArea()==CafeteriaModel.CafeteriaArea.CENTRAL && model.getPay_methods().contains("Cornell Card")){
+                                brbList.add(model);
+                            }
+                        }
+                    }
+                    else{
+                        for(CafeteriaModel model: cafeList){
+                            if(model.getPay_methods().contains("Cornell Card")){
+                                brbList.add(model);
+                            }
+                        }
+                    }
+                    currentList = brbList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                }
+                else{
+                    brbButton.setTextColor(Color.parseColor("#CACCCC"));
+                    brbPressed = false;
+                    currentList = cafeList;
+                    listAdapter.setList(currentList,currentList.size());
+                    listAdapter.notifyDataSetChanged();
+                    break;
+
+                }
         }
 
     }
