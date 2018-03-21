@@ -1,6 +1,7 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -256,8 +257,19 @@ public final class JsonUtilities {
                             }
                             String start = date + " " + startTime;
                             String end = date + " " + endTime;
-                            hours.add(mealTime.parse(start));
-                            hours.add(mealTime.parse(end));
+
+                            Date cafeStartTime = mealTime.parse(start);
+                            Date cafeEndTime = mealTime.parse(end);
+                            if(cafeEndTime.before(cafeStartTime)){
+                                cafeEndTime= new Date(cafeEndTime.getTime() +86400000);
+                            }
+                            Log.i("test", cafeteriaModel.getName());
+                            Log.i("test", cafeStartTime.toString());
+                            Log.i("test", cafeEndTime.toString());
+
+
+                            hours.add(cafeStartTime);
+                            hours.add(cafeEndTime);
 
                         }
                         cafeHours.put(dateFinal, hours);

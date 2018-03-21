@@ -1,6 +1,7 @@
 package com.example.jc.eatery_android.Model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,14 +13,6 @@ import java.util.HashMap;
  */
 
 public class CafeteriaModel implements Serializable{
-
-    public boolean isHardCoded() {
-        return isHardCoded;
-    }
-
-    public void setHardCoded(boolean hardCoded) {
-        isHardCoded = hardCoded;
-    }
 
     //latitude+longitude for map(later)
     boolean isHardCoded;
@@ -81,6 +74,8 @@ public class CafeteriaModel implements Serializable{
     }
 
     public String isOpen(){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa");
+
         if(isHardCoded){
             return "Closed";
         }
@@ -92,7 +87,7 @@ public class CafeteriaModel implements Serializable{
                     if(firstMeal.getStart().getDate()==now.getDate()){
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
-                                closeTime = meal.getEnd().toString();
+                                closeTime = "Closing at "+ timeFormat.format(meal.getEnd());
                                 return "Open";
                             }
                         }
@@ -108,7 +103,7 @@ public class CafeteriaModel implements Serializable{
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
                         if(hour.get(0).before(now) && hour.get(1).after(now)){
-                            closeTime = hour.get(1).toString();
+                            closeTime = "Closing at: "+ timeFormat.format(hour.get(1));
                             return "Open";
                         }
                     }
@@ -184,6 +179,14 @@ public class CafeteriaModel implements Serializable{
 
     public void setCafeInfo(CafeModel cafeInfo) {
         this.cafeInfo = cafeInfo;
+    }
+
+    public boolean isHardCoded() {
+        return isHardCoded;
+    }
+
+    public void setHardCoded(boolean hardCoded) {
+        isHardCoded = hardCoded;
     }
 
 
