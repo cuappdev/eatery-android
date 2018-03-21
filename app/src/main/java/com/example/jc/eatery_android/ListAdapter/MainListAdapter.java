@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -65,8 +66,10 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
         String imageLocation = "@drawable/" + convertName(cafeListFiltered.get(position).getNickName());
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
 
-        holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
-                imageRes, 300, 300));
+        //holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
+         //       imageRes, 300, 300));
+        Picasso.get().load(imageRes).resize(600, 600).centerCrop()
+                .into(holder.cafeImage);
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,9 +56,10 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeImage =  findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
-        cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
-                imageRes, 400, 400));
-
+        //cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+          //     imageRes, 400, 400));
+        Picasso.get().load(imageRes).resize(600, 600).centerCrop()
+                .into(cafeImage);
 
         viewPager =  findViewById(R.id.pager);
         tabLayout =  findViewById(R.id.tabs);
