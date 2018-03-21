@@ -21,6 +21,7 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
                 app:expandedTitleMarginStart="16dp"
+                app:expandedTitleMarginEnd="0dp"
                 app:maxLines="3"
                 android:fitsSystemWindows="true">
 
@@ -55,6 +56,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/relative"
             android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:background="#dcdcdc"
             android:textStyle="bold"
             android:padding="8dp">
@@ -102,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/linear"
                 android:paddingLeft="16dp"
-                android:paddingBottom="16dp"
+                android:paddingRight="16dp"
                 android:orientation="vertical"
                 />
             <android.support.design.widget.TabLayout

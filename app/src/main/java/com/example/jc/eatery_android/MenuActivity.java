@@ -89,10 +89,18 @@ public class MenuActivity extends AppCompatActivity {
             customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
             linLayout.setVisibility(View.VISIBLE);
+
+            View blank = new View(this);
+            blank.setBackgroundColor(Color.argb(100, 192,192, 192));
+            blank.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    6));
+            linLayout.addView(blank);
+
             TextView tv2 = new TextView(this);
             tv2.setText("CAFE ITEMS");
             tv2.setTextSize(18);
-            tv2.setPadding(0, 0,0, 16);
+            tv2.setPadding(0, 40,0, 16);
             linLayout.addView(tv2);
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView tv = new TextView(this);
