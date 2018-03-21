@@ -1,6 +1,7 @@
 package com.example.jc.eatery_android;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -43,27 +44,46 @@ public class MenuFragment extends Fragment {
 
         linear = view.findViewById(R.id.linearFragment);
         Log.i("TAG", menus.get(position).stringTo());
+        int counter = 0;
         for (HashMap.Entry<String, ArrayList<String>> entry : menus.get(position).getMenu().entrySet()) {
+
             String key = entry.getKey();
             List<String> value = entry.getValue();
             TextView tv = new TextView(getContext());
             tv.setText(key);
             tv.setAllCaps(true);
+            tv.setTextSize(18);
+            tv.setPadding(0, 60,0, 16);
             linear.addView(tv);
 
             for (int i = 0; i < value.size(); i++) {
                 TextView tv2 = new TextView(getContext());
                 tv2.setText(value.get(i));
+                tv2.setTextSize(14);
+                tv2.setPadding(0, 0, 0, 8);
+                if (i == value.size() - 1) {
+                    tv2.setPadding(0, 0, 0, 60);
+                }
                 linear.addView(tv2);
             }
-
-            TextView blank = new TextView(getContext());
-            blank.setText(" ");
-            linear.addView(blank);
+            if (counter != menus.get(position).getMenu().entrySet().size() - 1) {
+                View blank = new View(getContext());
+                blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));
+                blank.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        6));
+                linear.addView(blank);
+            }
+        }
+        if (menus.get(position).getMenu().entrySet().isEmpty()) {
+            TextView tv = new TextView(getContext());
+            tv.setText("No menu available");
+            tv.setTextSize(14);
+            linear.addView(tv);
         }
 
         // Inflate the layout for this fragment
-        Log.d("FLOW", "4");
+        counter++;
         return view;
 
     }

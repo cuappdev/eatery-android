@@ -5,13 +5,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,16 +36,30 @@ public class MenuActivity extends AppCompatActivity {
     private CustomPager customPager;
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
+    Toolbar toolbar;
+    net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         Intent intent = getIntent();
         String cafeName = (String) intent.getSerializableExtra("locName");
-        cafeLoc = findViewById(R.id.ind_name);
-        cafeLoc.setText(cafeName);
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(cafeName);
+        collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
+        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
+
+
+
+        //cafeLoc = findViewById(R.id.ind_name);
+        //cafeLoc.setText(cafeName);
 
         cafeName = "@drawable/" + convertName(cafeName);
 
@@ -59,6 +77,7 @@ public class MenuActivity extends AppCompatActivity {
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
+        cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
@@ -68,9 +87,16 @@ public class MenuActivity extends AppCompatActivity {
             customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
             linLayout.setVisibility(View.VISIBLE);
+            TextView tv2 = new TextView(this);
+            tv2.setText("CAFE ITEMS");
+            tv2.setTextSize(18);
+            tv2.setPadding(0, 0,0, 16);
+            linLayout.addView(tv2);
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView tv = new TextView(this);
                 tv.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
+                tv.setTextSize(14);
+                tv.setPadding(0, 0, 0, 8);
                 linLayout.addView(tv);
             }
         }
@@ -195,5 +221,16 @@ public class MenuActivity extends AppCompatActivity {
         str = str.replaceAll("é", "e");
         str = str.toLowerCase();
         return str;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
