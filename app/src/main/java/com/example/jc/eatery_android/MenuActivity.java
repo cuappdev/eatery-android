@@ -6,26 +6,20 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
@@ -59,25 +53,17 @@ public class MenuActivity extends AppCompatActivity {
         cafeIsOpen.setText(cafeData.isOpen());
         cafeClosingHours.setText(cafeData.getCloseTime());
 
-        cafeImage = (ImageView) findViewById(R.id.ind_image);
+        cafeImage =  findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
 
 
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        linLayout = (LinearLayout) findViewById(R.id.linear);
+        viewPager =  findViewById(R.id.pager);
+        tabLayout =  findViewById(R.id.tabs);
+        linLayout =  findViewById(R.id.linear);
 
         if (!cafeData.getIs_diningHall()) {
-            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Bundle b = new Bundle();
-            Log.i("TAG 5", cafeData.getCafeInfo().toString());
-            b.putSerializable("cafeData", cafeData.getCafeInfo());
-            MenuFragment f = new MenuFragment();
-            f.setArguments(b);
-            ft.replace(R.id.pager, f);
-            ft.commit();*/
             viewPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
             linLayout.setVisibility(View.VISIBLE);

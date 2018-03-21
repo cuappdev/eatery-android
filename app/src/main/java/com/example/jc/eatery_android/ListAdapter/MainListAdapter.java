@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +23,13 @@ import java.util.ArrayList;
  * Created by JC on 2/22/18.
  */
 
-public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAdapterViewHolder>{
+public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAdapterViewHolder> implements Filterable{
 
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     private ArrayList<CafeteriaModel> cafeList;
+    private ArrayList<CafeteriaModel> cafeListFiltered;
 
     public interface ListAdapterOnClickHandler {
         void onClick(int position);
@@ -37,49 +40,76 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
         cafeList = list;
+        cafeListFiltered = list;
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
         mCount = count;
-        cafeList = list;
+        cafeListFiltered = list;
     }
 
     @Override
     public ListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         //set this to layout of cardview
         int layoutId= R.layout.card_item;
-
         View view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
         view.setFocusable(true);
-
         return new ListAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
-
-
         Log.i("testing", ""+position);
-        holder.cafeName.setText(cafeList.get(position).getNickName());
+        holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-        String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
+        String imageLocation = "@drawable/" + convertName(cafeListFiltered.get(position).getNickName());
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
 
         holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
                 imageRes, 300, 300));
-
     }
 
     @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    cafeListFiltered = cafeList;
+                }
+                else {
+                    ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
+                    for (CafeteriaModel model : cafeList) {
+
+                        if (model.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(model);
+                        }
+                    }
+                    cafeListFiltered = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cafeListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                cafeListFiltered = (ArrayList<CafeteriaModel>) filterResults.values;
+                mCount = cafeListFiltered.size();
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+
+    @Override
     public int getItemCount() {
-        //Log.i("Tag",""+mCount);
         return mCount;
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        //define all textView + ImageViews in here
 
         TextView cafeName;
         TextView cafeTime;
@@ -87,9 +117,9 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
-            cafeName = (TextView) itemView.findViewById(R.id.cafe_name);
-            cafeImage = (ImageView) itemView.findViewById(R.id.cafe_image);
-            cafeTime = (TextView) itemView.findViewById(R.id.cafe_time);
+            cafeName =  itemView.findViewById(R.id.cafe_name);
+            cafeImage =  itemView.findViewById(R.id.cafe_image);
+            cafeTime =  itemView.findViewById(R.id.cafe_time);
 
             itemView.setOnClickListener(this);
         }
@@ -104,7 +134,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
