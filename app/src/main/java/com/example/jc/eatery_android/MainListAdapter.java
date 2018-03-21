@@ -26,7 +26,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     private ArrayList<CafeteriaModel> cafeList;
-    //needs to implment this method in MainActivity
 
     public interface ListAdapterOnClickHandler {
         void onClick(int position);
@@ -35,6 +34,11 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
     public MainListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
         mContext = context;
         mListAdapterOnClickHandler = clickHandler;
+        mCount = count;
+        cafeList = list;
+    }
+
+    public void setList(ArrayList<CafeteriaModel> list, int count){
         mCount = count;
         cafeList = list;
     }
@@ -54,17 +58,15 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
 
+
+        Log.i("testing", ""+position);
         holder.cafeName.setText(cafeList.get(position).getNickName());
 
         String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
-        Log.i("TAG 1", imageLocation);
-        //String imageLocation = "@drawable/" + mContext.getResources().getStringArray(R.array.cafe_loc)[position];
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
-        //Drawable res = mContext.getResources().getDrawable(imageRes);
-        //Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), imageRes);
+
         holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
                 imageRes, 300, 300));
-        //holder.cafeTime.setText(cafeList.get(position));
 
     }
 
@@ -93,8 +95,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
         @Override
         public void onClick(View v) {
-            int adapterPositoin = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPositoin);
+            int adapterPosition = getAdapterPosition();
+            mListAdapterOnClickHandler.onClick(adapterPosition);
 
         }
     }

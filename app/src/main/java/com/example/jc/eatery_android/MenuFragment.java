@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jc.eatery_android.Model.CafeModel;
-import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class MenuFragment extends Fragment {
         try {
             position = getArguments().getInt("position");
         } catch (Exception e) {
-
+          e.printStackTrace();
         }
 
         linear = view.findViewById(R.id.linearFragment);

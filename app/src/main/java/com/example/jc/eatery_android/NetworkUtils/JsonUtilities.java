@@ -1,7 +1,5 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
-import android.util.Log;
-
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
@@ -12,7 +10,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,7 +46,6 @@ public final class JsonUtilities {
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
-                //Log.i("test", cafeteriaModel.getName());
                 cafeteriaModel.setBuildingLocation(child.getString("location"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
                 JSONArray methods = child.getJSONArray("payMethods");
@@ -150,8 +146,6 @@ public final class JsonUtilities {
                             String end = date + " " + endTime;
                             hours.add(mealTime.parse(start));
                             hours.add(mealTime.parse(end));
-                            //Log.i("test", start.toString());
-                            //Log.i("test", end.toString());
 
                         }
                         cafeHours.put(dateFinal, hours);
