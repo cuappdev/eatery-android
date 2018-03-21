@@ -12,7 +12,6 @@
         android:id="@+id/cv"
         app:cardElevation="4dp"
         app:cardPreventCornerOverlap="true"
-        app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true"
         >
 
@@ -34,15 +33,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_image"
                 android:id="@+id/cafe_name"
-                android:padding="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cafe_image"
+                android:layout_below="@id/cafe_name"
+                android:text="sample"
                 android:id="@+id/cafe_time"
-                android:padding="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1dp"
                 android:textSize="14sp" />
 
 
