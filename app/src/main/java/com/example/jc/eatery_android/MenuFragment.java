@@ -3,7 +3,6 @@ package com.example.jc.eatery_android;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,6 @@ public class MenuFragment extends Fragment {
         }
 
         linear = view.findViewById(R.id.linearFragment);
-        Log.i("TAG", menus.get(position).stringTo());
         for (HashMap.Entry<String, ArrayList<String>> entry : menus.get(position).getMenu().entrySet()) {
             String key = entry.getKey();
             List<String> value = entry.getValue();
