@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public boolean westPressed = false;
     public boolean swipesPressed = false;
     public boolean brbPressed = false;
+    public static boolean searchPressed = false;
     public Button northButton;
     public Button westButton;
     public Button centralButton;
@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
 
-
-
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
@@ -75,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         else {
             new ProcessJson().execute("");
         }
-
-
 
     }
 
@@ -102,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     //change color of north button + set boolean(clicked)
                     changeButtonColor("#6FB2E0","#E7ECF0",northButton);
                     northPressed = true;
-
                     //change color of west+ central + set booleans(unclicked)
                     centralPressed = false;
                     westPressed = false;
@@ -118,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     //set currentList to northList(filtered)
                     currentList = northList;
                     listAdapter.setList(currentList,currentList.size());
-
                     break;
                 }
                 //north button is not pressed or unclicked
@@ -129,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.setList(currentList,currentList.size());
                     break;
                 }
-
 
             case R.id.centralButton:
                 //central button is pressed
@@ -163,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.setList(currentList,currentList.size());
                     break;
                 }
-
             case R.id.westButton:
                 //west button is pressed
                 if(!westPressed){
@@ -343,10 +335,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 //no query given, set searchList to cafeList
                 if(query.length()==0){
                     searchList = cafeList;
+                    searchPressed = false;
                 }
                 //query given
                 else {
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
+                    searchPressed = true;
                     //if none of the buttons clicked, loop through cafeList
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
@@ -356,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             }
                         }
                         searchList = filteredList;
-
                     }
                     //if any of the buttons clicked, loop through currentList
                     else {
@@ -380,12 +373,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 //no text given
                 if (newText.length()==0) {
                     searchList = cafeList;
-                    Log.i("Testie","newText null");
+                    searchPressed = false;
                 }
                 //some text given
                 else {
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
-
+                    searchPressed = true;
                     //if no buttons clicked, loop through cafelist
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
@@ -395,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             }
                         }
                         searchList = filteredList;
-
                     }
                     //if any button clicked, loop through currentList
                     else {

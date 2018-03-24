@@ -13,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jc.eatery_android.MainActivity;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.R;
 import com.squareup.picasso.Picasso;
@@ -30,6 +31,8 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
     private int mCount;
     private ArrayList<CafeteriaModel> cafeList;
     private ArrayList<CafeteriaModel> cafeListFiltered;
+    private final int TEXT =0;
+    private final int IMAGE =1;
 
     public interface ListAdapterOnClickHandler {
         void onClick(int position,ArrayList<CafeteriaModel> list);
@@ -70,6 +73,16 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
     }
 
     @Override
+    public int getItemViewType(int position){
+        if(MainActivity.searchPressed){
+            return IMAGE;
+        }
+        else{
+            return TEXT;
+        }
+    }
+
+    @Override
     public Filter getFilter() {
         return new Filter() {
             @Override
@@ -77,12 +90,10 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
                     cafeListFiltered = cafeList;
-
                 }
                 else {
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     for (CafeteriaModel model : cafeListFiltered) {
-
                         if (model.getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(model);
                         }
@@ -98,8 +109,6 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 cafeListFiltered  = (ArrayList<CafeteriaModel>) filterResults.values;
-
-
                 setList((ArrayList<CafeteriaModel>) filterResults.values,cafeListFiltered.size());
                 notifyDataSetChanged();
             }
