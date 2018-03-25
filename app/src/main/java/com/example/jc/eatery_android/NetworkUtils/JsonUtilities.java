@@ -89,7 +89,7 @@ public final class JsonUtilities {
 
                 }
                 cafe.setCafeMenu(cafeItemsH);
-                HashMap<String, ArrayList<Date>> cafeHoursH = new HashMap<String, ArrayList<Date>>();
+                HashMap<Integer, ArrayList<Date>> cafeHoursH = new HashMap<Integer, ArrayList<Date>>();
 
                 JSONArray operatingHours = basicInfo.getJSONArray("operatingHours"); //a single operating hour is a single day
                 for (int c = 0; c < operatingHours.length(); c++) {
@@ -105,25 +105,49 @@ public final class JsonUtilities {
                         end = "0"+end;
                     }
                     hours.add(mealTimeH.parse(start));
+
+
                     hours.add(mealTimeH.parse(end));
+
 
                     //Log.i("test", dateFinal.toString());
                     if(days.equalsIgnoreCase("monday-thursday")){
-                        cafeHoursH.put("Monday",hours);
-                        cafeHoursH.put("Tuesday",hours);
-                        cafeHoursH.put("Wednesday",hours);
-                        cafeHoursH.put("Thursday",hours);
+                        cafeHoursH.put(1,hours);
+                        cafeHoursH.put(2,hours);
+                        cafeHoursH.put(3,hours);
+                        cafeHoursH.put(4,hours);
 
                     }
                     else if(days.equalsIgnoreCase("monday-friday")){
-                        cafeHoursH.put("Monday",hours);
-                        cafeHoursH.put("Tuesday",hours);
-                        cafeHoursH.put("Wednesday",hours);
-                        cafeHoursH.put("Thursday",hours);
-                        cafeHoursH.put("Friday",hours);
+                        cafeHoursH.put(1,hours);
+                        cafeHoursH.put(2,hours);
+                        cafeHoursH.put(3,hours);
+                        cafeHoursH.put(4,hours);
+                        cafeHoursH.put(5,hours);
                     }
                     else{
-                        cafeHoursH.put(days, hours);
+                        if(days.equalsIgnoreCase("sunday")){
+                            cafeHoursH.put(0, hours);
+                        }
+                        else if(days.equalsIgnoreCase("monday")){
+                            cafeHoursH.put(1, hours);
+                        }
+                        else if(days.equalsIgnoreCase("tuesday")){
+                            cafeHoursH.put(2, hours);
+                        }
+                        else if(days.equalsIgnoreCase("wednesday")){
+                            cafeHoursH.put(3, hours);
+                        }
+                        else if(days.equalsIgnoreCase("thursday")){
+                            cafeHoursH.put(4, hours);
+                        }
+                        else if(days.equalsIgnoreCase("friday")){
+                            cafeHoursH.put(5, hours);
+                        }
+                        else if(days.equalsIgnoreCase("saturday")){
+                            cafeHoursH.put(6, hours);
+                        }
+
                     }
                 }
                 cafe.setHoursH(cafeHoursH);
@@ -235,7 +259,27 @@ public final class JsonUtilities {
                         cafeItems.add(item.getString("item"));
 
                     }
+                    if(cafeteriaModel.getName().equalsIgnoreCase("trillium")){
+                        cafeItems.add("Starbucks Coffees");
+                        cafeItems.add("Pepsi Beverages");
+                        cafeItems.add("Breakfast Menu");
+                        cafeItems.add("Salads");
+                        cafeItems.add("Soup");
+                        cafeItems.add("Chili");
+                        cafeItems.add("Personal Pizzas");
+                        cafeItems.add("Burgers");
+                        cafeItems.add("Chicken Tenders");
+                        cafeItems.add("Quesadillas");
+                        cafeItems.add("Burritos");
+                        cafeItems.add("Tacos");
+                        cafeItems.add("Hot Wraps");
+                        cafeItems.add("Bok Choy");
+                        cafeItems.add("Fried Rice");
+                        cafeItems.add("Lo Mein");
+                        cafeItems.add("Baked Goods");
+                    }
                     cafe.setCafeMenu(cafeItems);
+
                     HashMap<Date, ArrayList<Date>> cafeHours = new HashMap<Date, ArrayList<Date>>();
 
                     JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
@@ -246,9 +290,11 @@ public final class JsonUtilities {
                         ArrayList<Date> hours = new ArrayList<Date>();
 
                         JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
-                        if (events.length() != 0) {
+                        while(events.length() != 0) {
                             String startTime = events.getJSONObject(0).getString("start");
                             String endTime = events.getJSONObject(0).getString("end");
+                            events.remove(0);
+                            events.remove(0);
                             if(startTime.length()==6){
                                 startTime = "0"+startTime;
                             }
@@ -263,11 +309,6 @@ public final class JsonUtilities {
                             if(cafeEndTime.before(cafeStartTime)){
                                 cafeEndTime= new Date(cafeEndTime.getTime() +86400000);
                             }
-                            Log.i("test", cafeteriaModel.getName());
-                            Log.i("test", cafeStartTime.toString());
-                            Log.i("test", cafeEndTime.toString());
-
-
                             hours.add(cafeStartTime);
                             hours.add(cafeEndTime);
 

@@ -1,10 +1,14 @@
 package com.example.jc.eatery_android.Model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
 
 /**
@@ -73,42 +77,131 @@ public class CafeteriaModel implements Serializable{
         return -1;
     }
 
-    public String isOpen(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm aa");
-
-        if(isHardCoded){
-            return "Closed";
-        }
+    public HashSet<String> getMealItems(){
+        HashSet<String> items = new HashSet<String>();
         Date now = new Date();
-        if(is_diningHall){
+        if(isOpen().equalsIgnoreCase("closed")){
+            return items;
+        }
+        else if(isHardCoded || !is_diningHall){
+            items.addAll(cafeInfo.getCafeMenu());
+
+        }
+        else{
             for(ArrayList<MealModel> day: weeklyMenu){
                 if(day.size()>0){
                     MealModel firstMeal = day.get(0);
                     if(firstMeal.getStart().getDate()==now.getDate()){
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
-                                closeTime = "Closing at "+ timeFormat.format(meal.getEnd());
-                                return "Open";
+                                HashMap<String, ArrayList<String>> menu =meal.getMenu();
+                                for(ArrayList<String> vals: menu.values()) {
+                                    items.addAll(vals);
+                                }
                             }
                         }
                     }
                 }
             }
+        }
+        return items;
+    }
+
+    public String isOpen(){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mmaa");
+        SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
+        boolean foundDay = false;
+        Date now = new Date();
+        if(isHardCoded){
+            int day = now.getDay();
+            HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
+            if(hours.containsKey(day)){
+                foundDay = true;
+                int startT = hours.get(day).get(0).getHours() + hours.get(day).get(0).getMinutes();
+                int endT = hours.get(day).get(1).getHours() + hours.get(day).get(1).getMinutes();
+                int curT = now.getHours() + now.getMinutes();
+                if(curT>=startT && curT<endT){
+                    closeTime = "Closing at "+ timeFormat.format(hours.get(day).get(1));
+                    return "Open";
+                }
+                else if(curT< startT){
+                    closeTime = "Opening at " + timeFormat.format(hours.get(day).get(0));
+                    return "Closed";
+                }
+
+            }
+            for(int i=1; i<=6; i++){
+                int tempDay = day + i % 7;
+                if(hours.containsKey(tempDay)){
+                    Date openDate = new Date(now.getTime() +(86400000*i));
+                    closeTime = "Opening on " + timeFormatDay.format(openDate) + " at " + timeFormat.format(hours.get(tempDay).get(0));
+                    return "Closed";
+                }
+            }
+            closeTime = "Closed Today";
+            return "Closed";
+
+        }
+        else if(is_diningHall){
+            for(ArrayList<MealModel> day: weeklyMenu){
+                if(day.size()>0){
+                    MealModel firstMeal = day.get(0);
+                    if(firstMeal.getStart().getDate()==now.getDate()){
+                        foundDay = true;
+                        for(MealModel meal: day){
+                            if(meal.getStart().before(now)&& meal.getEnd().after(now)){
+                                closeTime = "Closing at "+ timeFormat.format(meal.getEnd());
+                                return "Open";
+                            }
+                            else if(meal.getStart().after(now)){
+                                closeTime = "Opening at " + timeFormat.format(meal.getStart());
+                                return "Closed";
+                            }
+
+                        }
+                    }
+                    if(foundDay){
+                        Log.i("test", timeFormatDay.format(firstMeal.getStart()));
+                        closeTime = "Opening on " + timeFormatDay.format(firstMeal.getStart()) + " at " + timeFormat.format(firstMeal.getStart());
+                        return "Closed";
+                    }
+                }
+            }
+            closeTime = "Closed Today";
             return "Closed";
         }
         else{
             HashMap<Date, ArrayList<Date>> hours = cafeInfo.getHours();
-            for(Date day: hours.keySet()){
+            Object[] objectArray = hours.keySet().toArray();
+            Date[] hrs = Arrays.copyOf(objectArray, objectArray.length, Date[].class);
+            //Date[] hrs = (Date[])hours.keySet().toArray();
+            Arrays.sort(hrs);
+            for(Date day: hrs){
                 if(day.getDate() == now.getDate()){
-                    if(hours.get(day).size()>1){
-                        ArrayList<Date> hour = hours.get(day);
+                    foundDay = true;
+                    ArrayList<Date> hour = hours.get(day);
+                    while(hour.size()>1){
                         if(hour.get(0).before(now) && hour.get(1).after(now)){
                             closeTime = "Closing at: "+ timeFormat.format(hour.get(1));
                             return "Open";
                         }
+                        else if(hour.get(0).after(now)){
+                            closeTime = "Opening at " + timeFormat.format(hour.get(0));
+                            return "Closed";
+                        }
+                        hour.remove(0);
+                        hour.remove(0);
+                    }
+                }
+                if(foundDay){
+                    if(hours.get(day).size()>1){
+                        ArrayList<Date> hour = hours.get(day);
+                        closeTime = "Opening on " + timeFormatDay.format(hour.get(0)) + " at " + timeFormat.format(hour.get(0));
+                        return "Closed";
                     }
                 }
             }
+            closeTime = "Closed Today";
             return "Closed";
 
         }
