@@ -21,7 +21,6 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
                 app:expandedTitleMarginStart="16dp"
-                app:expandedTitleMarginEnd="0dp"
                 app:maxLines="3"
                 android:fitsSystemWindows="true">
 
@@ -51,44 +50,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/relative"
+            android:id="@+id/infobox"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:orientation="horizontal"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:background="#dcdcdc"
-            android:textStyle="bold"
-            android:padding="8dp">
+            android:weightSum="1">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".45"
                 android:layout_height="wrap_content"
+                android:paddingRight="16dp"
                 android:id="@+id/ind_open"
-                android:text="OPEN??"/>
+                android:text="Open?"/>
 
-            <TextView
-                android:id="@+id/ind_closingHours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:layout_toEndOf="@+id/ind_open"
-                android:text="Closing Hours" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ind_open"
-                android:id="@+id/ind_building"
-                android:text="Building"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#1e1e1e" />
 
             <TextView
                 android:id="@+id/ind_miles"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".45"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ind_closingHours"
-                android:layout_toEndOf="@+id/ind_building"
                 android:paddingLeft="16dp"
-                android:text="Miles" />
-        </RelativeLayout>
+                android:text="Location" />
+        </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

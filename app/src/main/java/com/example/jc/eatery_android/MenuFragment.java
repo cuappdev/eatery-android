@@ -2,8 +2,12 @@ package com.example.jc.eatery_android;
 
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +52,12 @@ public class MenuFragment extends Fragment {
             String key = entry.getKey();
             List<String> value = entry.getValue();
             TextView tv = new TextView(getContext());
-            tv.setText(key);
-            tv.setAllCaps(true);
-            tv.setTextSize(18);
+            SpannableString str = new SpannableString(key);
+            str.setSpan(new StyleSpan(Typeface.BOLD), 0, key.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv.setText(str);
+            //tv.setAllCaps(true);
+            //tv.setTextSize(18);
             tv.setPadding(0, 60,0, 16);
             linear.addView(tv);
 

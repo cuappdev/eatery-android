@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -16,6 +17,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,10 +73,11 @@ public class MenuActivity extends AppCompatActivity {
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
 
         cafeIsOpen = findViewById(R.id.ind_open);
-        cafeClosingHours = findViewById(R.id.ind_closingHours);
-
-        cafeIsOpen.setText(cafeData.isOpen());
-        cafeClosingHours.setText(cafeData.getCloseTime());
+        SpannableString openString = new SpannableString(cafeData.isOpen() + "\n"
+                + cafeData.getCloseTime());
+        openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        cafeIsOpen.setText(openString);
 
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
@@ -98,7 +103,10 @@ public class MenuActivity extends AppCompatActivity {
             linLayout.addView(blank);
 
             TextView tv2 = new TextView(this);
-            tv2.setText("CAFE ITEMS");
+            SpannableString str = new SpannableString("CAFE ITEMS");
+            str.setSpan(new StyleSpan(Typeface.BOLD), 0, str.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tv2.setText(str);
             tv2.setTextSize(18);
             tv2.setPadding(0, 40,0, 16);
             linLayout.addView(tv2);
