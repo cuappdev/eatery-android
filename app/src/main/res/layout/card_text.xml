@@ -12,30 +12,44 @@
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cafe_image"
-            android:id="@+id/cafe_name"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cafe_name"
-            android:text="sample"
-            android:id="@+id/cafe_time"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="1dp"
-            android:textSize="14sp" />
-        </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cafe_name"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="sample"
+                android:id="@+id/cafe_time"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:background="#cdcdcd"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/linearLayoutText">
+                <!--Add menu text here programmically-->
+            </LinearLayout>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 

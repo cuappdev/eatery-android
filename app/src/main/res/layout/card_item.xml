@@ -27,24 +27,45 @@
                 android:adjustViewBounds="true"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_image"
                 android:id="@+id/cafe_name"
+                android:text="Location"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cafe_name"
+                android:text="Open"
+                android:id="@+id/cafe_open"
+                android:paddingLeft="8dp"
+                android:textSize="14sp" />
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_name"
-                android:text="sample"
+                android:layout_toRightOf="@id/cafe_open"
+                android:text="Time"
                 android:id="@+id/cafe_time"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1dp"
+                android:paddingLeft="8dp"
                 android:textSize="14sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cafe_name"
+                android:layout_below="@id/cafe_name"
+                android:text="0 mi"
+                android:id="@+id/cafe_mile"
+                android:gravity="right"
+                android:paddingLeft="8dp"
+                android:paddingTop="1dp"
+                android:textSize="14sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
