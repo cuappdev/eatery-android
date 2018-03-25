@@ -331,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 //no query given, set searchList to cafeList
                 if(query.length()==0){
                     searchList = cafeList;
@@ -369,7 +368,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 //no text given
                 if (newText.length()==0) {
                     searchList = cafeList;
