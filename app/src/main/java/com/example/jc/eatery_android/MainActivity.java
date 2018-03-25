@@ -56,11 +56,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
 
+
+
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
-            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow());
+            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             currentList = cafeList;
             searchList = cafeList;
+
+
 
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
@@ -81,7 +85,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         button.setTextColor(Color.parseColor(textColor));
         GradientDrawable bgShape = (GradientDrawable) button.getBackground();
         bgShape.setColor(Color.parseColor(backgroundColor));
+
     }
+
 
     public void filterClick(View view){
 
@@ -93,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         switch(id){
             case R.id.northButton:
-                //north button is pressed
                 if(!northPressed) {
                     //change color of north button + set boolean(clicked)
                     changeButtonColor("#6FB2E0","#E7ECF0",northButton);
@@ -103,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     westPressed = false;
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
+                    westButton.setTextColor(Color.parseColor("#26C5FF"));
+                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
                     ArrayList<CafeteriaModel> northList = new ArrayList<>();
                     //go through searchList(search view list)
                     for(CafeteriaModel model : searchList){
@@ -124,11 +131,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     break;
                 }
 
+
             case R.id.centralButton:
-                //central button is pressed
                 if(!centralPressed){
                     //change color of central button + set boolean(clicked)
                     changeButtonColor("#6FB2E0","#E7ECF0",centralButton);
+
                     centralPressed = true;
 
                     //change color of north+ west + set booleans(unclicked)
@@ -137,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",northButton);
 
+                    westButton.setTextColor(Color.parseColor("#26C5FF"));
+                    northButton.setTextColor(Color.parseColor("#26C5FF"));
                     ArrayList<CafeteriaModel> centralList = new ArrayList<>();
                     for(CafeteriaModel model : searchList){
                         if(model.getArea()== CafeteriaModel.CafeteriaArea.CENTRAL){
@@ -151,17 +161,18 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 //central button is not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
+
                     centralPressed = false;
                     currentList = searchList;
                     listAdapter.setList(currentList,currentList.size());
                     break;
                 }
-            case R.id.westButton:
-                //west button is pressed
-                if(!westPressed){
 
+            case R.id.westButton:
+                if(!westPressed){
                     //change color of west button + set boolean(clicked)
                     changeButtonColor("#6FB2E0","#E7ECF0",westButton);
+
                     westPressed = true;
 
                     //change color of north and central button + set booleans(unclicked)
@@ -183,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 //west button is not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
+
                     westPressed = false;
                     currentList = searchList;
                     listAdapter.setList(currentList,currentList.size());
@@ -302,14 +314,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     currentList = searchList;
                     listAdapter.setList(currentList,currentList.size());
                     break;
-
                 }
+
         }
 
     }
 
     @Override
     public void onClick(int position,ArrayList<CafeteriaModel> list) {
+
 
         Intent intent = new Intent(this,MenuActivity.class);
 
@@ -407,15 +420,19 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         return super.onCreateOptionsMenu(menu);
     }
 
+
+
     public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>>{
 
         @Override
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
-            dbHelper.addData(json);
-            cafeList = JsonUtilities.parseJson(json);
+            boolean hey = dbHelper.addData(json);
+
+            cafeList = JsonUtilities.parseJson(json, getApplicationContext());
             currentList = cafeList;
             searchList = cafeList;
+
             return cafeList;
         }
 

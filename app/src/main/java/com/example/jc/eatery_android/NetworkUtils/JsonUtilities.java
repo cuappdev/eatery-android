@@ -1,5 +1,7 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
+import android.content.Context;
+
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
@@ -8,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,13 +24,142 @@ import java.util.HashSet;
  */
 
 public final class JsonUtilities {
-    public static ArrayList<CafeteriaModel> parseJson(String json){
+
+
+    public static String loadJSONFromAsset(Context context, String fileName) {
+        String json = null;
         try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public static ArrayList<CafeteriaModel> parseJson(String json, Context mainContext){
+        try {
+            SimpleDateFormat mealTime = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
+            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat mealTimeH = new SimpleDateFormat("hh:mmaa");
+
+            ArrayList<CafeteriaModel> list = new ArrayList<>();
+
+            //parsing hardcoded json
+            JSONObject hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
+            JSONArray eateriesH = hardCodedData.getJSONArray("eateries");
+            for(int i=0; i<eateriesH.length(); i++){
+                ArrayList<String> cafeItemsH = new ArrayList<>();
+                CafeteriaModel cafeteriaModel = new CafeteriaModel();
+                cafeteriaModel.setHardCoded(true);
+                JSONObject basicInfo = eateriesH.getJSONObject(i);
+                cafeteriaModel.setName(basicInfo.getString("name"));
+                cafeteriaModel.setNickName(basicInfo.getString("nameshort"));
+                cafeteriaModel.setIs_diningHall(false);
+                cafeteriaModel.setBuildingLocation(basicInfo.getString("location"));
+
+                String area = basicInfo.getJSONObject("campusArea").getString("descrshort");
+                if (area.equalsIgnoreCase("north")) {
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
+                } else if (area.equalsIgnoreCase("west")) {
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.WEST);
+                } else {
+                    cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.CENTRAL);
+                }
+
+                JSONArray methods = basicInfo.getJSONArray("payMethods");
+                ArrayList<String> payMethods = new ArrayList<String>();
+                for (int j = 0; j < methods.length(); j++) {
+                    JSONObject method = methods.getJSONObject(j);
+                    payMethods.add(method.getString("descrshort"));
+                }
+                cafeteriaModel.setPay_methods(payMethods);
+
+                CafeModel cafe = new CafeModel();
+                JSONArray diningItems = basicInfo.getJSONArray("diningItems");
+                for (int z = 0; z < diningItems.length(); z++) {
+                    JSONObject item = diningItems.getJSONObject(z);
+                    cafeItemsH.add(item.getString("item"));
+
+                }
+                cafe.setCafeMenu(cafeItemsH);
+                HashMap<Integer, ArrayList<Date>> cafeHoursH = new HashMap<Integer, ArrayList<Date>>();
+
+                JSONArray operatingHours = basicInfo.getJSONArray("operatingHours"); //a single operating hour is a single day
+                for (int c = 0; c < operatingHours.length(); c++) {
+                    String days = operatingHours.getJSONObject(c).getString("weekday");
+                    JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
+                    ArrayList<Date> hours = new ArrayList<Date>();
+                    String start = events.getJSONObject(0).getString("start");
+                    String end = events.getJSONObject(0).getString("end");
+                    if(start.length()==6){
+                        start = "0"+start;
+                    }
+                    if(end.length()==6){
+                        end = "0"+end;
+                    }
+                    hours.add(mealTimeH.parse(start));
+
+
+                    hours.add(mealTimeH.parse(end));
+
+
+                    //Log.i("test", dateFinal.toString());
+                    if(days.equalsIgnoreCase("monday-thursday")){
+                        cafeHoursH.put(1,hours);
+                        cafeHoursH.put(2,hours);
+                        cafeHoursH.put(3,hours);
+                        cafeHoursH.put(4,hours);
+
+                    }
+                    else if(days.equalsIgnoreCase("monday-friday")){
+                        cafeHoursH.put(1,hours);
+                        cafeHoursH.put(2,hours);
+                        cafeHoursH.put(3,hours);
+                        cafeHoursH.put(4,hours);
+                        cafeHoursH.put(5,hours);
+                    }
+                    else{
+                        if(days.equalsIgnoreCase("sunday")){
+                            cafeHoursH.put(0, hours);
+                        }
+                        else if(days.equalsIgnoreCase("monday")){
+                            cafeHoursH.put(1, hours);
+                        }
+                        else if(days.equalsIgnoreCase("tuesday")){
+                            cafeHoursH.put(2, hours);
+                        }
+                        else if(days.equalsIgnoreCase("wednesday")){
+                            cafeHoursH.put(3, hours);
+                        }
+                        else if(days.equalsIgnoreCase("thursday")){
+                            cafeHoursH.put(4, hours);
+                        }
+                        else if(days.equalsIgnoreCase("friday")){
+                            cafeHoursH.put(5, hours);
+                        }
+                        else if(days.equalsIgnoreCase("saturday")){
+                            cafeHoursH.put(6, hours);
+                        }
+
+                    }
+                }
+                cafe.setHoursH(cafeHoursH);
+                cafeteriaModel.setCafeInfo(cafe);
+                list.add(cafeteriaModel);
+            }
+
+            //Begin parsing of non hard coded json
             JSONObject parentObject = new JSONObject(json);
             JSONObject data = parentObject.getJSONObject("data");
             JSONArray eateries = data.getJSONArray("eateries");
-            ArrayList<CafeteriaModel> list = new ArrayList<>();
             HashSet<Integer> diningHall = new HashSet<>();
+            //Id's of the dining halls
             diningHall.add(31);
             diningHall.add(25);
             diningHall.add(26);
@@ -37,12 +170,14 @@ public final class JsonUtilities {
             diningHall.add(4);
             diningHall.add(5);
             diningHall.add(30);
-            SimpleDateFormat mealTime = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
-            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd");
+
+
+
 
             //got rid of location
             for (int i = 0; i < eateries.length(); i++) {
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
+                cafeteriaModel.setHardCoded(false);
                 JSONObject child = eateries.getJSONObject(i);
                 cafeteriaModel.setId(child.getInt("id"));
                 cafeteriaModel.setName(child.getString("name"));
@@ -52,7 +187,6 @@ public final class JsonUtilities {
                 ArrayList<String> payMethods = new ArrayList<String>();
                 ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
                 ArrayList<String> cafeItems = new ArrayList<>();
-                cafeteriaModel.setPay_methods(payMethods);
                 String area = child.getJSONObject("campusArea").getString("descrshort");
                 if (area.equalsIgnoreCase("north")) {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
@@ -63,8 +197,9 @@ public final class JsonUtilities {
                 }
                 for (int j = 0; j < methods.length(); j++) {
                     JSONObject method = methods.getJSONObject(j);
-                    cafeteriaModel.getPay_methods().add(method.getString("descrshort"));
+                    payMethods.add(method.getString("descrshort"));
                 }
+                cafeteriaModel.setPay_methods(payMethods);
                 if (diningHall.contains(child.getInt("id"))) {
                     cafeteriaModel.setIs_diningHall(true);
                 }
@@ -116,13 +251,34 @@ public final class JsonUtilities {
                     cafeteriaModel.setWeeklyMenu(weeklyMenu);
                 } else {
                     CafeModel cafe = new CafeModel();
+
                     JSONArray diningItems = child.getJSONArray("diningItems");
                     for (int z = 0; z < diningItems.length(); z++) {
                         JSONObject item = diningItems.getJSONObject(z);
                         cafeItems.add(item.getString("item"));
 
                     }
+                    if(cafeteriaModel.getName().equalsIgnoreCase("trillium")){
+                        cafeItems.add("Starbucks Coffees");
+                        cafeItems.add("Pepsi Beverages");
+                        cafeItems.add("Breakfast Menu");
+                        cafeItems.add("Salads");
+                        cafeItems.add("Soup");
+                        cafeItems.add("Chili");
+                        cafeItems.add("Personal Pizzas");
+                        cafeItems.add("Burgers");
+                        cafeItems.add("Chicken Tenders");
+                        cafeItems.add("Quesadillas");
+                        cafeItems.add("Burritos");
+                        cafeItems.add("Tacos");
+                        cafeItems.add("Hot Wraps");
+                        cafeItems.add("Bok Choy");
+                        cafeItems.add("Fried Rice");
+                        cafeItems.add("Lo Mein");
+                        cafeItems.add("Baked Goods");
+                    }
                     cafe.setCafeMenu(cafeItems);
+
                     HashMap<Date, ArrayList<Date>> cafeHours = new HashMap<Date, ArrayList<Date>>();
 
                     JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
@@ -133,9 +289,11 @@ public final class JsonUtilities {
                         ArrayList<Date> hours = new ArrayList<Date>();
 
                         JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
-                        if (events.length() != 0) {
+                        while(events.length() != 0) {
                             String startTime = events.getJSONObject(0).getString("start");
                             String endTime = events.getJSONObject(0).getString("end");
+                            events.remove(0);
+                            events.remove(0);
                             if(startTime.length()==6){
                                 startTime = "0"+startTime;
                             }
@@ -144,8 +302,14 @@ public final class JsonUtilities {
                             }
                             String start = date + " " + startTime;
                             String end = date + " " + endTime;
-                            hours.add(mealTime.parse(start));
-                            hours.add(mealTime.parse(end));
+
+                            Date cafeStartTime = mealTime.parse(start);
+                            Date cafeEndTime = mealTime.parse(end);
+                            if(cafeEndTime.before(cafeStartTime)){
+                                cafeEndTime= new Date(cafeEndTime.getTime() +86400000);
+                            }
+                            hours.add(cafeStartTime);
+                            hours.add(cafeEndTime);
 
                         }
                         cafeHours.put(dateFinal, hours);

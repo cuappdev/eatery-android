@@ -54,18 +54,26 @@ public class MenuActivity extends AppCompatActivity {
         cafeIsOpen.setText(cafeData.isOpen());
         cafeClosingHours.setText(cafeData.getCloseTime());
 
-        cafeImage =  findViewById(R.id.ind_image);
+        cafeImage = (ImageView) findViewById(R.id.ind_image);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
         //cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
           //     imageRes, 400, 400));
         Picasso.get().load(imageRes).resize(600, 600).centerCrop()
                 .into(cafeImage);
 
-        viewPager =  findViewById(R.id.pager);
-        tabLayout =  findViewById(R.id.tabs);
-        linLayout =  findViewById(R.id.linear);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        linLayout = (LinearLayout) findViewById(R.id.linear);
 
         if (!cafeData.getIs_diningHall()) {
+            /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Bundle b = new Bundle();
+            Log.i("TAG 5", cafeData.getCafeInfo().toString());
+            b.putSerializable("cafeData", cafeData.getCafeInfo());
+            MenuFragment f = new MenuFragment();
+            f.setArguments(b);
+            ft.replace(R.id.pager, f);
+            ft.commit();*/
             viewPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
             linLayout.setVisibility(View.VISIBLE);
