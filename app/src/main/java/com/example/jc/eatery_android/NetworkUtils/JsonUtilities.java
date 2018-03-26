@@ -1,7 +1,6 @@
 package com.example.jc.eatery_android.NetworkUtils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.jc.eatery_android.Model.CafeModel;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
