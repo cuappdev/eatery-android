@@ -47,24 +47,21 @@ public class MenuFragment extends Fragment {
         }
 
         linear = view.findViewById(R.id.linearFragment);
-        Log.i("TAG", menus.get(position).stringTo());
         int counter = 0;
         for (HashMap.Entry<String, ArrayList<String>> entry : menus.get(position).getMenu().entrySet()) {
 
+            //add subheading for category of food
             String key = entry.getKey();
             List<String> value = entry.getValue();
             TextView tv = new TextView(getContext());
             SpannableString str = new SpannableString(key);
-            /*str.setSpan(new StyleSpan(Typeface.BOLD), 0, key.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            str.setSpan(new AbsoluteSizeSpan(18), 0, key.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
             tv.setText(str);
             tv.setAllCaps(true);
             tv.setTextSize(18);
             tv.setPadding(0, 60,0, 16);
             linear.addView(tv);
 
+            //adds individual meal items
             for (int i = 0; i < value.size(); i++) {
                 TextView tv2 = new TextView(getContext());
                 tv2.setText(value.get(i));
@@ -75,6 +72,8 @@ public class MenuFragment extends Fragment {
                 }
                 linear.addView(tv2);
             }
+
+            //adds horizontal line
             if (counter != menus.get(position).getMenu().entrySet().size() - 1) {
                 View blank = new View(getContext());
                 blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));

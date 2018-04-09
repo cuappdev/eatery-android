@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             currentList = cafeList;
 
-
-
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
@@ -59,16 +57,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
-
         else {
             new ProcessJson().execute("");
         }
-
-
-
-
     }
-
 
     public void filterClick(View view){
 
@@ -108,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     break;
                 }
 
-
-
             case R.id.centralButton:
                 if(!centralPressed){
                     centralButton.setTextColor(Color.RED);
@@ -138,9 +128,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     break;
                 }
 
-
-
-
             case R.id.westButton:
                 if(!westPressed){
                     westButton.setTextColor(Color.RED);
@@ -166,10 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     listAdapter.setList(currentList,currentList.size());
                     listAdapter.notifyDataSetChanged();
                 }
-
-
-
-
+                
                 break;
         }
 

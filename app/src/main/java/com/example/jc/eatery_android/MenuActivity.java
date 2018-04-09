@@ -75,6 +75,7 @@ public class MenuActivity extends AppCompatActivity {
             cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
         }
 
+        //format string for opening/closing time
         cafeIsOpen = findViewById(R.id.ind_open);
         SpannableString openString = new SpannableString(cafeData.isOpen() + "\n"
                 + cafeData.getCloseTime());
@@ -122,18 +123,17 @@ public class MenuActivity extends AppCompatActivity {
                 linLayout.addView(tv);
             }
         }
-
+        //if cafe is not a dining mall and has a menu
         else if (cafeData.getIs_diningHall() && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
             customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
             linLayout.setVisibility(View.GONE);
             setupViewPager(customPager);
 
-            if (cafeData.getIs_diningHall()) {
-                tabLayout.setupWithViewPager(customPager);
-            }
+            tabLayout.setupWithViewPager(customPager);
         }
 
+        //if cafe is a dining hall and missing a menu
         else {
             customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
@@ -170,6 +170,7 @@ public class MenuActivity extends AppCompatActivity {
             mContext = context;
         }
 
+        //set menu fragment to first MealModel object
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
@@ -211,7 +212,8 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    /**Returns scaled size for images**/
+    /**Returns scaled size for images
+     * NOTE: borrowed from Android Studio reference**/
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -235,7 +237,7 @@ public class MenuActivity extends AppCompatActivity {
         return inSampleSize;
     }
 
-
+    //NOTE: borrowed from Android Studio reference
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
