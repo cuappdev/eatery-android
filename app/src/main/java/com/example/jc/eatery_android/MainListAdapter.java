@@ -15,11 +15,7 @@ import android.widget.TextView;
 
 import com.example.jc.eatery_android.MainActivity;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-<<<<<<< HEAD:app/src/main/java/com/example/jc/eatery_android/MainListAdapter.java
-=======
-import com.example.jc.eatery_android.R;
 import com.squareup.picasso.Picasso;
->>>>>>> master:app/src/main/java/com/example/jc/eatery_android/ListAdapter/MainListAdapter.java
 
 import java.util.ArrayList;
 
