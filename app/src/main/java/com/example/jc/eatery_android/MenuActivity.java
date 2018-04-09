@@ -82,8 +82,10 @@ public class MenuActivity extends AppCompatActivity {
         openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         cafeIsOpen.setText(openString);
+        cafeIsOpen.setTextSize(15);
 
         cafeLoc = findViewById(R.id.ind_loc);
+        cafeLoc.setTextSize(15);
         cafeLoc.setText(cafeData.getBuildingLocation());
 
         cafeImage = findViewById(R.id.ind_image);

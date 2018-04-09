@@ -34,7 +34,7 @@
                 android:text="Location"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:textSize="20sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,6 +43,7 @@
                 android:text="Open"
                 android:id="@+id/cafe_open"
                 android:paddingLeft="8dp"
+                android:paddingBottom="8dp"
                 android:textSize="14sp" />
 
             <TextView
@@ -63,8 +64,7 @@
                 android:text="0 mi"
                 android:id="@+id/cafe_mile"
                 android:gravity="right"
-                android:paddingLeft="8dp"
-                android:paddingTop="1dp"
+                android:paddingRight="8dp"
                 android:textSize="14sp" />
 
         </RelativeLayout>
