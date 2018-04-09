@@ -10,11 +10,15 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.support.design.widget.CollapsingToolbarLayout;
+=======
+>>>>>>> master
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+<<<<<<< HEAD
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -24,12 +28,21 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+=======
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+>>>>>>> master
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+<<<<<<< HEAD
 import com.example.jc.eatery_android.Model.MealModel;
+=======
+import com.squareup.picasso.Picasso;
+>>>>>>> master
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -89,6 +102,7 @@ public class MenuActivity extends AppCompatActivity {
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
         int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
+<<<<<<< HEAD
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                 imageRes, 400, 400));
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
@@ -96,6 +110,16 @@ public class MenuActivity extends AppCompatActivity {
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
         linLayout = findViewById(R.id.linear);
+=======
+        //cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
+          //     imageRes, 400, 400));
+        Picasso.get().load(imageRes).resize(600, 600).centerCrop()
+                .into(cafeImage);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        linLayout = (LinearLayout) findViewById(R.id.linear);
+>>>>>>> master
 
         if (!cafeData.getIs_diningHall()) {
             customPager.setVisibility(View.GONE);

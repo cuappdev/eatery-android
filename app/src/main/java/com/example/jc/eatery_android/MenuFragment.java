@@ -47,7 +47,9 @@ public class MenuFragment extends Fragment {
         }
 
         linear = view.findViewById(R.id.linearFragment);
+
         int counter = 0;
+
         for (HashMap.Entry<String, ArrayList<String>> entry : menus.get(position).getMenu().entrySet()) {
 
             //add subheading for category of food

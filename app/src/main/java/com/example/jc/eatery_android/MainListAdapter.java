@@ -5,14 +5,21 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jc.eatery_android.MainActivity;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+<<<<<<< HEAD:app/src/main/java/com/example/jc/eatery_android/MainListAdapter.java
+=======
+import com.example.jc.eatery_android.R;
+import com.squareup.picasso.Picasso;
+>>>>>>> master:app/src/main/java/com/example/jc/eatery_android/ListAdapter/MainListAdapter.java
 
 import java.util.ArrayList;
 
@@ -20,15 +27,18 @@ import java.util.ArrayList;
  * Created by JC on 2/22/18.
  */
 
-public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAdapterViewHolder>{
+public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAdapterViewHolder> implements Filterable{
 
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     private ArrayList<CafeteriaModel> cafeList;
+    private ArrayList<CafeteriaModel> cafeListFiltered;
+    private final int TEXT =0;
+    private final int IMAGE =1;
 
     public interface ListAdapterOnClickHandler {
-        void onClick(int position);
+        void onClick(int position,ArrayList<CafeteriaModel> list);
     }
 
     public MainListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
@@ -36,49 +46,86 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
         cafeList = list;
+        cafeListFiltered = list;
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
         mCount = count;
-        cafeList = list;
+        cafeListFiltered = list;
+        notifyDataSetChanged();
     }
 
     @Override
     public ListAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         //set this to layout of cardview
         int layoutId= R.layout.card_item;
-
         View view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
         view.setFocusable(true);
-
         return new ListAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ListAdapterViewHolder holder, int position) {
+        holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-
-        Log.i("testing", ""+position);
-        holder.cafeName.setText(cafeList.get(position).getNickName());
-
-        String imageLocation = "@drawable/" + convertName(cafeList.get(position).getNickName());
+        String imageLocation = "@drawable/" + convertName(cafeListFiltered.get(position).getNickName());
         int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
 
-        holder.cafeImage.setImageBitmap(decodeSampledBitmapFromResource(mContext.getResources(),
-                imageRes, 300, 300));
-
+        Picasso.get().load(imageRes).resize(600, 600).centerCrop()
+                .into(holder.cafeImage);
     }
 
     @Override
+    public int getItemViewType(int position){
+        if(MainActivity.searchPressed){
+            return IMAGE;
+        }
+        else{
+            return TEXT;
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    cafeListFiltered = cafeList;
+                }
+                else {
+                    ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
+                    for (CafeteriaModel model : cafeListFiltered) {
+                        if (model.getName().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(model);
+                        }
+                    }
+                    cafeListFiltered = filteredList;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = cafeListFiltered;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                cafeListFiltered  = (ArrayList<CafeteriaModel>) filterResults.values;
+                setList((ArrayList<CafeteriaModel>) filterResults.values,cafeListFiltered.size());
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+
+
+    @Override
     public int getItemCount() {
-        //Log.i("Tag",""+mCount);
         return mCount;
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        //define all textView + ImageViews in here
 
         TextView cafeName;
         TextView cafeTime;
@@ -86,9 +133,9 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
-            cafeName = (TextView) itemView.findViewById(R.id.cafe_name);
-            cafeImage = (ImageView) itemView.findViewById(R.id.cafe_image);
-            cafeTime = (TextView) itemView.findViewById(R.id.cafe_time);
+            cafeName =  itemView.findViewById(R.id.cafe_name);
+            cafeImage =  itemView.findViewById(R.id.cafe_image);
+            cafeTime =  itemView.findViewById(R.id.cafe_time);
 
             itemView.setOnClickListener(this);
         }
@@ -96,14 +143,13 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition);
+            mListAdapterOnClickHandler.onClick(adapterPosition,cafeListFiltered);
 
         }
     }
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
