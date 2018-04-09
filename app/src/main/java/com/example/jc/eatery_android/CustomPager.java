@@ -33,7 +33,6 @@ public class CustomPager extends ViewPager{
         int h = mCurrentView.getMeasuredHeight();
         if (h > height) height = h;
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-        Log.d("FLOW", "3");
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

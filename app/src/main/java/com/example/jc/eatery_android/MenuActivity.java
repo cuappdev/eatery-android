@@ -29,7 +29,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.example.jc.eatery_android.Model.MealModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
@@ -62,15 +64,16 @@ public class MenuActivity extends AppCompatActivity {
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
 
-
-
-        //cafeLoc = findViewById(R.id.ind_name);
-        //cafeLoc.setText(cafeName);
-
         cafeName = "@drawable/" + convertName(cafeName);
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
+
+        //TODO: make this a backend change
+        //removes Lite Lunch for North Star
+        if (cafeData.getNickName().equals("North Star")) {
+            cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
+        }
 
         cafeIsOpen = findViewById(R.id.ind_open);
         SpannableString openString = new SpannableString(cafeData.isOpen() + "\n"
@@ -78,6 +81,9 @@ public class MenuActivity extends AppCompatActivity {
         openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         cafeIsOpen.setText(openString);
+
+        cafeLoc = findViewById(R.id.ind_loc);
+        cafeLoc.setText(cafeData.getBuildingLocation());
 
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
@@ -104,8 +110,6 @@ public class MenuActivity extends AppCompatActivity {
 
             TextView tv2 = new TextView(this);
             SpannableString str = new SpannableString("CAFE ITEMS");
-            str.setSpan(new StyleSpan(Typeface.BOLD), 0, str.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             tv2.setText(str);
             tv2.setTextSize(18);
             tv2.setPadding(0, 40,0, 16);
@@ -119,7 +123,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         }
 
-        if (cafeData.getIs_diningHall()) {
+        else if (cafeData.getIs_diningHall() && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
             customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
             linLayout.setVisibility(View.GONE);
@@ -128,6 +132,27 @@ public class MenuActivity extends AppCompatActivity {
             if (cafeData.getIs_diningHall()) {
                 tabLayout.setupWithViewPager(customPager);
             }
+        }
+
+        else {
+            customPager.setVisibility(View.GONE);
+            tabLayout.setVisibility(View.GONE);
+            linLayout.setVisibility(View.VISIBLE);
+
+            View blank = new View(this);
+            blank.setBackgroundColor(Color.argb(100, 192,192, 192));
+            blank.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    6));
+            linLayout.addView(blank);
+
+            TextView tv2 = new TextView(this);
+            SpannableString str = new SpannableString("No Menu Available");
+            tv2.setText(str);
+            tv2.setTextSize(18);
+            tv2.setPadding(0, 40,0, 16);
+            linLayout.addView(tv2);
+
         }
     }
 
@@ -166,7 +191,6 @@ public class MenuActivity extends AppCompatActivity {
             b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()));
             MenuFragment f = new MenuFragment();
             f.setArguments(b);
-            Log.d("FLOW", "1");
             return f;
         }
 

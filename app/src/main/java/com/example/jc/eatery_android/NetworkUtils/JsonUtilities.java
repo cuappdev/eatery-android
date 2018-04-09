@@ -106,9 +106,7 @@ public final class JsonUtilities {
                     }
                     hours.add(mealTimeH.parse(start));
 
-
                     hours.add(mealTimeH.parse(end));
-
 
                     //Log.i("test", dateFinal.toString());
                     if(days.equalsIgnoreCase("monday-thursday")){
@@ -171,9 +169,6 @@ public final class JsonUtilities {
             diningHall.add(4);
             diningHall.add(5);
             diningHall.add(30);
-
-
-
 
             //got rid of location
             for (int i = 0; i < eateries.length(); i++) {

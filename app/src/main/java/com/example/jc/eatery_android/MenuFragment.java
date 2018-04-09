@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         menus = (ArrayList<MealModel>) getArguments().getSerializable("cafeData");
+
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
         try {
             position = getArguments().getInt("position");
@@ -53,11 +55,13 @@ public class MenuFragment extends Fragment {
             List<String> value = entry.getValue();
             TextView tv = new TextView(getContext());
             SpannableString str = new SpannableString(key);
-            str.setSpan(new StyleSpan(Typeface.BOLD), 0, key.length(),
+            /*str.setSpan(new StyleSpan(Typeface.BOLD), 0, key.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            str.setSpan(new AbsoluteSizeSpan(18), 0, key.length(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
             tv.setText(str);
-            //tv.setAllCaps(true);
-            //tv.setTextSize(18);
+            tv.setAllCaps(true);
+            tv.setTextSize(18);
             tv.setPadding(0, 60,0, 16);
             linear.addView(tv);
 

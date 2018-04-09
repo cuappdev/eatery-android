@@ -19,7 +19,7 @@
                 android:id="@+id/collapsing_toolbar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
+                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:expandedTitleMarginStart="16dp"
                 app:maxLines="3"
                 android:fitsSystemWindows="true">
@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infobox"
+            android:background="#d5e0e0e0"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:orientation="horizontal"
@@ -73,7 +74,7 @@
                 android:background="#1e1e1e" />
 
             <TextView
-                android:id="@+id/ind_miles"
+                android:id="@+id/ind_loc"
                 android:layout_width="0dp"
                 android:layout_weight=".45"
                 android:layout_height="wrap_content"
@@ -85,11 +86,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Menu"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:textAlignment="center"
                 android:id="@+id/menu"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:textSize="30dp"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
