@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     westPressed = false;
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
-                    westButton.setTextColor(Color.parseColor("#26C5FF"));
-                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
+
                     ArrayList<CafeteriaModel> northList = new ArrayList<>();
                     //go through searchList(search view list)
                     for(CafeteriaModel model : searchList){
@@ -135,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",northButton);
 
-                    westButton.setTextColor(Color.parseColor("#26C5FF"));
-                    northButton.setTextColor(Color.parseColor("#26C5FF"));
                     ArrayList<CafeteriaModel> centralList = new ArrayList<>();
                     for(CafeteriaModel model : searchList){
                         if(model.getArea()== CafeteriaModel.CafeteriaArea.CENTRAL){
