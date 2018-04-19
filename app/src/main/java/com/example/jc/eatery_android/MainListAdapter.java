@@ -1,10 +1,15 @@
-package com.example.jc.eatery_android.ListAdapter;
+package com.example.jc.eatery_android;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +20,6 @@ import android.widget.TextView;
 
 import com.example.jc.eatery_android.MainActivity;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -70,6 +74,14 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
         Picasso.get().load(imageRes).resize(600, 600).centerCrop()
                 .into(holder.cafeImage);
+
+        SpannableString openString = new SpannableString(cafeListFiltered.get(position).isOpen());
+        openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        holder.cafeOpen.setText(openString);
+        holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
+
     }
 
     @Override
@@ -126,6 +138,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
 
         TextView cafeName;
         TextView cafeTime;
+        TextView cafeOpen;
         ImageView cafeImage;
 
         public ListAdapterViewHolder(View itemView) {
@@ -133,6 +146,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ListAd
             cafeName =  itemView.findViewById(R.id.cafe_name);
             cafeImage =  itemView.findViewById(R.id.cafe_image);
             cafeTime =  itemView.findViewById(R.id.cafe_time);
+            cafeOpen = itemView.findViewById(R.id.cafe_open);
 
             itemView.setOnClickListener(this);
         }

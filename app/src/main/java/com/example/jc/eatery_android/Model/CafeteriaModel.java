@@ -134,11 +134,11 @@ public class CafeteriaModel implements Serializable{
                 int tempDay = day + i % 7;
                 if(hours.containsKey(tempDay)){
                     Date openDate = new Date(now.getTime() +(86400000*i));
-                    closeTime = "Opening on " + timeFormatDay.format(openDate) + " at " + timeFormat.format(hours.get(tempDay).get(0));
+                    closeTime = "Opening " + timeFormatDay.format(openDate) + "at " + timeFormat.format(hours.get(tempDay).get(0));
                     return "Closed";
                 }
             }
-            closeTime = "Closed Today";
+            closeTime = " ";
             return "Closed";
 
         }
@@ -162,12 +162,12 @@ public class CafeteriaModel implements Serializable{
                     }
                     if(foundDay){
                         Log.i("test", timeFormatDay.format(firstMeal.getStart()));
-                        closeTime = "Opening on " + timeFormatDay.format(firstMeal.getStart()) + " at " + timeFormat.format(firstMeal.getStart());
+                        closeTime = "Opening " + timeFormatDay.format(firstMeal.getStart()) + " at " + timeFormat.format(firstMeal.getStart());
                         return "Closed";
                     }
                 }
             }
-            closeTime = "Closed Today";
+            closeTime = " ";
             return "Closed";
         }
         else{
@@ -182,7 +182,7 @@ public class CafeteriaModel implements Serializable{
                     ArrayList<Date> hour = hours.get(day);
                     while(hour.size()>1){
                         if(hour.get(0).before(now) && hour.get(1).after(now)){
-                            closeTime = "Closing at: "+ timeFormat.format(hour.get(1));
+                            closeTime = "Closing at "+ timeFormat.format(hour.get(1));
                             return "Open";
                         }
                         else if(hour.get(0).after(now)){
@@ -196,12 +196,12 @@ public class CafeteriaModel implements Serializable{
                 if(foundDay){
                     if(hours.get(day).size()>1){
                         ArrayList<Date> hour = hours.get(day);
-                        closeTime = "Opening on " + timeFormatDay.format(hour.get(0)) + " at " + timeFormat.format(hour.get(0));
+                        closeTime = "Opening " + timeFormatDay.format(hour.get(0)) + " at " + timeFormat.format(hour.get(0));
                         return "Closed";
                     }
                 }
             }
-            closeTime = "Closed Today";
+            closeTime = " ";
             return "Closed";
 
         }

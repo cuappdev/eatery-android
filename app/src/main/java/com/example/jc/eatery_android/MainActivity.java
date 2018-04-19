@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
-import com.example.jc.eatery_android.ListAdapter.MainListAdapter;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.NetworkUtils.ConnectionUtilities;
 import com.example.jc.eatery_android.NetworkUtils.JsonUtilities;
@@ -56,15 +55,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
 
-
-
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             currentList = cafeList;
             searchList = cafeList;
-
-
 
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
@@ -73,11 +68,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
-
         else {
             new ProcessJson().execute("");
         }
-
     }
 
     //change button's color, background color
@@ -85,9 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         button.setTextColor(Color.parseColor(textColor));
         GradientDrawable bgShape = (GradientDrawable) button.getBackground();
         bgShape.setColor(Color.parseColor(backgroundColor));
-
     }
-
 
     public void filterClick(View view){
 
@@ -108,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     westPressed = false;
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
-                    westButton.setTextColor(Color.parseColor("#26C5FF"));
-                    centralButton.setTextColor(Color.parseColor("#26C5FF"));
+
                     ArrayList<CafeteriaModel> northList = new ArrayList<>();
                     //go through searchList(search view list)
                     for(CafeteriaModel model : searchList){
@@ -131,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     break;
                 }
 
-
             case R.id.centralButton:
                 if(!centralPressed){
                     //change color of central button + set boolean(clicked)
@@ -145,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
                     changeButtonColor("#FFFFFF","#6FB2E0",northButton);
 
-                    westButton.setTextColor(Color.parseColor("#26C5FF"));
-                    northButton.setTextColor(Color.parseColor("#26C5FF"));
                     ArrayList<CafeteriaModel> centralList = new ArrayList<>();
                     for(CafeteriaModel model : searchList){
                         if(model.getArea()== CafeteriaModel.CafeteriaArea.CENTRAL){
