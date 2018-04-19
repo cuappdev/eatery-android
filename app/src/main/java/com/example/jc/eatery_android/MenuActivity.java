@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.example.jc.eatery_android.Model.MealModel;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
@@ -70,8 +71,8 @@ public class MenuActivity extends AppCompatActivity {
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
 
         //TODO: make this a backend change
-        //removes Lite Lunch for North Star
-        if (cafeData.getNickName().equals("North Star")) {
+        //removes Lite Lunch for North Star and Becker
+        if (cafeData.getNickName().equals("North Star") || cafeData.getNickName().equals("Becker House Dining")) {
             cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
         }
 
@@ -128,7 +129,7 @@ public class MenuActivity extends AppCompatActivity {
                 linLayout.addView(tv);
             }
         }
-        //if cafe is not a dining mall and has a menu
+        //if cafe is a dining mall and has a menu
         else if (cafeData.getIs_diningHall() && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
             customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
