@@ -134,7 +134,7 @@ public class CafeteriaModel implements Serializable{
                 int tempDay = day + i % 7;
                 if(hours.containsKey(tempDay)){
                     Date openDate = new Date(now.getTime() +(86400000*i));
-                    closeTime = "Opening " + timeFormatDay.format(openDate) + "at " + timeFormat.format(hours.get(tempDay).get(0));
+                    closeTime = "Opening " + timeFormatDay.format(openDate) + " at " + timeFormat.format(hours.get(tempDay).get(0));
                     return "Closed";
                 }
             }
