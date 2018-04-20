@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button centralButton;
     public Button swipesButton;
     public Button brbButton;
-    public BottomNavigationView bnm;
+    public BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         centralButton = findViewById(R.id.centralButton);
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
-        bnm = findViewById(R.id.bottom_navigation);
+        bnv = findViewById(R.id.bottom_navigation);
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -78,18 +78,20 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             new ProcessJson().execute("");
         }
 
-        bnm.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        //adds functionality to bottom nav bar
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Toast toast;
+                Intent intent;
                 switch(item.getItemId()) {
                     case R.id.action_home:
                         toast = Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT);
                         toast.show();
                         break;
                     case R.id.action_week:
-                        toast = Toast.makeText(getApplicationContext(), "Weekly Menu", Toast.LENGTH_SHORT);
-                        toast.show();
+                        intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.action_brb:
                         toast = Toast.makeText(getApplicationContext(), "BRB", Toast.LENGTH_SHORT);
