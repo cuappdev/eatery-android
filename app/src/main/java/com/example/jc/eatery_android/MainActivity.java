@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         @Override
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
-            boolean hey = dbHelper.addData(json);
+           dbHelper.addData(json);
 
             cafeList = JsonUtilities.parseJson(json, getApplicationContext());
             currentList = cafeList;

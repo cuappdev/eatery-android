@@ -18,21 +18,28 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textview_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/cafe_name"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
+                android:text="adf"
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/textview_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sample"
-                android:id="@+id/cafe_time"
                 android:paddingLeft="16dp"
                 android:paddingTop="8dp"
+                android:text="sfgs"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textview_"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="aflkjadsf" />
 
             <View
                 android:layout_width="match_parent"
