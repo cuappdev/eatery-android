@@ -188,7 +188,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public TextAdapterViewHolder(View itemView) {
             super(itemView);
-            cafe_name = itemView.findViewById(R.id.textview_name);
+            cafe_name = itemView.findViewById(R.id.searchview_name);
 //            cafe_menu = itemView.findViewById(R.id.textview_menu);
 
             itemView.setOnClickListener(this);
