@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -347,7 +346,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
-                                    filteredList.add(model);
+                                    if(!filteredList.contains(model))
+                                        filteredList.add(model);
                                 }
                             }
 
@@ -361,7 +361,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
-                                    filteredList.add(model);
+                                    if(!filteredList.contains(model))
+                                        filteredList.add(model);
                                 }
                             }
                         }
@@ -392,7 +393,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
-                                    filteredList.add(model);
+                                    if(!filteredList.contains(model))
+                                        filteredList.add(model);
                                 }
                             }
                         }
@@ -405,7 +407,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
-                                    filteredList.add(model);
+                                    if(!filteredList.contains(model))
+                                        filteredList.add(model);
                                 }
                             }
                         }
