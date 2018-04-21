@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.example.jc.eatery_android.NetworkUtils.JsonUtilities;
 import com.example.jc.eatery_android.NetworkUtils.NetworkUtilities;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler{
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
-
+            cafeList = openCloseSort(cafeList);
             listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
@@ -78,6 +81,27 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         button.setTextColor(Color.parseColor(textColor));
         GradientDrawable bgShape = (GradientDrawable) button.getBackground();
         bgShape.setColor(Color.parseColor(backgroundColor));
+    }
+
+    public ArrayList<CafeteriaModel> openCloseSort(ArrayList<CafeteriaModel> cafeList){
+        Collections.sort(cafeList, new Comparator<CafeteriaModel>() {
+            public int compare(CafeteriaModel v1, CafeteriaModel v2) {
+                return v1.getName().compareTo(v2.getName());
+            }
+        });
+
+        ArrayList<CafeteriaModel> res = new ArrayList<>();
+        for(CafeteriaModel model : cafeList){
+            if(model.isOpen().equals("Open")){
+                res.add(model);
+            }
+        }
+        for(CafeteriaModel model : cafeList){
+            if(model.isOpen().equals("Closed")){
+                res.add(model);
+            }
+        }
+        return res;
     }
 
     public void filterClick(View view){
@@ -108,16 +132,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     //set currentList to northList(filtered)
-                    currentList = northList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(northList);
                     break;
                 }
                 //north button is not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",northButton);
                     northPressed = false;
-                    currentList = searchList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(searchList);
                     break;
                 }
 
@@ -140,8 +162,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             centralList.add(model);
                         }
                     }
-                    currentList = centralList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(centralList);
                     break;
 
                 }
@@ -150,8 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
 
                     centralPressed = false;
-                    currentList = searchList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(searchList);
                     break;
                 }
 
@@ -174,8 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             westList.add(model);
                         }
                     }
-                    currentList = westList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(westList);
                     break;
                 }
                 //west button is not pressed or unclicked
@@ -183,8 +202,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
 
                     westPressed = false;
-                    currentList = searchList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(searchList);
                     break;
                 }
 
@@ -232,16 +250,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             }
                         }
                     }
-                    currentList = swipeList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(swipeList);
                     break;
                 }
                 //swipe not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",swipesButton);
                     swipesPressed = false;
-                    currentList = searchList;
-                    listAdapter.setList(currentList,currentList.size());
+                    currentList = openCloseSort(searchList);
                     break;
 
                 }
@@ -291,7 +307,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     currentList = brbList;
-                    listAdapter.setList(currentList,currentList.size());
                     break;
                 }
                 else{
@@ -299,11 +314,19 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",brbButton);
                     brbPressed = false;
                     currentList = searchList;
-                    listAdapter.setList(currentList,currentList.size());
                     break;
                 }
 
         }
+        currentList = openCloseSort(currentList);
+        for(CafeteriaModel g : currentList){
+            Log.i("testie",g.getName());
+        }
+        listAdapter.setList(currentList,currentList.size());
+
+
+
+
 
     }
 
@@ -362,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
 
                 }
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(openCloseSort(searchList), searchList.size());
                 return false;
             }
 
@@ -400,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
                 }
 
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(openCloseSort(searchList), searchList.size());
                 return false;
             }
         });
@@ -420,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             currentList = cafeList;
             searchList = cafeList;
 
-            return cafeList;
+            return openCloseSort(cafeList);
         }
 
         @Override

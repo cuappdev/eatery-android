@@ -93,6 +93,13 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+                if(cafeListFiltered.get(position).isOpen().equals("Open")){
+
+                }
+                else if(cafeListFiltered.get(position).isOpen().equals("Closed")){
+                    holder.cafeImage.setImageAlpha(125);
+                }
+
                 holder.cafeOpen.setText(openString);
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
 
