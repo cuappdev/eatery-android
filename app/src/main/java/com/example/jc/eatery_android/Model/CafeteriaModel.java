@@ -1,5 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
+import android.location.Location;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -18,7 +19,6 @@ import java.util.HashSet;
 
 public class CafeteriaModel implements Serializable{
 
-    //latitude+longitude for map(later)
     boolean isHardCoded;
     int id;
     String name;
@@ -29,6 +29,8 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
+    Location exactLocation;
+
 
     public String getCloseTime() {
         return closeTime;
@@ -38,9 +40,7 @@ public class CafeteriaModel implements Serializable{
         this.closeTime = closeTime;
     }
 
-    String closeTime; //This field is only updated if the location is open and the method isOpen is called
-    //TODO: Add methods to get if open or closed
-    //TODO: Add methods to get next open or next close
+    String closeTime;
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -282,16 +282,14 @@ public class CafeteriaModel implements Serializable{
         isHardCoded = hardCoded;
     }
 
-
-    /*
-    public Location getLocation() {
-        return location;
+    public Location getExactLocation(){
+        return exactLocation;
     }
 
-    public void setLocation(Double lat, Double lng) {
-        this.location.setLongitude(lng);
-        this.location.setLatitude(lat);
-    }*/
+    public void setExactLocation(double lat, double lng){
+       this.exactLocation.setLatitude(lat);
+       this.exactLocation.setLongitude(lng);
+    }
 
 
     public CafeteriaArea getArea() {
@@ -307,12 +305,6 @@ public class CafeteriaModel implements Serializable{
         CENTRAL,
         WEST;
     }
-    /*
-    public enum CafeteriaStatus{
-        OPEN,
-        CLOSED,
-        CLOSINGSOON
-    }*/
 
 }
 
