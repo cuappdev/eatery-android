@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             HashSet<String> mealSet = model.getMealItems();
 
                             for(String item : mealSet){
-                                if(item.contains(query.toLowerCase())){
+                                if(item.toLowerCase().contains(query.toLowerCase())){
                                     filteredList.add(model);
                                 }
                             }
@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             HashSet<String> mealSet = model.getMealItems();
 
                             for(String item : mealSet){
-                                if(item.contains(query.toLowerCase())){
+                                if(item.toLowerCase().contains(query.toLowerCase())){
                                     filteredList.add(model);
                                 }
                             }
@@ -391,9 +391,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             HashSet<String> mealSet = model.getMealItems();
 
                             for(String item : mealSet){
-                                Log.i("lowtest","outerloop"+item);
-                                if(item.contains(newText.toLowerCase())){
-                                    Log.i("lowtest",item);
+                                if(item.toLowerCase().contains(newText.toLowerCase())){
                                     filteredList.add(model);
                                 }
                             }
@@ -406,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             HashSet<String> mealSet = model.getMealItems();
 
                             for(String item : mealSet){
-                                if(item.contains(newText.toLowerCase())){
+                                if(item.toLowerCase().contains(newText.toLowerCase())){
                                     filteredList.add(model);
                                 }
                             }

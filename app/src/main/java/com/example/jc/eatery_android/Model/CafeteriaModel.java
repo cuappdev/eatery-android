@@ -316,7 +316,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
 
     public int compareTo(CafeteriaModel cm){
         if(cm.isOpen().equals(this.isOpen())){
-            return this.getName().compareTo(cm.getName());
+            return this.getNickName().compareTo(cm.getNickName());
         }
         else{
             if(this.isOpen().equals("Open") && cm.isOpen().equals("Closed")){
