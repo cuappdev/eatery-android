@@ -16,7 +16,7 @@ import java.util.HashSet;
  * This represents a single Cafeteria (either a cafe or a dining hall)
  */
 
-public class CafeteriaModel implements Serializable{
+public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
 
     //latitude+longitude for map(later)
     boolean isHardCoded;
@@ -313,6 +313,21 @@ public class CafeteriaModel implements Serializable{
         CLOSED,
         CLOSINGSOON
     }*/
+
+    public int compareTo(CafeteriaModel cm){
+        if(cm.isOpen().equals(this.isOpen())){
+            return this.getName().compareTo(cm.getName());
+        }
+        else{
+            if(this.isOpen().equals("Open") && cm.isOpen().equals("Closed")){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        }
+
+    }
 
 }
 

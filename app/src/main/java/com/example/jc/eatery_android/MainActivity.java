@@ -24,7 +24,7 @@ import com.example.jc.eatery_android.NetworkUtils.NetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler{
 
@@ -63,11 +63,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             currentList = cafeList;
             searchList = cafeList;
+            Collections.sort(currentList);
+            Collections.sort(searchList);
 
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
-            cafeList = openCloseSort(cafeList);
+            cafeList = cafeList;
+            Collections.sort(cafeList);
             listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
@@ -83,26 +86,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         bgShape.setColor(Color.parseColor(backgroundColor));
     }
 
-    public ArrayList<CafeteriaModel> openCloseSort(ArrayList<CafeteriaModel> cafeList){
-        Collections.sort(cafeList, new Comparator<CafeteriaModel>() {
-            public int compare(CafeteriaModel v1, CafeteriaModel v2) {
-                return v1.getName().compareTo(v2.getName());
-            }
-        });
-
-        ArrayList<CafeteriaModel> res = new ArrayList<>();
-        for(CafeteriaModel model : cafeList){
-            if(model.isOpen().equals("Open")){
-                res.add(model);
-            }
-        }
-        for(CafeteriaModel model : cafeList){
-            if(model.isOpen().equals("Closed")){
-                res.add(model);
-            }
-        }
-        return res;
-    }
 
     public void filterClick(View view){
 
@@ -132,14 +115,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     //set currentList to northList(filtered)
-                    currentList = openCloseSort(northList);
+                    currentList = northList;
                     break;
                 }
                 //north button is not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",northButton);
                     northPressed = false;
-                    currentList = openCloseSort(searchList);
+                    currentList = searchList;
                     break;
                 }
 
@@ -162,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             centralList.add(model);
                         }
                     }
-                    currentList = openCloseSort(centralList);
+                    currentList = centralList;
                     break;
 
                 }
@@ -171,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
 
                     centralPressed = false;
-                    currentList = openCloseSort(searchList);
+                    currentList = searchList;
                     break;
                 }
 
@@ -194,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             westList.add(model);
                         }
                     }
-                    currentList = openCloseSort(westList);
+                    currentList = westList;
                     break;
                 }
                 //west button is not pressed or unclicked
@@ -202,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     changeButtonColor("#FFFFFF","#6FB2E0",westButton);
 
                     westPressed = false;
-                    currentList = openCloseSort(searchList);
+                    currentList = searchList;
                     break;
                 }
 
@@ -250,14 +233,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                             }
                         }
                     }
-                    currentList = openCloseSort(swipeList);
+                    currentList = swipeList;
                     break;
                 }
                 //swipe not pressed or unclicked
                 else{
                     changeButtonColor("#FFFFFF","#6FB2E0",swipesButton);
                     swipesPressed = false;
-                    currentList = openCloseSort(searchList);
+                    currentList = searchList;
                     break;
 
                 }
@@ -318,14 +301,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
 
         }
-        currentList = openCloseSort(currentList);
-        for(CafeteriaModel g : currentList){
-            Log.i("testie",g.getName());
-        }
+        Collections.sort(currentList);
         listAdapter.setList(currentList,currentList.size());
-
-
-
 
 
     }
@@ -366,26 +343,34 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     //if none of the buttons clicked, loop through cafeList
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
+                            HashSet<String> mealSet = model.getMealItems();
 
-                            if (model.getName().toLowerCase().contains(query.toLowerCase())) {
-                                filteredList.add(model);
+                            for(String item : mealSet){
+                                if(item.contains(query.toLowerCase())){
+                                    filteredList.add(model);
+                                }
                             }
+
                         }
                         searchList = filteredList;
                     }
                     //if any of the buttons clicked, loop through currentList
                     else {
                         for (CafeteriaModel model : currentList) {
+                            HashSet<String> mealSet = model.getMealItems();
 
-                            if (model.getName().toLowerCase().contains(query.toLowerCase())) {
-                                filteredList.add(model);
+                            for(String item : mealSet){
+                                if(item.contains(query.toLowerCase())){
+                                    filteredList.add(model);
+                                }
                             }
                         }
                         searchList = filteredList;
                     }
 
                 }
-                listAdapter.setList(openCloseSort(searchList), searchList.size());
+                Collections.sort(searchList);
+                listAdapter.setList(searchList, searchList.size());
                 return false;
             }
 
@@ -403,9 +388,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     //if no buttons clicked, loop through cafelist
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
+                            HashSet<String> mealSet = model.getMealItems();
 
-                            if (model.getName().toLowerCase().contains(newText.toLowerCase())) {
-                                filteredList.add(model);
+                            for(String item : mealSet){
+                                Log.i("lowtest","outerloop"+item);
+                                if(item.contains(newText.toLowerCase())){
+                                    Log.i("lowtest",item);
+                                    filteredList.add(model);
+                                }
                             }
                         }
                         searchList = filteredList;
@@ -413,17 +403,20 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     //if any button clicked, loop through currentList
                     else {
                         for (CafeteriaModel model : currentList) {
+                            HashSet<String> mealSet = model.getMealItems();
 
-                            if (model.getName().toLowerCase().contains(newText.toLowerCase())) {
-                                filteredList.add(model);
+                            for(String item : mealSet){
+                                if(item.contains(newText.toLowerCase())){
+                                    filteredList.add(model);
+                                }
                             }
                         }
                         searchList = filteredList;
                     }
 
                 }
-
-                listAdapter.setList(openCloseSort(searchList), searchList.size());
+                Collections.sort(searchList);
+                listAdapter.setList(searchList, searchList.size());
                 return false;
             }
         });
@@ -442,8 +435,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             cafeList = JsonUtilities.parseJson(json, getApplicationContext());
             currentList = cafeList;
             searchList = cafeList;
-
-            return openCloseSort(cafeList);
+            Collections.sort(cafeList);
+            return cafeList;
         }
 
         @Override
