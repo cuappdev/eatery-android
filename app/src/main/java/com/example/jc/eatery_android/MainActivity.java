@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenu;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button centralButton;
     public Button swipesButton;
     public Button brbButton;
+    public BottomNavigationView bnv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         centralButton = findViewById(R.id.centralButton);
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
+        bnv = findViewById(R.id.bottom_navigation);
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -76,6 +82,31 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         else {
             new ProcessJson().execute("");
         }
+
+        //adds functionality to bottom nav bar
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Toast toast;
+                Intent intent;
+                switch(item.getItemId()) {
+                    case R.id.action_home:
+                        toast = Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT);
+                        toast.show();
+                        break;
+                    case R.id.action_week:
+                        intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+                        intent.putExtra("cafeData", cafeList);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_brb:
+                        toast = Toast.makeText(getApplicationContext(), "BRB", Toast.LENGTH_SHORT);
+                        toast.show();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     //change button's color, background color
@@ -298,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     currentList = searchList;
                     break;
                 }
-
         }
         Collections.sort(currentList);
         listAdapter.setList(currentList,currentList.size());
