@@ -6,10 +6,62 @@
     android:layout_height="match_parent"
     tools:context="com.example.jc.eatery_android.WeeklyMenuActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Weekly Menu Page!"/>
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:id="@+id/breakfast"
+                android:text="Breakfast"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#cdcdcd" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:id="@+id/lunch"
+                android:text="Lunch"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#cdcdcd" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:id="@+id/dinner"
+                android:text="Dinner"/>
+        </LinearLayout>
+
+        <ExpandableListView
+            android:id="@+id/expandablelistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#cdcdcd"
+            android:dividerHeight="0.5dp"/>
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

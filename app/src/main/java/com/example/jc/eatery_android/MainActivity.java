@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         break;
                     case R.id.action_week:
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+                        intent.putExtra("cafeData", cafeList);
                         startActivity(intent);
                         break;
                     case R.id.action_brb:

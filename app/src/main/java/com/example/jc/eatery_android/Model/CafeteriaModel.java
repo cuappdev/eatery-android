@@ -74,7 +74,7 @@ public class CafeteriaModel implements Serializable{
                     }
                 }
             }
-        return -1;
+        return 0;
     }
 
     public HashSet<String> getMealItems(){
