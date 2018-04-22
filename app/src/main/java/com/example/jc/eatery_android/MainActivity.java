@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
 
-            listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,cafeList.size(), cafeList);
+            listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this, cafeList.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
         }
         else {
