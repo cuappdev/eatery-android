@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by JC on 2/22/18.
@@ -93,6 +95,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+                Collections.sort(cafeListFiltered);
+                if(cafeListFiltered.get(position).isOpen().equals("Closed")){
+                    Log.i("letsprint",cafeListFiltered.get(position).getName());
+                    holder.cafeImage.setImageAlpha(125);
+                }else{
+                    holder.cafeImage.setImageAlpha(255);
+                }
+
                 holder.cafeOpen.setText(openString);
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
 
@@ -100,7 +110,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
                 holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
-                //holder2.cafe_menu.setText(cafeListFiltered.get(position).getId());
 
                 break;
         }
@@ -115,39 +124,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return TEXT;
         }
     }
-
-//    @Override
-//    public Filter getFilter() {
-//        return new Filter() {
-//            @Override
-//            protected FilterResults performFiltering(CharSequence charSequence) {
-//                String charString = charSequence.toString();
-//                if (charString.isEmpty()) {
-//                    cafeListFiltered = cafeList;
-//                }
-//                else {
-//                    ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
-//                    for (CafeteriaModel model : cafeListFiltered) {
-//                        if (model.getName().toLowerCase().contains(charString.toLowerCase())) {
-//                            filteredList.add(model);
-//                        }
-//                    }
-//                    cafeListFiltered = filteredList;
-//                }
-//                FilterResults filterResults = new FilterResults();
-//                filterResults.values = cafeListFiltered;
-//
-//                return filterResults;
-//            }
-//
-//            @Override
-//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//                cafeListFiltered  = (ArrayList<CafeteriaModel>) filterResults.values;
-//                setList((ArrayList<CafeteriaModel>) filterResults.values,cafeListFiltered.size());
-//                notifyDataSetChanged();
-//            }
-//        };
-//    }
 
 
 
