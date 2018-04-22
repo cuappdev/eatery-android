@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -49,6 +51,10 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         lunchText = findViewById(R.id.lunch);
         dinnerText = findViewById(R.id.dinner);
         expListView = findViewById(R.id.expandablelistview);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        expListView.setIndicatorBounds(width-250, width);
 
         for (CafeteriaModel m : cafeData) {
             if (m.getIs_diningHall()) {
@@ -112,7 +118,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         });
 
         if (listToParse.size() == 0) {
-            listToParse = dinnerList;
+            listToParse = breakfastList;
             listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
             expListView.setAdapter(listAdapter);
         }

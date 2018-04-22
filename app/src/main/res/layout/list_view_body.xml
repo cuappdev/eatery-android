@@ -3,12 +3,19 @@
     android:id="@+id/list_view_body"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="5dp" >
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:id="@+id/horiline"
+        android:layout_height="1dp"
+        android:background="#c0c0c0"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
         android:textSize="18sp"
         android:id="@+id/menu_title"/>
 

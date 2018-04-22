@@ -18,7 +18,8 @@
                 android:layout_weight="0.3"
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:textColor="#000000"
                 android:padding="10dp"
                 android:id="@+id/breakfast"
                 android:text="Breakfast"/>
@@ -31,7 +32,8 @@
                 android:layout_weight="0.3"
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/lunch"
                 android:text="Lunch"/>
@@ -44,7 +46,8 @@
                 android:layout_weight="0.3"
                 android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:textSize="18sp"
+                android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/dinner"
                 android:text="Dinner"/>
