@@ -1,5 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
+import android.location.Location;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -16,9 +17,8 @@ import java.util.HashSet;
  * This represents a single Cafeteria (either a cafe or a dining hall)
  */
 
-public class CafeteriaModel implements Serializable{
+public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
 
-    //latitude+longitude for map(later)
     boolean isHardCoded;
     int id;
     String name;
@@ -29,6 +29,19 @@ public class CafeteriaModel implements Serializable{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
+    Location exactLocation;
+
+    public ArrayList<String> getSearchedItems() {
+        return searchedItems;
+    }
+
+    public void setSearchedItems(ArrayList<String> searchedItems) {
+        this.searchedItems = searchedItems;
+    }
+
+    ArrayList<String> searchedItems;
+
+
 
     public String getCloseTime() {
         return closeTime;
@@ -38,9 +51,7 @@ public class CafeteriaModel implements Serializable{
         this.closeTime = closeTime;
     }
 
-    String closeTime; //This field is only updated if the location is open and the method isOpen is called
-    //TODO: Add methods to get if open or closed
-    //TODO: Add methods to get next open or next close
+    String closeTime;
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -74,7 +85,7 @@ public class CafeteriaModel implements Serializable{
                     }
                 }
             }
-        return -1;
+        return 0;
     }
 
     public HashSet<String> getMealItems(){
@@ -85,7 +96,6 @@ public class CafeteriaModel implements Serializable{
         }
         else if(isHardCoded || !is_diningHall){
             items.addAll(cafeInfo.getCafeMenu());
-
         }
         else{
             for(ArrayList<MealModel> day: weeklyMenu){
@@ -134,7 +144,7 @@ public class CafeteriaModel implements Serializable{
                 int tempDay = day + i % 7;
                 if(hours.containsKey(tempDay)){
                     Date openDate = new Date(now.getTime() +(86400000*i));
-                    closeTime = "Opening " + timeFormatDay.format(openDate) + "at " + timeFormat.format(hours.get(tempDay).get(0));
+                    closeTime = "Opening " + timeFormatDay.format(openDate) + " at " + timeFormat.format(hours.get(tempDay).get(0));
                     return "Closed";
                 }
             }
@@ -282,16 +292,14 @@ public class CafeteriaModel implements Serializable{
         isHardCoded = hardCoded;
     }
 
-
-    /*
-    public Location getLocation() {
-        return location;
+    public Location getExactLocation(){
+        return exactLocation;
     }
 
-    public void setLocation(Double lat, Double lng) {
-        this.location.setLongitude(lng);
-        this.location.setLatitude(lat);
-    }*/
+    public void setExactLocation(double lat, double lng){
+       this.exactLocation.setLatitude(lat);
+       this.exactLocation.setLongitude(lng);
+    }
 
 
     public CafeteriaArea getArea() {
@@ -307,12 +315,21 @@ public class CafeteriaModel implements Serializable{
         CENTRAL,
         WEST;
     }
-    /*
-    public enum CafeteriaStatus{
-        OPEN,
-        CLOSED,
-        CLOSINGSOON
-    }*/
+
+    public int compareTo(CafeteriaModel cm){
+        if(cm.isOpen().equals(this.isOpen())){
+            return this.getNickName().compareTo(cm.getNickName());
+        }
+        else{
+            if(this.isOpen().equals("Open") && cm.isOpen().equals("Closed")){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        }
+
+    }
 
 }
 

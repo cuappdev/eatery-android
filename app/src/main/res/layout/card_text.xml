@@ -8,55 +8,129 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv_text"
-        app:cardElevation="4dp"
+        app:cardElevation="2dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
 
             <TextView
-                android:id="@+id/textview_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:text="adf"
-                android:textSize="20sp" />
+                android:id="@+id/searchview_name"
+                android:text="Eatery Name"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:textColor="#1e1e1e"/>
 
             <TextView
-                android:id="@+id/textview_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchview_name"
+                android:text="Closed"
+                android:id="@+id/searchview_open"
+                android:paddingLeft="16dp"
+                android:paddingBottom="8dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#5482BA"/>
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:text="sfgs"
+                android:layout_below="@id/searchview_name"
+                android:layout_toRightOf="@id/searchview_open"
+                android:text="Time"
+                android:id="@+id/searchview_opentime"
+                android:paddingLeft="8dp"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/searchview_name"
+                android:text="0 mi"
+                android:id="@+id/searchview_mile"
+                android:gravity="right"
+                android:layout_alignBaseline="@id/searchview_name"
+                android:paddingRight="16dp"
                 android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textview_"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="aflkjadsf" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:background="#cdcdcd"/>
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_below="@id/searchview_opentime"
+                android:id="@+id/searchview_divider"
+                android:background="#d5e0e0e0" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/linearLayoutText">
-                <!--Add menu text here programmically-->
-            </LinearLayout>
+                android:layout_height="85dp"
+                android:layout_below="@id/searchview_divider"
+                android:text="Items"
+                android:id="@+id/searchview_items"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="14sp"
+                />
 
-        </LinearLayout>
+        </RelativeLayout>
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textview_name"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:text="Eatery"-->
+                <!--android:textSize="20sp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textview_menu"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingTop="8dp"-->
+                <!--android:text="Open"-->
+                <!--android:textSize="14sp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textview_"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="aflkjadsf" />-->
+
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="6dp"-->
+                <!--android:paddingTop="16dp"-->
+                <!--android:paddingBottom="16dp"-->
+                <!--android:background="#cdcdcd"/>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:id="@+id/linearLayoutText">-->
+                <!--&lt;!&ndash;Add menu text here programmically&ndash;&gt;-->
+            <!--</LinearLayout>-->
+
+        <!--</LinearLayout>-->
 
     </android.support.v7.widget.CardView>
 
