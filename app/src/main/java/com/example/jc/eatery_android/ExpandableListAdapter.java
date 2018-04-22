@@ -1,6 +1,9 @@
 package com.example.jc.eatery_android;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,14 +29,12 @@ import java.util.Set;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ArrayList<CafeteriaModel> cafeData;
-    private String mealText = "";
     private HashMap<CafeteriaModel, MealModel> mealList = new HashMap<>();
 
-    public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, MealModel> mealList, String mealText) {
+    public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, MealModel> mealList) {
         this.context = context;
         this.cafeData = cafeData;
         this.mealList = mealList;
-        this.mealText = mealText;
     }
 
     //DONE
@@ -45,7 +48,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public int getChildrenCount(int i) {
         CafeteriaModel m = cafeData.get(i);
         if (mealList.containsKey(m)) {
-            return 1;
+            Log.d("SIZE", Integer.toString(mealList.get(m).getMenu().size()));
+            return m.getWeeklyMenu().get(m.indexOfCurrentDay()).size();
         }
         return 0;
     }
@@ -61,7 +65,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public Object getChild(int i, int i1) {
         CafeteriaModel m = (CafeteriaModel) getGroup(i);
         if (mealList.containsKey(m)) {
-            return mealList.get(m);
+            ArrayList n = new ArrayList(mealList.get(m).getMenu().entrySet());
+            return n.get(i1);
         }
         return null;
     }
@@ -75,6 +80,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public long getChildId(int i, int i1) {
+        Log.d("CHILD", Integer.toString(i1));
         return i1;
     }
 
@@ -110,16 +116,97 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.list_view_body, viewGroup, false);
         }
-        LinearLayout linLayout = view.findViewById(R.id.list_view_body);
+        LinearLayout linear = view.findViewById(R.id.list_view_body);
+        //MealModel n = (MealModel) getChild(i, i1);
+        int counter = 0;
+
+        HashMap.Entry<String, ArrayList<String>> entry = (HashMap.Entry<String, ArrayList<String>>) getChild(i, i1);
+        Log.d("MEAL", "FUCK");
+
+        //add subheading for category of food
+        String key = entry.getKey();
+        List<String> value = entry.getValue();
         TextView tv = new TextView(context);
-        tv.setText("yay!");
-        linLayout.addView(tv);
+        SpannableString str = new SpannableString(key);
+        tv.setText(str);
+        tv.setAllCaps(true);
+        tv.setTextSize(18);
+        tv.setPadding(0, 60,0, 16);
+        linear.addView(tv);
+
+        //adds individual meal items
+        for (int j = 0; j < value.size(); j++) {
+            TextView tv2 = new TextView(context);
+            tv2.setText(value.get(j));
+            tv2.setTextSize(14);
+            tv2.setPadding(0, 0, 0, 8);
+            if (j == value.size() - 1) {
+                tv2.setPadding(0, 0, 0, 60);
+            }
+            linear.addView(tv2);
+        }
+
+        //adds horizontal line
+            View blank = new View(context);
+            blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));
+            blank.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    6));
+            linear.addView(blank);
+
+       /* for (HashMap.Entry<String, ArrayList<String>> entry : n.getMenu().entrySet()) {
+
+            //add subheading for category of food
+            String key = entry.getKey();
+            List<String> value = entry.getValue();
+            TextView tv = new TextView(context);
+            SpannableString str = new SpannableString(key);
+            tv.setText(str);
+            tv.setAllCaps(true);
+            tv.setTextSize(18);
+            tv.setPadding(0, 60,0, 16);
+            linear.addView(tv);
+
+            //adds individual meal items
+            for (int j = 0; j < value.size(); j++) {
+                TextView tv2 = new TextView(context);
+                tv2.setText(value.get(j));
+                tv2.setTextSize(14);
+                tv2.setPadding(0, 0, 0, 8);
+                if (j == value.size() - 1) {
+                    tv2.setPadding(0, 0, 0, 60);
+                }
+                linear.addView(tv2);
+            }
+
+            //adds horizontal line
+            if (counter != n.getMenu().entrySet().size() - 1) {
+                View blank = new View(context);
+                blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));
+                blank.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        6));
+                linear.addView(blank);
+            }
+        }
+        if (n.getMenu().entrySet().isEmpty()) {
+            TextView tv = new TextView(context);
+            tv.setText("No menu available");
+            tv.setTextSize(14);
+            linear.addView(tv);
+        }
+
+        // Inflate the layout for this fragment
+        counter++;*/
         return view;
     }
 
     //DONE
     @Override
     public boolean isChildSelectable(int i, int i1) {
-        return true;
+        if (getChildrenCount(i) == 1) {
+            return true;
+        }
+        return false;
     }
 }

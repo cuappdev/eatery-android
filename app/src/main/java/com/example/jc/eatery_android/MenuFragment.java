@@ -84,6 +84,7 @@ public class MenuFragment extends Fragment {
                         6));
                 linear.addView(blank);
             }
+            counter++;
         }
         if (menus.get(position).getMenu().entrySet().isEmpty()) {
             TextView tv = new TextView(getContext());
@@ -93,7 +94,7 @@ public class MenuFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        counter++;
+
         return view;
 
     }

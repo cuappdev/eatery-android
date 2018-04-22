@@ -60,7 +60,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             if (m.indexOfCurrentDay() != -1) {
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay());
                 for (MealModel n : meals) {
-                    if (n.getType().equals("Breakfast") || n.getType().equals("Brunch")) {
+                    if (n.getType().equals("Breakfast")) {
                         breakfastList.put(m, n);
                     }
                     if (n.getType().equals("Lunch") || n.getType().equals("Brunch")) {
@@ -103,7 +103,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        listAdapter = new ExpandableListAdapter(this, diningHall, breakfastList, mealType);
+        listAdapter = new ExpandableListAdapter(this, diningHall, breakfastList);
 
         expListView.setAdapter(listAdapter);
 
