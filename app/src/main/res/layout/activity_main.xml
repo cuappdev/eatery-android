@@ -6,7 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.jc.eatery_android.MainActivity"
+    android:focusableInTouchMode="true"
     >
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,6 +26,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <HorizontalScrollView
                 android:id="@+id/scroll"
@@ -112,6 +124,8 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
+
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cafe_list"
                 android:layout_width="match_parent"
@@ -119,7 +133,8 @@
                 android:layout_below="@+id/scroll"
                 android:clipToPadding="false"
                 android:onClick="filterClick"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"/>
         </RelativeLayout>
     </ScrollView>
 

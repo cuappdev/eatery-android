@@ -71,7 +71,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TEXT:
                 layoutId = R.layout.card_text;
                 view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
-                view.setFocusable(true);
                 viewHolder = new TextAdapterViewHolder(view);
                 break;
         }

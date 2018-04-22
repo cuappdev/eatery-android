@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -48,7 +50,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button centralButton;
     public Button swipesButton;
     public Button brbButton;
+    public ProgressBar progressBar;
     public BottomNavigationView bnv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         centralButton = findViewById(R.id.centralButton);
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
+        progressBar = findViewById(R.id.progress_bar);
+
         bnv = findViewById(R.id.bottom_navigation);
+
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -494,6 +501,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
             listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this,result.size(), cafeList);
             mRecyclerView.setAdapter(listAdapter);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
         }
     }
 }

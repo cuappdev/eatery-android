@@ -6,11 +6,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,23 +25,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.Model.MealModel;
-import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
-    TextView cafeClosingHours;
     TextView cafeIsOpen;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
-    Toolbar toolbar;
     net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
@@ -70,7 +61,6 @@ public class MenuActivity extends AppCompatActivity {
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
 
-        //TODO: make this a backend change
         //removes Lite Lunch for North Star and Becker
         if (cafeData.getNickName().equals("North Star") || cafeData.getNickName().equals("Becker House Dining")) {
             cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
@@ -100,8 +90,6 @@ public class MenuActivity extends AppCompatActivity {
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
         linLayout = findViewById(R.id.linear);
-
-        //Picasso.get().load(imageRes).resize(600, 600).centerCrop().into(cafeImage);
 
         if (!cafeData.getIs_diningHall()) {
             customPager.setVisibility(View.GONE);
