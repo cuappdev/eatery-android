@@ -137,6 +137,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             expListView.setAdapter(listAdapter);
         }
 
+        date1.setTextColor(Color.parseColor("#000000"));
+
         date1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
