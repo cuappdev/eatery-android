@@ -31,6 +31,17 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     CafeModel cafeInfo = new CafeModel();
     Location exactLocation;
 
+    public ArrayList<String> getSearchedItems() {
+        return searchedItems;
+    }
+
+    public void setSearchedItems(ArrayList<String> searchedItems) {
+        this.searchedItems = searchedItems;
+    }
+
+    ArrayList<String> searchedItems;
+
+
 
     public String getCloseTime() {
         return closeTime;
@@ -85,7 +96,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         }
         else if(isHardCoded || !is_diningHall){
             items.addAll(cafeInfo.getCafeMenu());
-
         }
         else{
             for(ArrayList<MealModel> day: weeklyMenu){

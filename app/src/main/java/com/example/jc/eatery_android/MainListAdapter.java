@@ -110,6 +110,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
                 holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
+                holder2.cafe_time.setText(cafeListFiltered.get(position).isOpen());
+                holder2.cafe_time_info.setText(cafeListFiltered.get(position).getCloseTime());
+                ArrayList<String> itms = cafeListFiltered.get(position).getSearchedItems();
+                Collections.sort(itms);
+                String items = itms.toString().substring(1,itms.toString().length()-1);
+                holder2.cafe_items.setText(items);
+
+
 
                 break;
         }
@@ -159,12 +167,20 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class TextAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView cafe_name;
-        TextView cafe_menu;
+        TextView cafe_time;
+        TextView cafe_time_info;
+        TextView cafe_items;
 
 
         public TextAdapterViewHolder(View itemView) {
             super(itemView);
             cafe_name = itemView.findViewById(R.id.searchview_name);
+            cafe_time = itemView.findViewById(R.id.searchview_open);
+            cafe_time_info = itemView.findViewById(R.id.searchview_opentime);
+            cafe_items = itemView.findViewById(R.id.searchview_items);
+
+
+
 //            cafe_menu = itemView.findViewById(R.id.textview_menu);
 
             itemView.setOnClickListener(this);

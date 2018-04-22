@@ -390,12 +390,19 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
                             HashSet<String> mealSet = model.getMealItems();
-
+                            ArrayList<String> matchedItems= new ArrayList<String>();
+                            boolean found_item = false;
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
-                                    if(!filteredList.contains(model))
-                                        filteredList.add(model);
+                                    matchedItems.add(item);
+                                    found_item = true;
+
                                 }
+                            }
+                            if(found_item){
+                                model.setSearchedItems(matchedItems);
+                                if(!filteredList.contains(model))
+                                    filteredList.add(model);
                             }
                         }
                         searchList = filteredList;
@@ -404,12 +411,19 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     else {
                         for (CafeteriaModel model : currentList) {
                             HashSet<String> mealSet = model.getMealItems();
-
+                            ArrayList<String> matchedItems= new ArrayList<String>();
+                            boolean found_item = false;
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
-                                    if(!filteredList.contains(model))
-                                        filteredList.add(model);
+                                    matchedItems.add(item);
+                                    found_item = true;
+
                                 }
+                            }
+                            if(found_item){
+                                model.setSearchedItems(matchedItems);
+                                if(!filteredList.contains(model))
+                                    filteredList.add(model);
                             }
                         }
                         searchList = filteredList;
