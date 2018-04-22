@@ -24,7 +24,7 @@
             android:name=".MenuActivity"
             android:theme="@style/NoActionBar" />
         <activity android:name=".WeeklyMenuActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

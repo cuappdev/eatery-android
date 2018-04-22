@@ -20,6 +20,7 @@ import com.example.jc.eatery_android.Model.MealModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
@@ -103,7 +104,24 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        listAdapter = new ExpandableListAdapter(this, diningHall, breakfastList);
+        HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
+        for (Map.Entry<CafeteriaModel, MealModel> cafe : lunchList.entrySet()) {
+            ArrayList<String> mealToList = new ArrayList<String>();
+            MealModel m = cafe.getValue();
+            HashMap<String, ArrayList<String>> entrySet = m.getMenu();
+            for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
+                String key = "1" + entry.getKey();
+                ArrayList<String> values = entry.getValue();
+
+                mealToList.add(key);
+                for (String items : values) {
+                    mealToList.add(items);
+                }
+            }
+            listFinal.put(cafe.getKey(), mealToList);
+        }
+
+        listAdapter = new ExpandableListAdapter(this, diningHall, listFinal);
 
         expListView.setAdapter(listAdapter);
 

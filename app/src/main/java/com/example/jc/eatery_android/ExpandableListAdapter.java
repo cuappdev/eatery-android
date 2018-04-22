@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,17 +31,23 @@ import java.util.Set;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ArrayList<CafeteriaModel> cafeData;
-    private HashMap<CafeteriaModel, MealModel> mealList = new HashMap<>();
+    private HashMap<CafeteriaModel, ArrayList<String>> mealMap = new HashMap<>();
+    private ArrayList<String> mealList = new ArrayList<>();
+    private ArrayList<String> test = new ArrayList<String>();
 
-    public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, MealModel> mealList) {
+
+    public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, ArrayList<String>> mealMap) {
         this.context = context;
         this.cafeData = cafeData;
-        this.mealList = mealList;
+        this.mealMap = mealMap;
+
+
     }
 
     //DONE
     @Override
     public int getGroupCount() {
+        Log.d("GROUPSIZE", Integer.toString(cafeData.size()));
         return cafeData.size();
     }
 
@@ -47,9 +55,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int i) {
         CafeteriaModel m = cafeData.get(i);
-        if (mealList.containsKey(m)) {
-            Log.d("SIZE", Integer.toString(mealList.get(m).getMenu().size()));
-            return m.getWeeklyMenu().get(m.indexOfCurrentDay()).size();
+        if (mealMap.containsKey(m)) {
+            return mealMap.get(m).size();
         }
         return 0;
     }
@@ -57,16 +64,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public Object getGroup(int i) {
+        Log.d("GETGROUP", cafeData.get(i).getNickName());
         return cafeData.get(i);
     }
 
     //DONE
     @Override
     public Object getChild(int i, int i1) {
+        Log.d("CHILD2", Integer.toString(i1));
         CafeteriaModel m = (CafeteriaModel) getGroup(i);
-        if (mealList.containsKey(m)) {
-            ArrayList n = new ArrayList(mealList.get(m).getMenu().entrySet());
-            return n.get(i1);
+        if (mealMap.containsKey(m)) {
+            return mealMap.get(m).get(i1);
         }
         return null;
     }
@@ -110,94 +118,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.list_view_body, viewGroup, false);
         }
-        LinearLayout linear = view.findViewById(R.id.list_view_body);
-        //MealModel n = (MealModel) getChild(i, i1);
-        int counter = 0;
-
-        HashMap.Entry<String, ArrayList<String>> entry = (HashMap.Entry<String, ArrayList<String>>) getChild(i, i1);
-        Log.d("MEAL", "FUCK");
-
-        //add subheading for category of food
-        String key = entry.getKey();
-        List<String> value = entry.getValue();
-        TextView tv = new TextView(context);
-        SpannableString str = new SpannableString(key);
-        tv.setText(str);
-        tv.setAllCaps(true);
-        tv.setTextSize(18);
-        tv.setPadding(0, 60,0, 16);
-        linear.addView(tv);
-
-        //adds individual meal items
-        for (int j = 0; j < value.size(); j++) {
-            TextView tv2 = new TextView(context);
-            tv2.setText(value.get(j));
-            tv2.setTextSize(14);
-            tv2.setPadding(0, 0, 0, 8);
-            if (j == value.size() - 1) {
-                tv2.setPadding(0, 0, 0, 60);
-            }
-            linear.addView(tv2);
-        }
-
-        //adds horizontal line
-            View blank = new View(context);
-            blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));
-            blank.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    6));
-            linear.addView(blank);
-
-       /* for (HashMap.Entry<String, ArrayList<String>> entry : n.getMenu().entrySet()) {
-
-            //add subheading for category of food
-            String key = entry.getKey();
-            List<String> value = entry.getValue();
-            TextView tv = new TextView(context);
-            SpannableString str = new SpannableString(key);
-            tv.setText(str);
+        TextView tv = view.findViewById(R.id.menu_title);
+        String str = (String)getChild(i,i1);
+        if (str.charAt(0) == '1') {
+            str = str.substring(1);
+            SpannableString sstr = new SpannableString(str);
+            tv.setText(sstr);
             tv.setAllCaps(true);
             tv.setTextSize(18);
-            tv.setPadding(0, 60,0, 16);
-            linear.addView(tv);
-
-            //adds individual meal items
-            for (int j = 0; j < value.size(); j++) {
-                TextView tv2 = new TextView(context);
-                tv2.setText(value.get(j));
-                tv2.setTextSize(14);
-                tv2.setPadding(0, 0, 0, 8);
-                if (j == value.size() - 1) {
-                    tv2.setPadding(0, 0, 0, 60);
-                }
-                linear.addView(tv2);
-            }
-
-            //adds horizontal line
-            if (counter != n.getMenu().entrySet().size() - 1) {
-                View blank = new View(context);
-                blank.setBackgroundColor(Color.argb(100, 192,192, 192  ));
-                blank.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        6));
-                linear.addView(blank);
-            }
-        }
-        if (n.getMenu().entrySet().isEmpty()) {
-            TextView tv = new TextView(context);
-            tv.setText("No menu available");
+        } else {
+            SpannableString sstr = new SpannableString(str);
+            tv.setText(sstr);
+            tv.setAllCaps(false);
             tv.setTextSize(14);
-            linear.addView(tv);
         }
-
-        // Inflate the layout for this fragment
-        counter++;*/
         return view;
     }
 
