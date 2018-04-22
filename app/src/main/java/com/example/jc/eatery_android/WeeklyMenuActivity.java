@@ -130,6 +130,41 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 }
             }
         }
+        breakfastText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                breakfastText.setTextColor(Color.parseColor("#000000"));
+                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+                listToParse = breakfastList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
+            }
+        });
+
+        lunchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+                lunchText.setTextColor(Color.parseColor("#000000"));
+                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+                listToParse = lunchList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
+            }
+        });
+
+        dinnerText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+                dinnerText.setTextColor(Color.parseColor("#000000"));
+                listToParse = dinnerList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
+            }
+        });
 
         if (listToParse.size() == 0) {
             listToParse = breakfastList;
