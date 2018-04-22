@@ -36,6 +36,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     HashMap<CafeteriaModel, MealModel> breakfastList = new HashMap<>();
     HashMap<CafeteriaModel, MealModel> lunchList = new HashMap<>();
     HashMap<CafeteriaModel, MealModel> dinnerList = new HashMap<>();
+    HashMap<CafeteriaModel, MealModel> listToParse = new HashMap<CafeteriaModel, MealModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 breakfastText.setTextColor(Color.parseColor("#000000"));
                 lunchText.setTextColor(Color.parseColor("#cdcdcd"));
                 dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
-                mealType = "b";
+                listToParse = breakfastList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
             }
         });
 
@@ -90,7 +93,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
                 lunchText.setTextColor(Color.parseColor("#000000"));
                 dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
-                mealType = "l";
+                listToParse = lunchList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
             }
         });
 
@@ -100,31 +105,17 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
                 lunchText.setTextColor(Color.parseColor("#cdcdcd"));
                 dinnerText.setTextColor(Color.parseColor("#000000"));
-                mealType = "d";
+                listToParse = dinnerList;
+                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+                expListView.setAdapter(listAdapter);
             }
         });
 
-        HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
-        for (Map.Entry<CafeteriaModel, MealModel> cafe : lunchList.entrySet()) {
-            ArrayList<String> mealToList = new ArrayList<String>();
-            MealModel m = cafe.getValue();
-            HashMap<String, ArrayList<String>> entrySet = m.getMenu();
-            for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-                String key = "1" + entry.getKey();
-                ArrayList<String> values = entry.getValue();
-
-                mealToList.add(key);
-                for (String items : values) {
-                    mealToList.add(items);
-                }
-            }
-            listFinal.put(cafe.getKey(), mealToList);
+        if (listToParse.size() == 0) {
+            listToParse = dinnerList;
+            listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+            expListView.setAdapter(listAdapter);
         }
-
-        listAdapter = new ExpandableListAdapter(this, diningHall, listFinal);
-
-        expListView.setAdapter(listAdapter);
-
 
 
         //adds functionality to bottom nav bar
@@ -150,5 +141,25 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private HashMap<CafeteriaModel, ArrayList<String>> generateFinalList(HashMap<CafeteriaModel, MealModel> listToParse) {
+        HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
+        for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
+            ArrayList<String> mealToList = new ArrayList<String>();
+            MealModel m = cafe.getValue();
+            HashMap<String, ArrayList<String>> entrySet = m.getMenu();
+            for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
+                String key = "1" + entry.getKey();
+                ArrayList<String> values = entry.getValue();
+
+                mealToList.add(key);
+                for (String items : values) {
+                    mealToList.add(items);
+                }
+            }
+            listFinal.put(cafe.getKey(), mealToList);
+        }
+        return listFinal;
     }
 }
