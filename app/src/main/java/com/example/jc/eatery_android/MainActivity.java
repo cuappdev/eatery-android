@@ -66,9 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
         progressBar = findViewById(R.id.progress_bar);
-
         bnv = findViewById(R.id.bottom_navigation);
-
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -354,6 +352,23 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         intent.putExtra("locName", list.get(position).getNickName());
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_map:
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 
