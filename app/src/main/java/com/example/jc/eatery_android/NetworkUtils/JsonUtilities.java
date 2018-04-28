@@ -171,8 +171,6 @@ public final class JsonUtilities {
             diningHall.add(4);
             diningHall.add(5);
             diningHall.add(30);
-
-            //got rid of location
             for (int i = 0; i < eateries.length(); i++) {
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 cafeteriaModel.setHardCoded(false);
@@ -309,6 +307,7 @@ public final class JsonUtilities {
                             Date cafeEndTime = mealTime.parse(end);
                             if(cafeEndTime.before(cafeStartTime)){
                                 cafeEndTime= new Date(cafeEndTime.getTime() +86400000);
+                                cafeteriaModel.setOpenPastMidnight(true);
                             }
                             hours.add(cafeStartTime);
                             hours.add(cafeEndTime);
