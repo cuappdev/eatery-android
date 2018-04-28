@@ -85,12 +85,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-        mMap.setOnMyLocationClickListener(onMyLocationClickListener);
+        //mMap.setOnMyLocationClickListener(onMyLocationClickListener);
         enableMyLocationIfPermitted();
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setMinZoomPreference(11);
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(cornell));
+        mMap.setMinZoomPreference(15);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(cornell));
     }
 
     private void enableMyLocationIfPermitted() {
@@ -110,8 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Location permission not granted, " +
                         "showing default location",
                 Toast.LENGTH_SHORT).show();
-        LatLng redmond = new LatLng(47.6739881, -122.121512);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(redmond));
+        LatLng cornell = new LatLng(42.4471,-76.4832);;
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(cornell));
     }
 
     @Override
@@ -140,24 +139,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =
-            new GoogleMap.OnMyLocationClickListener() {
-                @Override
-                public void onMyLocationClick(@NonNull Location location) {
-
-                    mMap.setMinZoomPreference(12);
-
-                    CircleOptions circleOptions = new CircleOptions();
-                    circleOptions.center(new LatLng(location.getLatitude(),
-                            location.getLongitude()));
-
-                    circleOptions.radius(200);
-                    circleOptions.fillColor(Color.RED);
-                    circleOptions.strokeWidth(6);
-
-                    mMap.addCircle(circleOptions);
-                }
-            };
+//    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =
+//            new GoogleMap.OnMyLocationClickListener() {
+//                @Override
+//                public void onMyLocationClick(@NonNull Location location) {
+//
+//                    mMap.setMinZoomPreference(12);
+//
+//                    CircleOptions circleOptions = new CircleOptions();
+//                    circleOptions.center(new LatLng(location.getLatitude(),
+//                            location.getLongitude()));
+//
+//                    circleOptions.radius(200);
+//                    circleOptions.fillColor(Color.RED);
+//                    circleOptions.strokeWidth(6);
+//
+//                    mMap.addCircle(circleOptions);
+//                }
+//            };
 
 
 
