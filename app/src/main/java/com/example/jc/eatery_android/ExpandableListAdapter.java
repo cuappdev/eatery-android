@@ -3,26 +3,16 @@ package com.example.jc.eatery_android;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.Model.MealModel;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Ningning on 4/20/2018.
@@ -47,7 +37,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public int getGroupCount() {
-        //Log.d("GROUPSIZE", Integer.toString(cafeData.size()));
         return cafeData.size();
     }
 
