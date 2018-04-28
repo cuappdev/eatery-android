@@ -2,16 +2,15 @@ package com.example.jc.eatery_android;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -19,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jc.eatery_android.Data.CafeteriaContract;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
 import com.example.jc.eatery_android.Model.MealModel;
 
@@ -28,9 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
     public BottomNavigationView bnv;
@@ -699,10 +695,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                         toast = Toast.makeText(getApplicationContext(), "Weekly Menu", Toast.LENGTH_SHORT);
                         toast.show();
                         break;
-                    case R.id.action_brb:
-                        toast = Toast.makeText(getApplicationContext(), "BRB", Toast.LENGTH_SHORT);
-                        toast.show();
-                        break;
+
                 }
                 return true;
             }
