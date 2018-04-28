@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 /**
  * Created by JC on 2/15/18.
  * This represents a single Cafeteria (either a cafe or a dining hall)
@@ -29,7 +28,11 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
-    Location exactLocation;
+    Double lng;
+    Double lat;
+    boolean openPastMidnight;
+    Status currentStatus;
+
 
     public ArrayList<String> getSearchedItems() {
         return searchedItems;
@@ -122,6 +125,8 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
         boolean foundDay = false;
         Date now = new Date();
+
+
         if(isHardCoded){
             int day = now.getDay();
             HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
@@ -292,14 +297,30 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         isHardCoded = hardCoded;
     }
 
-    public Location getExactLocation(){
-        return exactLocation;
+    public Double getLng() {
+        return lng;
     }
 
-    public void setExactLocation(double lat, double lng){
-       this.exactLocation.setLatitude(lat);
-       this.exactLocation.setLongitude(lng);
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public boolean isOpenPastMidnight() {
+        return openPastMidnight;
+    }
+
+    public void setOpenPastMidnight(boolean openPastMidnight) {
+        this.openPastMidnight = openPastMidnight;
+    }
+
 
 
     public CafeteriaArea getArea() {
@@ -314,6 +335,12 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         NORTH,
         CENTRAL,
         WEST;
+    }
+
+    public enum Status {
+        OPEN,
+        CLOSINGSOON,
+        CLOSED;
     }
 
     public int compareTo(CafeteriaModel cm){

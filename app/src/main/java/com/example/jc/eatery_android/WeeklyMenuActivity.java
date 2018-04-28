@@ -101,7 +101,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             int date = cal.get(Calendar.DAY_OF_MONTH);
             SpannableString ssDate = new SpannableString(Integer.toString(date));
-            ssDate.setSpan(new RelativeSizeSpan(1f), 0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);  //Changed end to 1 to stop from crashing
+            ssDate.setSpan(new RelativeSizeSpan(1f), 0,ssDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             TextView tv = dateList.get(i);
             tv.setTextColor(Color.parseColor("#cdcdcd"));
             tv.setText(ssDay + "\n" + ssDate);

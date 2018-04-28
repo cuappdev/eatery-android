@@ -62,7 +62,10 @@ public final class JsonUtilities {
                 cafeteriaModel.setNickName(basicInfo.getString("nameshort"));
                 cafeteriaModel.setIs_diningHall(false);
                 cafeteriaModel.setBuildingLocation(basicInfo.getString("location"));
-
+                Double lng = basicInfo.getDouble("longitude");
+                Double lat = basicInfo.getDouble("latitude");
+                cafeteriaModel.setLng(lng);
+                cafeteriaModel.setLat(lat);
                 String area = basicInfo.getJSONObject("campusArea").getString("descrshort");
                 if (area.equalsIgnoreCase("north")) {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
@@ -178,6 +181,10 @@ public final class JsonUtilities {
                 cafeteriaModel.setName(child.getString("name"));
                 cafeteriaModel.setBuildingLocation(child.getString("location"));
                 cafeteriaModel.setNickName(child.getString("nameshort"));
+                Double lng = child.getDouble("longitude");
+                Double lat = child.getDouble("latitude");
+                cafeteriaModel.setLng(lng);
+                cafeteriaModel.setLat(lat);
                 JSONArray methods = child.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
                 ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();

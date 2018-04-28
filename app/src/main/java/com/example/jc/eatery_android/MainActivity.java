@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public BottomNavigationView bnv;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -359,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         switch (item.getItemId()) {
             case R.id.action_map:
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("cafeData", cafeList);
                 startActivity(intent);
 
                 return true;
