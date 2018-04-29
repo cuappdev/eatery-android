@@ -63,12 +63,18 @@ public class MenuActivity extends AppCompatActivity {
 
         //removes Lite Lunch for North Star and Becker
         if (cafeData.getNickName().equals("North Star") || cafeData.getNickName().equals("Becker House Dining")) {
-            cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
+
+                if(cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size()>2){
+
+                    cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
+
+                }
+
         }
 
         //format string for opening/closing time
         cafeIsOpen = findViewById(R.id.ind_open);
-        SpannableString openString = new SpannableString(cafeData.isOpen() + "\n"
+        SpannableString openString = new SpannableString(cafeData.isOpen() + "  "
                 + cafeData.getCloseTime());
         openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
