@@ -10,7 +10,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -89,7 +88,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
         for (int i = 0; i < 7; i++) {
-            Log.d("DATE", cal.toString());
             //int month = cal.get(Calendar.MONTH);
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
@@ -692,8 +690,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.action_week:
-                        toast = Toast.makeText(getApplicationContext(), "Weekly Menu", Toast.LENGTH_SHORT);
-                        toast.show();
                         break;
                     case R.id.action_brb:
                         toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
