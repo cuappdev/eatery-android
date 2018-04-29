@@ -9,11 +9,19 @@
 
     <ImageView
         android:id="@+id/splash_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:paddingBottom="50dp"
         app:srcCompat="@drawable/eateryicon" />
+
+    <ImageView
+        android:id="@+id/appdev_image"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/splash_image"
+        android:layout_alignParentBottom="true"
+        app:srcCompat="@drawable/appdevlogo" />
 </android.widget.RelativeLayout>
