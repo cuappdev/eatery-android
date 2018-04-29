@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
+        android:paddingTop="8dp"
+        android:padding="8dp"
         android:paddingLeft="10dp"
         android:textColor="#000000"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:paddingLeft="10dp"
-        android:textSize="12sp"/>
+    <!--<TextView-->
+        <!--android:id="@+id/time"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:textSize="12sp"/>-->
 </LinearLayout>

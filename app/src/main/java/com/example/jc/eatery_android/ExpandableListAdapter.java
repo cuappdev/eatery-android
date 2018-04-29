@@ -98,9 +98,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         CafeteriaModel m = (CafeteriaModel) getGroup(i);
         TextView headertext = view.findViewById(R.id.header);
-        TextView timetext = view.findViewById(R.id.time);
+//        TextView timetext = view.findViewById(R.id.time);
         headertext.setText(m.getNickName());
-        timetext.setText(m.isOpen());
+//        timetext.setText(m.isOpen());
         return view;
     }
 
