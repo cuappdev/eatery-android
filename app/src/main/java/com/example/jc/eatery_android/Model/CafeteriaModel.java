@@ -125,8 +125,9 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
         boolean foundDay = false;
         Date now = new Date();
+        Date now1 = now;
         if(isOpenPastMidnight()&&now.getHours()<3){
-            now=new Date(now.getTime() -86400000);
+            now1=new Date(now.getTime() -86400000);
         }
         if(isHardCoded){
             int day = now.getDay();
@@ -193,7 +194,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             //Date[] hrs = (Date[])hours.keySet().toArray();
             Arrays.sort(hrs);
             for(Date day: hrs){
-                if(day.getDate() == now.getDate()){
+                if(day.getDate() == now1.getDate()){
                     foundDay = true;
                     ArrayList<Date> hour = hours.get(day);
                     while(hour.size()>1){
@@ -228,8 +229,9 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
         boolean foundDay = false;
         Date now = new Date();
+        Date now1 = now;
         if(isOpenPastMidnight()&&now.getHours()<3){
-            now=new Date(now.getTime() -86400000);
+            now1=new Date(now.getTime() -86400000);
         }
         if(isHardCoded){
             int day = now.getDay();
@@ -241,7 +243,8 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                 int curT = now.getHours() + now.getMinutes();
                 if(curT>=startT && curT<endT){
                     Date closeTim = hours.get(day).get(1);
-                    if(closeTim.getHours() == now.getHours() && now.getMinutes()+30>=closeTim.getMinutes()){
+                    if(closeTim.getTime()<=now.getTime()+(60000*30))
+                    {
                         return Status.CLOSINGSOON;
                     }
                     return Status.OPEN;
@@ -269,7 +272,8 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
                                 Date closeTim = meal.getEnd();
-                                if(closeTim.getHours() == now.getHours() && now.getMinutes()+30>=closeTim.getMinutes()){
+                                if(closeTim.getTime()<=now.getTime()+(60000*30))
+                                {
                                     return Status.CLOSINGSOON;
                                 }
                                 return Status.OPEN;
@@ -295,13 +299,14 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             //Date[] hrs = (Date[])hours.keySet().toArray();
             Arrays.sort(hrs);
             for(Date day: hrs){
-                if(day.getDate() == now.getDate()){
+                if(day.getDate() == now1.getDate()){
                     foundDay = true;
                     ArrayList<Date> hour = hours.get(day);
                     while(hour.size()>1){
                         if(hour.get(0).before(now) && hour.get(1).after(now)){
                             Date closeTim = hour.get(1);
-                            if(closeTim.getHours() == now.getHours() && now.getMinutes()+30>=closeTim.getMinutes()){
+                            if(closeTim.getTime()<=now.getTime()+(60000*30))
+                            {
                                 return Status.CLOSINGSOON;
                             }
                             return Status.OPEN;

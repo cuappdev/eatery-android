@@ -6,10 +6,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -17,44 +20,69 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+
+
+
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     ArrayList<CafeteriaModel> cafeData;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    public BottomNavigationView bnv;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
+        bnv = findViewById(R.id.bottom_navigation);
+
+        bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Toast toast;
+                Intent intent;
+                switch(item.getItemId()) {
+                    case R.id.action_home:
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.action_week:
+                        intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+                        intent.putExtra("cafeData", cafeData);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.action_brb:
+
+                        break;
+                }
+                return true;
+            }
+        });
+
 
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -69,28 +97,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String name = cafe.getName();
             Marker cafeMarker =  mMap.addMarker(new MarkerOptions().position(temp).title(name));
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             }
             else if(cafe.getCurrentStatus()==CafeteriaModel.Status.OPEN){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             }
             else{
                 cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
             }
-//            cafeMarker.setTitle();
-//            Marker cafeMarker = new MarkerOptions().position(temp).title(name);
-//
-//            mMap.addMarker(new MarkerOptions().position(temp).title(name));
 
         }
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-        //mMap.setOnMyLocationClickListener(onMyLocationClickListener);
         enableMyLocationIfPermitted();
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setMinZoomPreference(15);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cornell));
+
     }
+
 
     private void enableMyLocationIfPermitted() {
         if (ContextCompat.checkSelfPermission(this,
@@ -138,25 +163,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     return false;
                 }
             };
-
-//    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =
-//            new GoogleMap.OnMyLocationClickListener() {
-//                @Override
-//                public void onMyLocationClick(@NonNull Location location) {
-//
-//                    mMap.setMinZoomPreference(12);
-//
-//                    CircleOptions circleOptions = new CircleOptions();
-//                    circleOptions.center(new LatLng(location.getLatitude(),
-//                            location.getLongitude()));
-//
-//                    circleOptions.radius(200);
-//                    circleOptions.fillColor(Color.RED);
-//                    circleOptions.strokeWidth(6);
-//
-//                    mMap.addCircle(circleOptions);
-//                }
-//            };
 
 
 

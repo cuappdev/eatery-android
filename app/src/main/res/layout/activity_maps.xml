@@ -1,8 +1,34 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jc.eatery_android.MapsActivity"
+    android:focusableInTouchMode="true"
+    >
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jc.eatery_android.MapsActivity" />
+        android:layout_marginBottom="50dp"
+    tools:context="com.example.jc.eatery_android.MapsActivity"
+        />
+
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="#ffffff"
+        app:itemTextColor="#ffffff"
+        app:menu="@menu/bottom_nav_main" />
+
+
+
+</android.widget.RelativeLayout>
