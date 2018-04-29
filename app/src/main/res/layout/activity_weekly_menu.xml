@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jc.eatery_android.WeeklyMenuActivity">
+    tools:context="com.cornellappdev.android.eatery.WeeklyMenuActivity">
 
     <LinearLayout
         android:id="@+id/lin_date"

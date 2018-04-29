@@ -6,7 +6,7 @@
     app:layout_scrollFlags="scroll|exitUntilCollapsed"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.jc.eatery_android.MenuActivity">
+    tools:context="com.cornellappdev.android.eatery.MenuActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 app:tabTextAppearance="@style/tabLayoutText"
                 android:layout_height="wrap_content"/>
-            <com.example.jc.eatery_android.CustomPager
+            <com.cornellappdev.android.eatery.CustomPager
                 android:id="@+id/pager"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"

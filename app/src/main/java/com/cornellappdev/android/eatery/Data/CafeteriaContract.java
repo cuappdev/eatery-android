@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android.Data;
+package com.cornellappdev.android.eatery.Data;
 
 import android.provider.BaseColumns;
 

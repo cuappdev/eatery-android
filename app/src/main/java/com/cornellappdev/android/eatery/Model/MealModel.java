@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android.Model;
+package com.cornellappdev.android.eatery.Model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

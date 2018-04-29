@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

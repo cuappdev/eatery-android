@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

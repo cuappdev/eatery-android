@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
