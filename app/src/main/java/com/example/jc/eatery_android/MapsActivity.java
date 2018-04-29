@@ -1,9 +1,11 @@
 package com.example.jc.eatery_android;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,7 +14,11 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -86,28 +92,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng cornell = new LatLng(42.4471,-76.4832);
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
+        LatLng cornell = new LatLng(42.451092,-76.482654);
         for(int i=0; i<cafeData.size(); i++){
             CafeteriaModel cafe = cafeData.get(i);
             Double lat = cafe.getLat();
             Double lng = cafe.getLng();
             LatLng temp = new LatLng(lat,lng);
             String name = cafe.getName();
+            String oc = cafe.isOpen();
+            String additionalinfo = cafe.getCloseTime();
+            String loc = cafe.getBuildingLocation();
             Marker cafeMarker =  mMap.addMarker(new MarkerOptions().position(temp).title(name));
+            cafeMarker.setSnippet(oc + System.lineSeparator() + loc );
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                //need to create seperate icons eventually
             }
             else if(cafe.getCurrentStatus()==CafeteriaModel.Status.OPEN){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(120f));
             }
             else{
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(52f));
 
             }
 
         }
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                Context context = getApplicationContext(); //or getActivity(), YourActivity.this, etc.
+
+                LinearLayout info = new LinearLayout(context);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(context);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(context);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
+
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
         enableMyLocationIfPermitted();
         mMap.getUiSettings().setZoomControlsEnabled(true);
