@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -101,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
                         intent.putExtra("cafeData", cafeList);
                         startActivity(intent);
+                        break;
+                    case R.id.action_brb:
+                        
+                        Toast toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
+                        toast.show();
                         break;
 
                 }
