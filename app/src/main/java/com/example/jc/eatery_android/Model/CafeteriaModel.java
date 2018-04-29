@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 /**
  * Created by JC on 2/15/18.
  * This represents a single Cafeteria (either a cafe or a dining hall)
@@ -29,7 +28,11 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     String buildingLocation;
     ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
     CafeModel cafeInfo = new CafeModel();
-    Location exactLocation;
+    Double lng;
+    Double lat;
+    boolean openPastMidnight = false;
+    Status currentStatus;
+
 
     public ArrayList<String> getSearchedItems() {
         return searchedItems;
@@ -122,6 +125,10 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
         boolean foundDay = false;
         Date now = new Date();
+        Date now1 = now;
+        if(isOpenPastMidnight()&&now.getHours()<3){
+            now1=new Date(now.getTime() -86400000);
+        }
         if(isHardCoded){
             int day = now.getDay();
             HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
@@ -187,7 +194,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             //Date[] hrs = (Date[])hours.keySet().toArray();
             Arrays.sort(hrs);
             for(Date day: hrs){
-                if(day.getDate() == now.getDate()){
+                if(day.getDate() == now1.getDate()){
                     foundDay = true;
                     ArrayList<Date> hour = hours.get(day);
                     while(hour.size()>1){
@@ -215,8 +222,115 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             return "Closed";
 
         }
+    }
+
+    public Status getCurrentStatus(){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mmaa");
+        SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
+        boolean foundDay = false;
+        Date now = new Date();
+        Date now1 = now;
+        if(isOpenPastMidnight()&&now.getHours()<3){
+            now1=new Date(now.getTime() -86400000);
+        }
+        if(isHardCoded){
+            int day = now.getDay();
+            HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
+            if(hours.containsKey(day)){
+                foundDay = true;
+                int startT = hours.get(day).get(0).getHours() + hours.get(day).get(0).getMinutes();
+                int endT = hours.get(day).get(1).getHours() + hours.get(day).get(1).getMinutes();
+                int curT = now.getHours() + now.getMinutes();
+                if(curT>=startT && curT<endT){
+                    Date closeTim = hours.get(day).get(1);
+                    if(closeTim.getTime()<=now.getTime()+(60000*30))
+                    {
+                        return Status.CLOSINGSOON;
+                    }
+                    return Status.OPEN;
+                }
+                else if(curT< startT){
+                    return Status.CLOSED;
+                }
+
+            }
+            for(int i=1; i<=6; i++){
+                int tempDay = day + i % 7;
+                if(hours.containsKey(tempDay)){
+                    return Status.CLOSED;
+                }
+            }
+            return Status.CLOSED;
+
+        }
+        else if(is_diningHall){
+            for(ArrayList<MealModel> day: weeklyMenu){
+                if(day.size()>0){
+                    MealModel firstMeal = day.get(0);
+                    if(firstMeal.getStart().getDate()==now.getDate()){
+                        foundDay = true;
+                        for(MealModel meal: day){
+                            if(meal.getStart().before(now)&& meal.getEnd().after(now)){
+                                Date closeTim = meal.getEnd();
+                                if(closeTim.getTime()<=now.getTime()+(60000*30))
+                                {
+                                    return Status.CLOSINGSOON;
+                                }
+                                return Status.OPEN;
+                            }
+                            else if(meal.getStart().after(now)){
+                                return Status.CLOSED;
+                            }
+
+                        }
+                    }
+                    if(foundDay){
+                        return Status.CLOSED;
+                    }
+                }
+            }
+            closeTime = " ";
+            return Status.CLOSED;
+        }
+        else{
+            HashMap<Date, ArrayList<Date>> hours = cafeInfo.getHours();
+            Object[] objectArray = hours.keySet().toArray();
+            Date[] hrs = Arrays.copyOf(objectArray, objectArray.length, Date[].class);
+            //Date[] hrs = (Date[])hours.keySet().toArray();
+            Arrays.sort(hrs);
+            for(Date day: hrs){
+                if(day.getDate() == now1.getDate()){
+                    foundDay = true;
+                    ArrayList<Date> hour = hours.get(day);
+                    while(hour.size()>1){
+                        if(hour.get(0).before(now) && hour.get(1).after(now)){
+                            Date closeTim = hour.get(1);
+                            if(closeTim.getTime()<=now.getTime()+(60000*30))
+                            {
+                                return Status.CLOSINGSOON;
+                            }
+                            return Status.OPEN;
+                        }
+                        else if(hour.get(0).after(now)){
+                            return Status.CLOSED;
+                        }
+                        hour.remove(0);
+                        hour.remove(0);
+                    }
+                }
+                if(foundDay){
+                    if(hours.get(day).size()>1){
+                        ArrayList<Date> hour = hours.get(day);
+                        return Status.CLOSED;
+                    }
+                }
+            }
+            return Status.CLOSED;
+        }
+
 
     }
+
 
 
 
@@ -292,14 +406,30 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         isHardCoded = hardCoded;
     }
 
-    public Location getExactLocation(){
-        return exactLocation;
+    public Double getLng() {
+        return lng;
     }
 
-    public void setExactLocation(double lat, double lng){
-       this.exactLocation.setLatitude(lat);
-       this.exactLocation.setLongitude(lng);
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public boolean isOpenPastMidnight() {
+        return openPastMidnight;
+    }
+
+    public void setOpenPastMidnight(boolean openPastMidnight) {
+        this.openPastMidnight = openPastMidnight;
+    }
+
 
 
     public CafeteriaArea getArea() {
@@ -314,6 +444,12 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         NORTH,
         CENTRAL,
         WEST;
+    }
+
+    public enum Status {
+        OPEN,
+        CLOSINGSOON,
+        CLOSED;
     }
 
     public int compareTo(CafeteriaModel cm){

@@ -695,6 +695,10 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                         toast = Toast.makeText(getApplicationContext(), "Weekly Menu", Toast.LENGTH_SHORT);
                         toast.show();
                         break;
+                    case R.id.action_brb:
+                        toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
+                        toast.show();
+                        break;
 
                 }
                 return true;

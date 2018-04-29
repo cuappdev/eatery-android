@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
 import com.example.jc.eatery_android.Model.CafeteriaModel;
@@ -52,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public BottomNavigationView bnv;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         swipesButton = findViewById(R.id.swipes);
         brbButton = findViewById(R.id.brb);
         progressBar = findViewById(R.id.progress_bar);
-
         bnv = findViewById(R.id.bottom_navigation);
-
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -102,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
                         intent.putExtra("cafeData", cafeList);
                         startActivity(intent);
+                        break;
+                    case R.id.action_brb:
+                        
+                        Toast toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
+                        toast.show();
                         break;
 
                 }
@@ -348,6 +355,24 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         intent.putExtra("locName", list.get(position).getNickName());
 
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_map:
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("cafeData", cafeList);
+                startActivity(intent);
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 
