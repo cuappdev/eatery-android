@@ -1,7 +1,6 @@
 package com.example.jc.eatery_android.Model;
 
 import android.location.Location;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -178,7 +177,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                         }
                     }
                     if(foundDay){
-                        Log.i("test", timeFormatDay.format(firstMeal.getStart()));
                         closeTime = "Opening " + timeFormatDay.format(firstMeal.getStart()) + " at " + timeFormat.format(firstMeal.getStart());
                         return "Closed";
                     }

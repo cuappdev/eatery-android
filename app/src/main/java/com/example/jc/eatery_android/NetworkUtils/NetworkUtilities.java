@@ -47,7 +47,6 @@ public final class NetworkUtilities {
 
         }catch(IOException e){
             e.printStackTrace();
-            Log.i("model","IO error");
             return null;
         }
 
