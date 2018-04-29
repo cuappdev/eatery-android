@@ -116,6 +116,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(getApplicationContext(),MenuActivity.class);
+
+                String markerName = marker.getTitle();
+                int position = 0;
+                for(int i=0; i<cafeData.size();i++ ) {
+                    if (cafeData.get(i).getName().equalsIgnoreCase(markerName)) {
+                        position=i;
+                    }
+                }
+                intent.putExtra("testData", cafeData);
+                intent.putExtra("cafeInfo", cafeData.get(position));
+                intent.putExtra("locName", cafeData.get(position).getNickName());
+
+                startActivity(intent);
+
+
+            }
+        });
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
             @Override

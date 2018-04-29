@@ -50,16 +50,16 @@
                 android:textSize="14sp"
                 />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/searchview_name"
-                android:text="0 mi"
-                android:id="@+id/searchview_mile"
-                android:gravity="right"
-                android:layout_alignBaseline="@id/searchview_name"
-                android:paddingRight="16dp"
-                android:textSize="14sp" />
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_toRightOf="@id/searchview_name"-->
+                <!--android:text="0 mi"-->
+                <!--android:id="@+id/searchview_mile"-->
+                <!--android:gravity="right"-->
+                <!--android:layout_alignBaseline="@id/searchview_name"-->
+                <!--android:paddingRight="16dp"-->
+                <!--android:textSize="14sp" />-->
 
             <View
                 android:layout_width="match_parent"
