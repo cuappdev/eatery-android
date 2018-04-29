@@ -111,7 +111,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView headertext = view.findViewById(R.id.header);
         TextView timetext = view.findViewById(R.id.time);
         headertext.setText(m.getNickName());
-        timetext.setText(m.isOpen());
+        //timetext.setText(m.isOpen());
+        //TODO: fix isopen function
+        timetext.setText(" ");
         return view;
     }
 

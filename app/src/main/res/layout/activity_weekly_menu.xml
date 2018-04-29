@@ -18,8 +18,10 @@
             android:layout_weight="0.14"
             android:layout_height="wrap_content"
             android:id="@+id/date1"
+            android:textColor="#000000"
             android:text="01"
             android:padding="10dp"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -28,6 +30,8 @@
             android:id="@+id/date2"
             android:text="02"
             android:padding="10dp"
+            android:textColor="#cdcdcd"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -36,6 +40,8 @@
             android:id="@+id/date3"
             android:text="03"
             android:padding="10dp"
+            android:textColor="#cdcdcd"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -44,6 +50,8 @@
             android:id="@+id/date4"
             android:text="04"
             android:padding="10dp"
+            android:textColor="#cdcdcd"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -52,6 +60,8 @@
             android:id="@+id/date5"
             android:text="05"
             android:padding="10dp"
+            android:textColor="#cdcdcd"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -59,7 +69,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/date6"
             android:text="06"
+            android:textColor="#cdcdcd"
             android:padding="10dp"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
             android:layout_width="0dp"
@@ -68,6 +80,8 @@
             android:id="@+id/date7"
             android:text="07"
             android:padding="10dp"
+            android:textColor="#cdcdcd"
+            android:onClick="dateFilterClick"
             android:gravity="center"/>
     </LinearLayout>
 
