@@ -11,6 +11,7 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -89,6 +90,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (input_holder.getItemViewType()){
             case IMAGE:
                 ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
+
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
                 String imageLocation = "drawable/" + convertName(cafeListFiltered.get(position).getNickName());
@@ -101,15 +103,19 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 Collections.sort(cafeListFiltered);
-                if(cafeListFiltered.get(position).isOpen().equals("Closed")){
-                   // holder.cafeImage.setImageAlpha(125);
-                    PorterDuffColorFilter cf = new PorterDuffColorFilter(Color.parseColor("#A9A9A9"),PorterDuff.Mode.LIGHTEN);
-                    holder.cafeDrawee.getHierarchy().setActualImageColorFilter(cf);
-                }else{
-                   // holder.cafeImage.setImageAlpha(255);
+                if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
+                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
+                    holder.cafeOpen.setText("Closed");
+
+                }else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
+                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
+                    holder.cafeOpen.setText("Closing Soon");
+                }
+                else{
+                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
+                    holder.cafeOpen.setText("Open");
                 }
 
-                holder.cafeOpen.setText(openString);
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
 
                 break;
@@ -151,6 +157,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
+        View line;
+
         ImageView cafeImage;
         SimpleDraweeView cafeDrawee;
 
@@ -161,6 +169,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafeTime =  itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
+            line = itemView.findViewById(R.id.cardviewStatus);
 
             itemView.setOnClickListener(this);
         }

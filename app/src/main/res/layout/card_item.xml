@@ -60,6 +60,17 @@
                 android:paddingLeft="8dp"
                 android:textSize="14sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:layout_below="@id/cafe_open"
+                android:id="@+id/cardviewStatus"
+                android:background="#d5e0e0e0" />
+
+
+
+
             <!--<TextView-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"-->
