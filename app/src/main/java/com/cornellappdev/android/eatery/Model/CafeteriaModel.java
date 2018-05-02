@@ -1,6 +1,4 @@
-package com.example.jc.eatery_android.Model;
-
-import android.location.Location;
+package com.cornellappdev.android.eatery.Model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jc.eatery_android.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 
 import java.util.ArrayList;
 

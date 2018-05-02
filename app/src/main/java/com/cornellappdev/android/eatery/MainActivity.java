@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.jc.eatery_android.Data.CafeteriaDbHelper;
-import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.NetworkUtils.ConnectionUtilities;
-import com.example.jc.eatery_android.NetworkUtils.JsonUtilities;
-import com.example.jc.eatery_android.NetworkUtils.NetworkUtilities;
+import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.NetworkUtils.ConnectionUtilities;
+import com.cornellappdev.android.eatery.NetworkUtils.JsonUtilities;
+import com.cornellappdev.android.eatery.NetworkUtils.NetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,21 +1,17 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jc.eatery_android.Model.MealModel;
+import com.cornellappdev.android.eatery.Model.MealModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android.NetworkUtils;
+package com.cornellappdev.android.eatery.NetworkUtils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

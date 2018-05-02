@@ -1,10 +1,10 @@
-package com.example.jc.eatery_android.NetworkUtils;
+package com.cornellappdev.android.eatery.NetworkUtils;
 
 import android.content.Context;
 
-import com.example.jc.eatery_android.Model.CafeModel;
-import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.Model.MealModel;
+import com.cornellappdev.android.eatery.Model.CafeModel;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.MealModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

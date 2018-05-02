@@ -1,4 +1,4 @@
-package com.example.jc.eatery_android;
+package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jc.eatery_android.Model.CafeteriaModel;
-import com.example.jc.eatery_android.Model.MealModel;
+import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.MealModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
