@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -16,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -61,6 +68,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int layoutId =0;
         switch(viewType){
             case IMAGE:
+                Fresco.initialize(mContext);
                 layoutId = R.layout.card_item;
                 view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
                 view.setFocusable(true);
@@ -83,11 +91,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-                String imageLocation = "@drawable/" + convertName(cafeListFiltered.get(position).getNickName());
-                int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
+                String imageLocation = "drawable/" + convertName(cafeListFiltered.get(position).getNickName());
 
-                Picasso.get().load(imageRes).resize(600, 600).centerCrop()
-                        .into(holder.cafeImage);
+                Uri uri = Uri.parse("android.resource://com.cornellappdev.android.eatery/" + imageLocation);
+                holder.cafeDrawee.setImageURI(uri);
 
                 SpannableString openString = new SpannableString(cafeListFiltered.get(position).isOpen());
                 openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
@@ -95,9 +102,11 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 Collections.sort(cafeListFiltered);
                 if(cafeListFiltered.get(position).isOpen().equals("Closed")){
-                    holder.cafeImage.setImageAlpha(125);
+                   // holder.cafeImage.setImageAlpha(125);
+                    PorterDuffColorFilter cf = new PorterDuffColorFilter(Color.parseColor("#A9A9A9"),PorterDuff.Mode.LIGHTEN);
+                    holder.cafeDrawee.getHierarchy().setActualImageColorFilter(cf);
                 }else{
-                    holder.cafeImage.setImageAlpha(255);
+                   // holder.cafeImage.setImageAlpha(255);
                 }
 
                 holder.cafeOpen.setText(openString);
@@ -143,13 +152,15 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView cafeTime;
         TextView cafeOpen;
         ImageView cafeImage;
+        SimpleDraweeView cafeDrawee;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
             cafeName =  itemView.findViewById(R.id.cafe_name);
-            cafeImage =  itemView.findViewById(R.id.cafe_image);
+            //cafeImage =  itemView.findViewById(R.id.cafe_image);
             cafeTime =  itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
+            cafeDrawee = itemView.findViewById(R.id.cafe_image);
 
             itemView.setOnClickListener(this);
         }
