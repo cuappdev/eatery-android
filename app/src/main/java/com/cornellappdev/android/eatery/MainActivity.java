@@ -24,6 +24,7 @@ import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.NetworkUtils.ConnectionUtilities;
 import com.cornellappdev.android.eatery.NetworkUtils.JsonUtilities;
 import com.cornellappdev.android.eatery.NetworkUtils.NetworkUtilities;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
 import java.util.Collections;

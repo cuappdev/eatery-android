@@ -53,6 +53,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeList = list;
         cafeListFiltered = list;
+        Fresco.initialize(mContext);
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
@@ -69,7 +70,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int layoutId =0;
         switch(viewType){
             case IMAGE:
-                Fresco.initialize(mContext);
                 layoutId = R.layout.card_item;
                 view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
                 view.setFocusable(true);
