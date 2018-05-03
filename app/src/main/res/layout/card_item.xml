@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/cafe_image"
                 android:layout_width="match_parent"
@@ -67,9 +66,6 @@
                 android:layout_below="@id/cafe_open"
                 android:id="@+id/cardviewStatus"
                 android:background="#d5e0e0e0" />
-
-
-
 
             <!--<TextView-->
                 <!--android:layout_width="match_parent"-->

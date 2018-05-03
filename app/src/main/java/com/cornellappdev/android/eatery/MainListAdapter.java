@@ -22,12 +22,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by JC on 2/22/18.
@@ -53,7 +59,15 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeList = list;
         cafeListFiltered = list;
-        Fresco.initialize(mContext);
+
+        //logcat for fresco
+        Set<RequestListener> requestListeners = new HashSet<>();
+        requestListeners.add(new RequestLoggingListener());
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
+                .setRequestListeners(requestListeners)
+                .build();
+        Fresco.initialize(context, config);
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
@@ -117,8 +131,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
 
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
-
                 break;
+
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
                 holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
@@ -128,9 +142,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Collections.sort(itms);
                 String items = itms.toString().substring(1,itms.toString().length()-1);
                 holder2.cafe_items.setText(items);
-
-
-
                 break;
         }
     }
@@ -144,8 +155,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return TEXT;
         }
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -165,7 +174,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
             cafeName =  itemView.findViewById(R.id.cafe_name);
-            //cafeImage =  itemView.findViewById(R.id.cafe_image);
             cafeTime =  itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
@@ -195,10 +203,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafe_time = itemView.findViewById(R.id.searchview_open);
             cafe_time_info = itemView.findViewById(R.id.searchview_opentime);
             cafe_items = itemView.findViewById(R.id.searchview_items);
-
-
-
-//            cafe_menu = itemView.findViewById(R.id.textview_menu);
 
             itemView.setOnClickListener(this);
         }
