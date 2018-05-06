@@ -4,8 +4,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -16,10 +22,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.facebook.common.logging.FLog;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by JC on 2/22/18.
@@ -45,6 +59,15 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeList = list;
         cafeListFiltered = list;
+
+        //logcat for fresco
+        Set<RequestListener> requestListeners = new HashSet<>();
+        requestListeners.add(new RequestLoggingListener());
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
+                .setRequestListeners(requestListeners)
+                .build();
+        Fresco.initialize(context, config);
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
@@ -81,29 +104,35 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (input_holder.getItemViewType()){
             case IMAGE:
                 ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
+
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-                String imageLocation = "@drawable/" + convertName(cafeListFiltered.get(position).getNickName());
-                int imageRes = mContext.getResources().getIdentifier(imageLocation, null, mContext.getPackageName());
+                String imageLocation = "drawable/" + convertName(cafeListFiltered.get(position).getNickName());
 
-                Picasso.get().load(imageRes).resize(600, 600).centerCrop()
-                        .into(holder.cafeImage);
+                Uri uri = Uri.parse("android.resource://com.cornellappdev.android.eatery/" + imageLocation);
+                holder.cafeDrawee.setImageURI(uri);
 
                 SpannableString openString = new SpannableString(cafeListFiltered.get(position).isOpen());
                 openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 Collections.sort(cafeListFiltered);
-                if(cafeListFiltered.get(position).isOpen().equals("Closed")){
-                    holder.cafeImage.setImageAlpha(125);
-                }else{
-                    holder.cafeImage.setImageAlpha(255);
+                if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
+                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
+                    holder.cafeOpen.setText("Closed");
+
+                }else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
+                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
+                    holder.cafeOpen.setText("Closing Soon");
+                }
+                else{
+                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
+                    holder.cafeOpen.setText("Open");
                 }
 
-                holder.cafeOpen.setText(openString);
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
-
                 break;
+
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
                 holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
@@ -113,9 +142,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Collections.sort(itms);
                 String items = itms.toString().substring(1,itms.toString().length()-1);
                 holder2.cafe_items.setText(items);
-
-
-
                 break;
         }
     }
@@ -130,8 +156,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-
-
     @Override
     public int getItemCount() {
         return mCount;
@@ -142,14 +166,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
+        View line;
+
         ImageView cafeImage;
+        SimpleDraweeView cafeDrawee;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
             cafeName =  itemView.findViewById(R.id.cafe_name);
-            cafeImage =  itemView.findViewById(R.id.cafe_image);
             cafeTime =  itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
+            cafeDrawee = itemView.findViewById(R.id.cafe_image);
+            line = itemView.findViewById(R.id.cardviewStatus);
 
             itemView.setOnClickListener(this);
         }
@@ -175,10 +203,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafe_time = itemView.findViewById(R.id.searchview_open);
             cafe_time_info = itemView.findViewById(R.id.searchview_opentime);
             cafe_items = itemView.findViewById(R.id.searchview_items);
-
-
-
-//            cafe_menu = itemView.findViewById(R.id.textview_menu);
 
             itemView.setOnClickListener(this);
         }
