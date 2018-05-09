@@ -76,15 +76,20 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         cal.setTime(now);
         for (int i = 0; i < 7; i++) {
             //int month = cal.get(Calendar.MONTH);
+
+            //formatting for day
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
             SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
             ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            //formatting for date
             int date = cal.get(Calendar.DAY_OF_MONTH);
             SpannableString ssDate = new SpannableString(Integer.toString(date));
             ssDate.setSpan(new RelativeSizeSpan(1f), 0,ssDate.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             TextView tv = dateList.get(i);
             tv.setText(ssDay + "\n" + ssDate);
+
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 
@@ -133,6 +138,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
+        //if no buttons are selected, the default menu is set to the current day's breakfast
         if (listToParse.size() == 0) {
             listToParse = breakfastList;
             listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
@@ -163,12 +169,18 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Changes the text color to black when selected
+     */
     public void dateFilterClick (View v) {
         TextView tv = (TextView) v;
         tv.setTextColor(Color.parseColor("#000000"));
         changeDateColor(tv);
     }
 
+    /**
+     * Changes the text color to grey if the date is not selected
+     */
     public void changeDateColor(TextView v) {
         for (int i=0; i< 7; i++) {
             if (!dateList.get(i).equals(v)) {
@@ -177,6 +189,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * changes the list of dining halls and menus that is displayed
+     */
     public void changeListAdapter(HashMap<CafeteriaModel, MealModel> listToParse) {
         listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
         expListView.setAdapter(listAdapter);
@@ -201,14 +216,21 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Converts the MealModel object of the map into an Arraylist
+     */
     private HashMap<CafeteriaModel, ArrayList<String>> generateFinalList(HashMap<CafeteriaModel, MealModel> listToParse) {
         HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
         for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
+
+            //gets menu of dining hall
             MealModel m = cafe.getValue();
             HashMap<String, ArrayList<String>> entrySet = m.getMenu();
+
+            //add both category + meal items into an arraylist
             for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-                String key = "1" + entry.getKey();
+                String key = "1" + entry.getKey();    //'1' in front to note category, for parsing purposes
                 ArrayList<String> values = entry.getValue();
 
                 mealToList.add(key);
