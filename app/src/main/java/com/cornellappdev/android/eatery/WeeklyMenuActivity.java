@@ -36,14 +36,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     ArrayList<CafeteriaModel> cafeData;
     ArrayList<CafeteriaModel> diningHall = new ArrayList<>();
     String mealType;
+    int selectedDate;
     TextView breakfastText;
     TextView lunchText;
     TextView dinnerText;
     LinearLayout linDate;
     ArrayList<TextView> dateList = new ArrayList<>();
-    /*HashMap<CafeteriaModel, MealModel> breakfastList = new HashMap<>();
-    HashMap<CafeteriaModel, MealModel> lunchList = new HashMap<>();
-    HashMap<CafeteriaModel, MealModel> dinnerList = new HashMap<>();*/
+    ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> weeklyMenu;
     HashMap<CafeteriaModel, MealModel> listToParse = new HashMap<CafeteriaModel, MealModel>();
 
     @Override
@@ -99,7 +98,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         }
 
         //parsing the weekly menu when the user starts this activity
-        parseWeeklyMenu(dateList);
+        weeklyMenu = parseWeeklyMenu(dateList);
 
         breakfastText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,10 +108,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
                 mealType = "breakfast";
-
-                //listToParse = breakfastList;
-                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
-                expListView.setAdapter(listAdapter);
+                changeListAdapter(mealType, selectedDate);
             }
         });
 
@@ -124,10 +120,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
                 mealType = "lunch";
-
-                //listToParse = lunchList;
-                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
-                expListView.setAdapter(listAdapter);
+                changeListAdapter(mealType, selectedDate);
             }
         });
 
@@ -139,18 +132,14 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 dinnerText.setTextColor(Color.parseColor("#000000"));
 
                 mealType = "dinner";
-
-                //listToParse = dinnerList;
-                listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
-                expListView.setAdapter(listAdapter);
+                changeListAdapter(mealType, selectedDate);
             }
         });
 
+        //TODO
         //if no buttons are selected, the default menu is set to the current day's breakfast
         if (listToParse.size() == 0) {
-            //listToParse = breakfastList;
-            listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
-            expListView.setAdapter(listAdapter);
+            changeListAdapter("breakfast", 0);
         }
 
         //adds functionality to bottom nav bar
@@ -181,8 +170,36 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      */
     public void dateFilterClick (View v) {
         TextView tv = (TextView) v;
+
         tv.setTextColor(Color.parseColor("#000000"));
         changeDateColor(tv);
+
+        int id = tv.getId();
+        switch (id){
+            case R.id.date0:
+                selectedDate = 0;
+                break;
+            case R.id.date1:
+                selectedDate = 1;
+                break;
+            case R.id.date2:
+                selectedDate = 2;
+                break;
+            case R.id.date3:
+                selectedDate = 3;
+                break;
+            case R.id.date4:
+                selectedDate = 4;
+                break;
+            case R.id.date5:
+                selectedDate = 5;
+                break;
+            case R.id.date6:
+                selectedDate = 6;
+                break;
+        }
+
+        changeListAdapter(mealType, selectedDate);
     }
 
     /**
@@ -196,11 +213,24 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         }
     }
 
+    //TODO
     /**
      * Updates the list of dining halls and menus that is displayed
      */
-    public void changeListAdapter(HashMap<CafeteriaModel, MealModel> listToParse) {
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(listToParse));
+    public void changeListAdapter(String mealType, int dateOffset) {
+        int mealIndex = 0;
+        switch (mealType){
+            case "breakfast":
+                mealIndex = 0;
+                break;
+            case "lunch":
+                mealIndex = 1;
+                break;
+            case "dinner":
+                mealIndex = 2;
+                break;
+        }
+        listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
         expListView.setAdapter(listAdapter);
     }
 
