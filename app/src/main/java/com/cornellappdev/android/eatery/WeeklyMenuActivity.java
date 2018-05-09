@@ -35,7 +35,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     ExpandableListView expListView;
     ArrayList<CafeteriaModel> cafeData;
     ArrayList<CafeteriaModel> diningHall = new ArrayList<>();
-    String mealType;
+    String mealType = "breakfast";
     int selectedDate;
     TextView breakfastText;
     TextView lunchText;
