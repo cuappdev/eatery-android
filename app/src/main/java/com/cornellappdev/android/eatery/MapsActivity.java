@@ -63,10 +63,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent intent;
                 switch(item.getItemId()) {
                     case R.id.action_home:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        finish();
                         break;
                     case R.id.action_week:
+                        finish();
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
                         intent.putExtra("cafeData", cafeData);
                         startActivity(intent);
