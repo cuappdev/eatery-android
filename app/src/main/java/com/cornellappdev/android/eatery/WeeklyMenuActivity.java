@@ -43,7 +43,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     LinearLayout linDate;
     ArrayList<TextView> dateList = new ArrayList<>();
     ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> weeklyMenu;
-    HashMap<CafeteriaModel, MealModel> listToParse = new HashMap<CafeteriaModel, MealModel>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
