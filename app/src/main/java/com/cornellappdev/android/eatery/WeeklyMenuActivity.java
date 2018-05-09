@@ -50,25 +50,29 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weekly_menu);
         bnv = findViewById(R.id.bottom_navigation);
-        Intent intent = getIntent();
-        cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
         breakfastText = findViewById(R.id.breakfast);
         lunchText = findViewById(R.id.lunch);
         dinnerText = findViewById(R.id.dinner);
         expListView = findViewById(R.id.expandablelistview);
+        linDate = findViewById(R.id.lin_date);
+
+        Intent intent = getIntent();
+        cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
+
+        //layout for menu list
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         expListView.setIndicatorBounds(width-250, width);
-        linDate = findViewById(R.id.lin_date);
 
+        //populate list of date textviews
+        dateList.add((TextView) findViewById(R.id.date0));
         dateList.add((TextView) findViewById(R.id.date1));
         dateList.add((TextView) findViewById(R.id.date2));
         dateList.add((TextView) findViewById(R.id.date3));
         dateList.add((TextView) findViewById(R.id.date4));
         dateList.add((TextView) findViewById(R.id.date5));
         dateList.add((TextView) findViewById(R.id.date6));
-        dateList.add((TextView) findViewById(R.id.date7));
 
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
@@ -136,11 +140,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        //TODO
         //if no buttons are selected, the default menu is set to the current day's breakfast
-        if (listToParse.size() == 0) {
-            changeListAdapter("breakfast", 0);
-        }
+        changeListAdapter("breakfast", 0);
 
         //adds functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -198,9 +199,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 selectedDate = 6;
                 break;
         }
-
         changeListAdapter(mealType, selectedDate);
     }
+
 
     /**
      * Changes the text color to grey if the date is not selected
@@ -213,7 +214,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         }
     }
 
-    //TODO
+
     /**
      * Updates the list of dining halls and menus that is displayed
      */
@@ -233,6 +234,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
         expListView.setAdapter(listAdapter);
     }
+
 
     /**
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
@@ -269,6 +271,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         return finalList;
     }
 
+
     /**
      * Converts the MealModel object of the map into an Arraylist
      */
@@ -296,6 +299,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         return listFinal;
     }
 
+    
     /**
      * Assume that dateList is not null.
      * Returns an Arraylist of the set(breakfastlist, lunchlist, dinnerlist) for each day in the dateList.
