@@ -31,12 +31,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, ArrayList<String>> mealMap) {
         this.context = context;
+        this.mealMap = mealMap;
 
         for (CafeteriaModel m : mealMap.keySet()) {
             this.cafeData.add(m);
-            Log.d("FUCK", m.getNickName());
         }
-        this.mealMap = mealMap;
     }
 
     //DONE
@@ -55,19 +54,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public Object getGroup(int i) {
-        //Log.d("GETGROUP", cafeData.get(i).getNickName());
         return cafeData.get(i);
     }
 
     //DONE
     @Override
     public Object getChild(int i, int i1) {
-        //Log.d("CHILD2", Integer.toString(i1));
         CafeteriaModel m = (CafeteriaModel) getGroup(i);
-        /*if (mealMap.containsKey(m)) {
-            return mealMap.get(m).get(i1);
-        }
-        return null;*/
         return mealMap.get(m).get(i1);
     }
 
@@ -80,7 +73,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     //DONE
     @Override
     public long getChildId(int i, int i1) {
-        //Log.d("CHILD", Integer.toString(i1));
         return i1;
     }
 
@@ -126,6 +118,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         line = view.findViewById(R.id.horiline);
         line.setVisibility(View.INVISIBLE);
         String str = (String)getChild(i,i1);
+
+        //if the string is a category
         if (str.charAt(0) == '1') {
             str = str.substring(1);
             SpannableString sstr = new SpannableString(str);
@@ -133,7 +127,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             tv.setTextColor(Color.parseColor("#000000"));
             tv.setAllCaps(true);
             tv.setTextSize(18);
-        } else {
+        }
+        //if the string is a meal item
+        else {
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
             tv.setAllCaps(false);
