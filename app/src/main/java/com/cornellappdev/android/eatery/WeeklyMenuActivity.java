@@ -686,8 +686,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 Intent intent;
                 switch(item.getItemId()) {
                     case R.id.action_home:
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        finish();
+
                         break;
                     case R.id.action_week:
                         break;
