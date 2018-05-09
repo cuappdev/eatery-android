@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.jc.eatery_android.MainActivity">
+    tools:context="com.cornellappdev.android.eatery.MainActivity">
 
     <item
         android:id="@+id/action_search"
@@ -12,22 +12,11 @@
         android:icon="@drawable/search"/>
 
 
-    <item
-        android:id="@+id/empty"
-        android:title="mapOption"
-        android:orderInCategory="101"
-        app:showAsAction="always"
-        android:icon="@drawable/verticon">
+        <item android:id="@+id/action_map"
+            app:showAsAction="always"
+            android:icon="@drawable/diricon"
+            android:title="Map" />
 
-        <menu>
-
-            <item android:id="@+id/action_settings"
-                app:showAsAction="ifRoom"
-                android:icon="@drawable/diricon"
-                android:title="Map" />
-        </menu>
-
-    </item>
 
 
 

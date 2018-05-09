@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jc.eatery_android.WeeklyMenuActivity">
+    tools:context="com.cornellappdev.android.eatery.WeeklyMenuActivity">
 
     <LinearLayout
         android:id="@+id/lin_date"
@@ -125,23 +125,24 @@
                 android:text="Dinner"/>
         </LinearLayout>
 
-        <ExpandableListView
-            android:id="@+id/expandablelistview"
-            android:layout_below="@id/lin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:paddingRight="5dp"
-            android:divider="#cdcdcd"
-            android:paddingBottom="60dp"
-            android:dividerHeight="0.5dp"/>
+    <ExpandableListView
+        android:id="@+id/expandablelistview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lin"
+        android:divider="#cdcdcd"
+        android:dividerHeight="0.5dp"
+        android:paddingBottom="60dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"
         app:itemBackground="@color/colorPrimary"
         app:itemIconTint="#ffffff"
         app:itemTextColor="#ffffff"

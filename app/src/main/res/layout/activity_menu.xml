@@ -6,7 +6,7 @@
     app:layout_scrollFlags="scroll|exitUntilCollapsed"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.jc.eatery_android.MenuActivity">
+    tools:context="com.cornellappdev.android.eatery.MenuActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -50,37 +50,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infobox"
             android:background="#d5e0e0e0"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:weightSum="1">
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+
+            >
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight=".45"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="16dp"
+                android:paddingLeft="12dp"
                 android:id="@+id/ind_open"
                 android:text="Open?"/>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:background="#1e1e1e" />
 
             <TextView
                 android:id="@+id/ind_loc"
-                android:layout_width="0dp"
-                android:layout_weight=".45"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:layout_below="@id/ind_open"
+                android:paddingLeft="12dp"
                 android:text="Location" />
-        </LinearLayout>
+        </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -104,7 +98,7 @@
                 android:layout_width="match_parent"
                 app:tabTextAppearance="@style/tabLayoutText"
                 android:layout_height="wrap_content"/>
-            <com.example.jc.eatery_android.CustomPager
+            <com.cornellappdev.android.eatery.CustomPager
                 android:id="@+id/pager"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"

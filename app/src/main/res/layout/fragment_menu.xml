@@ -5,7 +5,5 @@
     android:id="@+id/linearFragment"
     android:orientation="vertical"
     android:paddingTop="16dp"
-    tools:context="com.example.jc.eatery_android.MenuFragment">
-
-
+    tools:context="com.cornellappdev.android.eatery.MenuFragment">
 </LinearLayout>

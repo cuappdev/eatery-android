@@ -1,36 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jc.eatery_android">
+    package="com.cornellappdev.android.eatery">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="Eateries"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/eateryiconlauncher"
+        android:label="Eatery"
         android:supportsRtl="true">
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme">
+            android:name="com.cornellappdev.android.eatery.MainActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuActivity"
-            android:theme="@style/NoActionBar" />
-        <activity android:name=".SplashActivity"
-            android:theme="@style/NoActionBar">
+            android:name="com.cornellappdev.android.eatery.MenuActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name="com.cornellappdev.android.eatery.SplashActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WeeklyMenuActivity"
-            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
+            />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name="com.cornellappdev.android.eatery.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
+            >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cornellappdev.android.eatery.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
