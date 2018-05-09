@@ -72,7 +72,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
-            cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
+            cafeList = new ArrayList<CafeteriaModel>();
+            if(JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext())!=null){
+                cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
+            };
             currentList = cafeList;
             searchList = cafeList;
             Collections.sort(currentList);

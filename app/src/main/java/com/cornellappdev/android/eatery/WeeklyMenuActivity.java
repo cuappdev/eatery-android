@@ -687,7 +687,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 switch(item.getItemId()) {
                     case R.id.action_home:
                         finish();
-
                         break;
                     case R.id.action_week:
                         break;
