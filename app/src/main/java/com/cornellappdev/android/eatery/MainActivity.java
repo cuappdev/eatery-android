@@ -32,9 +32,9 @@ import java.util.HashSet;
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler{
 
     public RecyclerView mRecyclerView;
-    public ArrayList<CafeteriaModel> cafeList; //holds all cafes
-    public ArrayList<CafeteriaModel> currentList; //button filter list
-    public ArrayList<CafeteriaModel> searchList; // searchbar filter list
+    public ArrayList<CafeteriaModel> cafeList =new ArrayList<CafeteriaModel>(); //holds all cafes
+    public ArrayList<CafeteriaModel> currentList= new ArrayList<CafeteriaModel>(); //button filter list
+    public ArrayList<CafeteriaModel> searchList= new ArrayList<CafeteriaModel>(); // searchbar filter list
     public CafeteriaDbHelper dbHelper;
     public MainListAdapter listAdapter;
     public boolean northPressed = false;
