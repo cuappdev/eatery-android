@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery.NetworkUtils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cornellappdev.android.eatery.Model.CafeModel;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;

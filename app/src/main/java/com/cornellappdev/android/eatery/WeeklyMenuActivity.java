@@ -205,7 +205,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Changes the text color to grey if the date is not selected
      */
     public void changeDateColor(TextView v) {
-        for (int i=0; i< 7; i++) {
+        for (int i=0; i<7; i++) {
             if (!dateList.get(i).equals(v)) {
                 dateList.get(i).setTextColor(Color.parseColor("#cdcdcd"));
             }
