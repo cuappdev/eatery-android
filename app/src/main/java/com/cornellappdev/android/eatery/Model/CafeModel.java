@@ -11,13 +11,9 @@ import java.util.HashMap;
 
 public class CafeModel implements Serializable{
 
-
     ArrayList<String> cafeMenu = new ArrayList();
     HashMap<Date, ArrayList<Date>> hours;
     HashMap<Integer, ArrayList<Date>> hoursH;
-
-    public CafeModel(){
-    }
 
     public ArrayList<String> getCafeMenu() {
         return cafeMenu;
@@ -31,6 +27,7 @@ public class CafeModel implements Serializable{
         return hours;
     }
 
+    // Note(lesley): This method assumes that a cafe has only one opening and closing time window per day
     public void setHours(HashMap<Date, ArrayList<Date>> hours) {
         this.hours = hours;
     }
