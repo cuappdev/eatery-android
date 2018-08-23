@@ -25,8 +25,9 @@ import java.util.HashSet;
  */
 
 public final class JsonUtilities {
-
-    // Reads JSON text with meal details from file
+    /**
+     * Reads JSON text with meal details from file
+     */
     public static String loadJSONFromAsset(Context context, String fileName) {
         String json = null;
         try {
