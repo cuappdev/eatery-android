@@ -26,7 +26,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<CafeteriaModel, ArrayList<String>> mealMap = new HashMap<>();
     View line;
 
-    public ExpandableListAdapter(Context context, ArrayList<CafeteriaModel> cafeData, HashMap<CafeteriaModel, ArrayList<String>> mealMap) {
+    public ExpandableListAdapter(Context context, HashMap<CafeteriaModel, ArrayList<String>> mealMap) {
         this.context = context;
         this.mealMap = mealMap;
 
@@ -87,8 +87,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         // TODO(lesley): Add and fix isOpen() -- mb use color or sort for open eateries to bubble
         // to the top
-//        TextView timetext = view.findViewById(R.id.time);
-//        timetext.setText(m.isOpen());
+        //TextView timetext = view.findViewById(R.id.time);
+        //timetext.setText(m.isOpen());
 
         return view;
     }

@@ -40,14 +40,13 @@ import java.util.Set;
  */
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     private ArrayList<CafeteriaModel> cafeList;
     private ArrayList<CafeteriaModel> cafeListFiltered;
-    private final int TEXT =1;
-    private final int IMAGE =0;
+    private final int TEXT = 1;
+    private final int IMAGE = 0;
 
     public interface ListAdapterOnClickHandler {
         void onClick(int position,ArrayList<CafeteriaModel> list);
@@ -60,7 +59,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         cafeList = list;
         cafeListFiltered = list;
 
-        //logcat for fresco
+        // Logcat for Fresco
         Set<RequestListener> requestListeners = new HashSet<>();
         requestListeners.add(new RequestLoggingListener());
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(context)
@@ -76,20 +75,19 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
+    /**Set view to layout of CardView**/
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //set this to layout of cardview
         View view = null;
         RecyclerView.ViewHolder viewHolder = null;
-        int layoutId =0;
+        int layoutId = 0;
         switch(viewType){
             case IMAGE:
                 layoutId = R.layout.card_item;
-                view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent,false);
                 view.setFocusable(true);
                 viewHolder = new ListAdapterViewHolder(view);
                 break;
-
             case TEXT:
                 layoutId = R.layout.card_text;
                 view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
@@ -107,8 +105,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
+                // TODO(lesley): change location of images to githhub
                 String imageLocation = "drawable/" + convertName(cafeListFiltered.get(position).getNickName());
-
                 Uri uri = Uri.parse("android.resource://com.cornellappdev.android.eatery/" + imageLocation);
                 holder.cafeDrawee.setImageURI(uri);
 
@@ -120,27 +118,25 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
                     holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
                     holder.cafeOpen.setText("Closed");
-
-                }else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
+                } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
                     holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
                     holder.cafeOpen.setText("Closing Soon");
-                }
-                else{
+                } else{
                     holder.line.setBackgroundColor(Color.parseColor("#00A350"));
                     holder.cafeOpen.setText("Open");
                 }
 
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
                 break;
-
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
                 holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
                 holder2.cafe_time.setText(cafeListFiltered.get(position).isOpen());
                 holder2.cafe_time_info.setText(cafeListFiltered.get(position).getCloseTime());
-                ArrayList<String> itms = cafeListFiltered.get(position).getSearchedItems();
-                Collections.sort(itms);
-                String items = itms.toString().substring(1,itms.toString().length()-1);
+
+                ArrayList<String> itemList = cafeListFiltered.get(position).getSearchedItems();
+                Collections.sort(itemList);
+                String items = itemList.toString().substring(1, itemList.toString().length()-1);
                 holder2.cafe_items.setText(items);
                 break;
         }
@@ -150,8 +146,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemViewType(int position){
         if(!MainActivity.searchPressed){
             return IMAGE;
-        }
-        else{
+        } else{
             return TEXT;
         }
     }
@@ -162,13 +157,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
         View line;
-
-        ImageView cafeImage;
         SimpleDraweeView cafeDrawee;
 
         public ListAdapterViewHolder(View itemView) {
@@ -213,44 +205,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mListAdapterOnClickHandler.onClick(adapterPosition,cafeListFiltered);
         }
 
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-
-        return inSampleSize;
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
     }
 
     public static String convertName(String str) {

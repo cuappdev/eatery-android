@@ -58,13 +58,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
 
-        //layout for menu list
+        // Layout for menu list
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         expListView.setIndicatorBounds(width-250, width);
 
-        //populate list of date textviews
+        // Populate list of date TextViews on header
         dateList.add((TextView) findViewById(R.id.date0));
         dateList.add((TextView) findViewById(R.id.date1));
         dateList.add((TextView) findViewById(R.id.date2));
@@ -77,13 +77,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
         for (int i = 0; i < 7; i++) {
-            //formatting for day
+            // Formatting for each day
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
             SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
             ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            //formatting for date
+            // Formatting for each date
             int date = cal.get(Calendar.DAY_OF_MONTH);
             SpannableString ssDate = new SpannableString(Integer.toString(date));
             ssDate.setSpan(new RelativeSizeSpan(1f), 0,ssDate.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -93,14 +93,14 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 
-        //create list of dining halls
+        // Get list of dining halls
         for (CafeteriaModel m : cafeData) {
             if (m.getIs_diningHall()) {
                 diningHall.add(m);
             }
         }
 
-        //parsing the weekly menu when the user starts this activity
+        // Parse the weekly menu when the user starts this activity
         weeklyMenu = parseWeeklyMenu(dateList);
 
         breakfastText.setOnClickListener(new View.OnClickListener() {
@@ -139,15 +139,15 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        //if no buttons are selected, the default menu is set to the current day's breakfast
+        // TODO(lesley): change this to have the menu be set to the meal corresponding to current time
+        // If no buttons are selected, the default menu is set to the current day's breakfast
         changeListAdapter("breakfast", 0);
 
-        //adds functionality to bottom nav bar
+        // Adds functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Toast toast;
-                Intent intent;
                 switch(item.getItemId()) {
                     case R.id.action_home:
                         finish();
@@ -229,26 +229,24 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 mealIndex = 2;
                 break;
         }
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), diningHall, generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
+        listAdapter = new ExpandableListAdapter(getApplicationContext(), generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
         expListView.setAdapter(listAdapter);
     }
-
 
     /**
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
      * Day is determined by the dateOffset from the current time.
      */
     public ArrayList<HashMap<CafeteriaModel, MealModel>> generateMealLists(int dateOffset) {
-        //initialization
         ArrayList<HashMap<CafeteriaModel, MealModel>> finalList = new ArrayList<>();
         HashMap<CafeteriaModel, MealModel> breakfastList = new HashMap<>();
         HashMap<CafeteriaModel, MealModel> lunchList = new HashMap<>();
         HashMap<CafeteriaModel, MealModel> dinnerList = new HashMap<>();
 
         for (CafeteriaModel m : diningHall) {
-            //if dining hall is opened
+            // Checks that dining hall is opened
             if (m.indexOfCurrentDay() != -1) {
-                //get MealModel for the day and split into three hashmaps
+                // Get MealModel for the day and split into three hashmaps
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
                 for (MealModel n : meals) {
                     if (n.getType().equals("Breakfast")) {
@@ -278,13 +276,14 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
 
-            //gets menu of dining hall
+            // Get menu of dining hall
             MealModel m = cafe.getValue();
             HashMap<String, ArrayList<String>> entrySet = m.getMenu();
 
-            //add both category + meal items into an arraylist
+            // Add both category + meal items into an ArrayList
             for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-                String key = "1" + entry.getKey();    //'1' in front to note category, for parsing purposes
+                // Add '1' in front to denote category
+                String key = "1" + entry.getKey();
                 ArrayList<String> values = entry.getValue();
 
                 mealToList.add(key);
@@ -307,12 +306,11 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> mainList = new ArrayList<>();
 
         for (int i = 0; i < dateList.size(); i++) {
-            //list contains set(breakfastlist, lunchlist, dinnerlist) for the day
+            // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
             ArrayList<HashMap<CafeteriaModel, MealModel>> dailyList = new ArrayList<>();
             dailyList = generateMealLists(i);
             mainList.add(dailyList);
         }
-
         return mainList;
     }
 }

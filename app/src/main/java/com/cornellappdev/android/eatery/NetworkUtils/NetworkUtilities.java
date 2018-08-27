@@ -15,17 +15,12 @@ public final class NetworkUtilities {
     private final static String URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
 
     public static String getJson(){
-
         try {
             URL url = new URL(URI);
             BufferedReader reader = null;
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            //String lastModified = connection.getHeaderField("Date");
-            //Log.i("testie",""+lastModified);
 
-            //connection.addRequestProperty("If-Modified-Since:",lastModified);
-           // Log.i("testie",""+connection.getHeaderFields());
             connection.connect();
 
             InputStream stream = connection.getInputStream();
@@ -40,13 +35,10 @@ public final class NetworkUtilities {
             }
 
             String json = buffer.toString();
-
             return json;
-
-        }catch(IOException e){
+        } catch(IOException e){
             e.printStackTrace();
             return null;
         }
-
     }
 }
