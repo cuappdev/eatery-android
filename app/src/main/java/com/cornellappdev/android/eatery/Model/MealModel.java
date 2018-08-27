@@ -10,17 +10,12 @@ import java.util.HashMap;
  */
 
 public class MealModel implements Serializable{
-
-
     private Date start;
     private Date end;
     private String type;
     private HashMap<String, ArrayList<String>> menu;
 
-    public MealModel(){
-
-    }
-
+    // toString() but better
     public String stringTo() {
         String info = type + " on " + " from: " + start.toString() + " to: " + end.toString() + "\n";
         for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
@@ -30,8 +25,6 @@ public class MealModel implements Serializable{
         }
         return info;
     }
-
-
 
     public Date getStart() {
         return start;

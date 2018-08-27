@@ -61,18 +61,16 @@ public class MenuActivity extends AppCompatActivity {
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
 
-        //removes Lite Lunch for North Star and Becker
+        // TODO(lesley): do this removal on the JSON side, also I'm certain that the logic to remove
+        // Becker is broken
+        // Remove Lite Lunch for North Star and Becker
         if (cafeData.getNickName().equals("North Star") || cafeData.getNickName().equals("Becker House Dining")) {
-
                 if(cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size()>2){
-
                     cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
-
                 }
-
         }
 
-        //format string for opening/closing time
+        // Format string for opening/closing time
         cafeIsOpen = findViewById(R.id.ind_open);
         SpannableString openString = new SpannableString(cafeData.isOpen() + "  "
                 + cafeData.getCloseTime());
@@ -97,6 +95,7 @@ public class MenuActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabs);
         linLayout = findViewById(R.id.linear);
 
+        // Formatting for when eatery is a cafe
         if (!cafeData.getIs_diningHall()) {
             customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
@@ -109,21 +108,22 @@ public class MenuActivity extends AppCompatActivity {
                     6));
             linLayout.addView(blank);
 
-            TextView tv2 = new TextView(this);
+            TextView categoryText = new TextView(this);
             SpannableString str = new SpannableString("CAFE ITEMS");
-            tv2.setText(str);
-            tv2.setTextSize(18);
-            tv2.setPadding(0, 40,0, 16);
-            linLayout.addView(tv2);
+            categoryText.setText(str);
+            categoryText.setTextSize(18);
+            categoryText.setPadding(0, 40,0, 16);
+            linLayout.addView(categoryText);
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
-                TextView tv = new TextView(this);
-                tv.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
-                tv.setTextSize(14);
-                tv.setPadding(0, 0, 0, 8);
-                linLayout.addView(tv);
+                TextView mealItemText = new TextView(this);
+                mealItemText.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
+                mealItemText.setTextSize(14);
+                mealItemText.setPadding(0, 0, 0, 8);
+                linLayout.addView(mealItemText);
             }
         }
-        //if cafe is a dining mall and has a menu
+
+        // Formatting for when eatery is a dining hall and has a menu
         else if (cafeData.getIs_diningHall() && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
             customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
@@ -133,7 +133,7 @@ public class MenuActivity extends AppCompatActivity {
             tabLayout.setupWithViewPager(customPager);
         }
 
-        //if cafe is a dining hall and missing a menu
+        // Formatting for when eatery is a dining hall and is missing a menu
         else {
             customPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
@@ -146,13 +146,12 @@ public class MenuActivity extends AppCompatActivity {
                     6));
             linLayout.addView(blank);
 
-            TextView tv2 = new TextView(this);
+            TextView missingMenuText = new TextView(this);
             SpannableString str = new SpannableString("No Menu Available");
-            tv2.setText(str);
-            tv2.setTextSize(18);
-            tv2.setPadding(0, 40,0, 16);
-            linLayout.addView(tv2);
-
+            missingMenuText.setText(str);
+            missingMenuText.setTextSize(18);
+            missingMenuText.setPadding(0, 40,0, 16);
+            linLayout.addView(missingMenuText);
         }
     }
 
@@ -170,7 +169,7 @@ public class MenuActivity extends AppCompatActivity {
             mContext = context;
         }
 
-        //set menu fragment to first MealModel object
+        // Set menu fragment to first MealModel object
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
@@ -197,7 +196,7 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            int n = 0;
+            int n;
             try {
                 n = cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size();
             } catch (Exception e) {
@@ -222,7 +221,6 @@ public class MenuActivity extends AppCompatActivity {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 
@@ -233,7 +231,6 @@ public class MenuActivity extends AppCompatActivity {
                 inSampleSize *= 2;
             }
         }
-
         return inSampleSize;
     }
 
@@ -253,7 +250,6 @@ public class MenuActivity extends AppCompatActivity {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeResource(res, resId, options);
     }
-
 
     /** Gets name of corresponding picture to cafe**/
     public static String convertName(String str) {

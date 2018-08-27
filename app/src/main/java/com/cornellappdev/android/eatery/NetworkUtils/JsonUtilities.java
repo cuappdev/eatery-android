@@ -24,8 +24,9 @@ import java.util.HashSet;
  */
 
 public final class JsonUtilities {
-
-
+    /**
+     * Reads JSON text with meal details from file
+     */
     public static String loadJSONFromAsset(Context context, String fileName) {
         String json = null;
         try {
@@ -42,22 +43,26 @@ public final class JsonUtilities {
         return json;
     }
 
+    /**
+     * Returns list of all eateries (dining halls, cafes, and external eateries not in main JSON)
+     */
     public static ArrayList<CafeteriaModel> parseJson(String json, Context mainContext){
         try {
-            SimpleDateFormat mealTime = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
-            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat mealTimeH = new SimpleDateFormat("hh:mmaa");
+            SimpleDateFormat mealTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat mealHourFormat = new SimpleDateFormat("hh:mmaa");
 
-            ArrayList<CafeteriaModel> list = new ArrayList<>();
+            ArrayList<CafeteriaModel> finalList = new ArrayList<>();
 
-            //parsing hardcoded json
+            // Parse external eateries from hardcoded JSON
             JSONObject hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
-            JSONArray eateriesH = hardCodedData.getJSONArray("eateries");
-            for(int i=0; i<eateriesH.length(); i++){
-                ArrayList<String> cafeItemsH = new ArrayList<>();
+            JSONArray hardCodedEateries = hardCodedData.getJSONArray("eateries");
+            for (int i=0; i<hardCodedEateries.length(); i++){
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 cafeteriaModel.setHardCoded(true);
-                JSONObject basicInfo = eateriesH.getJSONObject(i);
+
+                // Parse basic info for nondining, external eateries
+                JSONObject basicInfo = hardCodedEateries.getJSONObject(i);
                 cafeteriaModel.setName(basicInfo.getString("name"));
                 cafeteriaModel.setNickName(basicInfo.getString("nameshort"));
                 cafeteriaModel.setIs_diningHall(false);
@@ -66,6 +71,8 @@ public final class JsonUtilities {
                 Double lat = basicInfo.getDouble("latitude");
                 cafeteriaModel.setLng(lng);
                 cafeteriaModel.setLat(lat);
+
+                // Find geographical area for eatery
                 String area = basicInfo.getJSONObject("campusArea").getString("descrshort");
                 if (area.equalsIgnoreCase("north")) {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
@@ -75,6 +82,7 @@ public final class JsonUtilities {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.CENTRAL);
                 }
 
+                // Parse payment methods available at eatery
                 JSONArray methods = basicInfo.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
                 for (int j = 0; j < methods.length(); j++) {
@@ -84,110 +92,125 @@ public final class JsonUtilities {
                 cafeteriaModel.setPay_methods(payMethods);
 
                 CafeModel cafe = new CafeModel();
+                // Parse cafe items available at eatery
+                ArrayList<String> hardCodedCafeItems = new ArrayList<>();
                 JSONArray diningItems = basicInfo.getJSONArray("diningItems");
                 for (int z = 0; z < diningItems.length(); z++) {
                     JSONObject item = diningItems.getJSONObject(z);
-                    cafeItemsH.add(item.getString("item"));
-
+                    hardCodedCafeItems.add(item.getString("item"));
                 }
-                cafe.setCafeMenu(cafeItemsH);
-                HashMap<Integer, ArrayList<Date>> cafeHoursH = new HashMap<Integer, ArrayList<Date>>();
+                cafe.setCafeMenu(hardCodedCafeItems);
 
-                JSONArray operatingHours = basicInfo.getJSONArray("operatingHours"); //a single operating hour is a single day
+                // cafeHoursHardCoded object contains <Int: corresponding to day> : <Date object: daily hours>
+                HashMap<Integer, ArrayList<Date>> cafeHoursHardCoded = new HashMap<Integer, ArrayList<Date>>();
+                // Note(lesley): A single operatingHours object contains operating times for a single day
+                JSONArray operatingHours = basicInfo.getJSONArray("operatingHours");
                 for (int c = 0; c < operatingHours.length(); c++) {
+                    // Find start and end operating times for cafe
                     String days = operatingHours.getJSONObject(c).getString("weekday");
                     JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
-                    ArrayList<Date> hours = new ArrayList<Date>();
+
                     String start = events.getJSONObject(0).getString("start");
                     String end = events.getJSONObject(0).getString("end");
-                    if(start.length()==6){
-                        start = "0"+start;
+                    // TODO(lesley): someone please add reasoning for why the constant is 6
+                    if (start.length() == 6){
+                        start = "0" + start;
                     }
-                    if(end.length()==6){
-                        end = "0"+end;
+                    if (end.length() == 6){
+                        end = "0" + end;
                     }
-                    hours.add(mealTimeH.parse(start));
 
-                    hours.add(mealTimeH.parse(end));
+                    // First entry represents opening time, second entry represents closing time
+                    ArrayList<Date> dailyHours = new ArrayList<Date>();
+                    dailyHours.add(mealHourFormat.parse(start));
+                    dailyHours.add(mealHourFormat.parse(end));
 
-                    //Log.i("test", dateFinal.toString());
-                    if(days.equalsIgnoreCase("monday-thursday")){
-                        cafeHoursH.put(1,hours);
-                        cafeHoursH.put(2,hours);
-                        cafeHoursH.put(3,hours);
-                        cafeHoursH.put(4,hours);
+                    // Accounts for all the different ways the JSON lists the hours by day
+                    if (days.equalsIgnoreCase("monday-thursday")){
+                        cafeHoursHardCoded.put(1,dailyHours);
+                        cafeHoursHardCoded.put(2,dailyHours);
+                        cafeHoursHardCoded.put(3,dailyHours);
+                        cafeHoursHardCoded.put(4,dailyHours);
 
-                    }
-                    else if(days.equalsIgnoreCase("monday-friday")){
-                        cafeHoursH.put(1,hours);
-                        cafeHoursH.put(2,hours);
-                        cafeHoursH.put(3,hours);
-                        cafeHoursH.put(4,hours);
-                        cafeHoursH.put(5,hours);
-                    }
-                    else{
-                        if(days.equalsIgnoreCase("sunday")){
-                            cafeHoursH.put(0, hours);
+                    } else if(days.equalsIgnoreCase("monday-friday")){
+                        cafeHoursHardCoded.put(1,dailyHours);
+                        cafeHoursHardCoded.put(2,dailyHours);
+                        cafeHoursHardCoded.put(3,dailyHours);
+                        cafeHoursHardCoded.put(4,dailyHours);
+                        cafeHoursHardCoded.put(5,dailyHours);
+                    } else {
+                        if (days.equalsIgnoreCase("sunday")){
+                            cafeHoursHardCoded.put(0, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("monday")){
-                            cafeHoursH.put(1, hours);
+                        else if (days.equalsIgnoreCase("monday")){
+                            cafeHoursHardCoded.put(1, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("tuesday")){
-                            cafeHoursH.put(2, hours);
+                        else if (days.equalsIgnoreCase("tuesday")){
+                            cafeHoursHardCoded.put(2, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("wednesday")){
-                            cafeHoursH.put(3, hours);
+                        else if (days.equalsIgnoreCase("wednesday")){
+                            cafeHoursHardCoded.put(3, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("thursday")){
-                            cafeHoursH.put(4, hours);
+                        else if (days.equalsIgnoreCase("thursday")){
+                            cafeHoursHardCoded.put(4, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("friday")){
-                            cafeHoursH.put(5, hours);
+                        else if (days.equalsIgnoreCase("friday")){
+                            cafeHoursHardCoded.put(5, dailyHours);
                         }
-                        else if(days.equalsIgnoreCase("saturday")){
-                            cafeHoursH.put(6, hours);
+                        else if (days.equalsIgnoreCase("saturday")){
+                            cafeHoursHardCoded.put(6, dailyHours);
                         }
-
                     }
                 }
-                cafe.setHoursH(cafeHoursH);
+                cafe.setHoursH(cafeHoursHardCoded);
                 cafeteriaModel.setCafeInfo(cafe);
-                list.add(cafeteriaModel);
+                finalList.add(cafeteriaModel);
             }
 
-            //Begin parsing of non hard coded json
+            // Parse eateries from main source
             JSONObject parentObject = new JSONObject(json);
             JSONObject data = parentObject.getJSONObject("data");
             JSONArray eateries = data.getJSONArray("eateries");
-            HashSet<Integer> diningHall = new HashSet<>();
-            //Id's of the dining halls
-            diningHall.add(31);
-            diningHall.add(25);
-            diningHall.add(26);
-            diningHall.add(27);
-            diningHall.add(29);
-            diningHall.add(3);
-            diningHall.add(20);
-            diningHall.add(4);
-            diningHall.add(5);
-            diningHall.add(30);
+
+            // Hardcoded IDs of dining halls from main JSON, found by inspection
+            HashSet<Integer> diningHallIds = new HashSet<>();
+            diningHallIds.add(31);
+            diningHallIds.add(25);
+            diningHallIds.add(26);
+            diningHallIds.add(27);
+            diningHallIds.add(29);
+            diningHallIds.add(3);
+            diningHallIds.add(20);
+            diningHallIds.add(4);
+            diningHallIds.add(5);
+            diningHallIds.add(30);
+
+            // Parse through each eatery in main JSON
             for (int i = 0; i < eateries.length(); i++) {
+                // Parse basic info for dining halls
                 CafeteriaModel cafeteriaModel = new CafeteriaModel();
                 cafeteriaModel.setHardCoded(false);
-                JSONObject child = eateries.getJSONObject(i);
-                cafeteriaModel.setId(child.getInt("id"));
-                cafeteriaModel.setName(child.getString("name"));
-                cafeteriaModel.setBuildingLocation(child.getString("location"));
-                cafeteriaModel.setNickName(child.getString("nameshort"));
-                Double lng = child.getDouble("longitude");
-                Double lat = child.getDouble("latitude");
+                JSONObject individualEatery = eateries.getJSONObject(i);
+                cafeteriaModel.setId(individualEatery.getInt("id"));
+                cafeteriaModel.setName(individualEatery.getString("name"));
+                cafeteriaModel.setBuildingLocation(individualEatery.getString("location"));
+                cafeteriaModel.setNickName(individualEatery.getString("nameshort"));
+                Double lng = individualEatery.getDouble("longitude");
+                Double lat = individualEatery.getDouble("latitude");
                 cafeteriaModel.setLng(lng);
                 cafeteriaModel.setLat(lat);
-                JSONArray methods = child.getJSONArray("payMethods");
+
+                // Parse payment methods available at eatery
+                JSONArray methods = individualEatery.getJSONArray("payMethods");
                 ArrayList<String> payMethods = new ArrayList<String>();
-                ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
-                ArrayList<String> cafeItems = new ArrayList<>();
-                String area = child.getJSONObject("campusArea").getString("descrshort");
+                for (int j = 0; j < methods.length(); j++) {
+                    JSONObject method = methods.getJSONObject(j);
+                    payMethods.add(method.getString("descrshort"));
+                }
+                cafeteriaModel.setPay_methods(payMethods);
+
+                // Find geographical area for eatery
+                String area = individualEatery.getJSONObject("campusArea").getString("descrshort");
                 if (area.equalsIgnoreCase("north")) {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.NORTH);
                 } else if (area.equalsIgnoreCase("west")) {
@@ -195,42 +218,49 @@ public final class JsonUtilities {
                 } else {
                     cafeteriaModel.setArea(CafeteriaModel.CafeteriaArea.CENTRAL);
                 }
-                for (int j = 0; j < methods.length(); j++) {
-                    JSONObject method = methods.getJSONObject(j);
-                    payMethods.add(method.getString("descrshort"));
-                }
-                cafeteriaModel.setPay_methods(payMethods);
-                if (diningHall.contains(child.getInt("id"))) {
+
+                // weeklyMenu represents all the meals within one week for a single eatery
+                // Note that an eatery can either have a weeklyMenu or cafeItems, but not both
+                ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<>();
+                ArrayList<String> cafeItems = new ArrayList<>();
+
+                if (diningHallIds.contains(individualEatery.getInt("id"))) {
                     cafeteriaModel.setIs_diningHall(true);
                 }
+
                 if (cafeteriaModel.getIs_diningHall()) {
-                    JSONArray days = child.getJSONArray("operatingHours");
-                    //operatingHours = one day
-                    for (int k = 0; k < days.length(); k++) {
+                    JSONArray operatingHours = individualEatery.getJSONArray("operatingHours");
+                    // Note(lesley): A single operatingHours object contains operating times for a single day
+                    for (int k = 0; k < operatingHours.length(); k++) {
+                        // mealModelArray contains all mealModel objects for a single eatery
                         ArrayList<MealModel> mealModelArray = new ArrayList<>();
-                        JSONObject mealPeriods = days.getJSONObject(k);
+                        JSONObject mealPeriods = operatingHours.getJSONObject(k);
                         String date = mealPeriods.getString("date");
                         JSONArray events = mealPeriods.getJSONArray("events");
-                        //loops through each meal in one dining hall
+                        // Iterates through each meal in one dining hall
                         for (int l = 0; l < events.length(); l++) {
                             MealModel mealModel = new MealModel();
-                            JSONObject meal = events.getJSONObject(l); //created a single meal object(ie lunch)
+                            // Meal object represents a single meal at the eatery (ie. lunch)
+                            JSONObject meal = events.getJSONObject(l);
+
+                            // Find start and end operating times for meal
                             String startTime = meal.getString("start");
                             String endTime = meal.getString("end");
-                            if(startTime.length()==6){
-                                startTime = "0"+startTime;
+                            // TODO(lesley): someone please add reasoning for why the constant is 6
+                            if(startTime.length() == 6){
+                                startTime = "0" + startTime;
                             }
-                            if(endTime.length()==6){
-                                endTime = "0"+endTime;
+                            if(endTime.length() == 6){
+                                endTime = "0" + endTime;
                             }
                             String start = date + " " + startTime;
                             String end = date + " " + endTime;
-                            mealModel.setStart(mealTime.parse(start));
-                            mealModel.setEnd(mealTime.parse(end));
+                            mealModel.setStart(mealTimeFormat.parse(start));
+                            mealModel.setEnd(mealTimeFormat.parse(end));
+
                             mealModel.setType(meal.getString("descr"));
-                            //Log.i("test", mealModel.getStart().toString());
-                            //Log.i("test", mealModel.getEnd().toString());
-                            //mealMenu = hashmap of items in single meal
+
+                            // mealMenu object contains <str: station> : <Arraylist of food items>
                             HashMap<String, ArrayList<String>> mealMenu = new HashMap<>();
                             JSONArray menu = meal.getJSONArray("menu");
                             for (int m = 0; m < menu.length(); m++) {
@@ -252,12 +282,15 @@ public final class JsonUtilities {
                 } else {
                     CafeModel cafe = new CafeModel();
 
-                    JSONArray diningItems = child.getJSONArray("diningItems");
+                    // Parse cafe items available at eatery
+                    JSONArray diningItems = individualEatery.getJSONArray("diningItems");
                     for (int z = 0; z < diningItems.length(); z++) {
                         JSONObject item = diningItems.getJSONObject(z);
                         cafeItems.add(item.getString("item"));
-
                     }
+
+                    // Note(lesley): trillium is missing cafe items data in the JSON, so it requires
+                    // hardcoded items
                     if(cafeteriaModel.getName().equalsIgnoreCase("trillium")){
                         cafeItems.add("Starbucks Coffees");
                         cafeItems.add("Pepsi Beverages");
@@ -279,57 +312,55 @@ public final class JsonUtilities {
                     }
                     cafe.setCafeMenu(cafeItems);
 
+                    // cafeHours contains <Date object: unique date> : <daily hours with opening and closing time>
                     HashMap<Date, ArrayList<Date>> cafeHours = new HashMap<Date, ArrayList<Date>>();
-
-                    JSONArray operatingHours = child.getJSONArray("operatingHours"); //a single operating hour is a single day
+                    // Note(lesley): A single operatingHours object contains operating times for a single day
+                    JSONArray operatingHours = individualEatery.getJSONArray("operatingHours"); //a single operating hour is a single day
                     for (int c = 0; c < operatingHours.length(); c++) {
                         String date = operatingHours.getJSONObject(c).getString("date");
-                        Date dateFinal = dateF.parse(date);
-                        //Log.i("test", dateFinal.toString());
-                        ArrayList<Date> hours = new ArrayList<Date>();
+                        Date dateFinal = dateFormat.parse(date);
 
+                        // First entry represents opening time, second entry represents closing time
+                        ArrayList<Date> dailyHours = new ArrayList<Date>();
                         JSONArray events = operatingHours.getJSONObject(c).getJSONArray("events");
                         while(events.length() != 0) {
                             String startTime = events.getJSONObject(0).getString("start");
                             String endTime = events.getJSONObject(0).getString("end");
                             events.remove(0);
                             events.remove(0);
-                            if(startTime.length()==6){
-                                startTime = "0"+startTime;
+                            // TODO(lesley): someone please add reasoning for why the constant is 6
+                            if(startTime.length() == 6){
+                                startTime = "0" + startTime;
                             }
-                            if(endTime.length()==6){
-                                endTime = "0"+endTime;
+                            if(endTime.length() == 6){
+                                endTime = "0" + endTime;
                             }
                             String start = date + " " + startTime;
                             String end = date + " " + endTime;
 
-                            Date cafeStartTime = mealTime.parse(start);
-                            Date cafeEndTime = mealTime.parse(end);
+                            Date cafeStartTime = mealTimeFormat.parse(start);
+                            Date cafeEndTime = mealTimeFormat.parse(end);
+
+                            // TODO(lesley): someone please explain the logic for this bit
                             if(cafeEndTime.before(cafeStartTime)){
-                                cafeEndTime= new Date(cafeEndTime.getTime() +86400000);
+                                // Note(lesley): 86400000 ms = 1 day
+                                cafeEndTime= new Date(cafeEndTime.getTime() + 86400000);
                                 cafeteriaModel.setOpenPastMidnight(true);
                             }
-                            hours.add(cafeStartTime);
-                            hours.add(cafeEndTime);
-
+                            dailyHours.add(cafeStartTime);
+                            dailyHours.add(cafeEndTime);
                         }
-                        cafeHours.put(dateFinal, hours);
-
+                        cafeHours.put(dateFinal, dailyHours);
                     }
                     cafe.setHours(cafeHours);
                     cafeteriaModel.setCafeInfo(cafe);
                 }
-                list.add(cafeteriaModel);
+                finalList.add(cafeteriaModel);
             }
-            return list;
-        }catch(JSONException e){
+            return finalList;
+        } catch(JSONException | ParseException e){
             e.printStackTrace();
             return null;
         }
-        catch(ParseException e){
-            e.printStackTrace();
-            return null;
-        }
-
     }
 }
