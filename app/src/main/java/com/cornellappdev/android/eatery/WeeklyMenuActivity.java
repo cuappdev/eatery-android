@@ -59,6 +59,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
 
         // Layout for menu list
+        setTitle("Upcoming Menus");
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
@@ -80,15 +81,18 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             // Formatting for each day
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
-            SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
-            ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String sDay = dateFormat.format(cal.getTime());
+//            SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
+//            ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, 0);
 
             // Formatting for each date
             int date = cal.get(Calendar.DAY_OF_MONTH);
-            SpannableString ssDate = new SpannableString(Integer.toString(date));
-            ssDate.setSpan(new RelativeSizeSpan(1f), 0,ssDate.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String sDate = Integer.toString(date);
+            SpannableString ssDate = new SpannableString(sDay + '\n' + sDate);
+            ssDate.setSpan(new RelativeSizeSpan(0.8f), 0, 3, 0);
+            ssDate.setSpan(new RelativeSizeSpan(2f), 4,ssDate.length(), 0);
             TextView tv = dateList.get(i);
-            tv.setText(ssDay + "\n" + ssDate);
+            tv.setText(ssDate);
 
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
@@ -107,8 +111,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 breakfastText.setTextColor(Color.parseColor("#000000"));
-                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+                lunchText.setTextColor(Color.parseColor("#f2f2f2"));
+                dinnerText.setTextColor(Color.parseColor("#f2f2f2"));
 
                 mealType = "breakfast";
                 changeListAdapter(mealType, selectedDate);
@@ -118,9 +122,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         lunchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+                breakfastText.setTextColor(Color.parseColor("#f2f2f2"));
                 lunchText.setTextColor(Color.parseColor("#000000"));
-                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+                dinnerText.setTextColor(Color.parseColor("#f2f2f2"));
 
                 mealType = "lunch";
                 changeListAdapter(mealType, selectedDate);
@@ -130,8 +134,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         dinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
-                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+                breakfastText.setTextColor(Color.parseColor("#f2f2f2"));
+                lunchText.setTextColor(Color.parseColor("#f2f2f2"));
                 dinnerText.setTextColor(Color.parseColor("#000000"));
 
                 mealType = "dinner";
@@ -207,7 +211,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     public void changeDateColor(TextView v) {
         for (int i=0; i<7; i++) {
             if (!dateList.get(i).equals(v)) {
-                dateList.get(i).setTextColor(Color.parseColor("#cdcdcd"));
+                dateList.get(i).setTextColor(Color.parseColor("#f2f2f2"));
             }
         }
     }

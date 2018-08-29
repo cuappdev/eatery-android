@@ -8,7 +8,9 @@
 
     <LinearLayout
         android:id="@+id/lin_date"
-        android:padding="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -20,7 +22,8 @@
             android:id="@+id/date0"
             android:textColor="#000000"
             android:text="01"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -29,7 +32,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/date1"
             android:text="02"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:textColor="#cdcdcd"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -39,7 +43,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/date2"
             android:text="03"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:textColor="#cdcdcd"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -49,7 +54,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/date3"
             android:text="04"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:textColor="#cdcdcd"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -59,7 +65,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/date4"
             android:text="05"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:textColor="#cdcdcd"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -69,8 +76,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/date5"
             android:text="06"
+            android:textStyle="bold"
             android:textColor="#cdcdcd"
-            android:padding="10dp"
+            android:padding="5dp"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -79,7 +87,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/date6"
             android:text="07"
-            android:padding="10dp"
+            android:textStyle="bold"
+            android:padding="5dp"
             android:textColor="#cdcdcd"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -88,10 +97,11 @@
         <LinearLayout
             android:id="@+id/lin"
             android:layout_below="@id/lin_date"
-            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:orientation="horizontal">
             <TextView
                 android:layout_width="0dp"
@@ -99,26 +109,41 @@
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="#000000"
                 android:padding="10dp"
                 android:id="@+id/breakfast"
                 android:text="Breakfast"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="fill_parent"
+                android:background="#cdcdcd" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/lunch"
                 android:text="Lunch"/>
+            <View
+                android:layout_width="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="fill_parent"
+                android:background="#cdcdcd" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/dinner"
@@ -130,11 +155,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin"
-        android:divider="#cdcdcd"
-        android:dividerHeight="0.5dp"
         android:paddingBottom="60dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:divider="#efefef"
+        android:dividerHeight="0dp"
         android:paddingTop="5dp" />
 
     <android.support.design.widget.BottomNavigationView

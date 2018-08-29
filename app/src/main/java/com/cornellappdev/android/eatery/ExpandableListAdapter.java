@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,17 +114,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             str = str.substring(1);
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
+            tv.setTypeface(null, Typeface.BOLD);
             tv.setTextColor(Color.parseColor("#000000"));
             tv.setAllCaps(true);
             tv.setTextSize(18);
+            tv.setPadding(0, 70, 0, 0);
         }
         // If str != 1, then string is a meal item
         else {
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
+            tv.setTypeface(null, Typeface.NORMAL);
             tv.setAllCaps(false);
             tv.setTextColor(Color.parseColor("#808080"));
             tv.setTextSize(14);
+            tv.setPadding(0, 0, 0, 0);
         }
         return view;
     }
