@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,12 +123,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public void filterClick(View view){
         int id = view.getId();
 
-        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
-        mRecyclerView.setLayoutManager(layoutManager);
-
         switch(id){
             case R.id.northButton:
+                Log.i("hello","in north");
                 if(!northPressed) {
                     // Change color of north button + set boolean(clicked)
                     changeButtonColor("#FFFFFF","#4B7FBE",northButton);

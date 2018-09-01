@@ -55,7 +55,7 @@
                         android:padding="8dp"
                         android:text="North"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#4B7FBE"
                         android:textSize="15sp" />
 
                     <Button
@@ -74,7 +74,7 @@
                         android:padding="8dp"
                         android:text="West"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#4B7FBE"
                         android:textSize="15sp" />
 
                     <Button
@@ -89,7 +89,7 @@
                         android:padding="8dp"
                         android:background="@drawable/button"
                         android:text="Central"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#4B7FBE"
                         android:textAllCaps="false"
                         android:textSize="15sp" />
                     <Button
@@ -105,7 +105,7 @@
                         android:padding="8dp"
                         android:text="Swipes"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#4B7FBE"
                         android:textSize="15sp" />
                     <Button
                         android:id="@+id/brb"
@@ -120,7 +120,7 @@
                         android:padding="8dp"
                         android:text="BRB"
                         android:textAllCaps="false"
-                        android:textColor="#FFFFFF"
+                        android:textColor="#4B7FBE"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -145,7 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorPrimary"
+        app:itemBackground="@color/eateryblue"
         app:itemIconTint="#ffffff"
         app:itemTextColor="#ffffff"
         app:menu="@menu/bottom_nav_main" />

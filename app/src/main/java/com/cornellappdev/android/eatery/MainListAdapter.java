@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setList(ArrayList<CafeteriaModel> list, int count){
+        Log.i("hello","goes into set list");
         mCount = count;
         cafeListFiltered = list;
         notifyDataSetChanged();
@@ -92,6 +94,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
         switch (input_holder.getItemViewType()){
             case IMAGE:
+                Log.i("hello","in bindview holder");
                 ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
 
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
