@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             case R.id.northButton:
                 if(!northPressed) {
                     // Change color of north button + set boolean(clicked)
-                    changeButtonColor("#6FB2E0","#E7ECF0",northButton);
+                    changeButtonColor("#FFFFFF","#4B7FBE",northButton);
                     northPressed = true;
 
                     // Change color of west+ central + set booleans(unclicked)
                     centralPressed = false;
                     westPressed = false;
-                    changeButtonColor("#FFFFFF","#6FB2E0",westButton);
-                    changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",westButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",centralButton);
 
                     // Go through searchList(search view list)
                     ArrayList<CafeteriaModel> northList = new ArrayList<>();
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // North button is not pressed or unclicked
                 else{
-                    changeButtonColor("#FFFFFF","#6FB2E0",northButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",northButton);
                     northPressed = false;
                     currentList = searchList;
                     break;
@@ -160,14 +160,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             case R.id.centralButton:
                 if(!centralPressed){
                     // Change color of central button + set boolean(clicked)
-                    changeButtonColor("#6FB2E0","#E7ECF0",centralButton);
+                    changeButtonColor("#FFFFFF","#4B7FBE",centralButton);
                     centralPressed = true;
 
                     // Change color of north+ west + set booleans(unclicked)
                     northPressed = false;
                     westPressed = false;
-                    changeButtonColor("#FFFFFF","#6FB2E0",westButton);
-                    changeButtonColor("#FFFFFF","#6FB2E0",northButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",westButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",northButton);
 
                     ArrayList<CafeteriaModel> centralList = new ArrayList<>();
                     for(CafeteriaModel model : searchList){
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // Central button is not pressed or unclicked
                 else{
-                    changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",centralButton);
                     centralPressed = false;
                     currentList = searchList;
                     break;
@@ -188,14 +188,14 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             case R.id.westButton:
                 if(!westPressed){
                     // Change color of west button + set boolean(clicked)
-                    changeButtonColor("#6FB2E0","#E7ECF0",westButton);
+                    changeButtonColor("#FFFFFF","#4B7FBE",westButton);
                     westPressed = true;
 
                     // Change color of north and central button + set booleans(unclicked)
                     centralPressed = false;
                     northPressed = false;
-                    changeButtonColor("#FFFFFF","#6FB2E0",northButton);
-                    changeButtonColor("#FFFFFF","#6FB2E0",centralButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",northButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",centralButton);
 
                     ArrayList<CafeteriaModel> westList = new ArrayList<>();
                     for(CafeteriaModel model : searchList){
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // West button is not pressed or unclicked
                 else{
-                    changeButtonColor("#FFFFFF","#6FB2E0",westButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",westButton);
                     westPressed = false;
                     currentList = searchList;
                     break;
@@ -217,12 +217,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 // Swipe button is pressed
                 if(!swipesPressed){
                     // Set Swipe button color + boolean(clicked)
-                    changeButtonColor("#6FB2E0","#E7ECF0",swipesButton);
+                    changeButtonColor("#FFFFFF","#4B7FBE",swipesButton);
                     swipesPressed = true;
-
                     // Set brb button color + boolean(unclicked)
                     brbPressed = false;
-                    changeButtonColor("#FFFFFF","#6FB2E0",brbButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",brbButton);
 
                     // If north is also pressed, north + swipe
                     ArrayList<CafeteriaModel> swipeList = new ArrayList<>();
@@ -262,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // Swipe not pressed or unclicked
                 else{
-                    changeButtonColor("#FFFFFF","#6FB2E0",swipesButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",swipesButton);
                     swipesPressed = false;
                     currentList = searchList;
                     break;
@@ -272,12 +271,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 // Brb pressed
                 if(!brbPressed){
                     // Set brb button color + boolean(clicked)
-                    changeButtonColor("#6FB2E0","#E7ECF0",brbButton);
+                    changeButtonColor("#FFFFFF","#4B7FBE",brbButton);
                     brbPressed = true;
 
                     // Set swipe button color + boolean(unclicked)
                     swipesPressed = false;
-                    changeButtonColor("#FFFFFF","#6FB2E0",swipesButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",swipesButton);
 
                     ArrayList<CafeteriaModel> brbList = new ArrayList<>();
 
@@ -318,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 else{
                     // Brb unclicked
-                    changeButtonColor("#FFFFFF","#6FB2E0",brbButton);
+                    changeButtonColor("#4B7FBE","#F2F2F2",brbButton);
                     brbPressed = false;
                     currentList = searchList;
                     break;
