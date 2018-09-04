@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -24,7 +27,7 @@ import java.util.TreeMap;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
-    private TreeMap<CafeteriaModel, ArrayList<String>> mealMap = new TreeMap<>();
+    private TreeMap<CafeteriaModel, ArrayList<String>> mealMap = new TreeMap<>(CafeteriaModel.cafeNameComparator);
     View line;
 
     public ExpandableListAdapter(Context context, TreeMap<CafeteriaModel, ArrayList<String>> mealMap) {
@@ -44,6 +47,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int i) {
         CafeteriaModel m = cafeData.get(i);
+        Log.d("adapter", Integer.toString(i));
+        Log.d("adapter", m.getNickName());
         return mealMap.get(m).size();
     }
 
@@ -109,8 +114,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         String str = (String)getChild(i,i1);
 
         TextView tv = view.findViewById(R.id.menu_title);
-        // If str == 1, then string is a category
-        if (str.charAt(0) == '1') {
+        // If str == 3, then string is a category
+        if (str.charAt(0) == '3') {
             str = str.substring(1);
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
@@ -119,7 +124,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             tv.setTextSize(18);
             tv.setPadding(0, 70, 0, 0);
         }
-        // If str != 1, then string is a meal item
+        // If str != 3, then string is a meal item
         else {
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);

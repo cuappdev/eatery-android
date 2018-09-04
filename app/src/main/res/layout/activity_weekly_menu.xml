@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cornellappdev.android.eatery.WeeklyMenuActivity">
+    tools:context="com.cornellappdev.android.eatery.WeeklyMenuActivity"
+    android:id="@+id/weekly_activity">
 
     <LinearLayout
         android:id="@+id/lin_date"
@@ -150,15 +151,68 @@
                 android:text="Dinner"/>
         </LinearLayout>
 
-    <ExpandableListView
-        android:id="@+id/expandablelistview"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin"
-        android:paddingBottom="60dp"
-        android:divider="#efefef"
-        android:dividerHeight="0dp"
-        android:paddingTop="5dp" />
+        android:layout_below="@id/lin">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="60dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="West Campus"
+                android:id="@+id/west_header"
+                android:textStyle="bold"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="30dp"
+                android:paddingTop="25dp"/>
+            <com.cornellappdev.android.eatery.NonScrollExpandableListView
+                android:id="@+id/expandablelistview_west"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#efefef"
+                android:dividerHeight="0dp"
+                android:paddingTop="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="North Campus"
+                android:id="@+id/north_header"
+                android:textStyle="bold"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="30dp"
+                android:paddingTop="25dp"/>
+            <com.cornellappdev.android.eatery.NonScrollExpandableListView
+                android:id="@+id/expandablelistview_north"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#efefef"
+                android:dividerHeight="0dp"
+                android:paddingTop="5dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Central Campus"
+                android:id="@+id/central_header"
+                android:textStyle="bold"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textSize="30dp"
+                android:paddingTop="25dp"/>
+            <com.cornellappdev.android.eatery.NonScrollExpandableListView
+                android:id="@+id/expandablelistview_central"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#efefef"
+                android:dividerHeight="0dp"
+                android:paddingTop="5dp" />
+        </LinearLayout>
+    </ScrollView>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

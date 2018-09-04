@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_activity), "If you would like" +
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.maps_activity), "If you would like" +
                                         " to see this feature, consider joining our Android dev team!",
                                 Snackbar.LENGTH_LONG);
                         snackbar.setAction("Apply", new SnackBarListener());

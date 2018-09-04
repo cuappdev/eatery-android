@@ -11,32 +11,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
+import com.cornellappdev.android.eatery.NonScrollExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.Model.MealModel;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class WeeklyMenuActivity extends AppCompatActivity {
+public class WeeklyMenuActivity extends AppCompatActivity
+        implements NonScrollExpandableListView.OnGroupExpandListener{
     public BottomNavigationView bnv;
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
+    ExpandableListAdapter listAdapterWest;
+    ExpandableListAdapter listAdapterNorth;
+    ExpandableListAdapter listAdapterCentral;
+    NonScrollExpandableListView expListViewWest;
+    NonScrollExpandableListView expListViewNorth;
+    NonScrollExpandableListView expListViewCentral;
+    TextView westText;
+    TextView northText;
+    TextView centralText;
     ArrayList<CafeteriaModel> cafeData;
     ArrayList<CafeteriaModel> diningHall = new ArrayList<>();
     String mealType = "breakfast";
@@ -48,6 +52,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     ArrayList<TextView> dateList = new ArrayList<>();
     ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> weeklyMenu;
     int lastExpandedPosition;
+    NonScrollExpandableListView lastClickedListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         breakfastText = findViewById(R.id.breakfast);
         lunchText = findViewById(R.id.lunch);
         dinnerText = findViewById(R.id.dinner);
-        expListView = findViewById(R.id.expandablelistview);
         linDate = findViewById(R.id.lin_date);
+        expListViewWest = findViewById(R.id.expandablelistview_west);
+        expListViewNorth = findViewById(R.id.expandablelistview_north);
+        expListViewCentral = findViewById(R.id.expandablelistview_central);
+        westText = findViewById(R.id.west_header);
+        northText = findViewById(R.id.north_header);
+        centralText = findViewById(R.id.central_header);
 
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
@@ -68,20 +78,12 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
-        expListView.setIndicatorBounds(width-250, width);
+        expListViewWest.setIndicatorBounds(width-250, width);
+        expListViewNorth.setIndicatorBounds(width-250, width);
+        expListViewCentral.setIndicatorBounds(width-250, width);
 
-        // When one cell is clicked on, the others are closed
         lastExpandedPosition = -1;
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int i) {
-                if (lastExpandedPosition != -1
-                        && i != lastExpandedPosition) {
-                    expListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = i;
-            }
-        });
+        lastClickedListView = expListViewWest;
 
         // Populate list of date TextViews on header
         dateList.add((TextView) findViewById(R.id.date0));
@@ -167,7 +169,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Toast toast;
                 switch(item.getItemId()) {
                     case R.id.action_home:
                         finish();
@@ -175,7 +176,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     case R.id.action_week:
                         break;
                     case R.id.action_brb:
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_activity), "If you would like" +
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.weekly_activity), "If you would like" +
                                         " to see this feature, consider joining our Android dev team!",
                                 Snackbar.LENGTH_LONG);
                         snackbar.setAction("Apply", new SnackBarListener());
@@ -185,6 +186,21 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    /**
+     * When one list element is clicked, the other opened elements are closed
+     * **/
+    @Override
+    public void onGroupExpand(int i) {
+//        if (lastExpandedPosition != -1
+//                && i != lastExpandedPosition) {
+//            //TODO(lesley): pls fix
+//            expListViewWest.collapseGroup(lastExpandedPosition);
+//            expListViewNorth.collapseGroup(lastExpandedPosition);
+//            expListViewCentral.collapseGroup(lastExpandedPosition);
+//        }
+//        lastExpandedPosition = i;
     }
 
     /**
@@ -252,9 +268,51 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 mealIndex = 2;
                 break;
         }
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
-        expListView.setAdapter(listAdapter);
+        HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> finalList
+                = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
+
+        TreeMap<CafeteriaModel, ArrayList<String>> tree = finalList.get("West");
+        for (Map.Entry<CafeteriaModel, ArrayList<String>> list : tree.entrySet()) {
+            Log.d("weekly", list.getKey().getNickName());
+            for (String s: list.getValue()) {
+                Log.d("weekly", s);
+            }
+            Log.d("weekly", " ");
+        }
+
+        if (finalList.get("West").size() == 0) {
+            westText.setVisibility(View.GONE);
+            expListViewWest.setVisibility(View.GONE);
+        } else {
+            westText.setVisibility(View.VISIBLE);
+            expListViewWest.setVisibility(View.VISIBLE);
+
+
+            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"));
+            expListViewWest.setAdapter(listAdapterWest);
+        }
+        if (finalList.get("North").size() == 0) {
+            northText.setVisibility(View.GONE);
+            expListViewNorth.setVisibility(View.GONE);
+        } else {
+            northText.setVisibility(View.VISIBLE);
+            expListViewNorth.setVisibility(View.VISIBLE);
+
+            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"));
+            expListViewNorth.setAdapter(listAdapterNorth);
+        }
+        if (finalList.get("Central").size() == 0) {
+            centralText.setVisibility(View.GONE);
+            expListViewCentral.setVisibility(View.GONE);
+        } else {
+            centralText.setVisibility(View.VISIBLE);
+            expListViewCentral.setVisibility(View.VISIBLE);
+
+            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"));
+            expListViewCentral.setAdapter(listAdapterCentral);
+        }
     }
+
 
     /**
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
@@ -293,8 +351,11 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     /**
      * Converts the MealModel object of the map into an Arraylist
      */
-    private TreeMap<CafeteriaModel, ArrayList<String>> generateFinalList(TreeMap<CafeteriaModel, MealModel> listToParse) {
-        TreeMap<CafeteriaModel, ArrayList<String>> listFinal = new TreeMap<CafeteriaModel, ArrayList<String>>(CafeteriaModel.cafeNameComparator);
+    private HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> generateFinalList(TreeMap<CafeteriaModel, MealModel> listToParse) {
+        HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> listFinal = new HashMap<>();
+        TreeMap<CafeteriaModel, ArrayList<String>> finalWest = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+        TreeMap<CafeteriaModel, ArrayList<String>> finalNorth = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+        TreeMap<CafeteriaModel, ArrayList<String>> finalCentral = new TreeMap<>(CafeteriaModel.cafeNameComparator);
 
         for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
@@ -306,7 +367,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             // Add both category + meal items into an ArrayList
             for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
                 // Add '1' in front to denote category
-                String key = "1" + entry.getKey();
+                String key = "3" + entry.getKey();
                 ArrayList<String> values = entry.getValue();
 
                 mealToList.add(key);
@@ -315,7 +376,21 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 }
             }
             mealToList.add(" ");
-            listFinal.put(cafe.getKey(), mealToList);
+
+            switch (cafe.getKey().getArea()){
+                case WEST:
+                    finalWest.put(cafe.getKey(), mealToList);
+                    break;
+                case NORTH:
+                    finalNorth.put(cafe.getKey(), mealToList);
+                    break;
+                case CENTRAL:
+                    finalCentral.put(cafe.getKey(), mealToList);
+                    break;
+            }
+            listFinal.put("West", finalWest);
+            listFinal.put("North", finalNorth);
+            listFinal.put("Central", finalCentral);
         }
         return listFinal;
     }
