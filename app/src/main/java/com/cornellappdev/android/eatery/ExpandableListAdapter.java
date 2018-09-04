@@ -34,6 +34,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.mealMap = mealMap;
 
+//        for (Map.Entry<CafeteriaModel, ArrayList<String>> entry : mealMap.entrySet()){
+//            if (entry.getKey().getNickName().equals("104West!")) {
+//                Log.d("adapter", entry.getValue().toString());
+//            }
+//        }
         for (CafeteriaModel m : mealMap.keySet()) {
             this.cafeData.add(m);
         }
@@ -47,8 +52,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int i) {
         CafeteriaModel m = cafeData.get(i);
-        Log.d("adapter", Integer.toString(i));
-        Log.d("adapter", m.getNickName());
+        // Note(lesley): debugging
+        for (Map.Entry<CafeteriaModel, ArrayList<String>> entry : mealMap.entrySet()){
+            if (entry.getKey().getNickName().equals("104West!") && m.getNickName().equals("104West!")) {
+//                Log.d("adapter", entry.getKey().getName());
+//                Log.d("adapter", entry.getValue().toString());
+
+                if (entry.getValue().equals(mealMap.get(entry.getKey()))) {
+                    Log.d("adapter", "NICE");
+                }
+//                Log.d("adapter", mealMap.get(entry.getKey()).toString());
+            }
+        }
+        // ends here -- someone please help
         return mealMap.get(m).size();
     }
 

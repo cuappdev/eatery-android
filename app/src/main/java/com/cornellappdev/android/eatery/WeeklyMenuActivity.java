@@ -29,8 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class WeeklyMenuActivity extends AppCompatActivity
-        implements NonScrollExpandableListView.OnGroupExpandListener{
+public class WeeklyMenuActivity extends AppCompatActivity {
     public BottomNavigationView bnv;
     ExpandableListAdapter listAdapterWest;
     ExpandableListAdapter listAdapterNorth;
@@ -83,7 +82,39 @@ public class WeeklyMenuActivity extends AppCompatActivity
         expListViewCentral.setIndicatorBounds(width-250, width);
 
         lastExpandedPosition = -1;
-        lastClickedListView = expListViewWest;
+        lastClickedListView = null;
+
+        expListViewCentral.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewCentral;
+            }
+        });
+
+        expListViewWest.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewWest;
+            }
+        });
+        expListViewNorth.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewNorth;
+            }
+        });
 
         // Populate list of date TextViews on header
         dateList.add((TextView) findViewById(R.id.date0));
@@ -188,20 +219,6 @@ public class WeeklyMenuActivity extends AppCompatActivity
         });
     }
 
-    /**
-     * When one list element is clicked, the other opened elements are closed
-     * **/
-    @Override
-    public void onGroupExpand(int i) {
-//        if (lastExpandedPosition != -1
-//                && i != lastExpandedPosition) {
-//            //TODO(lesley): pls fix
-//            expListViewWest.collapseGroup(lastExpandedPosition);
-//            expListViewNorth.collapseGroup(lastExpandedPosition);
-//            expListViewCentral.collapseGroup(lastExpandedPosition);
-//        }
-//        lastExpandedPosition = i;
-    }
 
     /**
      * Changes the text color to black when selected
@@ -272,21 +289,14 @@ public class WeeklyMenuActivity extends AppCompatActivity
                 = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
 
         TreeMap<CafeteriaModel, ArrayList<String>> tree = finalList.get("West");
-        for (Map.Entry<CafeteriaModel, ArrayList<String>> list : tree.entrySet()) {
-            Log.d("weekly", list.getKey().getNickName());
-            for (String s: list.getValue()) {
-                Log.d("weekly", s);
-            }
-            Log.d("weekly", " ");
-        }
 
+        // Hides layout elements if there is nothing in the list corresponding to a certain CafeteriaArea
         if (finalList.get("West").size() == 0) {
             westText.setVisibility(View.GONE);
             expListViewWest.setVisibility(View.GONE);
         } else {
             westText.setVisibility(View.VISIBLE);
             expListViewWest.setVisibility(View.VISIBLE);
-
 
             listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"));
             expListViewWest.setAdapter(listAdapterWest);
@@ -366,7 +376,7 @@ public class WeeklyMenuActivity extends AppCompatActivity
 
             // Add both category + meal items into an ArrayList
             for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-                // Add '1' in front to denote category
+                // Add '3' in front to denote category
                 String key = "3" + entry.getKey();
                 ArrayList<String> values = entry.getValue();
 
