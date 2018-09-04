@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -65,9 +67,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        // TODO(lesley): Add BRB feature
-                        toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_activity), "If you would like" +
+                                        " to see this feature, consider joining our Android dev team!",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("Apply", new SnackBarListener());
+                        snackbar.show();
                         break;
                 }
                 return true;
@@ -200,12 +204,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public class SnackBarListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.cornellappdev.com/apply/"));
+            startActivity(browser);
+        }
+    }
+
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
             new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-                    mMap.setMinZoomPreference(15);
-                    return false;
+                mMap.setMinZoomPreference(15);
+                return false;
                 }
             };
 }

@@ -20,5 +20,4 @@
         android:icon="@mipmap/ic_local_atm_white_24dp"
         android:title="BRB"
         app:showAsAction="ifRoom" />
-
 </menu>
