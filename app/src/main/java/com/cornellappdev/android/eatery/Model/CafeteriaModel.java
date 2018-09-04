@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -433,5 +434,26 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             }
         }
     }
+
+    /*Comparator for sorting the list by CafeteriaModel's nickname*/
+    public static Comparator<CafeteriaModel> cafeNameComparator = new Comparator<CafeteriaModel>() {
+        @Override
+        public int compare(CafeteriaModel s1, CafeteriaModel s2) {
+            String string1 = s1.getNickName().toUpperCase();
+            String string2 = s2.getNickName().toUpperCase();
+
+            if (string1.charAt(0) == '1') {
+                return -1;
+            }
+
+            if (string2.charAt(0) == '1') {
+                return 1;
+            }
+
+            //ascending order
+            return string1.compareTo(string2);
+        }};
 }
+
+
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Created by Lesley on 4/20/2018.
@@ -24,10 +24,10 @@ import java.util.HashMap;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
-    private HashMap<CafeteriaModel, ArrayList<String>> mealMap = new HashMap<>();
+    private TreeMap<CafeteriaModel, ArrayList<String>> mealMap = new TreeMap<>();
     View line;
 
-    public ExpandableListAdapter(Context context, HashMap<CafeteriaModel, ArrayList<String>> mealMap) {
+    public ExpandableListAdapter(Context context, TreeMap<CafeteriaModel, ArrayList<String>> mealMap) {
         this.context = context;
         this.mealMap = mealMap;
 
@@ -88,8 +88,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         // TODO(lesley): Add and fix isOpen() -- mb use color or sort for open eateries to bubble
         // to the top
-        //TextView timetext = view.findViewById(R.id.time);
-        //timetext.setText(m.isOpen());
+        TextView timetext = view.findViewById(R.id.time);
+        timetext.setText("Open xxPM to xxPM");
 
         return view;
     }
@@ -116,7 +116,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             tv.setText(sstr);
             tv.setTypeface(null, Typeface.BOLD);
             tv.setTextColor(Color.parseColor("#000000"));
-            tv.setAllCaps(true);
             tv.setTextSize(18);
             tv.setPadding(0, 70, 0, 0);
         }
@@ -125,7 +124,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
             tv.setTypeface(null, Typeface.NORMAL);
-            tv.setAllCaps(false);
             tv.setTextColor(Color.parseColor("#808080"));
             tv.setTextSize(14);
             tv.setPadding(0, 0, 0, 0);

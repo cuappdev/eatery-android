@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
@@ -25,9 +24,12 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
     public BottomNavigationView bnv;
@@ -42,7 +44,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     TextView dinnerText;
     LinearLayout linDate;
     ArrayList<TextView> dateList = new ArrayList<>();
-    ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> weeklyMenu;
+    ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> weeklyMenu;
+    int lastExpandedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,19 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         int width = dm.widthPixels;
         expListView.setIndicatorBounds(width-250, width);
 
+        // When one cell is clicked on, the others are closed
+        lastExpandedPosition = -1;
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastExpandedPosition != -1
+                        && i != lastExpandedPosition) {
+                    expListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+            }
+        });
+
         // Populate list of date TextViews on header
         dateList.add((TextView) findViewById(R.id.date0));
         dateList.add((TextView) findViewById(R.id.date1));
@@ -82,8 +98,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
             String sDay = dateFormat.format(cal.getTime());
-//            SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
-//            ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, 0);
 
             // Formatting for each date
             int date = cal.get(Calendar.DAY_OF_MONTH);
@@ -111,8 +125,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 breakfastText.setTextColor(Color.parseColor("#000000"));
-                lunchText.setTextColor(Color.parseColor("#f2f2f2"));
-                dinnerText.setTextColor(Color.parseColor("#f2f2f2"));
+                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
                 mealType = "breakfast";
                 changeListAdapter(mealType, selectedDate);
@@ -122,9 +136,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         lunchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                breakfastText.setTextColor(Color.parseColor("#f2f2f2"));
+                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
                 lunchText.setTextColor(Color.parseColor("#000000"));
-                dinnerText.setTextColor(Color.parseColor("#f2f2f2"));
+                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
                 mealType = "lunch";
                 changeListAdapter(mealType, selectedDate);
@@ -134,8 +148,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         dinnerText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                breakfastText.setTextColor(Color.parseColor("#f2f2f2"));
-                lunchText.setTextColor(Color.parseColor("#f2f2f2"));
+                breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
                 dinnerText.setTextColor(Color.parseColor("#000000"));
 
                 mealType = "dinner";
@@ -211,7 +225,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     public void changeDateColor(TextView v) {
         for (int i=0; i<7; i++) {
             if (!dateList.get(i).equals(v)) {
-                dateList.get(i).setTextColor(Color.parseColor("#f2f2f2"));
+                dateList.get(i).setTextColor(Color.parseColor("#cdcdcd"));
             }
         }
     }
@@ -241,19 +255,18 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
      * Day is determined by the dateOffset from the current time.
      */
-    public ArrayList<HashMap<CafeteriaModel, MealModel>> generateMealLists(int dateOffset) {
-        ArrayList<HashMap<CafeteriaModel, MealModel>> finalList = new ArrayList<>();
-        HashMap<CafeteriaModel, MealModel> breakfastList = new HashMap<>();
-        HashMap<CafeteriaModel, MealModel> lunchList = new HashMap<>();
-        HashMap<CafeteriaModel, MealModel> dinnerList = new HashMap<>();
-
+    public ArrayList<TreeMap<CafeteriaModel, MealModel>> generateMealLists(int dateOffset) {
+        ArrayList<TreeMap<CafeteriaModel, MealModel>> finalList = new ArrayList<>();
+        TreeMap<CafeteriaModel, MealModel> breakfastList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+        TreeMap<CafeteriaModel, MealModel> lunchList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+        TreeMap<CafeteriaModel, MealModel> dinnerList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
         for (CafeteriaModel m : diningHall) {
             // Checks that dining hall is opened
             if (m.indexOfCurrentDay() != -1) {
                 // Get MealModel for the day and split into three hashmaps
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
                 for (MealModel n : meals) {
-                    if (n.getType().equals("Breakfast")) {
+                    if (n.getType().equals("Breakfast") && !m.getNickName().equals("Cook House Dining")) {
                         breakfastList.put(m, n);
                     }
                     if (n.getType().equals("Lunch") || n.getType().equals("Brunch")) {
@@ -275,8 +288,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     /**
      * Converts the MealModel object of the map into an Arraylist
      */
-    private HashMap<CafeteriaModel, ArrayList<String>> generateFinalList(HashMap<CafeteriaModel, MealModel> listToParse) {
-        HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
+    private TreeMap<CafeteriaModel, ArrayList<String>> generateFinalList(TreeMap<CafeteriaModel, MealModel> listToParse) {
+        TreeMap<CafeteriaModel, ArrayList<String>> listFinal = new TreeMap<CafeteriaModel, ArrayList<String>>(CafeteriaModel.cafeNameComparator);
+
         for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
 
@@ -295,6 +309,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     mealToList.add(items);
                 }
             }
+            mealToList.add(" ");
             listFinal.put(cafe.getKey(), mealToList);
         }
         return listFinal;
@@ -306,12 +321,12 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Returns an Arraylist of the set(breakfastlist, lunchlist, dinnerlist) for each day in the dateList.
      * Each of the meal lists is a hashmap of CafeteriaModels that have that specific meal and the menu
      */
-    public ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
-        ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> mainList = new ArrayList<>();
+    public ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
+        ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> mainList = new ArrayList<>();
 
         for (int i = 0; i < dateList.size(); i++) {
             // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
-            ArrayList<HashMap<CafeteriaModel, MealModel>> dailyList = new ArrayList<>();
+            ArrayList<TreeMap<CafeteriaModel, MealModel>> dailyList = new ArrayList<>();
             dailyList = generateMealLists(i);
             mainList.add(dailyList);
         }
