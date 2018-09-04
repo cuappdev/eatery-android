@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:padding="8dp">
+    android:padding="4dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/cv"
-        app:cardElevation="2dp"
+        app:cardElevation="4dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
@@ -21,7 +21,7 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/cafe_image"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="80dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 fresco:actualImageScaleType="centerCrop"
@@ -34,9 +34,12 @@
                 android:layout_below="@id/cafe_image"
                 android:id="@+id/cafe_name"
                 android:text="Location"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="8dp"
-                android:textSize="24sp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="6dp"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                android:textColor="#1e1e1e"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,9 +48,10 @@
                 android:text="Open"
                 android:id="@+id/cafe_open"
                 android:paddingLeft="12dp"
-                android:paddingBottom="8dp"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
+                android:paddingBottom="6dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#5482BA"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -57,7 +61,7 @@
                 android:text="Time"
                 android:id="@+id/cafe_time"
                 android:paddingLeft="8dp"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="match_parent"
