@@ -12,8 +12,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.Model.MealModel;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -29,10 +31,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
     private TreeMap<CafeteriaModel, ArrayList<String>> mealMap = new TreeMap<>(CafeteriaModel.cafeNameComparator);
     View line;
+    private int mealIndex;
+    private int dateOffset;
 
-    public ExpandableListAdapter(Context context, TreeMap<CafeteriaModel, ArrayList<String>> mealMap) {
+    public ExpandableListAdapter(Context context, TreeMap<CafeteriaModel, ArrayList<String>> mealMap, int dateOffset, int mealIndex) {
         this.context = context;
         this.mealMap = mealMap;
+        this.mealIndex = mealIndex;
+        this.dateOffset = dateOffset;
 
 //        for (Map.Entry<CafeteriaModel, ArrayList<String>> entry : mealMap.entrySet()){
 //            if (entry.getKey().getNickName().equals("104West!")) {
@@ -107,11 +113,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView headerText = view.findViewById(R.id.header);
         headerText.setText(m.getNickName());
 
-        // TODO(lesley): Add and fix isOpen() -- mb use color or sort for open eateries to bubble
-        // to the top
+        // TODO(lesley): Not all the times show up for the meals, esp Risley + Okenshields
         TextView timetext = view.findViewById(R.id.time);
-        timetext.setText("Open xxPM to xxPM");
 
+        try {
+            ArrayList<MealModel> day = m.getWeeklyMenu().get(dateOffset);
+            int length = day.size() - 1;
+            MealModel meal = day.get(mealIndex - (2-length));
+
+            SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
+            String startTime = localDateFormat.format(meal.getStart());
+            String endTime = localDateFormat.format(meal.getEnd());
+            timetext.setText("Open " + startTime + " to " + endTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return view;
     }
 

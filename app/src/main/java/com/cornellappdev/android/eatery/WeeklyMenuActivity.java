@@ -288,8 +288,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> finalList
                 = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
 
-        TreeMap<CafeteriaModel, ArrayList<String>> tree = finalList.get("West");
-
         // Hides layout elements if there is nothing in the list corresponding to a certain CafeteriaArea
         if (finalList.get("West").size() == 0) {
             westText.setVisibility(View.GONE);
@@ -298,7 +296,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             westText.setVisibility(View.VISIBLE);
             expListViewWest.setVisibility(View.VISIBLE);
 
-            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"));
+            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"), dateOffset, mealIndex);
             expListViewWest.setAdapter(listAdapterWest);
         }
         if (finalList.get("North").size() == 0) {
@@ -308,7 +306,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             northText.setVisibility(View.VISIBLE);
             expListViewNorth.setVisibility(View.VISIBLE);
 
-            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"));
+            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"), dateOffset, mealIndex);
             expListViewNorth.setAdapter(listAdapterNorth);
         }
         if (finalList.get("Central").size() == 0) {
@@ -318,7 +316,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             centralText.setVisibility(View.VISIBLE);
             expListViewCentral.setVisibility(View.VISIBLE);
 
-            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"));
+            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"),  dateOffset, mealIndex);
             expListViewCentral.setAdapter(listAdapterCentral);
         }
     }
