@@ -16,10 +16,4 @@
             app:showAsAction="always"
             android:icon="@drawable/diricon"
             android:title="Map" />
-
-
-
-
-
-
 </menu>
