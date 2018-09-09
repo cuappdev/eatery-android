@@ -35,9 +35,7 @@ public class MenuActivity extends AppCompatActivity {
     TextView cafeLoc;
     TextView cafeIsOpen;
     TextView getDirections;
-    ImageView brb_icon;
     ImageView swipe_icon;
-    ImageView dollar_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -109,16 +107,10 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        brb_icon = findViewById(R.id.brb_icon);
         swipe_icon = findViewById(R.id.swipe_icon);
-        dollar_icon = findViewById(R.id.dollar_icon);
-        ArrayList<String> payMethods = cafeData.getPay_methods();
-        if (!payMethods.contains("Meal Plan - Debit"))
-            brb_icon.setVisibility(View.GONE);
-        if (!payMethods.contains("Meal Plan - Swipe"))
+        if (!cafeData.getIs_diningHall()) {
             swipe_icon.setVisibility(View.GONE);
-        if (!payMethods.contains("Cash"))
-            dollar_icon.setVisibility(View.GONE);
+        }
 
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
