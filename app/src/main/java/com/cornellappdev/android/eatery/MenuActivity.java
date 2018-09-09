@@ -16,7 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,10 @@ public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
     TextView cafeIsOpen;
+    TextView getDirections;
+    ImageView brb_icon;
+    ImageView swipe_icon;
+    ImageView dollar_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -76,6 +82,8 @@ public class MenuActivity extends AppCompatActivity {
                 + cafeData.getCloseTime());
         openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        openString.setSpan(new ForegroundColorSpan(Color.parseColor("#4B7FBE")),
+                0, cafeData.isOpen().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         cafeIsOpen.setText(openString);
         cafeIsOpen.setTextSize(15);
 
@@ -90,6 +98,27 @@ public class MenuActivity extends AppCompatActivity {
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                imageRes, 400, 400));
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
+
+        getDirections = findViewById(R.id.directions);
+        getDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putExtra("cafeData", cafeList);
+                startActivity(intent);
+            }
+        });
+
+        brb_icon = findViewById(R.id.brb_icon);
+        swipe_icon = findViewById(R.id.swipe_icon);
+        dollar_icon = findViewById(R.id.dollar_icon);
+        ArrayList<String> payMethods = cafeData.getPay_methods();
+        if (!payMethods.contains("Meal Plan - Debit"))
+            brb_icon.setVisibility(View.GONE);
+        if (!payMethods.contains("Meal Plan - Swipe"))
+            swipe_icon.setVisibility(View.GONE);
+        if (!payMethods.contains("Cash"))
+            dollar_icon.setVisibility(View.GONE);
 
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
