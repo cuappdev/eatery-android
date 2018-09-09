@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     currentList = centralList;
                     break;
                 }
-                // Central button is not pressed or unclicked
+                // Central button is (not pressed) or unclicked
                 else{
                     changeButtonColor("#4B7FBE","#F2F2F2",centralButton);
                     centralPressed = false;
