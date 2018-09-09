@@ -5,24 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cornellappdev.android.eatery.MainActivity"
     android:focusableInTouchMode="true"
-    >
+    tools:context="com.cornellappdev.android.eatery.MainActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
-        />
+        android:layout_centerVertical="true" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView"
         android:paddingBottom="60dp">
 
         <RelativeLayout
@@ -46,9 +44,9 @@
                         android:id="@+id/northButton"
                         android:layout_width="65dp"
                         android:layout_height="35dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/button"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
@@ -62,10 +60,10 @@
                         android:id="@+id/westButton"
                         android:layout_width="65dp"
                         android:layout_height="35dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
 
                         android:background="@drawable/button"
 
@@ -81,24 +79,25 @@
                         android:id="@+id/centralButton"
                         android:layout_width="65dp"
                         android:layout_height="35dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/button"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
-                        android:background="@drawable/button"
                         android:text="Central"
-                        android:textColor="#4B7FBE"
                         android:textAllCaps="false"
+                        android:textColor="#4B7FBE"
                         android:textSize="15sp" />
+
                     <Button
                         android:id="@+id/swipes"
                         android:layout_width="65dp"
                         android:layout_height="35dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/button"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
@@ -107,13 +106,14 @@
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
                         android:textSize="15sp" />
+
                     <Button
                         android:id="@+id/brb"
                         android:layout_width="65dp"
                         android:layout_height="35dp"
-                        android:layout_marginTop="15dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="15dp"
                         android:background="@drawable/button"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
@@ -127,16 +127,15 @@
             </HorizontalScrollView>
 
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cafe_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/scroll"
                 android:clipToPadding="false"
-                android:onClick="filterClick"
                 android:nestedScrollingEnabled="false"
-                android:visibility="gone"/>
+                android:onClick="filterClick"
+                android:visibility="gone" />
         </RelativeLayout>
     </ScrollView>
 

@@ -94,7 +94,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
         switch (input_holder.getItemViewType()){
             case IMAGE:
-                Log.i("hello","in bindview holder");
                 ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
 
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());

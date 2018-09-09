@@ -11,13 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
@@ -26,6 +27,7 @@ import com.cornellappdev.android.eatery.NetworkUtils.ConnectionUtilities;
 import com.cornellappdev.android.eatery.NetworkUtils.JsonUtilities;
 import com.cornellappdev.android.eatery.NetworkUtils.NetworkUtilities;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,9 +35,9 @@ import java.util.HashSet;
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler{
 
     public RecyclerView mRecyclerView;
-    public ArrayList<CafeteriaModel> cafeList =new ArrayList<CafeteriaModel>(); //holds all cafes
-    public ArrayList<CafeteriaModel> currentList= new ArrayList<CafeteriaModel>(); //button filter list
-    public ArrayList<CafeteriaModel> searchList= new ArrayList<CafeteriaModel>(); // searchbar filter list
+    public ArrayList<CafeteriaModel> cafeList =new ArrayList<>(); //holds all cafes
+    public ArrayList<CafeteriaModel> currentList= new ArrayList<>(); //button filter list
+    public ArrayList<CafeteriaModel> searchList= new ArrayList<>(); // searchbar filter list
     public CafeteriaDbHelper dbHelper;
     public MainListAdapter listAdapter;
     public boolean northPressed = false;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
-            cafeList = new ArrayList<CafeteriaModel>();
+            cafeList = new ArrayList<>();
             if(JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext())!=null){
                 cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(),getApplicationContext());
             }
@@ -125,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         switch(id){
             case R.id.northButton:
-                Log.i("hello","in north");
                 if(!northPressed) {
                     // Change color of north button + set boolean(clicked)
                     changeButtonColor("#FFFFFF","#4B7FBE",northButton);
@@ -353,6 +354,13 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         getMenuInflater().inflate(R.menu.menu_main,menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        AutoCompleteTextView searchTextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception e) {
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
