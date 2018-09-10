@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,8 @@ public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeLoc;
     TextView cafeIsOpen;
+    TextView getDirections;
+    ImageView swipe_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -76,6 +79,8 @@ public class MenuActivity extends AppCompatActivity {
                 + cafeData.getCloseTime());
         openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        openString.setSpan(new ForegroundColorSpan(Color.parseColor("#4B7FBE")),
+                0, cafeData.isOpen().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         cafeIsOpen.setText(openString);
         cafeIsOpen.setTextSize(15);
 
@@ -90,6 +95,21 @@ public class MenuActivity extends AppCompatActivity {
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                imageRes, 400, 400));
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
+
+        getDirections = findViewById(R.id.directions);
+        getDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putExtra("cafeData", cafeList);
+                startActivity(intent);
+            }
+        });
+
+        swipe_icon = findViewById(R.id.swipe_icon);
+        if (!cafeData.getIs_diningHall()) {
+            swipe_icon.setVisibility(View.GONE);
+        }
 
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
