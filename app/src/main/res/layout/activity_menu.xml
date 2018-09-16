@@ -24,7 +24,7 @@
                 app:maxLines="3"
                 android:fitsSystemWindows="true">
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"

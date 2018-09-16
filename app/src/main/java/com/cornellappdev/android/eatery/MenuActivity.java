@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -25,11 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
-    ImageView cafeImage;
+    SimpleDraweeView cafeImage;
     TextView cafeLoc;
     TextView cafeIsOpen;
     LinearLayout linLayout;
@@ -55,8 +57,6 @@ public class MenuActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(cafeName);
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
-
-        cafeName = "@drawable/" + convertName(cafeName);
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
@@ -85,10 +85,11 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
-        int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
-
-        cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
-               imageRes, 400, 400));
+        String imageLocation =
+                "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
+                        + convertName(cafeName + ".jpg");
+        Uri uri = Uri.parse(imageLocation);
+        cafeImage.setImageURI(uri);
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
         customPager = findViewById(R.id.pager);
@@ -253,13 +254,19 @@ public class MenuActivity extends AppCompatActivity {
 
     /** Gets name of corresponding picture to cafe**/
     public static String convertName(String str) {
-        //Android does not allow image names to begin with a number
-        if (str.equals("104West!")) return "west";
+        if (str.equals("104West!.jpg")) return "104-West.jpg";
+        if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
+        if (str.equals("Franny's.jpg")) return "frannys.jpg";
+        if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
+        if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
+        if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
+        if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
 
+
+        str = str.replaceAll("!", "");
         str = str.replaceAll("[&\']", "");
-        str = str.replaceAll(" ", "_");
+        str = str.replaceAll(" ", "-");
         str = str.replaceAll("é", "e");
-        str = str.toLowerCase();
         return str;
     }
 
