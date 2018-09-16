@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -34,6 +35,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Context mContext;
     final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
+    private String mQuery;
     private ArrayList<CafeteriaModel> cafeList;
     private ArrayList<CafeteriaModel> cafeListFiltered;
     private final int TEXT = 1;
@@ -60,7 +62,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
-    public void setList(ArrayList<CafeteriaModel> list, int count){
+    public void setList(ArrayList<CafeteriaModel> list, int count, String query){
+        mQuery = query;
         mCount = count;
         cafeListFiltered = list;
         notifyDataSetChanged();
@@ -130,7 +133,17 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ArrayList<String> itemList = cafeListFiltered.get(position).getSearchedItems();
                 Collections.sort(itemList);
                 String items = itemList.toString().substring(1, itemList.toString().length()-1);
-                holder2.cafe_items.setText(items);
+
+                if (mQuery != null) {
+                    // Find case-matching instances to bold
+                    items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
+                    // Find instances that don't make the case of the query and bold them
+                    int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
+                    mQuery = items.substring(begIndex, begIndex + mQuery.length());
+                    items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
+                }
+
+                holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
                 break;
         }
     }
