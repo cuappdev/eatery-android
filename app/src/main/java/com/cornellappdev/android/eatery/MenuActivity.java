@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
+    TextView cafeText;
     TextView cafeLoc;
     TextView cafeIsOpen;
     LinearLayout linLayout;
@@ -51,8 +52,10 @@ public class MenuActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String cafeName = (String) intent.getSerializableExtra("locName");
+        cafeText = findViewById(R.id.ind_cafe_name);
+        cafeText.setText(cafeName);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(cafeName);
+        collapsingToolbar.setTitle("");
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
 
@@ -74,13 +77,11 @@ public class MenuActivity extends AppCompatActivity {
         cafeIsOpen = findViewById(R.id.ind_open);
         SpannableString openString = new SpannableString(cafeData.isOpen() + "  "
                 + cafeData.getCloseTime());
-        openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
+//                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         cafeIsOpen.setText(openString);
-        cafeIsOpen.setTextSize(15);
 
         cafeLoc = findViewById(R.id.ind_loc);
-        cafeLoc.setTextSize(15);
         cafeLoc.setText(cafeData.getBuildingLocation());
 
         cafeImage = findViewById(R.id.ind_image);
