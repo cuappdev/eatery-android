@@ -32,7 +32,9 @@ public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeText;
     TextView cafeLoc;
+    TextView directions;
     TextView cafeIsOpen;
+    ImageView swipeIcon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -55,7 +57,7 @@ public class MenuActivity extends AppCompatActivity {
         cafeText = findViewById(R.id.ind_cafe_name);
         cafeText.setText(cafeName);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("");
+        collapsingToolbar.setTitle(" ");
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
 
@@ -92,6 +94,20 @@ public class MenuActivity extends AppCompatActivity {
                imageRes, 400, 400));
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
+        swipeIcon = findViewById(R.id.swipe_icon);
+        if (!cafeData.getIs_diningHall()) {
+            swipeIcon.setVisibility(View.GONE);
+        }
+
+        directions = findViewById(R.id.ind_direction);
+        directions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentMap = new Intent(view.getContext(), MapsActivity.class);
+                intentMap.putExtra("cafeData", cafeList);
+                startActivity(intentMap);
+            }
+        });
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
         linLayout = findViewById(R.id.linear);
@@ -106,21 +122,26 @@ public class MenuActivity extends AppCompatActivity {
             blank.setBackgroundColor(Color.argb(100, 192,192, 192));
             blank.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    6));
+                    2));
             linLayout.addView(blank);
 
-            TextView categoryText = new TextView(this);
-            SpannableString str = new SpannableString("CAFE ITEMS");
-            categoryText.setText(str);
-            categoryText.setTextSize(18);
-            categoryText.setPadding(0, 40,0, 16);
-            linLayout.addView(categoryText);
+            float scale = getResources().getDisplayMetrics().density;
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView mealItemText = new TextView(this);
                 mealItemText.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
-                mealItemText.setTextSize(14);
-                mealItemText.setPadding(0, 0, 0, 8);
+                mealItemText.setTextSize(24);
+                mealItemText.setTextColor(Color.BLACK);
+                mealItemText.setPadding((int)(24*scale + 0.5f), (int)(16*scale + 0.5f), 0, (int)(16*scale + 0.5f));
                 linLayout.addView(mealItemText);
+
+                View divider = new View(this);
+                divider.setBackgroundColor(Color.argb(100, 192,192, 192));
+                LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        2);
+                dividerParams.setMargins((int)(24*scale + 0.5f), 0, 0, 0);
+                divider.setLayoutParams(dividerParams);
+                linLayout.addView(divider);
             }
         }
 
