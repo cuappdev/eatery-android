@@ -1,24 +1,16 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -28,7 +20,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,8 +97,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
                 // TODO(lesley): change location of images to githhub
-                String imageLocation = "drawable/" + convertName(cafeListFiltered.get(position).getNickName());
-                Uri uri = Uri.parse("android.resource://com.cornellappdev.android.eatery/" + imageLocation);
+                String imageLocation =
+                        "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
+                                + convertName(cafeListFiltered.get(position).getNickName() + ".jpg");
+                Uri uri = Uri.parse(imageLocation);
                 holder.cafeDrawee.setImageURI(uri);
 
                 SpannableString openString = new SpannableString(cafeListFiltered.get(position).isOpen());
@@ -214,12 +207,19 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public static String convertName(String str) {
-        if (str.equals("104West!")) return "west";
+        if (str.equals("104West!.jpg")) return "104-West.jpg";
+        if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
+        if (str.equals("Franny's.jpg")) return "frannys.jpg";
+        if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
+        if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
+        if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
+        if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
 
+
+        str = str.replaceAll("!", "");
         str = str.replaceAll("[&\']", "");
-        str = str.replaceAll(" ", "_");
+        str = str.replaceAll(" ", "-");
         str = str.replaceAll("é", "e");
-        str = str.toLowerCase();
         return str;
     }
 }
