@@ -45,6 +45,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ccd0d5"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,32 +55,76 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infobox"
-            android:background="#d5e0e0e0"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-
-            >
+            android:background="#f2f2f2"
+            android:elevation="1dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingLeft="24dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="12dp"
+                android:textSize="36sp"
+                android:textColor="#000000"
+                android:id="@+id/ind_cafe_name"
+                android:text="Name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ind_cafe_name"
+                android:textSize="24sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#000000"
                 android:id="@+id/ind_open"
                 android:text="Open?"/>
-
-
             <TextView
                 android:id="@+id/ind_loc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ind_open"
-                android:paddingLeft="12dp"
+                android:textSize="24sp"
+                android:textColor="#000000"
                 android:text="Location" />
+            <TextView
+                android:id="@+id/ind_direction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ind_open"
+                android:layout_alignParentRight="true"
+                android:paddingRight="24dp"
+                android:textSize="24sp"
+                android:textColor="#4e80bd"
+                android:text="Get Directions" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/dollar_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:src="@drawable/dollar_icon"
+                />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/brb_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="76dp"
+                android:src="@drawable/brb_icon"
+                />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/swipe_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="128dp"
+                android:src="@drawable/swipe_icon"
+                />
         </RelativeLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Menu"
+                android:background="#f2f2f2"
+                android:layout_marginTop="16dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="8dp"
                 android:textAlignment="center"
