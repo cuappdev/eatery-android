@@ -139,8 +139,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
                     // Find instances that don't make the case of the query and bold them
                     int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
-                    mQuery = items.substring(begIndex, begIndex + mQuery.length());
-                    items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
+                    String queryMatchingItemCase =
+                            items.substring(begIndex, begIndex + mQuery.length());
+                    items = items.replaceAll(queryMatchingItemCase, 
+                            "<b>" + queryMatchingItemCase + "</b>");
                 }
 
                 holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
