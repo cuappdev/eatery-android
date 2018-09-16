@@ -18,11 +18,10 @@
                 android:layout_height="match_parent"
                 android:id="@+id/collapsing_toolbar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:contentScrim="?attr/colorPrimary"
+                app:contentScrim="#4e80bd"
+                app:layout_collapseMode="pin"
                 app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-                app:expandedTitleMarginStart="16dp"
-                app:maxLines="3"
-                android:fitsSystemWindows="true">
+                app:maxLines="3">
 
                 <ImageView
                     android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +41,7 @@ public class MenuActivity extends AppCompatActivity {
     private CustomPager customPager;
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
+    AppBarLayout appbar;
     net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout collapsingToolbar;
 
     @Override
@@ -53,15 +55,34 @@ public class MenuActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         Intent intent = getIntent();
-        String cafeName = (String) intent.getSerializableExtra("locName");
+        final String cafeName = (String) intent.getSerializableExtra("locName");
         cafeText = findViewById(R.id.ind_cafe_name);
         cafeText.setText(cafeName);
         collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
-        collapsingToolbar.setExpandedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
 
-        cafeName = "@drawable/" + convertName(cafeName);
+        appbar = findViewById(R.id.appbar);
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbar.setTitle(cafeName);
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+                    isShow = false;
+                }
+            }
+        });
+
+        String cafeImageName = "@drawable/" + convertName(cafeName);
 
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
@@ -88,7 +109,7 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
-        int imageRes = getResources().getIdentifier(cafeName, null, getPackageName());
+        int imageRes = getResources().getIdentifier(cafeImageName, null, getPackageName());
 
         cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
                imageRes, 400, 400));
