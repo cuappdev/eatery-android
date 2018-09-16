@@ -126,11 +126,6 @@
 
                 </LinearLayout>
             </HorizontalScrollView>
-
-<<<<<<< HEAD
-=======
-
->>>>>>> master
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cafe_list"
                 android:layout_width="match_parent"
