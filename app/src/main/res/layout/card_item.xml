@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:background="#f2f2f2">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -35,10 +36,10 @@
                 android:id="@+id/cafe_name"
                 android:text="Location"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="10dp"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                android:textColor="#1e1e1e"
+                android:textColor="@color/primary"
                 />
 
             <TextView
@@ -47,11 +48,11 @@
                 android:layout_below="@id/cafe_name"
                 android:text="Open"
                 android:id="@+id/cafe_open"
-                android:paddingLeft="12dp"
+                android:paddingLeft="10dp"
                 android:paddingBottom="6dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:textColor="#5482BA"/>
+                />
 
             <TextView
                 android:layout_width="match_parent"
@@ -70,6 +71,31 @@
                 android:layout_below="@id/cafe_open"
                 android:id="@+id/cardviewStatus"
                 android:background="#d5e0e0e0" />
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:id="@+id/icon_1"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:src="@drawable/dollar_icon"-->
+                <!--/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:id="@+id/icon_2"-->
+                <!--android:layout_alignRight="@+id/icon_1"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:src="@drawable/brb_icon"-->
+                <!--/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:id="@+id/icon_3"-->
+                <!--android:layout_alignRight="@+id/icon_2"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:src="@drawable/swipe_icon"-->
+                <!--/>-->
+
 
             <!--<TextView-->
                 <!--android:layout_width="match_parent"-->

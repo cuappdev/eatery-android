@@ -178,7 +178,7 @@
                          {
                              "descr": "General",
                              "start": "7:30am",
-                             "end": "9:00pm",
+                             "end": "8:00pm",
                              "menu": []
                          }
                         ]
@@ -211,7 +211,7 @@
                          {
                              "descr": "General",
                              "start": "11:00am",
-                             "end": "8:00pm",
+                             "end": "7:00pm",
                              "menu": []
                         }
                     ]

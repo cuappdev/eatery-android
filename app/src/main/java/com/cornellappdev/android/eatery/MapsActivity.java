@@ -92,11 +92,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             cafeMarker.setSnippet(isOpenedStr + System.lineSeparator() + loc );
 
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                // TODO(lesley): Need to create separate icons eventually
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.black_eatery_pin));
             } else if(cafe.getCurrentStatus()==CafeteriaModel.Status.OPEN){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(120f));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.eatery_pin));
             } else{
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(52f));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.eatery_pin));
             }
         }
 
