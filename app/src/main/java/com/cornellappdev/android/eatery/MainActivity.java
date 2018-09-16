@@ -379,6 +379,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         for (CafeteriaModel model : cafeList) {
                             HashSet<String> mealSet = model.getMealItems();
 
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
+                                filteredList.add(model);
+                            }
+
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
                                     if(!filteredList.contains(model))
@@ -393,6 +398,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     else {
                         for (CafeteriaModel model : currentList) {
                             HashSet<String> mealSet = model.getMealItems();
+
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
+                                filteredList.add(model);
+                            }
 
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
@@ -423,19 +433,30 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     // If no buttons clicked, loop through cafelist
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
+
                             HashSet<String> mealSet = model.getMealItems();
                             ArrayList<String> matchedItems= new ArrayList<String>();
+                            ArrayList<String> full_items = new ArrayList<>();
+
                             boolean found_item = false;
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
                                     matchedItems.add(item);
                                     found_item = true;
                                 }
+                                full_items.add(item);
+
                             }
                             if(found_item){
                                 model.setSearchedItems(matchedItems);
                                 if(!filteredList.contains(model))
                                     filteredList.add(model);
+                            }
+
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((newText.toLowerCase()))&&!filteredList.contains(model)&&model.isOpen().equals("Open")){
+                                model.setSearchedItems(full_items);
+                                filteredList.add(model);
                             }
                         }
                         searchList = filteredList;
