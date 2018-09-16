@@ -373,6 +373,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
                             HashSet<String> mealSet = model.getMealItems();
+
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
                             if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
                                 filteredList.add(model);
                             }
@@ -392,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         for (CafeteriaModel model : currentList) {
                             HashSet<String> mealSet = model.getMealItems();
 
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
                             if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
                                 filteredList.add(model);
                             }
@@ -445,6 +448,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                                     filteredList.add(model);
                             }
 
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
                             if(model.getNickName().toLowerCase().contains((newText.toLowerCase()))&&!filteredList.contains(model)&&model.isOpen().equals("Open")){
                                 model.setSearchedItems(full_items);
                                 filteredList.add(model);
