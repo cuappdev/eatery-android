@@ -20,6 +20,8 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity
@@ -27,17 +29,7 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"
             />
-        <activity
-            android:name="com.cornellappdev.android.eatery.SplashActivity"
-            android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
             android:theme="@style/NoActionBar"

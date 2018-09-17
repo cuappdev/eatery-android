@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button brbButton;
     public ProgressBar progressBar;
     public BottomNavigationView bnv;
+    public RelativeLayout splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         brbButton = findViewById(R.id.brb);
         progressBar = findViewById(R.id.progress_bar);
         bnv = findViewById(R.id.bottom_navigation);
+        splash = findViewById(R.id.relative_layout_splash);
+        bnv.setVisibility(View.GONE);
+        getSupportActionBar().hide();
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -323,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
         }
         Collections.sort(currentList);
-        listAdapter.setList(currentList,currentList.size());
+        listAdapter.setList(currentList,currentList.size(), null);
     }
 
     @Override
@@ -379,6 +384,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         for (CafeteriaModel model : cafeList) {
                             HashSet<String> mealSet = model.getMealItems();
 
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
+                                filteredList.add(model);
+                            }
+
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
                                     if(!filteredList.contains(model))
@@ -394,6 +404,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         for (CafeteriaModel model : currentList) {
                             HashSet<String> mealSet = model.getMealItems();
 
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)){
+                                filteredList.add(model);
+                            }
+
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(query.toLowerCase())){
                                     if(!filteredList.contains(model))
@@ -405,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(searchList, searchList.size(), query);
                 return false;
             }
 
@@ -423,19 +438,30 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     // If no buttons clicked, loop through cafelist
                     if(!northPressed&&!centralPressed&&!westPressed&&!swipesPressed&&!brbPressed){
                         for (CafeteriaModel model : cafeList) {
+
                             HashSet<String> mealSet = model.getMealItems();
                             ArrayList<String> matchedItems= new ArrayList<String>();
+                            ArrayList<String> full_items = new ArrayList<>();
+
                             boolean found_item = false;
                             for(String item : mealSet){
                                 if(item.toLowerCase().contains(newText.toLowerCase())){
                                     matchedItems.add(item);
                                     found_item = true;
                                 }
+                                full_items.add(item);
+
                             }
                             if(found_item){
                                 model.setSearchedItems(matchedItems);
                                 if(!filteredList.contains(model))
                                     filteredList.add(model);
+                            }
+
+                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                            if(model.getNickName().toLowerCase().contains((newText.toLowerCase()))&&!filteredList.contains(model)&&model.isOpen().equals("Open")){
+                                model.setSearchedItems(full_items);
+                                filteredList.add(model);
                             }
                         }
                         searchList = filteredList;
@@ -462,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(searchList, searchList.size(), newText);
                 return false;
             }
         });
@@ -486,6 +512,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         protected void onPostExecute(ArrayList<CafeteriaModel> result) {
             super.onPostExecute(result);
 
+            splash.setVisibility(View.GONE);
+            bnv.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
+
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
@@ -494,6 +524,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             mRecyclerView.setAdapter(listAdapter);
             mRecyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+
+
         }
     }
 }
