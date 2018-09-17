@@ -48,13 +48,15 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/button"
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
                         android:text="North"
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
-                        android:textSize="15sp" />
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
                     <Button
                         android:id="@+id/westButton"
@@ -64,16 +66,16 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="15dp"
-
                         android:background="@drawable/button"
-
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
                         android:text="West"
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
-                        android:textSize="15sp" />
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
                     <Button
                         android:id="@+id/centralButton"
@@ -83,13 +85,15 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/button"
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
                         android:text="Central"
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
-                        android:textSize="15sp" />
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
                     <Button
                         android:id="@+id/swipes"
@@ -99,13 +103,15 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/button"
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
                         android:text="Swipes"
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
-                        android:textSize="15sp" />
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
                     <Button
                         android:id="@+id/brb"
@@ -115,13 +121,15 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/button"
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:onClick="filterClick"
                         android:padding="8dp"
                         android:text="BRB"
                         android:textAllCaps="false"
                         android:textColor="#4B7FBE"
-                        android:textSize="15sp" />
+                        android:textSize="14sp"
+                        android:textStyle="normal" />
 
                 </LinearLayout>
             </HorizontalScrollView>

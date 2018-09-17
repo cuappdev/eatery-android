@@ -141,7 +141,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
                     String queryMatchingItemCase =
                             items.substring(begIndex, begIndex + mQuery.length());
-                    items = items.replaceAll(queryMatchingItemCase, 
+                    items = items.replaceAll(queryMatchingItemCase,
                             "<b>" + queryMatchingItemCase + "</b>");
                 }
 
