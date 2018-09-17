@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
         }
         Collections.sort(currentList);
-        listAdapter.setList(currentList,currentList.size());
+        listAdapter.setList(currentList,currentList.size(), null);
     }
 
     @Override
@@ -415,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(searchList, searchList.size(), query);
                 return false;
             }
 
@@ -483,7 +483,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size());
+                listAdapter.setList(searchList, searchList.size(), newText);
                 return false;
             }
         });
