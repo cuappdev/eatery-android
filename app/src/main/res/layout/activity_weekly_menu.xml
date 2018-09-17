@@ -168,15 +168,18 @@
                 android:textStyle="bold"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:paddingBottom="15dp"
+                android:background="#f5f5f5"
+                android:textColor="#de000000"
                 android:textSize="30dp"
                 android:paddingTop="25dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_west"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#efefef"
-                android:dividerHeight="0dp"
-                android:paddingTop="5dp" />
+                android:divider="#BABBB8"
+                android:dividerHeight="0.5dp"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,15 +188,18 @@
                 android:textStyle="bold"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:paddingBottom="15dp"
+                android:background="#f5f5f5"
+                android:textColor="#de000000"
                 android:textSize="30dp"
                 android:paddingTop="25dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_north"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#efefef"
-                android:dividerHeight="0dp"
-                android:paddingTop="5dp" />
+                android:divider="#BABBB8"
+                android:dividerHeight="0.5dp"
+                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -202,15 +208,18 @@
                 android:textStyle="bold"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:paddingBottom="15dp"
+                android:background="#f5f5f5"
+                android:textColor="#de000000"
                 android:textSize="30dp"
                 android:paddingTop="25dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_central"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#efefef"
-                android:dividerHeight="0dp"
-                android:paddingTop="5dp" />
+                android:divider="#BABBB8"
+                android:dividerHeight="0.5dp"
+                />
         </LinearLayout>
     </ScrollView>
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.Model.MealModel;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
@@ -114,7 +113,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         headerText.setText(m.getNickName());
 
         // TODO(lesley): Not all the times show up for the meals, esp Risley + Okenshields
-        TextView timetext = view.findViewById(R.id.time);
+        TextView timetext1 = view.findViewById(R.id.time1);
+        TextView timetext2 = view.findViewById(R.id.time2);
 
         try {
             ArrayList<MealModel> day = m.getWeeklyMenu().get(dateOffset);
@@ -122,9 +122,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             MealModel meal = day.get(mealIndex - (2-length));
 
             SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-            String startTime = localDateFormat.format(meal.getStart());
             String endTime = localDateFormat.format(meal.getEnd());
-            timetext.setText("Open " + startTime + " to " + endTime);
+            timetext1.setText("Open ");
+            timetext2.setText("Closes at " + endTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
