@@ -35,8 +35,8 @@
                 android:layout_below="@id/cafe_image"
                 android:id="@+id/cafe_name"
                 android:text="Location"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="12dp"
                 android:textSize="16sp"
                 android:textStyle="normal"
                 android:textColor="@color/primary"
@@ -48,8 +48,9 @@
                 android:layout_below="@id/cafe_name"
                 android:text="Open"
                 android:id="@+id/cafe_open"
-                android:paddingLeft="10dp"
-                android:paddingBottom="6dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="0dp"
+                android:paddingRight="4dp"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 />
@@ -61,52 +62,44 @@
                 android:layout_toRightOf="@id/cafe_open"
                 android:text="Time"
                 android:id="@+id/cafe_time"
-                android:paddingLeft="8dp"
                 android:textSize="12sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_gravity="center"
-                android:layout_below="@id/cafe_open"
-                android:id="@+id/cardviewStatus"
-                android:background="#d5e0e0e0" />
-            <!--<ImageView-->
-                <!--android:layout_width="20dp"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:id="@+id/icon_1"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:src="@drawable/dollar_icon"-->
-                <!--/>-->
-            <!--<ImageView-->
-                <!--android:layout_width="20dp"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:id="@+id/icon_2"-->
-                <!--android:layout_alignRight="@+id/icon_1"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:src="@drawable/brb_icon"-->
-                <!--/>-->
-            <!--<ImageView-->
-                <!--android:layout_width="20dp"-->
-                <!--android:layout_height="20dp"-->
-                <!--android:id="@+id/icon_3"-->
-                <!--android:layout_alignRight="@+id/icon_2"-->
-                <!--android:layout_marginRight="12dp"-->
-                <!--android:src="@drawable/swipe_icon"-->
-                <!--/>-->
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/cafe_image"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/icon_1"
+                android:src="@drawable/dollar_icon"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/icon_2"
+                android:layout_below="@id/cafe_image"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@id/icon_1"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/brb_icon"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/icon_3"
+                android:layout_below="@id/cafe_image"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@id/icon_2"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/swipe_icon"
+                />
 
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_toRightOf="@id/cafe_name"-->
-                <!--android:layout_below="@id/cafe_name"-->
-                <!--android:text="0 mi"-->
-                <!--android:id="@+id/cafe_mile"-->
-                <!--android:gravity="right"-->
-                <!--android:paddingRight="16dp"-->
-                <!--android:textSize="14sp" />-->
+
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

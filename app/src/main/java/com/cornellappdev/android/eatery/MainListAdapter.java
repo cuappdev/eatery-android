@@ -112,13 +112,13 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 Collections.sort(cafeListFiltered);
                 if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
+//                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
                     holder.cafeOpen.setText("Closed");
                 } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
-                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
+//                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
                     holder.cafeOpen.setText("Closing Soon");
                 } else{
-                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
+//                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
                     holder.cafeOpen.setText("Open");
                 }
 
@@ -180,7 +180,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafeTime =  itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
-            line = itemView.findViewById(R.id.cardviewStatus);
+//            line = itemView.findViewById(R.id.cardviewStatus);
 //            icon_1 = itemView.findViewById(R.id.icon_1);
 //            icon_2 = itemView.findViewById(R.id.icon_2);
 //            icon_3 = itemView.findViewById(R.id.icon_3);

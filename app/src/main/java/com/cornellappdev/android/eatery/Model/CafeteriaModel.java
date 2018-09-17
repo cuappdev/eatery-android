@@ -131,7 +131,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                 int curT = now.getHours()*60 + now.getMinutes();
                 System.out.println(now.getHours());
                 if(curT>=startT && curT<endT){
-                    closeTime = "Closes at" + timeFormat.format(hours.get(day).get(1));
+                    closeTime = "Closes at " + timeFormat.format(hours.get(day).get(1));
                     return "Open";
                 }
                 else if(curT< startT){

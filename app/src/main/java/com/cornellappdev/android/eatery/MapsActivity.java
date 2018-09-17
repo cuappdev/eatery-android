@@ -4,8 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -92,11 +96,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             cafeMarker.setSnippet(isOpenedStr + System.lineSeparator() + loc );
 
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.black_eatery_pin));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.gray_pin),72,96,false)));
             } else if(cafe.getCurrentStatus()==CafeteriaModel.Status.OPEN){
-                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.eatery_pin));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.blue_pin),72,96,false)));
             } else{
-                cafeMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.eatery_pin));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.blue_pin),72,96,false)));
             }
         }
 
@@ -199,6 +203,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+    private Bitmap bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
             new GoogleMap.OnMyLocationButtonClickListener() {
