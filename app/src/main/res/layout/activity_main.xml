@@ -8,6 +8,13 @@
     android:focusableInTouchMode="true"
     tools:context="com.cornellappdev.android.eatery.MainActivity">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </RelativeLayout>
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:progressBarStyle"
@@ -148,5 +155,13 @@
         app:itemIconTint="#ffffff"
         app:itemTextColor="#ffffff"
         app:menu="@menu/bottom_nav_main" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relative_layout_splash">
+
+        <include layout="@layout/splash_screen"/>
+    </RelativeLayout>
 
 </android.widget.RelativeLayout>

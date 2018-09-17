@@ -18,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button brbButton;
     public ProgressBar progressBar;
     public BottomNavigationView bnv;
+    public RelativeLayout splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         brbButton = findViewById(R.id.brb);
         progressBar = findViewById(R.id.progress_bar);
         bnv = findViewById(R.id.bottom_navigation);
+        splash = findViewById(R.id.relative_layout_splash);
+        bnv.setVisibility(View.GONE);
+        getSupportActionBar().hide();
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if(!con.isNetworkAvailable()){
@@ -486,6 +491,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         protected void onPostExecute(ArrayList<CafeteriaModel> result) {
             super.onPostExecute(result);
 
+            splash.setVisibility(View.GONE);
+            bnv.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
+
             mRecyclerView.setHasFixedSize(true);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL,false);
             mRecyclerView.setLayoutManager(layoutManager);
@@ -494,6 +503,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             mRecyclerView.setAdapter(listAdapter);
             mRecyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+
+
         }
     }
 }
