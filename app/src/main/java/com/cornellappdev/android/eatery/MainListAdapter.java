@@ -137,12 +137,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 if (mQuery != null) {
                     // Find case-matching instances to bold
                     items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
-                    // Find instances that don't make the case of the query and bold them
+                    // Find instances that don't match the case of the query and bold them
                     int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
-                    String queryMatchingItemCase =
-                            items.substring(begIndex, begIndex + mQuery.length());
-                    items = items.replaceAll(queryMatchingItemCase,
-                            "<b>" + queryMatchingItemCase + "</b>");
+                    if (begIndex >= 0) {
+                        String queryMatchingItemCase =
+                                items.substring(begIndex, begIndex + mQuery.length());
+                        items = items.replaceAll(queryMatchingItemCase,
+                                "<b>" + queryMatchingItemCase + "</b>");
+                    }
                 }
 
                 holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
