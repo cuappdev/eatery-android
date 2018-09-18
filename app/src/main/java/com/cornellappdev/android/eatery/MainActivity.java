@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size(), query);
+                listAdapter.setList(searchList, searchList.size(), query.length() == 0 ? null : query);
                 return false;
             }
 
@@ -490,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                 }
                 Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size(), newText);
+                listAdapter.setList(searchList, searchList.size(), newText.length() == 0 ? null : newText);
                 return false;
             }
         });
