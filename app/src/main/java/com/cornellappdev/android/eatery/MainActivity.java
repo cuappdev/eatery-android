@@ -377,6 +377,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // Query given
                 else {
+                    query = query.trim();
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     searchPressed = true;
                     // If none of the buttons clicked, loop through cafeList
@@ -433,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 }
                 // Some text given
                 else {
+                    newText = newText.trim();
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     searchPressed = true;
                     // If no buttons clicked, loop through cafelist

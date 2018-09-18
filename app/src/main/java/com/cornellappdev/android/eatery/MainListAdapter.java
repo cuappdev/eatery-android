@@ -135,10 +135,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 String items = itemList.toString().substring(1, itemList.toString().length()-1);
 
                 if (mQuery != null) {
+                    // Fixes conflict with replacing character 'b' after inserting HTML bold tags
+                    if (mQuery.equals("B")) mQuery = "b";
+
                     // Find case-matching instances to bold
                     items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
+
                     // Find instances that don't match the case of the query and bold them
-                    int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
+                    int begIndex = items.replaceAll(mQuery, " ").toLowerCase().indexOf(mQuery.toLowerCase());
                     if (begIndex >= 0) {
                         String queryMatchingItemCase =
                                 items.substring(begIndex, begIndex + mQuery.length());
