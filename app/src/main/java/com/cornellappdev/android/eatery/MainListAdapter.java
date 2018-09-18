@@ -3,7 +3,10 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -12,6 +15,8 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -112,15 +117,61 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 Collections.sort(cafeListFiltered);
                 if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-//                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
                     holder.cafeOpen.setText("Closed");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+                    holder.rlayout.setAlpha(.6f);
+
                 } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
-//                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
                     holder.cafeOpen.setText("Closing Soon");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                    holder.rlayout.setAlpha(1f);
+
+
                 } else{
-//                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
                     holder.cafeOpen.setText("Open");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                    holder.rlayout.setAlpha(1f);
+
                 }
+                int numMethods =0;
+
+                int i=1;
+                //This is setting the icons for the different payment methods
+                for(String payMethod:cafeListFiltered.get(position).getPay_methods()){
+                    int payImage = getPayImage(payMethod);
+                    if(payImage!=-1){
+                        if(i==1){
+                            holder.icon_1.setImageResource(payImage);
+                            i++;
+                        }
+                        else if(i==2){
+                            holder.icon_2.setImageResource(payImage);
+                            i++;
+                        }
+                        else if(i==3){
+                            holder.icon_3.setImageResource(payImage);
+                            i++;
+
+                        }
+                    }
+                }
+                //this is removing any unused payment icons
+                while(i!=4){
+                    if(i==1){
+                        holder.icon_1.setVisibility(View.INVISIBLE);
+                        i++;
+                    }
+                    if(i==2){
+                        holder.icon_2.setVisibility(View.INVISIBLE);
+                        i++;
+                    }
+                    if(i==3){
+                        holder.icon_3.setVisibility(View.INVISIBLE);
+                        i++;
+
+                    }
+                }
+
 
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
                 break;
@@ -159,6 +210,19 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public int getPayImage(String payment){
+        if(payment.equalsIgnoreCase("Meal Plan - Debit")){
+            return R.drawable.brb_icon;
+        }
+        else if(payment.equalsIgnoreCase("Meal Plan - Swipe")){
+            return R.drawable.swipe_icon;
+        }
+        else if(payment.equalsIgnoreCase("Major Credit Cards")){
+            return R.drawable.dollar_icon;
+        }
+        else return -1;
+    }
+
     @Override
     public int getItemCount() {
         return mCount;
@@ -168,11 +232,11 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
-//        ImageView icon_1;
-//        ImageView icon_2;
-//        ImageView icon_3;
-        View line;
+        ImageView icon_1;
+        ImageView icon_2;
+        ImageView icon_3;
         SimpleDraweeView cafeDrawee;
+        CardView rlayout;
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
@@ -181,9 +245,11 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
 //            line = itemView.findViewById(R.id.cardviewStatus);
-//            icon_1 = itemView.findViewById(R.id.icon_1);
-//            icon_2 = itemView.findViewById(R.id.icon_2);
-//            icon_3 = itemView.findViewById(R.id.icon_3);
+            icon_1 = itemView.findViewById(R.id.icon_1);
+            icon_2 = itemView.findViewById(R.id.icon_2);
+            icon_3 = itemView.findViewById(R.id.icon_3);
+            rlayout = itemView.findViewById(R.id.cv);
+
 
             itemView.setOnClickListener(this);
         }
