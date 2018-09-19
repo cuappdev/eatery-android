@@ -365,7 +365,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        setTitle("Eateries");
         AutoCompleteTextView searchTextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        int max = searchView.getMaxWidth();
+        searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
