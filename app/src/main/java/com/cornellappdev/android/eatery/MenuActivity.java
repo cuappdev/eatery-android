@@ -44,7 +44,6 @@ public class MenuActivity extends AppCompatActivity {
     AppBarLayout appbar;
     CollapsingToolbarLayout collapsingToolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +62,7 @@ public class MenuActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(" ");
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayout);
 
+        // Shows/hides title depending on scroll offset
         appbar = findViewById(R.id.appbar);
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = true;
@@ -82,8 +82,6 @@ public class MenuActivity extends AppCompatActivity {
                 }
             }
         });
-
-
 
         String cafeImageName = "@drawable/" + convertName(cafeName);
 
