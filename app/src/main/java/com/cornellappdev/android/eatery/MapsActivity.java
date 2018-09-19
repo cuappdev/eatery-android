@@ -42,17 +42,56 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public BottomNavigationView bnv;
 
+    class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private View myContentsView;
+
+        MyInfoWindowAdapter(){
+            myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+            TextView cafe_name = ((TextView)myContentsView.findViewById(R.id.info_cafe_name));
+            cafe_name.setText(marker.getTitle());
+            TextView cafe_open = ((TextView)myContentsView.findViewById(R.id.info_cafe_open));
+            TextView cafe_desc = ((TextView)myContentsView.findViewById(R.id.info_cafe_desc));
+            String firstword = marker.getSnippet().split(" ")[0];
+            if(firstword.equalsIgnoreCase("open")){
+                cafe_open.setText("Open");
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                cafe_desc.setText(marker.getSnippet().substring(5));
+            }
+            else if(firstword.equalsIgnoreCase("closing")){
+                cafe_open.setText("Closing Soon");
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                cafe_desc.setText(marker.getSnippet().substring(13));
+            }
+            else{
+                cafe_open.setText(firstword);
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                cafe_desc.setText(marker.getSnippet().substring(7));
+            }
+            return myContentsView;
+        }
+
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
-
-        // Adds functionality for bottom nav bar
         bnv = findViewById(R.id.bottom_navigation);
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -79,7 +118,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -90,7 +128,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Double lat = cafe.getLat();
             Double lng = cafe.getLng();
             LatLng latLng = new LatLng(lat,lng);
-            String name = cafe.getName();
+            String name = cafe.getNickName();
             String isOpenedStr = cafe.isOpen();
             String loc = cafe.getCloseTime();
             Marker cafeMarker =  mMap.addMarker(new MarkerOptions().position(latLng).title(name));
@@ -110,7 +148,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-
                 String markerName = marker.getTitle();
                 int position = 0;
                 for(int i=0; i<cafeData.size();i++ ) {
@@ -127,42 +164,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // Create view for map
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            @Override
-            public View getInfoWindow(Marker arg0) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                Context context = getApplicationContext(); //or getActivity(), YourActivity.this, etc.
-
-                LinearLayout info = new LinearLayout(context);
-                info.setOrientation(LinearLayout.VERTICAL);
-
-
-                TextView title = new TextView(context);
-                title.setTextColor(Color.BLACK);
-                title.setGravity(Gravity.LEFT);
-                title.setTypeface(null, Typeface.BOLD);
-                title.setTextSize(16);
-                title.setText(marker.getTitle());
-                title.setPadding(12,12,30,4);
-
-                TextView snippet = new TextView(context);
-                snippet.setTextColor(Color.GRAY);
-                snippet.setPadding(12,0,0,12);
-                snippet.setText(marker.getSnippet());
-
-                info.addView(title);
-                info.addView(snippet);
-
-                return info;
-            }
-        });
-
+        mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
         enableMyLocationIfPermitted();
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -226,4 +228,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     return false;
                 }
             };
+
+
+
+
+
+
+
+
+
+
+
 }
