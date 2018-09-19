@@ -94,17 +94,6 @@
                 android:fontFamily="sans-serif-medium"
                 android:textColor="#DE000000"
                 android:text="Location" />
-            <TextView
-                android:id="@+id/ind_direction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ind_open"
-                android:layout_alignParentRight="true"
-                android:fontFamily="sans-serif-medium"
-                android:paddingRight="16dp"
-                android:textSize="12sp"
-                android:textColor="#4e80bd"
-                android:text="Get Directions" />
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"

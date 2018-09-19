@@ -32,11 +32,8 @@ public class MenuActivity extends AppCompatActivity {
     TextView cafeText;
     SimpleDraweeView cafeImage;
     TextView cafeLoc;
-    TextView cafeTime;
-    TextView directions;
     TextView cafeIsOpen;
     TextView menuText;
-    TextView getDirections;
     ImageView swipe_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
@@ -123,15 +120,15 @@ public class MenuActivity extends AppCompatActivity {
         cafeImage.setImageURI(uri);
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
-        getDirections = findViewById(R.id.ind_direction);
-        getDirections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-                intent.putExtra("cafeData", cafeList);
-                startActivity(intent);
-            }
-        });
+//        getDirections = findViewById(R.id.ind_direction);
+//        getDirections.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+//                intent.putExtra("cafeData", cafeList);
+//                startActivity(intent);
+//            }
+//        });
 
         swipe_icon = findViewById(R.id.swipe_icon);
         if (!cafeData.getIs_diningHall()) {
