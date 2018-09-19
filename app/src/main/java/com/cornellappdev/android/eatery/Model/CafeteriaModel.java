@@ -16,17 +16,19 @@ import java.util.HashSet;
 public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     boolean isHardCoded;
     int id;
-    String name;
-    String nickName;
-    boolean is_diningHall;
-    CafeteriaArea area;
-    ArrayList<String> pay_methods;
-    String buildingLocation;
-    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
-    CafeModel cafeInfo = new CafeModel();
     Double lng;
     Double lat;
+    String name;
+    String nickName;
+    String closeTime;
+    CafeteriaArea area;
+    boolean is_diningHall;
+    String buildingLocation;
+    ArrayList<String> pay_methods;
+    ArrayList<String> searchedItems;
     boolean openPastMidnight = false;
+    CafeModel cafeInfo = new CafeModel();
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
 
     public ArrayList<String> getSearchedItems() {
         return searchedItems;
@@ -36,8 +38,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         this.searchedItems = searchedItems;
     }
 
-    ArrayList<String> searchedItems;
-
     public String getCloseTime() {
         return closeTime;
     }
@@ -45,8 +45,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
-
-    String closeTime;
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -60,8 +58,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                 }
 
             }
-        } else {
-            //menuString = cafeMenu.toString();
         }
         return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
     }
@@ -226,9 +222,9 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                 int curT = now.getHours()*60 + now.getMinutes();
                 if (curT>=startT && curT<endT){
                     Date closeTim = hours.get(day).get(1);
-                    if(closeTim.getTime()<=now.getTime()+(60000*30)) {
-                        return Status.CLOSINGSOON;
-                    }
+//                    if(closeTim.getTime()<=now.getTime()+(60000*30)) {
+//                        return Status.CLOSINGSOON;
+//                    }
                     return Status.OPEN;
                 } else if (curT< startT){
                     return Status.CLOSED;

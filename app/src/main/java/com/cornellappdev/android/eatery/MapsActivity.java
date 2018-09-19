@@ -151,7 +151,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String markerName = marker.getTitle();
                 int position = 0;
                 for(int i=0; i<cafeData.size();i++ ) {
-                    if (cafeData.get(i).getName().equalsIgnoreCase(markerName)) {
+                    if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
                         position = i;
                     }
                 }
