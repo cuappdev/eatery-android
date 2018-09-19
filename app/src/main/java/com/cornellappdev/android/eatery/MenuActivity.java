@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -23,18 +24,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
 public class MenuActivity extends AppCompatActivity {
-    ImageView cafeImage;
     TextView cafeText;
+    SimpleDraweeView cafeImage;
     TextView cafeLoc;
     TextView cafeTime;
     TextView directions;
     TextView cafeIsOpen;
-    ImageView swipeIcon;
     TextView menuText;
+    TextView getDirections;
+    ImageView swipe_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -83,8 +86,6 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        String cafeImageName = "@drawable/" + convertName(cafeName);
-
         cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
         cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
 
@@ -114,26 +115,29 @@ public class MenuActivity extends AppCompatActivity {
 
         cafeImage = findViewById(R.id.ind_image);
         cafeImage.setBackgroundColor(0xFFff0000);
-        int imageRes = getResources().getIdentifier(cafeImageName, null, getPackageName());
 
-        cafeImage.setImageBitmap(decodeSampledBitmapFromResource(getResources(),
-               imageRes, 400, 400));
+        String imageLocation =
+                "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
+                        + convertName(cafeName + ".jpg");
+        Uri uri = Uri.parse(imageLocation);
+        cafeImage.setImageURI(uri);
         cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
-        swipeIcon = findViewById(R.id.swipe_icon);
-        if (!cafeData.getIs_diningHall()) {
-            swipeIcon.setVisibility(View.GONE);
-        }
-
-        directions = findViewById(R.id.ind_direction);
-        directions.setOnClickListener(new View.OnClickListener() {
+        getDirections = findViewById(R.id.ind_direction);
+        getDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentMap = new Intent(view.getContext(), MapsActivity.class);
-                intentMap.putExtra("cafeData", cafeList);
-                startActivity(intentMap);
+                Intent intent = new Intent(view.getContext(), MapsActivity.class);
+                intent.putExtra("cafeData", cafeList);
+                startActivity(intent);
             }
         });
+
+        swipe_icon = findViewById(R.id.swipe_icon);
+        if (!cafeData.getIs_diningHall()) {
+            swipe_icon.setVisibility(View.GONE);
+        }
+
         customPager = findViewById(R.id.pager);
         tabLayout = findViewById(R.id.tabs);
         linLayout = findViewById(R.id.linear);
@@ -287,13 +291,19 @@ public class MenuActivity extends AppCompatActivity {
 
     /** Gets name of corresponding picture to cafe**/
     public static String convertName(String str) {
-        //Android does not allow image names to begin with a number
-        if (str.equals("104West!")) return "west";
+        if (str.equals("104West!.jpg")) return "104-West.jpg";
+        if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
+        if (str.equals("Franny's.jpg")) return "frannys.jpg";
+        if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
+        if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
+        if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
+        if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
 
+
+        str = str.replaceAll("!", "");
         str = str.replaceAll("[&\']", "");
-        str = str.replaceAll(" ", "_");
+        str = str.replaceAll(" ", "-");
         str = str.replaceAll("é", "e");
-        str = str.toLowerCase();
         return str;
     }
 

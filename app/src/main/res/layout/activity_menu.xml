@@ -20,7 +20,7 @@
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginTop="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ind_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
