@@ -33,23 +33,24 @@ public class MenuActivity extends AppCompatActivity {
     ImageView cafeImage;
     TextView cafeText;
     TextView cafeLoc;
+    TextView cafeTime;
     TextView directions;
     TextView cafeIsOpen;
     ImageView swipeIcon;
+    TextView menuText;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
-    AppBarLayout appbar;
-    net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout collapsingToolbar;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        final Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.ind_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -58,29 +59,29 @@ public class MenuActivity extends AppCompatActivity {
         final String cafeName = (String) intent.getSerializableExtra("locName");
         cafeText = findViewById(R.id.ind_cafe_name);
         cafeText.setText(cafeName);
-        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
+//        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbar.setTitle(" ");
+//        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
 
-        appbar = findViewById(R.id.appbar);
-        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = true;
-            int scrollRange = -1;
-
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(cafeName);
-                    isShow = true;
-                } else if(isShow) {
-                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
-                    isShow = false;
-                }
-            }
-        });
+//        appbar = findViewById(R.id.appbar);
+//        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            boolean isShow = true;
+//            int scrollRange = -1;
+//
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (scrollRange == -1) {
+//                    scrollRange = appBarLayout.getTotalScrollRange();
+//                }
+//                if (scrollRange + verticalOffset == 0) {
+////                    collapsingToolbar.setTitle(cafeName);
+//                    isShow = true;
+//                } else if(isShow) {
+////                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+//                    isShow = false;
+//                }
+//            }
+//        });
 
         String cafeImageName = "@drawable/" + convertName(cafeName);
 
@@ -98,11 +99,15 @@ public class MenuActivity extends AppCompatActivity {
 
         // Format string for opening/closing time
         cafeIsOpen = findViewById(R.id.ind_open);
-        SpannableString openString = new SpannableString(cafeData.isOpen() + "  "
-                + cafeData.getCloseTime());
-//        openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeData.isOpen().length(),
-//                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        cafeIsOpen.setText(openString);
+        cafeIsOpen.setText(cafeData.isOpen());
+        if (cafeData.isOpen().equals("Open")) {
+            cafeIsOpen.setTextColor(Color.parseColor("#7dd600"));
+        } else {
+            cafeIsOpen.setTextColor(Color.parseColor("#d82e41"));
+        }
+
+        cafeText = findViewById(R.id.ind_time);
+        cafeText.setText(cafeData.getCloseTime());
 
         cafeLoc = findViewById(R.id.ind_loc);
         cafeLoc.setText(cafeData.getBuildingLocation());
@@ -140,61 +145,47 @@ public class MenuActivity extends AppCompatActivity {
             linLayout.setVisibility(View.VISIBLE);
 
             View blank = new View(this);
-            blank.setBackgroundColor(Color.argb(100, 192,192, 192));
             blank.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    2));
+                    1));
+            blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
+            blank.setElevation(-1);
             linLayout.addView(blank);
 
             float scale = getResources().getDisplayMetrics().density;
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView mealItemText = new TextView(this);
                 mealItemText.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
-                mealItemText.setTextSize(24);
-                mealItemText.setTextColor(Color.BLACK);
-                mealItemText.setPadding((int)(24*scale + 0.5f), (int)(16*scale + 0.5f), 0, (int)(16*scale + 0.5f));
+                mealItemText.setTextSize(12);
+                mealItemText.setTextColor(Color.parseColor("#de000000"));
+                mealItemText.setPadding((int)(16*scale + 0.5f), (int)(8*scale + 0.5f), 0, (int)(8*scale + 0.5f));
                 linLayout.addView(mealItemText);
 
-                View divider = new View(this);
-                divider.setBackgroundColor(Color.argb(100, 192,192, 192));
-                LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        2);
-                dividerParams.setMargins((int)(24*scale + 0.5f), 0, 0, 0);
-                divider.setLayoutParams(dividerParams);
-                linLayout.addView(divider);
+                // Add divider if text is not the last item in list
+                if (i != cafeData.getCafeInfo().getCafeMenu().size()-1) {
+                    View divider = new View(this);
+                    divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
+                    LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            1);
+                    dividerParams.setMargins((int)(15.8*scale + 0.5f), 0, 0, 0);
+                    divider.setElevation(-1);
+                    divider.setLayoutParams(dividerParams);
+                    linLayout.addView(divider);
+                }
             }
         }
 
         // Formatting for when eatery is a dining hall and has a menu
         else if (cafeData.getIs_diningHall() && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
+            menuText = findViewById(R.id.ind_menu);
+            menuText.setVisibility(View.GONE);
             customPager.setVisibility(View.VISIBLE);
             tabLayout.setVisibility(View.VISIBLE);
             linLayout.setVisibility(View.GONE);
             setupViewPager(customPager);
-
             tabLayout.setupWithViewPager(customPager);
-        }
-
-        // Formatting for when eatery is a dining hall and is missing a menu
-        else {
-            customPager.setVisibility(View.GONE);
-            tabLayout.setVisibility(View.GONE);
-            linLayout.setVisibility(View.VISIBLE);
-
-            View blank = new View(this);
-            blank.setBackgroundColor(Color.argb(100, 192,192, 192));
-            blank.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    6));
-            linLayout.addView(blank);
-
-            TextView missingMenuText = new TextView(this);
-            SpannableString str = new SpannableString("No Menu Available");
-            missingMenuText.setText(str);
-            missingMenuText.setTextSize(18);
-            missingMenuText.setPadding(0, 40,0, 16);
-            linLayout.addView(missingMenuText);
+            tabLayout.setTabTextColors(Color.parseColor("#57000000"), Color.parseColor("#4e80bd"));
         }
     }
 
