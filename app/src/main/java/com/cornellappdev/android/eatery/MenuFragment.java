@@ -57,7 +57,7 @@ public class MenuFragment extends Fragment {
             TextView categoryText = new TextView(getContext());
             categoryText.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
             categoryText.setText(key);
-            categoryText.setTextSize(14);
+            categoryText.setTextSize(16);
             categoryText.setTextColor(Color.parseColor("#de000000"));
 
             // Note(lesley): there's extra padding added to the first category somewhere and I
@@ -82,7 +82,7 @@ public class MenuFragment extends Fragment {
             for (int i = 0; i < value.size(); i++) {
                 TextView mealItemText = new TextView(getContext());
                 mealItemText.setText(value.get(i));
-                mealItemText.setTextSize(12);
+                mealItemText.setTextSize(14);
                 mealItemText.setTextColor(Color.parseColor("#de000000"));
                 mealItemText.setPadding((int)(16*scale + 0.5f), (int)(8*scale + 0.5f), 0, (int)(8*scale + 0.5f));
                 linear.addView(mealItemText);

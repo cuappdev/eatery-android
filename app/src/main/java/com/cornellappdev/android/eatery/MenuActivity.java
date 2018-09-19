@@ -147,8 +147,7 @@ public class MenuActivity extends AppCompatActivity {
 
             View blank = new View(this);
             blank.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    1));
+                    LinearLayout.LayoutParams.MATCH_PARENT, 1));
             blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
             blank.setElevation(-1);
             linLayout.addView(blank);
@@ -157,7 +156,7 @@ public class MenuActivity extends AppCompatActivity {
             for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
                 TextView mealItemText = new TextView(this);
                 mealItemText.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
-                mealItemText.setTextSize(12);
+                mealItemText.setTextSize(14);
                 mealItemText.setTextColor(Color.parseColor("#de000000"));
                 mealItemText.setPadding((int)(16*scale + 0.5f), (int)(8*scale + 0.5f), 0, (int)(8*scale + 0.5f));
                 linLayout.addView(mealItemText);
