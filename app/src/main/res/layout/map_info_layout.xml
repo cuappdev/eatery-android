@@ -63,11 +63,12 @@
 
 </RelativeLayout>
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="25dp"
         android:id="@+id/carrot"
         android:src="@drawable/carrot"
         android:layout_below="@id/info_cafe_desc"
+        android:layout_marginTop="-5dp"
         android:layout_gravity="center_horizontal"
         />
 </LinearLayout>
