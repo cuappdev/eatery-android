@@ -11,10 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import com.cornellappdev.android.eatery.NonScrollExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,7 +47,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     TextView dinnerText;
     LinearLayout linDate;
     ArrayList<TextView> dateList = new ArrayList<>();
-    ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> weeklyMenu;
+    ArrayList<ArrayList<TreeMap<String, MealModel>>> weeklyMenu;
     int lastExpandedPosition;
     NonScrollExpandableListView lastClickedListView;
 
@@ -285,7 +283,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 mealIndex = 2;
                 break;
         }
-        HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> finalList
+        HashMap<String, TreeMap<String, ArrayList<String>>> finalList
                 = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
 
         // Hides layout elements if there is nothing in the list corresponding to a certain CafeteriaArea
@@ -296,7 +294,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             westText.setVisibility(View.VISIBLE);
             expListViewWest.setVisibility(View.VISIBLE);
 
-            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"), dateOffset, mealIndex);
+            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"),
+                    dateOffset, mealIndex, cafeData);
             expListViewWest.setAdapter(listAdapterWest);
         }
         if (finalList.get("North").size() == 0) {
@@ -306,7 +305,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             northText.setVisibility(View.VISIBLE);
             expListViewNorth.setVisibility(View.VISIBLE);
 
-            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"), dateOffset, mealIndex);
+            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"),
+                    dateOffset, mealIndex, cafeData);
             expListViewNorth.setAdapter(listAdapterNorth);
         }
         if (finalList.get("Central").size() == 0) {
@@ -316,7 +316,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             centralText.setVisibility(View.VISIBLE);
             expListViewCentral.setVisibility(View.VISIBLE);
 
-            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"),  dateOffset, mealIndex);
+            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"),
+                    dateOffset, mealIndex, cafeData);
             expListViewCentral.setAdapter(listAdapterCentral);
         }
     }
@@ -326,25 +327,26 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
      * Day is determined by the dateOffset from the current time.
      */
-    public ArrayList<TreeMap<CafeteriaModel, MealModel>> generateMealLists(int dateOffset) {
-        ArrayList<TreeMap<CafeteriaModel, MealModel>> finalList = new ArrayList<>();
-        TreeMap<CafeteriaModel, MealModel> breakfastList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
-        TreeMap<CafeteriaModel, MealModel> lunchList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
-        TreeMap<CafeteriaModel, MealModel> dinnerList = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+    public ArrayList<TreeMap<String, MealModel>> generateMealLists(int dateOffset) {
+        ArrayList<TreeMap<String, MealModel>> finalList = new ArrayList<>();
+        TreeMap<String, MealModel> breakfastList = new TreeMap<>();
+        TreeMap<String, MealModel> lunchList = new TreeMap<>();
+        TreeMap<String, MealModel> dinnerList = new TreeMap<>();
         for (CafeteriaModel m : diningHall) {
             // Checks that dining hall is opened
             if (m.indexOfCurrentDay() != -1) {
                 // Get MealModel for the day and split into three hashmaps
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
                 for (MealModel n : meals) {
-                    if (n.getType().equals("Breakfast") && !m.getNickName().equals("Cook House Dining")) {
-                        breakfastList.put(m, n);
+                    if ((n.getType().equals("Breakfast") || n.getType().equals("Brunch"))
+                            && !m.getNickName().equals("Cook House Dining")) {
+                        breakfastList.put(m.getNickName(), n);
                     }
                     if (n.getType().equals("Lunch") || n.getType().equals("Brunch")) {
-                        lunchList.put(m, n);
+                        lunchList.put(m.getNickName(), n);
                     }
                     if (n.getType().equals("Dinner")) {
-                        dinnerList.put(m, n);
+                        dinnerList.put(m.getNickName(), n);
                     }
                 }
             }
@@ -359,13 +361,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     /**
      * Converts the MealModel object of the map into an Arraylist
      */
-    private HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> generateFinalList(TreeMap<CafeteriaModel, MealModel> listToParse) {
-        HashMap<String, TreeMap<CafeteriaModel, ArrayList<String>>> listFinal = new HashMap<>();
-        TreeMap<CafeteriaModel, ArrayList<String>> finalWest = new TreeMap<>(CafeteriaModel.cafeNameComparator);
-        TreeMap<CafeteriaModel, ArrayList<String>> finalNorth = new TreeMap<>(CafeteriaModel.cafeNameComparator);
-        TreeMap<CafeteriaModel, ArrayList<String>> finalCentral = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+    private HashMap<String, TreeMap<String, ArrayList<String>>> generateFinalList(TreeMap<String, MealModel> listToParse) {
+        HashMap<String, TreeMap<String, ArrayList<String>>> listFinal = new HashMap<>();
+        TreeMap<String, ArrayList<String>> finalWest = new TreeMap<>();
+        TreeMap<String, ArrayList<String>> finalNorth = new TreeMap<>();
+        TreeMap<String, ArrayList<String>> finalCentral = new TreeMap<>();
 
-        for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
+        for (Map.Entry<String, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
 
             // Get menu of dining hall
@@ -385,7 +387,19 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
             mealToList.add(" ");
 
-            switch (cafe.getKey().getArea()){
+            CafeteriaModel myCafe = null;
+            int count = 0;
+
+            while(count < cafeData.size())
+            {
+                if(cafeData.get(count).getNickName().equals(cafe.getKey()))
+                {
+                    myCafe = cafeData.get(count);
+                }
+                count++;
+            }
+
+            switch (myCafe.getArea()){
                 case WEST:
                     finalWest.put(cafe.getKey(), mealToList);
                     break;
@@ -409,12 +423,12 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Returns an Arraylist of the set(breakfastlist, lunchlist, dinnerlist) for each day in the dateList.
      * Each of the meal lists is a hashmap of CafeteriaModels that have that specific meal and the menu
      */
-    public ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
-        ArrayList<ArrayList<TreeMap<CafeteriaModel, MealModel>>> mainList = new ArrayList<>();
+    public ArrayList<ArrayList<TreeMap<String, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
+        ArrayList<ArrayList<TreeMap<String, MealModel>>> mainList = new ArrayList<>();
 
         for (int i = 0; i < dateList.size(); i++) {
             // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
-            ArrayList<TreeMap<CafeteriaModel, MealModel>> dailyList = new ArrayList<>();
+            ArrayList<TreeMap<String, MealModel>> dailyList = new ArrayList<>();
             dailyList = generateMealLists(i);
             mainList.add(dailyList);
         }
