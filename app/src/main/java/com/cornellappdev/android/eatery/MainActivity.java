@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         });
     }
 
-    // Change button and background color
     public void changeButtonColor(String textColor, String backgroundColor, Button button) {
         button.setTextColor(Color.parseColor(textColor));
         GradientDrawable bgShape = (GradientDrawable) button.getBackground();
@@ -256,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         AutoCompleteTextView searchTextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         try {
@@ -268,58 +267,45 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            ArrayList<CafeteriaModel> searchList(ArrayList<CafeteriaModel> list, String query) {
+                ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
+                for (CafeteriaModel model : list) {
+                    HashSet<String> mealSet = model.getMealItems();
+
+                    //check the nickname of the cafe and if it's not already in the filtered list add it to the list
+                    if (model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)) {
+                        filteredList.add(model);
+                    }
+
+                    for (String item : mealSet) {
+                        if (item.toLowerCase().contains(query.toLowerCase())) {
+                            if (!filteredList.contains(model)) {
+                                filteredList.add(model);
+                            }
+                        }
+                    }
+
+                }
+                return filteredList;
+            }
+
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // No query given, set searchList to cafeList
                 if (query.length() == 0) {
                     searchList = cafeList;
                     searchPressed = false;
-                }
-                // Query given
-                else {
+                } else {
                     query = query.trim();
-                    ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     searchPressed = true;
-                    // If none of the buttons clicked, loop through cafeList
-                    if (!northPressed && !centralPressed && !westPressed && !swipesPressed && !brbPressed) {
-                        for (CafeteriaModel model : cafeList) {
-                            HashSet<String> mealSet = model.getMealItems();
 
-                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
-                            if (model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)) {
-                                filteredList.add(model);
-                            }
-
-                            for (String item : mealSet) {
-                                if (item.toLowerCase().contains(query.toLowerCase())) {
-                                    if (!filteredList.contains(model))
-                                        filteredList.add(model);
-                                }
-                            }
-
-                        }
-                        searchList = filteredList;
-                    }
-                    // If any of the buttons clicked, loop through currentList
-                    else {
-                        for (CafeteriaModel model : currentList) {
-                            HashSet<String> mealSet = model.getMealItems();
-
-                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
-                            if (model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)) {
-                                filteredList.add(model);
-                            }
-
-                            for (String item : mealSet) {
-                                if (item.toLowerCase().contains(query.toLowerCase())) {
-                                    if (!filteredList.contains(model))
-                                        filteredList.add(model);
-                                }
-                            }
-                        }
-                        searchList = filteredList;
+                    if (areaButtonPressed == null && paymentButtonPressed == null) {
+                        searchList = searchList(cafeList, query);
+                    } else {
+                        searchList = searchList(currentList, query);
                     }
                 }
+                
                 Collections.sort(searchList);
                 listAdapter.setList(searchList, searchList.size(), query.length() == 0 ? null : query);
                 return false;
@@ -338,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
                     searchPressed = true;
                     // If no buttons clicked, loop through cafelist
-                    if (!northPressed && !centralPressed && !westPressed && !swipesPressed && !brbPressed) {
+                    if (areaButtonPressed == null && paymentButtonPressed == null) {
                         for (CafeteriaModel model : cafeList) {
 
                             HashSet<String> mealSet = model.getMealItems();
