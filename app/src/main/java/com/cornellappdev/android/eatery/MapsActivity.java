@@ -70,7 +70,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        // TODO(lesley): Add BRB feature
+                        // TODOx(lesley): Add BRB feature
                         toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
                         toast.show();
                         break;
@@ -92,9 +92,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng latLng = new LatLng(lat,lng);
             String name = cafe.getName();
             String isOpenedStr = cafe.isOpen();
-            String loc = cafe.getBuildingLocation();
+            String loc = cafe.getCloseTime();
             Marker cafeMarker =  mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-            cafeMarker.setSnippet(isOpenedStr + System.lineSeparator() + loc );
+            cafeMarker.setSnippet(isOpenedStr + " " + loc );
 
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
                 cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.gray_pin),72,96,false)));
@@ -142,14 +142,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LinearLayout info = new LinearLayout(context);
                 info.setOrientation(LinearLayout.VERTICAL);
 
+
                 TextView title = new TextView(context);
                 title.setTextColor(Color.BLACK);
-                title.setGravity(Gravity.CENTER);
+                title.setGravity(Gravity.LEFT);
                 title.setTypeface(null, Typeface.BOLD);
+                title.setTextSize(16);
                 title.setText(marker.getTitle());
+                title.setPadding(12,12,30,4);
 
                 TextView snippet = new TextView(context);
                 snippet.setTextColor(Color.GRAY);
+                snippet.setPadding(12,0,0,12);
                 snippet.setText(marker.getSnippet());
 
                 info.addView(title);

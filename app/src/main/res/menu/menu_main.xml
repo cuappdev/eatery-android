@@ -5,15 +5,13 @@
 
     <item
         android:id="@+id/action_search"
-        android:title="Search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass = "android.support.v7.widget.SearchView"
+        android:icon="@drawable/search"
         android:iconifiedByDefault="false"
-        android:icon="@drawable/search"/>
-
-
-        <item android:id="@+id/action_map"
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+    <item android:id="@+id/action_map"
             app:showAsAction="always"
-            android:icon="@drawable/diricon"
+            android:icon="@drawable/map"
             android:title="Map" />
 </menu>
