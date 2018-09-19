@@ -245,13 +245,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cafeTime = itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
-//            line = itemView.findViewById(R.id.cardviewStatus);
             icon_1 = itemView.findViewById(R.id.icon_1);
             icon_2 = itemView.findViewById(R.id.icon_2);
             icon_3 = itemView.findViewById(R.id.icon_3);
             rlayout = itemView.findViewById(R.id.cv);
-
-
             itemView.setOnClickListener(this);
         }
 
