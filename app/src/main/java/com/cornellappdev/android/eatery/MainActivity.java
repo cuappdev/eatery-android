@@ -35,26 +35,27 @@ import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler {
 
-    public RecyclerView mRecyclerView;
+    public static boolean searchPressed = false;
+
     public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); //holds all cafes
     public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); //button filter list
     public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
-    public CafeteriaDbHelper dbHelper;
-    public MainListAdapter listAdapter;
-    public boolean northPressed = false;
-    public boolean centralPressed = false;
-    public boolean westPressed = false;
-    public boolean swipesPressed = false;
-    public boolean brbPressed = false;
-    public static boolean searchPressed = false;
+    public BottomNavigationView bnv;
     public Button northButton;
     public Button westButton;
     public Button centralButton;
     public Button swipesButton;
     public Button brbButton;
+    public CafeteriaDbHelper dbHelper;
+    public MainListAdapter listAdapter;
     public ProgressBar progressBar;
-    public BottomNavigationView bnv;
+    public RecyclerView mRecyclerView;
     public RelativeLayout splash;
+    public boolean northPressed = false;
+    public boolean centralPressed = false;
+    public boolean westPressed = false;
+    public boolean swipesPressed = false;
+    public boolean brbPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,16 +81,20 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
                 cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
             }
+            Collections.sort(cafeList);
             currentList = cafeList;
             searchList = cafeList;
-            Collections.sort(currentList);
-            Collections.sort(searchList);
 
             mRecyclerView.setHasFixedSize(true);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
             mRecyclerView.setLayoutManager(layoutManager);
-            Collections.sort(cafeList);
-            listAdapter = new MainListAdapter(getApplicationContext(), MainActivity.this, cafeList.size(), cafeList);
+
+            listAdapter =
+                    new MainListAdapter(getApplicationContext(),
+                            MainActivity.this,
+                            cafeList.size(),
+                            cafeList);
             mRecyclerView.setAdapter(listAdapter);
         } else {
             new ProcessJson().execute("");
@@ -109,7 +114,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        Toast toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
+                        Toast toast =
+                                Toast.makeText(getApplicationContext(),
+                                        "Coming Soon",
+                                        Toast.LENGTH_SHORT);
                         toast.show();
                         break;
                 }
