@@ -3,87 +3,96 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:layout_scrollFlags="scroll|exitUntilCollapsed"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:fitsSystemWindows="true"
     tools:context="com.cornellappdev.android.eatery.MenuActivity">
-
-        <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:id="@+id/appbar">
+        <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="275dp"
-            android:id="@+id/appbar">
-
-            <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/collapsing_toolbar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:contentScrim="#4e80bd"
-                app:layout_collapseMode="pin"
-                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-                app:maxLines="3">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:fitsSystemWindows="true"
-                    android:adjustViewBounds="true"
-                    app:layout_collapseMode="parallax"
-                    android:id="@+id/ind_image"/>
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    android:minHeight="?attr/actionBarSize">
-                </android.support.v7.widget.Toolbar>
-            </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
+            android:layout_height="match_parent"
+            app:contentScrim="#4e80bd"
+            android:id="@+id/collapsing_toolbar"
+            app:expandedTitleGravity="top"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginTop="64dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+        <ImageView
+            android:id="@+id/ind_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            app:layout_collapseMode="pin"
+            android:layout_height="?attr/actionBarSize"
+            android:minHeight="?attr/actionBarSize"/>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ccd0d5"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="#f2f2f2">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infobox"
-            android:background="#f2f2f2"
             android:elevation="1dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="24dp">
+            android:layout_below="@id/ind_image"
+            android:background="#ffffff"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="36sp"
-                android:paddingBottom="16dp"
-                android:textColor="#000000"
+                android:textSize="16sp"
+                android:paddingBottom="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#DE000000"
                 android:id="@+id/ind_cafe_name"
                 android:text="Name"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ind_cafe_name"
-                android:textSize="24sp"
-                android:paddingBottom="12dp"
+                android:textSize="12sp"
+                android:paddingBottom="9dp"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="#000000"
                 android:id="@+id/ind_open"
                 android:text="Open?"/>
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ind_cafe_name"
+                android:textSize="12sp"
+                android:paddingLeft="4dp"
+                android:paddingBottom="9dp"
+                android:layout_toRightOf="@id/ind_open"
+                android:fontFamily="sans-serif-regular"
+                android:textColor="#61000000"
+                android:id="@+id/ind_time"
+                android:text="Time"/>
+            <TextView
                 android:id="@+id/ind_loc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ind_open"
-                android:textSize="24sp"
-                android:textColor="#000000"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#DE000000"
                 android:text="Location" />
             <TextView
                 android:id="@+id/ind_direction"
@@ -91,65 +100,70 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ind_open"
                 android:layout_alignParentRight="true"
-                android:paddingRight="24dp"
-                android:textSize="24sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingRight="16dp"
+                android:textSize="12sp"
                 android:textColor="#4e80bd"
                 android:text="Get Directions" />
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/dollar_icon"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp"
-                android:src="@drawable/dollar_icon"
-                />
+                android:layout_marginRight="16dp"
+                android:src="@drawable/dollar_icon"/>
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/brb_icon"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="76dp"
-                android:src="@drawable/brb_icon"
-                />
+                android:layout_marginRight="42dp"
+                android:src="@drawable/brb_icon"/>
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:id="@+id/swipe_icon"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="128dp"
-                android:src="@drawable/swipe_icon"
-                />
+                android:layout_marginRight="68dp"
+                android:src="@drawable/swipe_icon" />
         </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Menu"
-                android:textColor="#000000"
-                android:background="#f2f2f2"
-                android:layout_marginTop="16dp"
-                android:padding="24dp"
-                android:textSize="28sp"
-                android:id="@+id/menu"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/linear"
-                android:background="#f2f2f2"
-                android:orientation="vertical"
-                />
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                app:tabTextAppearance="@style/tabLayoutText"
-                android:background="#f2f2f2"
-                android:layout_height="wrap_content"/>
-            <com.cornellappdev.android.eatery.CustomPager
-                android:id="@+id/pager"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:background="#f2f2f2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Menu"
+            android:layout_below="@id/infobox"
+            android:textColor="#de000000"
+            android:background="#ffffff"
+            android:layout_marginTop="12dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:lineSpacingExtra="2dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            android:id="@+id/ind_menu"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linear"
+            android:background="#ffffff"
+            android:layout_below="@id/ind_menu"
+            android:orientation="vertical" />
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/ind_menu"
+            android:layout_width="match_parent"
+            android:background="#ffffff"
+            app:tabTextAppearance="@style/tabLayoutText"
+            app:tabIndicatorColor="#4e80bd"
+            android:layout_height="wrap_content"/>
+        <com.cornellappdev.android.eatery.CustomPager
+            android:id="@+id/pager"
+            android:layout_below="@id/tabs"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

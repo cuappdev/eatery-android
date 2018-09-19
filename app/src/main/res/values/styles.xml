@@ -7,10 +7,15 @@
         <item name="android:windowNoTitle">true</item>
         <item name="actionMenuTextColor">#cdcdcd</item>
         <item name="colorPrimary">#212121</item>
+        <item name="colorControlNormal">#ffffff</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="collapsingToolbarLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="tabLayoutText" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>

@@ -6,18 +6,15 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +41,16 @@ public class MenuActivity extends AppCompatActivity {
     ArrayList<CafeteriaModel> cafeList;
     CafeteriaModel cafeData;
     Toolbar toolbar;
+    AppBarLayout appbar;
+    CollapsingToolbarLayout collapsingToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        toolbar = findViewById(R.id.ind_toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -59,29 +59,31 @@ public class MenuActivity extends AppCompatActivity {
         final String cafeName = (String) intent.getSerializableExtra("locName");
         cafeText = findViewById(R.id.ind_cafe_name);
         cafeText.setText(cafeName);
-//        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbar.setTitle(" ");
-//        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayoutTitleColor);
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(" ");
+        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayout);
 
-//        appbar = findViewById(R.id.appbar);
-//        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            boolean isShow = true;
-//            int scrollRange = -1;
-//
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                if (scrollRange == -1) {
-//                    scrollRange = appBarLayout.getTotalScrollRange();
-//                }
-//                if (scrollRange + verticalOffset == 0) {
-////                    collapsingToolbar.setTitle(cafeName);
-//                    isShow = true;
-//                } else if(isShow) {
-////                    collapsingToolbar.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
-//                    isShow = false;
-//                }
-//            }
-//        });
+        appbar = findViewById(R.id.appbar);
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = true;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    collapsingToolbar.setTitle(cafeName);
+                    isShow = true;
+                } else if(isShow) {
+                    collapsingToolbar.setTitle(" ");
+                    isShow = false;
+                }
+            }
+        });
+
+
 
         String cafeImageName = "@drawable/" + convertName(cafeName);
 
