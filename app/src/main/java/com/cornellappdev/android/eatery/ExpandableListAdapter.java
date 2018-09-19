@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,11 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.Model.MealModel;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.Collections;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 /**
@@ -29,24 +29,22 @@ import java.util.TreeMap;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
-    private TreeMap<CafeteriaModel, ArrayList<String>> mealMap = new TreeMap<>(CafeteriaModel.cafeNameComparator);
+    private ArrayList<String> cafeKeys = new ArrayList<>();
+
+    private TreeMap<String, ArrayList<String>> mealMap = new TreeMap<>();
     View line;
     private int mealIndex;
     private int dateOffset;
 
-    public ExpandableListAdapter(Context context, TreeMap<CafeteriaModel, ArrayList<String>> mealMap, int dateOffset, int mealIndex) {
+    public ExpandableListAdapter(Context context, TreeMap<String, ArrayList<String>> mealMap, int dateOffset, int mealIndex, ArrayList<CafeteriaModel> cafeData) {
         this.context = context;
         this.mealMap = mealMap;
         this.mealIndex = mealIndex;
         this.dateOffset = dateOffset;
+        this.cafeData = cafeData;
 
-//        for (Map.Entry<CafeteriaModel, ArrayList<String>> entry : mealMap.entrySet()){
-//            if (entry.getKey().getNickName().equals("104West!")) {
-//                Log.d("adapter", entry.getValue().toString());
-//            }
-//        }
-        for (CafeteriaModel m : mealMap.keySet()) {
-            this.cafeData.add(m);
+        for (String str : mealMap.keySet()) {
+            cafeKeys.add(str);
         }
     }
 
@@ -57,31 +55,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
-        CafeteriaModel m = cafeData.get(i);
-        // Note(lesley): debugging
-        for (Map.Entry<CafeteriaModel, ArrayList<String>> entry : mealMap.entrySet()){
-            if (entry.getKey().getNickName().equals("104West!") && m.getNickName().equals("104West!")) {
-//                Log.d("adapter", entry.getKey().getName());
-//                Log.d("adapter", entry.getValue().toString());
-
-                if (entry.getValue().equals(mealMap.get(entry.getKey()))) {
-                    Log.d("adapter", "NICE");
-                }
-//                Log.d("adapter", mealMap.get(entry.getKey()).toString());
-            }
-        }
-        // ends here -- someone please help
+        String m = cafeKeys.get(i);
         return mealMap.get(m).size();
     }
 
     @Override
     public Object getGroup(int i) {
-        return cafeData.get(i);
+        return cafeKeys.get(i);
     }
 
     @Override
     public Object getChild(int i, int i1) {
-        CafeteriaModel m = (CafeteriaModel) getGroup(i);
+        String m = (String) getGroup(i);
         return mealMap.get(m).get(i1);
     }
 
@@ -109,22 +94,55 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             view = infalInflater.inflate(R.layout.list_view_header, viewGroup, false);
         }
 
-        CafeteriaModel m = (CafeteriaModel) getGroup(i);
+        String m = (String) getGroup(i);
         TextView headerText = view.findViewById(R.id.header);
-        headerText.setText(m.getNickName());
+        headerText.setText(m);
 
         // TODO(lesley): Not all the times show up for the meals, esp Risley + Okenshields
-        TextView timetext = view.findViewById(R.id.time);
+        TextView timetext1 = view.findViewById(R.id.time1);
 
         try {
-            ArrayList<MealModel> day = m.getWeeklyMenu().get(dateOffset);
+            CafeteriaModel myCafe = null;
+            int count = 0;
+            while(count < cafeData.size())
+            {
+                if(m.equals(cafeData.get(count).getNickName()))
+                {
+                    myCafe = cafeData.get(count);
+                }
+                count++;
+            }
+
+            ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset);
             int length = day.size() - 1;
             MealModel meal = day.get(mealIndex - (2-length));
 
             SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-            String startTime = localDateFormat.format(meal.getStart());
-            String endTime = localDateFormat.format(meal.getEnd());
-            timetext.setText("Open " + startTime + " to " + endTime);
+            String localEndTime = localDateFormat.format(meal.getEnd());
+            String localStartTime = localDateFormat.format(meal.getStart());
+
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+            String dateStartTime = dateFormat.format(meal.getStart());
+
+            String dateCurrent = dateFormat.format(date);
+
+            int t1 = Integer.parseInt(dateCurrent.substring(dateCurrent.length() - 2,
+                    dateCurrent.length()));
+            int t2 = Integer.parseInt(dateStartTime.substring(dateStartTime.length()
+                    - 2, dateStartTime.length()));
+
+            //meal date seems to be off by one day
+            if(myCafe.getCurrentStatus()==CafeteriaModel.Status.OPEN
+                    && t1 == t2+1 ) {
+                timetext1.setText("Open from " + localStartTime + " to " + localEndTime);
+            }
+
+            else if(t1 == t2+ 1){
+                timetext1.setText("Closed");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
