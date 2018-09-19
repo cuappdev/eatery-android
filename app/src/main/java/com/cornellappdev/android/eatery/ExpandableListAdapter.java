@@ -160,7 +160,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         // Horizontal line that separates each eatery entry
         line = view.findViewById(R.id.horiline);
-        line.setVisibility(View.INVISIBLE);
+        line.setVisibility(View.GONE);
         String str = (String)getChild(i,i1);
 
         TextView tv = view.findViewById(R.id.menu_title);
