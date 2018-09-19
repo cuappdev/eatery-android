@@ -33,7 +33,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.CENTRAL;
+import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.NORTH;
+import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.WEST;
+
 public class MainActivity extends AppCompatActivity implements MainListAdapter.ListAdapterOnClickHandler {
+
+    public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
+    public static final String PAYMENT_CARD = "Cornell Card";
+    public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
+    public static final String FILTER_BG_COLOR_OFF = "#F2F2F2";
+    public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
+    public static final String FILTER_TXT_COLOR_OFF = "#4B7FBE";
 
     public static boolean searchPressed = false;
 
@@ -46,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public Button centralButton;
     public Button swipesButton;
     public Button brbButton;
+    public Button areaButtonPressed;
+    public Button paymentButtonPressed;
     public CafeteriaDbHelper dbHelper;
     public MainListAdapter listAdapter;
     public ProgressBar progressBar;
@@ -133,205 +146,85 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         bgShape.setColor(Color.parseColor(backgroundColor));
     }
 
-    // TODO(lesley): reduce redundancy in this method, please
+    private ArrayList<CafeteriaModel> filterCafeListByArea(CafeteriaModel.CafeteriaArea area) {
+        ArrayList<CafeteriaModel> areaFilteredList = new ArrayList<>();
+        for (CafeteriaModel model : cafeList) {
+            if (model.getArea() == area) {
+                areaFilteredList.add(model);
+            }
+        }
+        return areaFilteredList;
+    }
+
+    private ArrayList<CafeteriaModel> filterSearchListByPayment(CafeteriaModel.CafeteriaArea area, String paymentType) {
+        ArrayList<CafeteriaModel> paymentFilteredSearchList = new ArrayList<>();
+        for (CafeteriaModel model : searchList) {
+            final boolean areaFuzzyMatches = area == null || model.getArea() == area;
+            if (areaFuzzyMatches && model.getPay_methods().contains(paymentType)) {
+                paymentFilteredSearchList.add(model);
+            }
+        }
+        return paymentFilteredSearchList;
+    }
+
+    private void handleAreaButtonPress(Button button, CafeteriaModel.CafeteriaArea area) {
+        if (!button.equals(areaButtonPressed)) {
+            changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
+            if (areaButtonPressed != null) {
+                changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
+            }
+            areaButtonPressed = button;
+            currentList = filterCafeListByArea(area);
+        } else {
+            changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
+            areaButtonPressed = null;
+            currentList = searchList;
+        }
+    }
+
+    private void handlePaymentButtonPress(Button button, String payment) {
+        if (!button.equals(paymentButtonPressed)) {
+            changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
+            if (paymentButtonPressed != null) {
+                changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
+            }
+            paymentButtonPressed = swipesButton;
+
+            if (button.equals(areaButtonPressed)) {
+                currentList = filterSearchListByPayment(NORTH, payment);
+            } else if (button.equals(areaButtonPressed)) {
+                currentList = filterSearchListByPayment(WEST, payment);
+            } else if (button.equals(areaButtonPressed)) {
+                currentList = filterSearchListByPayment(CENTRAL, payment);
+            } else {
+                currentList = filterSearchListByPayment(null, payment);
+            }
+        } else {
+            changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
+            paymentButtonPressed = null;
+            currentList = searchList;
+        }
+    }
+
     public void filterClick(View view) {
         int id = view.getId();
 
         switch (id) {
             case R.id.northButton:
-                if (!northPressed) {
-                    // Change color of north button + set boolean(clicked)
-                    changeButtonColor("#FFFFFF", "#4B7FBE", northButton);
-                    northPressed = true;
-
-                    // Change color of west+ central + set booleans(unclicked)
-                    centralPressed = false;
-                    westPressed = false;
-                    changeButtonColor("#4B7FBE", "#F2F2F2", westButton);
-                    changeButtonColor("#4B7FBE", "#F2F2F2", centralButton);
-
-                    // Go through searchList(search view list)
-                    ArrayList<CafeteriaModel> northList = new ArrayList<>();
-                    for (CafeteriaModel model : searchList) {
-                        if (model.getArea() == CafeteriaModel.CafeteriaArea.NORTH) {
-                            northList.add(model);
-                        }
-                    }
-                    // Set currentList to northList(filtered)
-                    currentList = northList;
-                    break;
-                }
-                // North button is not pressed or unclicked
-                else {
-                    changeButtonColor("#4B7FBE", "#F2F2F2", northButton);
-                    northPressed = false;
-                    currentList = searchList;
-                    break;
-                }
+                handleAreaButtonPress(northButton, NORTH);
+                break;
             case R.id.centralButton:
-                if (!centralPressed) {
-                    // Change color of central button + set boolean(clicked)
-                    changeButtonColor("#FFFFFF", "#4B7FBE", centralButton);
-                    centralPressed = true;
-
-                    // Change color of north+ west + set booleans(unclicked)
-                    northPressed = false;
-                    westPressed = false;
-                    changeButtonColor("#4B7FBE", "#F2F2F2", westButton);
-                    changeButtonColor("#4B7FBE", "#F2F2F2", northButton);
-
-                    ArrayList<CafeteriaModel> centralList = new ArrayList<>();
-                    for (CafeteriaModel model : searchList) {
-                        if (model.getArea() == CafeteriaModel.CafeteriaArea.CENTRAL) {
-                            centralList.add(model);
-                        }
-                    }
-                    currentList = centralList;
-                    break;
-                }
-                // Central button is (not pressed) or unclicked
-                else {
-                    changeButtonColor("#4B7FBE", "#F2F2F2", centralButton);
-                    centralPressed = false;
-                    currentList = searchList;
-                    break;
-                }
+                handleAreaButtonPress(centralButton, CENTRAL);
+                break;
             case R.id.westButton:
-                if (!westPressed) {
-                    // Change color of west button + set boolean(clicked)
-                    changeButtonColor("#FFFFFF", "#4B7FBE", westButton);
-                    westPressed = true;
-
-                    // Change color of north and central button + set booleans(unclicked)
-                    centralPressed = false;
-                    northPressed = false;
-                    changeButtonColor("#4B7FBE", "#F2F2F2", northButton);
-                    changeButtonColor("#4B7FBE", "#F2F2F2", centralButton);
-
-                    ArrayList<CafeteriaModel> westList = new ArrayList<>();
-                    for (CafeteriaModel model : searchList) {
-                        if (model.getArea() == CafeteriaModel.CafeteriaArea.WEST) {
-                            westList.add(model);
-                        }
-                    }
-                    currentList = westList;
-                    break;
-                }
-                // West button is not pressed or unclicked
-                else {
-                    changeButtonColor("#4B7FBE", "#F2F2F2", westButton);
-                    westPressed = false;
-                    currentList = searchList;
-                    break;
-                }
+                handleAreaButtonPress(westButton, WEST);
+                break;
             case R.id.swipes:
-                // Swipe button is pressed
-                if (!swipesPressed) {
-                    // Set Swipe button color + boolean(clicked)
-                    changeButtonColor("#FFFFFF", "#4B7FBE", swipesButton);
-                    swipesPressed = true;
-                    // Set brb button color + boolean(unclicked)
-                    brbPressed = false;
-                    changeButtonColor("#4B7FBE", "#F2F2F2", brbButton);
-
-                    // If north is also pressed, north + swipe
-                    ArrayList<CafeteriaModel> swipeList = new ArrayList<>();
-                    if (northPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.NORTH && model.getPay_methods().contains("Meal Plan - Swipe")) {
-                                swipeList.add(model);
-                            }
-                        }
-                    }
-                    // If west is also pressed , west+swipe
-                    else if (westPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.WEST && model.getPay_methods().contains("Meal Plan - Swipe")) {
-                                swipeList.add(model);
-                            }
-                        }
-                    }
-                    // If central is also pressed, central + swipe
-                    else if (centralPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.CENTRAL && model.getPay_methods().contains("Meal Plan - Swipe")) {
-                                swipeList.add(model);
-                            }
-                        }
-                    }
-                    // If no area button pressed, swipe
-                    else {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getPay_methods().contains("Meal Plan - Swipe")) {
-                                swipeList.add(model);
-                            }
-                        }
-                    }
-                    currentList = swipeList;
-                    break;
-                }
-                // Swipe not pressed or unclicked
-                else {
-                    changeButtonColor("#4B7FBE", "#F2F2F2", swipesButton);
-                    swipesPressed = false;
-                    currentList = searchList;
-                    break;
-
-                }
+                handlePaymentButtonPress(swipesButton, PAYMENT_SWIPE);
+                break;
             case R.id.brb:
-                // Brb pressed
-                if (!brbPressed) {
-                    // Set brb button color + boolean(clicked)
-                    changeButtonColor("#FFFFFF", "#4B7FBE", brbButton);
-                    brbPressed = true;
-
-                    // Set swipe button color + boolean(unclicked)
-                    swipesPressed = false;
-                    changeButtonColor("#4B7FBE", "#F2F2F2", swipesButton);
-
-                    ArrayList<CafeteriaModel> brbList = new ArrayList<>();
-
-                    // North + brb
-                    if (northPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.NORTH && model.getPay_methods().contains("Cornell Card")) {
-                                brbList.add(model);
-                            }
-                        }
-                    }
-                    // West + brb
-                    else if (westPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.WEST && model.getPay_methods().contains("Cornell Card")) {
-                                brbList.add(model);
-                            }
-                        }
-                    }
-                    // Central + brb
-                    else if (centralPressed) {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getArea() == CafeteriaModel.CafeteriaArea.CENTRAL && model.getPay_methods().contains("Cornell Card")) {
-                                brbList.add(model);
-                            }
-                        }
-                    }
-                    // Brb
-                    else {
-                        for (CafeteriaModel model : searchList) {
-                            if (model.getPay_methods().contains("Cornell Card")) {
-                                brbList.add(model);
-                            }
-                        }
-                    }
-                    currentList = brbList;
-                    break;
-                } else {
-                    // Brb unclicked
-                    changeButtonColor("#4B7FBE", "#F2F2F2", brbButton);
-                    brbPressed = false;
-                    currentList = searchList;
-                    break;
-                }
+                handlePaymentButtonPress(brbButton, PAYMENT_CARD);
+                break;
         }
         Collections.sort(currentList);
         listAdapter.setList(currentList, currentList.size(), null);
