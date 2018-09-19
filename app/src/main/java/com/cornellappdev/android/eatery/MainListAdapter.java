@@ -100,7 +100,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-                // TODO(lesley): change location of images to githhub
                 String imageLocation =
                         "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
                                 + convertName(cafeListFiltered.get(position).getNickName() + ".jpg");
