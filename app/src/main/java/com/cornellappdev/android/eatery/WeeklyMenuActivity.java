@@ -23,8 +23,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
@@ -190,8 +192,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        // TODO(lesley): change this to have the menu be set to the meal corresponding to current time
-        // If no buttons are selected, the default menu is set to the current day's breakfast
         changeListAdapter("breakfast", 0);
 
         // Adds functionality to bottom nav bar
@@ -287,7 +287,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
 
         // Hides layout elements if there is nothing in the list corresponding to a certain CafeteriaArea
-        if (finalList.get("West").size() == 0) {
+        if (finalList.get("West") != null && finalList.get("West").size() == 0) {
             westText.setVisibility(View.GONE);
             expListViewWest.setVisibility(View.GONE);
         } else {
@@ -298,7 +298,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     dateOffset, mealIndex, cafeData);
             expListViewWest.setAdapter(listAdapterWest);
         }
-        if (finalList.get("North").size() == 0) {
+        if (finalList.get("North") != null && finalList.get("North").size() == 0) {
             northText.setVisibility(View.GONE);
             expListViewNorth.setVisibility(View.GONE);
         } else {
@@ -309,7 +309,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     dateOffset, mealIndex, cafeData);
             expListViewNorth.setAdapter(listAdapterNorth);
         }
-        if (finalList.get("Central").size() == 0) {
+        if (finalList.get("Central") != null && finalList.get("Central").size() == 0) {
             centralText.setVisibility(View.GONE);
             expListViewCentral.setVisibility(View.GONE);
         } else {
@@ -338,16 +338,19 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 // Get MealModel for the day and split into three hashmaps
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
                 for (MealModel n : meals) {
-                    if ((n.getType().equals("Breakfast") || n.getType().equals("Brunch"))
-                            && !m.getNickName().equals("Cook House Dining")) {
-                        breakfastList.put(m.getNickName(), n);
+                    if(n.getMenu().size() > 0) {
+                        if ((n.getType().equals("Breakfast") || n.getType().equals("Brunch"))) {
+                            breakfastList.put(m.getNickName(), n);
+                        }
+                        if (n.getType().equals("Lunch") || n.getType().equals("Brunch")
+                                || n.getType().equals("Lite Lunch")) {
+                            lunchList.put(m.getNickName(), n);
+                        }
+                        if (n.getType().equals("Dinner")) {
+                            dinnerList.put(m.getNickName(), n);
+                        }
                     }
-                    if (n.getType().equals("Lunch") || n.getType().equals("Brunch")) {
-                        lunchList.put(m.getNickName(), n);
-                    }
-                    if (n.getType().equals("Dinner")) {
-                        dinnerList.put(m.getNickName(), n);
-                    }
+
                 }
             }
         }

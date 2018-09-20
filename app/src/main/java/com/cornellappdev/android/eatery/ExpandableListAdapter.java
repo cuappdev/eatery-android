@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.Model.CafeModel;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.Model.MealModel;
 
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
@@ -43,18 +45,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.dateOffset = dateOffset;
         this.cafeData = cafeData;
 
-        for (String str : mealMap.keySet()) {
-            cafeKeys.add(str);
+        if(mealMap != null){
+            for (String str : mealMap.keySet()) {
+                cafeKeys.add(str);
+            }
         }
     }
 
     @Override
     public int getGroupCount() {
+        if(mealMap == null)
+        {
+            return 0;
+        }
         return mealMap.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
+        if(mealMap == null)
+        {
+            return 0;
+        }
         String m = cafeKeys.get(i);
         return mealMap.get(m).size();
     }
@@ -97,8 +109,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         String m = (String) getGroup(i);
         TextView headerText = view.findViewById(R.id.header);
         headerText.setText(m);
+        headerText.setTypeface(null, Typeface.NORMAL);
 
-        // TODO(lesley): Not all the times show up for the meals, esp Risley + Okenshields
+
         TextView timetext1 = view.findViewById(R.id.time1);
 
         try {
@@ -113,35 +126,44 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 count++;
             }
 
-            ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset);
+            ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset+1);
             int length = day.size() - 1;
-            MealModel meal = day.get(mealIndex - (2-length));
+
+            //finding correct idx to get desired meal model from day array
+            MealModel meal;
+            if(length == 1) {
+                meal = day.get(mealIndex/2);
+            }
+            else if(length == 2){
+                meal = day.get(mealIndex);
+            }
+            else if(length == 3){
+                meal = day.get(mealIndex - 2 + length);
+            }
+            else{
+                meal = day.get(0);
+            }
 
             SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-            String localEndTime = localDateFormat.format(meal.getEnd());
-            String localStartTime = localDateFormat.format(meal.getStart());
-
             Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-            String dateStartTime = dateFormat.format(meal.getStart());
 
-            String dateCurrent = dateFormat.format(date);
-
-            int t1 = Integer.parseInt(dateCurrent.substring(dateCurrent.length() - 2,
-                    dateCurrent.length()));
-            int t2 = Integer.parseInt(dateStartTime.substring(dateStartTime.length()
-                    - 2, dateStartTime.length()));
+            String endTime = localDateFormat.format(meal.getEnd());
+            String startTime = localDateFormat.format(meal.getStart());
 
             //meal date seems to be off by one day
-            if(myCafe.getCurrentStatus()==CafeteriaModel.Status.OPEN
-                    && t1 == t2+1 ) {
-                timetext1.setText("Open from " + localStartTime + " to " + localEndTime);
+            if((date.getTime() > meal.getStart().getTime()
+                    && date.getTime() < meal.getEnd().getTime())
+                    || date.getDay() != meal.getStart().getDay()
+                    || date.getTime() < meal.getStart().getTime()
+                    ) {
+                timetext1.setText("Open from " + startTime + " to " + endTime);
+                timetext1.setTextColor(Color.parseColor("#1a84db"));
             }
 
-            else if(t1 == t2+ 1){
-                timetext1.setText("Closed");
+            else{
+                timetext1.setText("Closed for " + meal.getType());
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,12 +186,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         String str = (String)getChild(i,i1);
 
         TextView tv = view.findViewById(R.id.menu_title);
+
+        if(str == null)
+        {
+            System.out.println("dingdongditch");
+            tv.setText("No menu available");
+        }
         // If str == 3, then string is a category
         if (str.charAt(0) == '3') {
             str = str.substring(1);
             SpannableString sstr = new SpannableString(str);
             tv.setText(sstr);
-            tv.setTypeface(null, Typeface.BOLD);
             tv.setTextColor(Color.parseColor("#000000"));
             tv.setTextSize(18);
             tv.setPadding(0, 70, 0, 0);
