@@ -3,7 +3,10 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -12,6 +15,8 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -27,29 +32,23 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by JC on 2/22/18.
- */
-
-public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    Context mContext;
-    final private ListAdapterOnClickHandler mListAdapterOnClickHandler;
+public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final Context mContext;
+    private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
     private int mCount;
     private String mQuery;
-    private ArrayList<CafeteriaModel> cafeList;
     private ArrayList<CafeteriaModel> cafeListFiltered;
     private final int TEXT = 1;
     private final int IMAGE = 0;
 
     public interface ListAdapterOnClickHandler {
-        void onClick(int position,ArrayList<CafeteriaModel> list);
+        void onClick(int position, ArrayList<CafeteriaModel> list);
     }
 
-    public MainListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
+    MainListAdapter(Context context, ListAdapterOnClickHandler clickHandler, int count, ArrayList<CafeteriaModel> list) {
         mContext = context;
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
-        cafeList = list;
         cafeListFiltered = list;
 
         // Logcat for Fresco
@@ -62,29 +61,31 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
-    public void setList(ArrayList<CafeteriaModel> list, int count, String query){
+    void setList(ArrayList<CafeteriaModel> list, int count, String query) {
         mQuery = query;
         mCount = count;
         cafeListFiltered = list;
         notifyDataSetChanged();
     }
 
-    /**Set view to layout of CardView**/
+    /**
+     * Set view to layout of CardView
+     **/
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        final View view;
+        final int layoutId;
         RecyclerView.ViewHolder viewHolder = null;
-        int layoutId = 0;
-        switch(viewType){
+        switch (viewType) {
             case IMAGE:
                 layoutId = R.layout.card_item;
-                view = LayoutInflater.from(mContext).inflate(layoutId, parent,false);
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
                 view.setFocusable(true);
                 viewHolder = new ListAdapterViewHolder(view);
                 break;
             case TEXT:
                 layoutId = R.layout.card_text;
-                view = LayoutInflater.from(mContext).inflate(layoutId,parent,false);
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
                 viewHolder = new TextAdapterViewHolder(view);
                 break;
         }
@@ -93,13 +94,12 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
-        switch (input_holder.getItemViewType()){
+        switch (input_holder.getItemViewType()) {
             case IMAGE:
-                ListAdapterViewHolder holder = (ListAdapterViewHolder)input_holder;
+                ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
                 holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
 
-                // TODO(lesley): change location of images to githhub
                 String imageLocation =
                         "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
                                 + convertName(cafeListFiltered.get(position).getNickName() + ".jpg");
@@ -112,15 +112,61 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 Collections.sort(cafeListFiltered);
                 if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                    holder.line.setBackgroundColor(Color.parseColor("#FF0000"));
                     holder.cafeOpen.setText("Closed");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+                    holder.rlayout.setAlpha(.6f);
+
                 } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
-                    holder.line.setBackgroundColor(Color.parseColor("#E8F11F"));
                     holder.cafeOpen.setText("Closing Soon");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                    holder.rlayout.setAlpha(1f);
+
+
                 } else{
-                    holder.line.setBackgroundColor(Color.parseColor("#00A350"));
                     holder.cafeOpen.setText("Open");
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                    holder.rlayout.setAlpha(1f);
+
                 }
+                int numMethods =0;
+
+                int i=1;
+                //This is setting the icons for the different payment methods
+                for(String payMethod:cafeListFiltered.get(position).getPay_methods()){
+                    int payImage = getPayImage(payMethod);
+                    if(payImage!=-1){
+                        if(i==1){
+                            holder.icon_1.setImageResource(payImage);
+                            i++;
+                        }
+                        else if(i==2){
+                            holder.icon_2.setImageResource(payImage);
+                            i++;
+                        }
+                        else if(i==3){
+                            holder.icon_3.setImageResource(payImage);
+                            i++;
+
+                        }
+                    }
+                }
+                //this is removing any unused payment icons
+                while(i!=4){
+                    if(i==1){
+                        holder.icon_1.setVisibility(View.INVISIBLE);
+                        i++;
+                    }
+                    if(i==2){
+                        holder.icon_2.setVisibility(View.INVISIBLE);
+                        i++;
+                    }
+                    if(i==3){
+                        holder.icon_3.setVisibility(View.INVISIBLE);
+                        i++;
+
+                    }
+                }
+
 
                 holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
                 break;
@@ -132,17 +178,23 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 ArrayList<String> itemList = cafeListFiltered.get(position).getSearchedItems();
                 Collections.sort(itemList);
-                String items = itemList.toString().substring(1, itemList.toString().length()-1);
+                String items = itemList.toString().substring(1, itemList.toString().length() - 1);
 
                 if (mQuery != null) {
+                    // Fixes conflict with replacing character 'b' after inserting HTML bold tags
+                    if (mQuery.equals("B")) mQuery = "b";
+
                     // Find case-matching instances to bold
                     items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
-                    // Find instances that don't make the case of the query and bold them
-                    int begIndex = items.toLowerCase().indexOf(mQuery.toLowerCase());
-                    String queryMatchingItemCase =
-                            items.substring(begIndex, begIndex + mQuery.length());
-                    items = items.replaceAll(queryMatchingItemCase,
-                            "<b>" + queryMatchingItemCase + "</b>");
+
+                    // Find instances that don't match the case of the query and bold them
+                    int begIndex = items.replaceAll(mQuery, " ").toLowerCase().indexOf(mQuery.toLowerCase());
+                    if (begIndex >= 0) {
+                        String queryMatchingItemCase =
+                                items.substring(begIndex, begIndex + mQuery.length());
+                        items = items.replaceAll(queryMatchingItemCase,
+                                "<b>" + queryMatchingItemCase + "</b>");
+                    }
                 }
 
                 holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
@@ -151,12 +203,25 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public int getItemViewType(int position){
-        if(!MainActivity.searchPressed){
+    public int getItemViewType(int position) {
+        if (!MainActivity.searchPressed) {
             return IMAGE;
-        } else{
+        } else {
             return TEXT;
         }
+    }
+
+    public int getPayImage(String payment){
+        if(payment.equalsIgnoreCase("Meal Plan - Debit")){
+            return R.drawable.brb_icon;
+        }
+        else if(payment.equalsIgnoreCase("Meal Plan - Swipe")){
+            return R.drawable.swipe_icon;
+        }
+        else if(payment.equalsIgnoreCase("Major Credit Cards")){
+            return R.drawable.dollar_icon;
+        }
+        else return -1;
     }
 
     @Override
@@ -164,40 +229,45 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mCount;
     }
 
-    class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
-        View line;
+        ImageView icon_1;
+        ImageView icon_2;
+        ImageView icon_3;
         SimpleDraweeView cafeDrawee;
+        CardView rlayout;
 
-        public ListAdapterViewHolder(View itemView) {
+        ListAdapterViewHolder(View itemView) {
             super(itemView);
-            cafeName =  itemView.findViewById(R.id.cafe_name);
-            cafeTime =  itemView.findViewById(R.id.cafe_time);
+            cafeName = itemView.findViewById(R.id.cafe_name);
+            cafeTime = itemView.findViewById(R.id.cafe_time);
             cafeOpen = itemView.findViewById(R.id.cafe_open);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
-            line = itemView.findViewById(R.id.cardviewStatus);
-
+            icon_1 = itemView.findViewById(R.id.icon_1);
+            icon_2 = itemView.findViewById(R.id.icon_2);
+            icon_3 = itemView.findViewById(R.id.icon_3);
+            rlayout = itemView.findViewById(R.id.cv);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition,cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
 
         }
     }
 
-    class TextAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class TextAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView cafe_name;
         TextView cafe_time;
         TextView cafe_time_info;
         TextView cafe_items;
 
 
-        public TextAdapterViewHolder(View itemView) {
+        TextAdapterViewHolder(View itemView) {
             super(itemView);
             cafe_name = itemView.findViewById(R.id.searchview_name);
             cafe_time = itemView.findViewById(R.id.searchview_open);
@@ -208,14 +278,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         @Override
-        public void onClick(View v){
+        public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition,cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
         }
 
     }
 
-    public static String convertName(String str) {
+    private static String convertName(String str) {
         if (str.equals("104West!.jpg")) return "104-West.jpg";
         if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
         if (str.equals("Franny's.jpg")) return "frannys.jpg";
