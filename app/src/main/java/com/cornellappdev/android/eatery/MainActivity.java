@@ -268,9 +268,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            ArrayList<CafeteriaModel> searchList(ArrayList<CafeteriaModel> list, String query) {
+            ArrayList<CafeteriaModel> searchList(String query) {
+                final boolean noFilter = areaButtonPressed == null && paymentButtonPressed == null;
+                ArrayList<CafeteriaModel> searchedList = noFilter ? cafeList : currentList;
                 ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
-                for (CafeteriaModel model : list) {
+                for (CafeteriaModel model : searchedList) {
                     HashSet<String> mealSet = model.getMealItems();
 
                     //check the nickname of the cafe and if it's not already in the filtered list add it to the list
@@ -296,14 +298,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     searchList = cafeList;
                     searchPressed = false;
                 } else {
-                    query = query.trim();
                     searchPressed = true;
-
-                    if (areaButtonPressed == null && paymentButtonPressed == null) {
-                        searchList = searchList(cafeList, query);
-                    } else {
-                        searchList = searchList(currentList, query);
-                    }
+                    searchList = searchList(query.trim());
                 }
                 
                 Collections.sort(searchList);
