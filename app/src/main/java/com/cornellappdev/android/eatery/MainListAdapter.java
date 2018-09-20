@@ -127,6 +127,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 holder2.cafe_time_info.setText(cafeListFiltered.get(position).getCloseTime());
 
                 ArrayList<String> itemList = cafeListFiltered.get(position).getSearchedItems();
+                if (itemList == null) {
+                    holder2.cafe_items.setText("");
+                    break;
+                }
                 Collections.sort(itemList);
                 String items = itemList.toString().substring(1, itemList.toString().length() - 1);
 
