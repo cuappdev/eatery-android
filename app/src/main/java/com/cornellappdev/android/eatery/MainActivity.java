@@ -124,6 +124,13 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 return true;
             }
         });
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        bnv.setSelectedItemId(R.id.action_home);
     }
 
     // Change button and background color

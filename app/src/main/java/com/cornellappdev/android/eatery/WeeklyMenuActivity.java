@@ -93,6 +93,10 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 
+        // Highlight the icon selected
+        bnv.setSelectedItemId(R.id.action_week);
+
+
         // Get list of dining halls
         for (CafeteriaModel m : cafeData) {
             if (m.getIs_diningHall()) {
