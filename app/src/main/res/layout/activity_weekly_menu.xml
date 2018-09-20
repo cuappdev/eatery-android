@@ -226,7 +226,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="50dp"
-        app:itemBackground="@color/colorPrimary"
+        app:itemBackground="@color/eateryblue"
         app:itemIconTint="#ffffff"
         app:itemTextColor="#ffffff"
         app:menu="@menu/bottom_nav_main" />

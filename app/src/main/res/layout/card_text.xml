@@ -20,34 +20,40 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
                 android:id="@+id/searchview_name"
                 android:text="Eatery Name"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
-                android:textColor="#1e1e1e"/>
+                android:textStyle="normal"
+                android:textColor="#de000000"/>
 
             <TextView
+                android:id="@+id/searchview_open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchview_name"
-                android:text="Closed"
-                android:id="@+id/searchview_open"
+                android:fontFamily="sans-serif-medium"
                 android:paddingLeft="16dp"
-                android:paddingBottom="8dp"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="#5482BA"/>
+                android:text="Closed"
+                android:textColor="#5482BA"
+                android:textSize="12sp"
+                android:textStyle="normal" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchview_name"
                 android:layout_toRightOf="@id/searchview_open"
+                android:fontFamily="sans-serif"
                 android:text="Time"
                 android:id="@+id/searchview_opentime"
                 android:paddingLeft="8dp"
-                android:textSize="14sp"
+                android:paddingBottom="4dp"
+                android:textSize="12sp"
+                android:textStyle="normal"
+                android:textColor="#61000000"
                 />
 
             <!--<TextView-->
@@ -71,7 +77,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_below="@id/searchview_opentime"
                 android:id="@+id/searchview_divider"
-                android:background="#d5e0e0e0" />
+                android:background="#19000000" />
 
             <TextView
                 android:layout_width="match_parent"
