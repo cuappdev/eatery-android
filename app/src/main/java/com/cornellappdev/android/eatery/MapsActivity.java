@@ -8,12 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
-<<<<<<< HEAD
 import android.net.Uri;
-=======
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
->>>>>>> d8f00d1a181809643c6e4b8ca8fba54c48f9445d
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
