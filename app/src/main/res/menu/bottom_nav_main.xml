@@ -4,20 +4,20 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@mipmap/ic_restaurant"
+        android:icon="@drawable/ic_eateries_copy"
         android:title="Eateries"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_week"
         android:enabled="true"
-        android:icon="@mipmap/ic_menu"
+        android:icon="@drawable/ic_menu"
         android:title="Weekly Menu"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_brb"
         android:enabled="true"
-        android:icon="@mipmap/ic_local_atm_white_24dp"
+        android:icon="@drawable/ic_balance"
         android:title="BRB"
         app:showAsAction="ifRoom" />
 </menu>

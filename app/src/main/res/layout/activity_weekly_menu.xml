@@ -226,9 +226,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="50dp"
-        app:itemBackground="@color/eateryblue"
-        app:itemIconTint="#ffffff"
-        app:itemTextColor="#ffffff"
+        app:itemBackground="@color/colorWhite"
         app:menu="@menu/bottom_nav_main" />
 
 </android.widget.RelativeLayout>
