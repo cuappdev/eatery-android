@@ -176,8 +176,8 @@
                 android:id="@+id/expandablelistview_west"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="#BABBB8"
-                android:dividerHeight="0.5dp"
+                android:divider="@null"
+                android:dividerHeight="0dp"
                 />
             <TextView
                 android:layout_width="match_parent"
