@@ -171,7 +171,7 @@
                 android:background="#f5f5f5"
                 android:textColor="#de000000"
                 android:textSize="30dp"
-                android:paddingTop="25dp"/>
+                android:paddingTop="15dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_west"
                 android:layout_width="match_parent"
@@ -190,7 +190,7 @@
                 android:background="#f5f5f5"
                 android:textColor="#de000000"
                 android:textSize="30dp"
-                android:paddingTop="25dp"/>
+                android:paddingTop="15dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_north"
                 android:layout_width="match_parent"
@@ -209,7 +209,7 @@
                 android:background="#f5f5f5"
                 android:textColor="#de000000"
                 android:textSize="30dp"
-                android:paddingTop="25dp"/>
+                android:paddingTop="15dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_central"
                 android:layout_width="match_parent"
