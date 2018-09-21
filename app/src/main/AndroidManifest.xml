@@ -31,7 +31,7 @@
 
         <activity
             android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             />
 

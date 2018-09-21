@@ -8,10 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -109,9 +110,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        // TODOx(lesley): Add BRB feature
-                        toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.maps_activity), "If you would like" +
+                                        " to see this feature, consider joining our Android dev team!",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("Apply", new SnackBarListener());
+                        snackbar.show();
+
                         break;
                 }
                 return true;
@@ -220,12 +224,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    public class SnackBarListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.cornellappdev.com/apply/"));
+            startActivity(browser);
+        }
+    }
+
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
             new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-                    mMap.setMinZoomPreference(15);
-                    return false;
+                mMap.setMinZoomPreference(15);
+                return false;
                 }
             };
 

@@ -20,5 +20,4 @@
         android:icon="@drawable/ic_balance"
         android:title="BRB"
         app:showAsAction="ifRoom" />
-
 </menu>

@@ -6,14 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
+    android:id="@+id/main_activity"
     tools:context="com.cornellappdev.android.eatery.MainActivity">
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
     </RelativeLayout>
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -140,8 +137,6 @@
 
                 </LinearLayout>
             </HorizontalScrollView>
-
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/cafe_list"
                 android:layout_width="match_parent"
