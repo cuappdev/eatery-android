@@ -10,18 +10,17 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/eateryiconlauncher"
+        android:icon="@drawable/eateryicon"
         android:label="Eatery"
         android:supportsRtl="true">
         <activity
             android:name="com.cornellappdev.android.eatery.MainActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
         <activity
@@ -32,7 +31,7 @@
 
         <activity
             android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
-            android:theme="@style/NoActionBar"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             />
 

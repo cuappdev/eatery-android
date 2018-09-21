@@ -4,14 +4,20 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,23 +37,62 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     ArrayList<CafeteriaModel> cafeData;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     public BottomNavigationView bnv;
 
+    class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private View myContentsView;
+
+        MyInfoWindowAdapter(){
+            myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+            TextView cafe_name = ((TextView)myContentsView.findViewById(R.id.info_cafe_name));
+            cafe_name.setText(marker.getTitle());
+            TextView cafe_open = ((TextView)myContentsView.findViewById(R.id.info_cafe_open));
+            TextView cafe_desc = ((TextView)myContentsView.findViewById(R.id.info_cafe_desc));
+            String firstword = marker.getSnippet().split(" ")[0];
+            if(firstword.equalsIgnoreCase("open")){
+                cafe_open.setText("Open");
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                cafe_desc.setText(marker.getSnippet().substring(5));
+            }
+            else if(firstword.equalsIgnoreCase("closing")){
+                cafe_open.setText("Closing Soon");
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                cafe_desc.setText(marker.getSnippet().substring(13));
+            }
+            else{
+                cafe_open.setText(firstword);
+                cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                cafe_desc.setText(marker.getSnippet().substring(7));
+            }
+            return myContentsView;
+        }
+
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
-
-        // Adds functionality for bottom nav bar
         bnv = findViewById(R.id.bottom_navigation);
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -65,16 +110,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        // TODO(lesley): Add BRB feature
-                        toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.maps_activity), "If you would like" +
+                                        " to see this feature, consider joining our Android dev team!",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("Apply", new SnackBarListener());
+                        snackbar.show();
+
                         break;
                 }
                 return true;
             }
         });
     }
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -85,18 +132,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Double lat = cafe.getLat();
             Double lng = cafe.getLng();
             LatLng latLng = new LatLng(lat,lng);
-            String name = cafe.getName();
+            String name = cafe.getNickName();
             String isOpenedStr = cafe.isOpen();
-            String loc = cafe.getBuildingLocation();
+            String loc = cafe.getCloseTime();
             Marker cafeMarker =  mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-            cafeMarker.setSnippet(isOpenedStr + System.lineSeparator() + loc );
+            cafeMarker.setSnippet(isOpenedStr + " " + loc );
 
             if(cafe.getCurrentStatus()==CafeteriaModel.Status.CLOSED){
-                // TODO(lesley): Need to create separate icons eventually
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.gray_pin),72,96,false)));
             } else if(cafe.getCurrentStatus()==CafeteriaModel.Status.OPEN){
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(120f));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.blue_pin),72,96,false)));
             } else{
-                cafeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(52f));
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDescriptorFromVector(this, R.drawable.blue_pin),72,96,false)));
             }
         }
 
@@ -105,11 +152,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-
                 String markerName = marker.getTitle();
                 int position = 0;
                 for(int i=0; i<cafeData.size();i++ ) {
-                    if (cafeData.get(i).getName().equalsIgnoreCase(markerName)) {
+                    if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
                         position = i;
                     }
                 }
@@ -122,38 +168,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        // Create view for map
-        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-            @Override
-            public View getInfoWindow(Marker arg0) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                Context context = getApplicationContext(); //or getActivity(), YourActivity.this, etc.
-
-                LinearLayout info = new LinearLayout(context);
-                info.setOrientation(LinearLayout.VERTICAL);
-
-                TextView title = new TextView(context);
-                title.setTextColor(Color.BLACK);
-                title.setGravity(Gravity.CENTER);
-                title.setTypeface(null, Typeface.BOLD);
-                title.setText(marker.getTitle());
-
-                TextView snippet = new TextView(context);
-                snippet.setTextColor(Color.GRAY);
-                snippet.setText(marker.getSnippet());
-
-                info.addView(title);
-                info.addView(snippet);
-
-                return info;
-            }
-        });
-
+        mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
         enableMyLocationIfPermitted();
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -199,13 +214,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+    private Bitmap bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
+
+    public class SnackBarListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.cornellappdev.com/apply/"));
+            startActivity(browser);
+        }
+    }
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
             new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
                 public boolean onMyLocationButtonClick() {
-                    mMap.setMinZoomPreference(15);
-                    return false;
+                mMap.setMinZoomPreference(15);
+                return false;
                 }
             };
+
 }

@@ -2,37 +2,44 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
 import com.cornellappdev.android.eatery.Model.MealModel;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
     public BottomNavigationView bnv;
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
+    ExpandableListAdapter listAdapterWest;
+    ExpandableListAdapter listAdapterNorth;
+    ExpandableListAdapter listAdapterCentral;
+    NonScrollExpandableListView expListViewWest;
+    NonScrollExpandableListView expListViewNorth;
+    NonScrollExpandableListView expListViewCentral;
+    TextView westText;
+    TextView northText;
+    TextView centralText;
     ArrayList<CafeteriaModel> cafeData;
     ArrayList<CafeteriaModel> diningHall = new ArrayList<>();
     String mealType = "breakfast";
@@ -42,7 +49,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     TextView dinnerText;
     LinearLayout linDate;
     ArrayList<TextView> dateList = new ArrayList<>();
-    ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> weeklyMenu;
+    ArrayList<ArrayList<TreeMap<String, MealModel>>> weeklyMenu;
+    int lastExpandedPosition;
+    NonScrollExpandableListView lastClickedListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +61,60 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         breakfastText = findViewById(R.id.breakfast);
         lunchText = findViewById(R.id.lunch);
         dinnerText = findViewById(R.id.dinner);
-        expListView = findViewById(R.id.expandablelistview);
         linDate = findViewById(R.id.lin_date);
+        expListViewWest = findViewById(R.id.expandablelistview_west);
+        expListViewNorth = findViewById(R.id.expandablelistview_north);
+        expListViewCentral = findViewById(R.id.expandablelistview_central);
+        westText = findViewById(R.id.west_header);
+        northText = findViewById(R.id.north_header);
+        centralText = findViewById(R.id.central_header);
 
         Intent intent = getIntent();
         cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
 
         // Layout for menu list
+        setTitle("Upcoming Menus");
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
-        expListView.setIndicatorBounds(width-250, width);
+        expListViewWest.setIndicatorBounds(width-250, width);
+        expListViewNorth.setIndicatorBounds(width-250, width);
+        expListViewCentral.setIndicatorBounds(width-250, width);
+
+        lastExpandedPosition = -1;
+        lastClickedListView = null;
+
+        expListViewCentral.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewCentral;
+            }
+        });
+
+        expListViewWest.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewWest;
+            }
+        });
+        expListViewNorth.setOnGroupExpandListener(new NonScrollExpandableListView.OnGroupExpandListener(){
+            @Override
+            public void onGroupExpand(int i) {
+                if (lastClickedListView != null && lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                    lastClickedListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = i;
+                lastClickedListView = expListViewNorth;
+            }
+        });
 
         // Populate list of date TextViews on header
         dateList.add((TextView) findViewById(R.id.date0));
@@ -80,18 +132,23 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             // Formatting for each day
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
             dateFormat.setCalendar(cal);
-            SpannableString ssDay = new SpannableString(dateFormat.format(cal.getTime()));
-            ssDay.setSpan(new RelativeSizeSpan(0.25f), 0,3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String sDay = dateFormat.format(cal.getTime());
 
             // Formatting for each date
             int date = cal.get(Calendar.DAY_OF_MONTH);
-            SpannableString ssDate = new SpannableString(Integer.toString(date));
-            ssDate.setSpan(new RelativeSizeSpan(1f), 0,ssDate.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            String sDate = Integer.toString(date);
+            SpannableString ssDate = new SpannableString(sDay + '\n' + sDate);
+            ssDate.setSpan(new RelativeSizeSpan(0.8f), 0, 3, 0);
+            ssDate.setSpan(new RelativeSizeSpan(2f), 4,ssDate.length(), 0);
             TextView tv = dateList.get(i);
-            tv.setText(ssDay + "\n" + ssDate);
+            tv.setText(ssDate);
 
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
+
+        // Highlight the icon selected
+        bnv.setSelectedItemId(R.id.action_week);
+
 
         // Get list of dining halls
         for (CafeteriaModel m : cafeData) {
@@ -139,15 +196,12 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        // TODO(lesley): change this to have the menu be set to the meal corresponding to current time
-        // If no buttons are selected, the default menu is set to the current day's breakfast
         changeListAdapter("breakfast", 0);
 
         // Adds functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Toast toast;
                 switch(item.getItemId()) {
                     case R.id.action_home:
                         finish();
@@ -155,14 +209,18 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     case R.id.action_week:
                         break;
                     case R.id.action_brb:
-                        toast = Toast.makeText(getApplicationContext(), "Coming Soon", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.weekly_activity), "If you would like" +
+                                        " to see this feature, consider joining our Android dev team!",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("Apply", new SnackBarListener());
+                        snackbar.show();
                         break;
                 }
                 return true;
             }
         });
     }
+
 
     /**
      * Changes the text color to black when selected
@@ -229,35 +287,74 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 mealIndex = 2;
                 break;
         }
-        listAdapter = new ExpandableListAdapter(getApplicationContext(), generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex)));
-        expListView.setAdapter(listAdapter);
+        HashMap<String, TreeMap<String, ArrayList<String>>> finalList
+                = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
+
+        // Hides layout elements if there is nothing in the list corresponding to a certain CafeteriaArea
+        if (finalList.get("West") != null && finalList.get("West").size() == 0) {
+            westText.setVisibility(View.GONE);
+            expListViewWest.setVisibility(View.GONE);
+        } else {
+            westText.setVisibility(View.VISIBLE);
+            expListViewWest.setVisibility(View.VISIBLE);
+
+            listAdapterWest = new ExpandableListAdapter(getApplicationContext(), finalList.get("West"),
+                    dateOffset, mealIndex, cafeData);
+            expListViewWest.setAdapter(listAdapterWest);
+        }
+        if (finalList.get("North") != null && finalList.get("North").size() == 0) {
+            northText.setVisibility(View.GONE);
+            expListViewNorth.setVisibility(View.GONE);
+        } else {
+            northText.setVisibility(View.VISIBLE);
+            expListViewNorth.setVisibility(View.VISIBLE);
+
+            listAdapterNorth = new ExpandableListAdapter(getApplicationContext(), finalList.get("North"),
+                    dateOffset, mealIndex, cafeData);
+            expListViewNorth.setAdapter(listAdapterNorth);
+        }
+        if (finalList.get("Central") != null && finalList.get("Central").size() == 0) {
+            centralText.setVisibility(View.GONE);
+            expListViewCentral.setVisibility(View.GONE);
+        } else {
+            centralText.setVisibility(View.VISIBLE);
+            expListViewCentral.setVisibility(View.VISIBLE);
+
+            listAdapterCentral = new ExpandableListAdapter(getApplicationContext(), finalList.get("Central"),
+                    dateOffset, mealIndex, cafeData);
+            expListViewCentral.setAdapter(listAdapterCentral);
+        }
     }
+
 
     /**
      * Generates a list of for breakfast, lunch, and dinner for a particular day.
      * Day is determined by the dateOffset from the current time.
      */
-    public ArrayList<HashMap<CafeteriaModel, MealModel>> generateMealLists(int dateOffset) {
-        ArrayList<HashMap<CafeteriaModel, MealModel>> finalList = new ArrayList<>();
-        HashMap<CafeteriaModel, MealModel> breakfastList = new HashMap<>();
-        HashMap<CafeteriaModel, MealModel> lunchList = new HashMap<>();
-        HashMap<CafeteriaModel, MealModel> dinnerList = new HashMap<>();
-
+    public ArrayList<TreeMap<String, MealModel>> generateMealLists(int dateOffset) {
+        ArrayList<TreeMap<String, MealModel>> finalList = new ArrayList<>();
+        TreeMap<String, MealModel> breakfastList = new TreeMap<>();
+        TreeMap<String, MealModel> lunchList = new TreeMap<>();
+        TreeMap<String, MealModel> dinnerList = new TreeMap<>();
         for (CafeteriaModel m : diningHall) {
             // Checks that dining hall is opened
             if (m.indexOfCurrentDay() != -1) {
                 // Get MealModel for the day and split into three hashmaps
                 ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
                 for (MealModel n : meals) {
-                    if (n.getType().equals("Breakfast")) {
-                        breakfastList.put(m, n);
+                    if(n.getMenu().size() > 0) {
+                        if ((n.getType().equals("Breakfast") || n.getType().equals("Brunch"))) {
+                            breakfastList.put(m.getNickName(), n);
+                        }
+                        if (n.getType().equals("Lunch") || n.getType().equals("Brunch")
+                                || n.getType().equals("Lite Lunch")) {
+                            lunchList.put(m.getNickName(), n);
+                        }
+                        if (n.getType().equals("Dinner")) {
+                            dinnerList.put(m.getNickName(), n);
+                        }
                     }
-                    if (n.getType().equals("Lunch") || n.getType().equals("Brunch")) {
-                        lunchList.put(m, n);
-                    }
-                    if (n.getType().equals("Dinner")) {
-                        dinnerList.put(m, n);
-                    }
+
                 }
             }
         }
@@ -271,9 +368,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     /**
      * Converts the MealModel object of the map into an Arraylist
      */
-    private HashMap<CafeteriaModel, ArrayList<String>> generateFinalList(HashMap<CafeteriaModel, MealModel> listToParse) {
-        HashMap<CafeteriaModel, ArrayList<String>> listFinal = new HashMap<CafeteriaModel, ArrayList<String>>();
-        for (Map.Entry<CafeteriaModel, MealModel> cafe : listToParse.entrySet()) {
+    private HashMap<String, TreeMap<String, ArrayList<String>>> generateFinalList(TreeMap<String, MealModel> listToParse) {
+        HashMap<String, TreeMap<String, ArrayList<String>>> listFinal = new HashMap<>();
+        TreeMap<String, ArrayList<String>> finalWest = new TreeMap<>();
+        TreeMap<String, ArrayList<String>> finalNorth = new TreeMap<>();
+        TreeMap<String, ArrayList<String>> finalCentral = new TreeMap<>();
+
+        for (Map.Entry<String, MealModel> cafe : listToParse.entrySet()) {
             ArrayList<String> mealToList = new ArrayList<String>();
 
             // Get menu of dining hall
@@ -282,8 +383,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
             // Add both category + meal items into an ArrayList
             for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-                // Add '1' in front to denote category
-                String key = "1" + entry.getKey();
+                // Add '3' in front to denote category
+                String key = "3" + entry.getKey();
                 ArrayList<String> values = entry.getValue();
 
                 mealToList.add(key);
@@ -291,7 +392,34 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                     mealToList.add(items);
                 }
             }
-            listFinal.put(cafe.getKey(), mealToList);
+            mealToList.add(" ");
+
+            CafeteriaModel myCafe = null;
+            int count = 0;
+
+            while(count < cafeData.size())
+            {
+                if(cafeData.get(count).getNickName().equals(cafe.getKey()))
+                {
+                    myCafe = cafeData.get(count);
+                }
+                count++;
+            }
+
+            switch (myCafe.getArea()){
+                case WEST:
+                    finalWest.put(cafe.getKey(), mealToList);
+                    break;
+                case NORTH:
+                    finalNorth.put(cafe.getKey(), mealToList);
+                    break;
+                case CENTRAL:
+                    finalCentral.put(cafe.getKey(), mealToList);
+                    break;
+            }
+            listFinal.put("West", finalWest);
+            listFinal.put("North", finalNorth);
+            listFinal.put("Central", finalCentral);
         }
         return listFinal;
     }
@@ -302,15 +430,24 @@ public class WeeklyMenuActivity extends AppCompatActivity {
      * Returns an Arraylist of the set(breakfastlist, lunchlist, dinnerlist) for each day in the dateList.
      * Each of the meal lists is a hashmap of CafeteriaModels that have that specific meal and the menu
      */
-    public ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
-        ArrayList<ArrayList<HashMap<CafeteriaModel, MealModel>>> mainList = new ArrayList<>();
+    public ArrayList<ArrayList<TreeMap<String, MealModel>>> parseWeeklyMenu(ArrayList<TextView> dateList) {
+        ArrayList<ArrayList<TreeMap<String, MealModel>>> mainList = new ArrayList<>();
 
         for (int i = 0; i < dateList.size(); i++) {
             // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
-            ArrayList<HashMap<CafeteriaModel, MealModel>> dailyList = new ArrayList<>();
+            ArrayList<TreeMap<String, MealModel>> dailyList = new ArrayList<>();
             dailyList = generateMealLists(i);
             mainList.add(dailyList);
         }
         return mainList;
+    }
+
+    public class SnackBarListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.cornellappdev.com/apply/"));
+            startActivity(browser);
+        }
     }
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,17 +17,19 @@ import java.util.HashSet;
 public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     boolean isHardCoded;
     int id;
-    String name;
-    String nickName;
-    boolean is_diningHall;
-    CafeteriaArea area;
-    ArrayList<String> pay_methods;
-    String buildingLocation;
-    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
-    CafeModel cafeInfo = new CafeModel();
     Double lng;
     Double lat;
+    String name;
+    String nickName;
+    String closeTime;
+    CafeteriaArea area;
+    boolean is_diningHall;
+    String buildingLocation;
+    ArrayList<String> pay_methods;
+    ArrayList<String> searchedItems;
     boolean openPastMidnight = false;
+    CafeModel cafeInfo = new CafeModel();
+    ArrayList<ArrayList<MealModel>> weeklyMenu = new ArrayList<ArrayList<MealModel>>();
 
     public ArrayList<String> getSearchedItems() {
         return searchedItems;
@@ -36,8 +39,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
         this.searchedItems = searchedItems;
     }
 
-    ArrayList<String> searchedItems;
-
     public String getCloseTime() {
         return closeTime;
     }
@@ -45,8 +46,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
     public void setCloseTime(String closeTime) {
         this.closeTime = closeTime;
     }
-
-    String closeTime;
 
     public String stringTo() {
         String info = "Name/nickName: " + name + "/" + nickName;
@@ -60,8 +59,6 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                 }
 
             }
-        } else {
-            //menuString = cafeMenu.toString();
         }
         return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n" + menuString;
     }
@@ -113,7 +110,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
 
     // TODO(lesley): please clean, also very similar to getCurrentStatus(), consider merging the two methods
     public String isOpen(){
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mmaa");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mmaa");
         SimpleDateFormat timeFormatDay = new SimpleDateFormat("MM/dd");
         boolean foundDay = false;
         Date now = new Date();
@@ -126,11 +123,12 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
             if(hours.containsKey(day)){
                 foundDay = true;
-                int startT = hours.get(day).get(0).getHours() + hours.get(day).get(0).getMinutes();
-                int endT = hours.get(day).get(1).getHours() + hours.get(day).get(1).getMinutes();
-                int curT = now.getHours() + now.getMinutes();
+                int startT = hours.get(day).get(0).getHours()*60 + hours.get(day).get(0).getMinutes();
+                int endT = hours.get(day).get(1).getHours()*60 + hours.get(day).get(1).getMinutes();
+                int curT = now.getHours()*60 + now.getMinutes();
+                System.out.println(now.getHours());
                 if(curT>=startT && curT<endT){
-                    closeTime = "Closing at "+ timeFormat.format(hours.get(day).get(1));
+                    closeTime = "Closes at " + timeFormat.format(hours.get(day).get(1));
                     return "Open";
                 }
                 else if(curT< startT){
@@ -156,7 +154,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                         foundDay = true;
                         for(MealModel meal: day){
                             if(meal.getStart().before(now)&& meal.getEnd().after(now)){
-                                closeTime = "Closing at "+ timeFormat.format(meal.getEnd());
+                                closeTime = "Closes at "+ timeFormat.format(meal.getEnd());
                                 return "Open";
                             }
                             else if(meal.getStart().after(now)){
@@ -185,7 +183,7 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
                     ArrayList<Date> hour = hours.get(day);
                     while(hour.size()>1){
                         if(hour.get(0).before(now) && hour.get(1).after(now)){
-                            closeTime = "Closing at "+ timeFormat.format(hour.get(1));
+                            closeTime = "Closes at "+ timeFormat.format(hour.get(1));
                             return "Open";
                         }
                         else if(hour.get(0).after(now)){
@@ -220,14 +218,14 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             int day = now.getDay();
             HashMap<Integer, ArrayList<Date>> hours = cafeInfo.getHoursH();
             if(hours.containsKey(day)){
-                int startT = hours.get(day).get(0).getHours() + hours.get(day).get(0).getMinutes();
-                int endT = hours.get(day).get(1).getHours() + hours.get(day).get(1).getMinutes();
-                int curT = now.getHours() + now.getMinutes();
+                int startT = hours.get(day).get(0).getHours()*60 + hours.get(day).get(0).getMinutes();
+                int endT = hours.get(day).get(1).getHours()*60 + hours.get(day).get(1).getMinutes();
+                int curT = now.getHours()*60 + now.getMinutes();
                 if (curT>=startT && curT<endT){
                     Date closeTim = hours.get(day).get(1);
-                    if(closeTim.getTime()<=now.getTime()+(60000*30)) {
-                        return Status.CLOSINGSOON;
-                    }
+//                    if(closeTim.getTime()<=now.getTime()+(60000*30)) {
+//                        return Status.CLOSINGSOON;
+//                    }
                     return Status.OPEN;
                 } else if (curT< startT){
                     return Status.CLOSED;
@@ -433,5 +431,26 @@ public class CafeteriaModel implements Serializable, Comparable<CafeteriaModel>{
             }
         }
     }
+
+    /*Comparator for sorting the list by CafeteriaModel's nickname*/
+    public static Comparator<CafeteriaModel> cafeNameComparator = new Comparator<CafeteriaModel>() {
+        @Override
+        public int compare(CafeteriaModel s1, CafeteriaModel s2) {
+            String string1 = s1.getNickName().toUpperCase();
+            String string2 = s2.getNickName().toUpperCase();
+
+            if (string1.charAt(0) == '1') {
+                return -1;
+            }
+
+            if (string2.charAt(0) == '1') {
+                return 1;
+            }
+
+            //ascending order
+            return string1.compareTo(string2);
+        }};
 }
+
+
 

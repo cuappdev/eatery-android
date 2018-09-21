@@ -3,10 +3,12 @@ package com.cornellappdev.android.eatery;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,16 +129,24 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         startActivity(intent);
                         break;
                     case R.id.action_brb:
-                        Toast toast =
-                                Toast.makeText(getApplicationContext(),
-                                        "Coming Soon",
-                                        Toast.LENGTH_SHORT);
-                        toast.show();
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_activity), "If you would like" +
+                                        " to see this feature, consider joining our Android dev team!",
+                                Snackbar.LENGTH_LONG);
+                        snackbar.setAction("Apply", new SnackBarListener());
+                        snackbar.show();
+
                         break;
                 }
                 return true;
             }
         });
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        bnv.setSelectedItemId(R.id.action_home);
     }
 
     public void changeButtonColor(String textColor, String backgroundColor, Button button) {
@@ -257,7 +267,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         getMenuInflater().inflate(R.menu.menu_main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        setTitle("Eateries");
         AutoCompleteTextView searchTextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        int max = searchView.getMaxWidth();
+        searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
@@ -379,7 +392,17 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         return super.onCreateOptionsMenu(menu);
     }
 
-    public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>> {
+    public class SnackBarListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent browser = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://www.cornellappdev.com/apply/"));
+            startActivity(browser);
+        }
+    }
+
+    public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>>{
+
         @Override
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
             String json = NetworkUtilities.getJson();
