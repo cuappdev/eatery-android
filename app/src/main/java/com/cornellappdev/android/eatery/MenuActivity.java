@@ -118,7 +118,6 @@ public class MenuActivity extends AppCompatActivity {
                         + convertName(cafeName + ".jpg");
         Uri uri = Uri.parse(imageLocation);
         cafeImage.setImageURI(uri);
-        cafeImage.setColorFilter(Color.argb(80, 153, 153, 153));
 
 //        getDirections = findViewById(R.id.ind_direction);
 //        getDirections.setOnClickListener(new View.OnClickListener() {
