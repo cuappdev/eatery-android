@@ -77,29 +77,31 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:id="@+id/icon_1"
+                android:id="@+id/card_dollar"
                 android:src="@drawable/dollar_icon"
                 />
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/icon_2"
+                android:id="@+id/card_brb"
                 android:layout_below="@id/cafe_image"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_toLeftOf="@id/icon_1"
+                android:layout_toLeftOf="@id/card_dollar"
                 android:layout_marginRight="8dp"
+                android:visibility="gone"
                 android:src="@drawable/brb_icon"
                 />
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/icon_3"
+                android:id="@+id/card_swipe"
                 android:layout_below="@id/cafe_image"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_toLeftOf="@id/icon_2"
+                android:layout_toLeftOf="@id/card_brb"
                 android:layout_marginRight="8dp"
+                android:visibility="gone"
                 android:src="@drawable/swipe_icon"
                 />
 
