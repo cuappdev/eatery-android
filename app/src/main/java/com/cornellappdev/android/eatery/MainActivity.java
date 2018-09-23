@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             if (paymentButtonPressed != null) {
                 changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
             }
-            paymentButtonPressed = swipesButton;
+            paymentButtonPressed = button;
 
             if (button.equals(areaButtonPressed)) {
                 currentList = filterSearchListByPayment(NORTH, payment);
