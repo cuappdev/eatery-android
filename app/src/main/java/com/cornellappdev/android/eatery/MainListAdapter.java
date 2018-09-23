@@ -129,6 +129,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.rlayout.setAlpha(1f);
                 }
 
+                holder.brb_icon.setVisibility(View.GONE);
+                holder.swipe_icon.setVisibility(View.GONE);
                 for (String pay : cafeListFiltered.get(position).getPay_methods()) {
                     if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
                         holder.brb_icon.setVisibility(View.VISIBLE);
