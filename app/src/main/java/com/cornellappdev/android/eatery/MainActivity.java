@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
                         intent.putExtra("cafeData", cafeList);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                         break;
                     case R.id.action_brb:
                         Snackbar snackbar = Snackbar.make(findViewById(R.id.main_activity), "If you would like" +
