@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class MenuActivity extends AppCompatActivity {
     TextView cafeIsOpen;
     TextView menuText;
     ImageView swipe_icon;
+    ImageView brb_icon;
     LinearLayout linLayout;
     private TabLayout tabLayout;
     private CustomPager customPager;
@@ -129,9 +131,16 @@ public class MenuActivity extends AppCompatActivity {
 //            }
 //        });
 
+        brb_icon = findViewById(R.id.brb_icon);
+        for (String pay : cafeData.getPay_methods()) {
+            if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
+                brb_icon.setVisibility(View.VISIBLE);
+            }
+        }
+
         swipe_icon = findViewById(R.id.swipe_icon);
-        if (!cafeData.getIs_diningHall()) {
-            swipe_icon.setVisibility(View.GONE);
+        if (cafeData.getIs_diningHall()) {
+            swipe_icon.setVisibility(View.VISIBLE);
         }
 
         customPager = findViewById(R.id.pager);

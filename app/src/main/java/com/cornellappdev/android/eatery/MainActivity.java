@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -42,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); //holds all cafes
     public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); //button filter list
     public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
+    public ArrayList<CafeteriaModel> locationList = new ArrayList<>();
+    public ArrayList<CafeteriaModel> paymentList = new ArrayList<>();
     public BottomNavigationView bnv;
     public Button northButton;
     public Button westButton;
@@ -170,13 +171,18 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                     }
                     // Set currentList to northList(filtered)
                     currentList = northList;
+                    locationList = northList;
                     break;
                 }
                 // North button is not pressed or unclicked
                 else {
                     changeButtonColor("#4B7FBE", "#F2F2F2", northButton);
                     northPressed = false;
-                    currentList = searchList;
+                    if(!brbPressed && !swipesPressed){
+                        currentList = searchList;
+                    } else {
+                        currentList = paymentList;
+                    }
                     break;
                 }
             case R.id.centralButton:
@@ -198,13 +204,18 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     currentList = centralList;
+                    locationList = centralList;
                     break;
                 }
                 // Central button is (not pressed) or unclicked
                 else {
                     changeButtonColor("#4B7FBE", "#F2F2F2", centralButton);
                     centralPressed = false;
-                    currentList = searchList;
+                    if(!brbPressed && !swipesPressed){
+                        currentList = searchList;
+                    } else {
+                        currentList = paymentList;
+                    }
                     break;
                 }
             case R.id.westButton:
@@ -226,13 +237,18 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     currentList = westList;
+                    locationList = westList;
                     break;
                 }
                 // West button is not pressed or unclicked
                 else {
                     changeButtonColor("#4B7FBE", "#F2F2F2", westButton);
                     westPressed = false;
-                    currentList = searchList;
+                    if(!brbPressed && !swipesPressed){
+                        currentList = searchList;
+                    } else {
+                        currentList = paymentList;
+                    }
                     break;
                 }
             case R.id.swipes:
@@ -279,13 +295,18 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     currentList = swipeList;
+                    paymentList = swipeList;
                     break;
                 }
                 // Swipe not pressed or unclicked
                 else {
                     changeButtonColor("#4B7FBE", "#F2F2F2", swipesButton);
                     swipesPressed = false;
-                    currentList = searchList;
+                    if(!northPressed && !westPressed && !centralPressed){
+                        currentList = searchList;
+                    } else {
+                        currentList = locationList;
+                    }
                     break;
 
                 }
@@ -335,12 +356,17 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                         }
                     }
                     currentList = brbList;
+                    paymentList = brbList;
                     break;
                 } else {
                     // Brb unclicked
                     changeButtonColor("#4B7FBE", "#F2F2F2", brbButton);
                     brbPressed = false;
-                    currentList = searchList;
+                    if(!northPressed && !westPressed && !centralPressed){
+                        currentList = searchList;
+                    } else {
+                        currentList = locationList;
+                    }
                     break;
                 }
         }
