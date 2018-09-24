@@ -100,6 +100,7 @@
                 android:id="@+id/dollar_icon"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
+                android:visibility="visible"
                 android:src="@drawable/dollar_icon"/>
             <ImageView
                 android:layout_width="20dp"
@@ -107,11 +108,13 @@
                 android:id="@+id/brb_icon"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="42dp"
+                android:visibility="gone"
                 android:src="@drawable/brb_icon"/>
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/swipe_icon"
+                android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="68dp"
                 android:src="@drawable/swipe_icon" />

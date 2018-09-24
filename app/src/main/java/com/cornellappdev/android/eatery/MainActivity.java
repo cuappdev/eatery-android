@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -53,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); //holds all cafes
     public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); //button filter list
     public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
+    public ArrayList<CafeteriaModel> locationList = new ArrayList<>();
+    public ArrayList<CafeteriaModel> paymentList = new ArrayList<>();
     public BottomNavigationView bnv;
     public Button northButton;
     public Button westButton;
@@ -185,10 +186,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             }
             areaButtonPressed = button;
             currentList = filterCafeListByArea(area);
+            locationList = currentList;
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             areaButtonPressed = null;
-            currentList = searchList;
+            if (paymentButtonPressed == null) {
+                currentList = searchList;
+            } else {
+                currentList = paymentList;
+            }
         }
     }
 
@@ -209,10 +215,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             } else {
                 currentList = filterSearchListByPayment(null, payment);
             }
+            paymentList = currentList;
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             paymentButtonPressed = null;
-            currentList = searchList;
+            if (areaButtonPressed == null) {
+                currentList = searchList;
+            } else {
+                currentList = locationList;
+            }
         }
     }
 
