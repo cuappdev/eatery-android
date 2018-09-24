@@ -196,7 +196,29 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        changeListAdapter("breakfast", 0);
+        // Selecting which menu to show based on the time of day
+        Date date = new Date();
+        if(date.getHours() < 11) {
+            changeListAdapter("breakfast", 0);
+            breakfastText.setTextColor(Color.parseColor("#000000"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        } else if(date.getHours() < 16) {
+            changeListAdapter("lunch", 0);
+            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+            lunchText.setTextColor(Color.parseColor("#000000"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        } else if(date.getHours() < 22) {
+            changeListAdapter("dinner", 0);
+            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#000000"));
+        } else{
+            changeListAdapter("breakfast", 1);
+            breakfastText.setTextColor(Color.parseColor("#000000"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        }
 
         // Adds functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -355,7 +377,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                             dinnerList.put(m.getNickName(), n);
                         }
                     }
-
                 }
             }
         }

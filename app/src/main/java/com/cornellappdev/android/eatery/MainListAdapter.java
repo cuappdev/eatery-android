@@ -119,10 +119,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
                     holder.cafeOpen.setText("Closing Soon");
-                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+                    holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                     holder.rlayout.setAlpha(1f);
-
-
+                    
                 } else{
                     holder.cafeOpen.setText("Open");
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));

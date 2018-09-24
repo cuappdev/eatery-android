@@ -161,7 +161,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
 
             else{
-                timetext1.setText("Closed for " + meal.getType());
+                String mealString = "";
+                if(mealIndex == 0) {
+                    mealString = "Breakfast";
+                }else if(meal.getType().equals("Brunch")) {
+                    mealString = "Brunch";
+                }  else if(mealIndex == 1){
+                    mealString = "Lunch";
+                } else {
+                    mealString = "Dinner";
+                }
+                timetext1.setText("Closed for " + mealString);
+                timetext1.setTextColor(Color.parseColor("#989898"));
+
             }
 
 
