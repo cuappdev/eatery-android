@@ -206,11 +206,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             }
             paymentButtonPressed = button;
 
-            if (button.equals(areaButtonPressed)) {
+            if (northButton.equals(areaButtonPressed)) {
                 currentList = filterSearchListByPayment(NORTH, payment);
-            } else if (button.equals(areaButtonPressed)) {
+            } else if (westButton.equals(areaButtonPressed)) {
                 currentList = filterSearchListByPayment(WEST, payment);
-            } else if (button.equals(areaButtonPressed)) {
+            } else if (centralButton.equals(areaButtonPressed)) {
                 currentList = filterSearchListByPayment(CENTRAL, payment);
             } else {
                 currentList = filterSearchListByPayment(null, payment);
