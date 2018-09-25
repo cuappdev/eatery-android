@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public CafeteriaDbHelper dbHelper;
     public MainListAdapter listAdapter;
     public ProgressBar progressBar;
+    final QueryListener queryListener = new QueryListener();
     public RecyclerView mRecyclerView;
     public RelativeLayout splash;
 
@@ -264,8 +265,12 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             }
         }
         searchList = cafesToDisplay;
-        Collections.sort(cafesToDisplay);
-        listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+        if (searchPressed) {
+            queryListener.onQueryTextChange(queryListener.query);
+        } else {
+            Collections.sort(cafesToDisplay);
+            listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+        }
     }
 
     @Override
@@ -307,71 +312,77 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             // Don't do anything
         }
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            private void searchList(String query) {
-                final String lowercaseQuery = query.toLowerCase();
-                for (CafeteriaModel model : searchList) {
-                    final HashSet<String> mealSet = model.getMealItems();
-
-                    boolean foundNickName = false;
-                    if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
-                        foundNickName = true;
-                    }
-
-                    ArrayList<String> matchedItems = new ArrayList<>();
-                    boolean foundItem = false;
-                    for (String item : mealSet) {
-                        if (item.toLowerCase().contains(lowercaseQuery)) {
-                            foundItem = true;
-                            matchedItems.add(item);
-                        }
-                    }
-
-                    if (model.matchesFilter() && (foundItem || foundNickName)) {
-                        if (foundNickName) {
-                            model.setSearchedItems(new ArrayList<>(mealSet));
-                        } else {
-                            model.setSearchedItems(matchedItems);
-                        }
-                        model.setMatchesSearch(true);
-                    } else {
-                        model.setMatchesSearch(false);
-                    }
-                }
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
-                if (query.length() == 0) {
-                    searchList = currentList;
-                    searchPressed = false;
-                    for (CafeteriaModel cm : searchList) {
-                        if (cm.matchesFilter()) {
-                            cafesToDisplay.add(cm);
-                        }
-                    }
-                } else {
-                    searchPressed = true;
-                    searchList(query);
-                    for (CafeteriaModel cm : searchList) {
-                        if (cm.matchesSearch()) {
-                            cafesToDisplay.add(cm);
-                        }
-                    }
-                }
-                Collections.sort(cafesToDisplay);
-                listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query.length() == 0 ? null : query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return onQueryTextSubmit(newText);
-            }
-        });
+        searchView.setOnQueryTextListener(queryListener);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public class QueryListener implements SearchView.OnQueryTextListener {
+
+        public String query = "";
+
+        private void searchList(String query) {
+            final String lowercaseQuery = query.toLowerCase();
+            for (CafeteriaModel model : searchList) {
+                final HashSet<String> mealSet = model.getMealItems();
+
+                boolean foundNickName = false;
+                if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
+                    foundNickName = true;
+                }
+
+                ArrayList<String> matchedItems = new ArrayList<>();
+                boolean foundItem = false;
+                for (String item : mealSet) {
+                    if (item.toLowerCase().contains(lowercaseQuery)) {
+                        foundItem = true;
+                        matchedItems.add(item);
+                    }
+                }
+
+                if (model.matchesFilter() && (foundItem || foundNickName)) {
+                    if (foundNickName) {
+                        model.setSearchedItems(new ArrayList<>(mealSet));
+                    } else {
+                        model.setSearchedItems(matchedItems);
+                    }
+                    model.setMatchesSearch(true);
+                } else {
+                    model.setMatchesSearch(false);
+                }
+            }
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            this.query = query;
+            ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
+            if (query.length() == 0) {
+                searchList = currentList;
+                searchPressed = false;
+                for (CafeteriaModel cm : searchList) {
+                    if (cm.matchesFilter()) {
+                        cafesToDisplay.add(cm);
+                    }
+                }
+            } else {
+                searchPressed = true;
+                searchList(query);
+                for (CafeteriaModel cm : searchList) {
+                    if (cm.matchesFilter() && cm.matchesSearch()) {
+                        cafesToDisplay.add(cm);
+                    }
+                }
+            }
+            Collections.sort(cafesToDisplay);
+            listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query.length() == 0 ? null : query);
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            return onQueryTextSubmit(newText);
+        }
+
     }
 
     public class SnackBarListener implements View.OnClickListener {
