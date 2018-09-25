@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.CENTRAL;
 import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.NORTH;
@@ -52,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); //holds all cafes
     public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); //button filter list
     public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
-    public ArrayList<CafeteriaModel> locationList = new ArrayList<>();
-    public ArrayList<CafeteriaModel> paymentList = new ArrayList<>();
     public BottomNavigationView bnv;
     public Button northButton;
     public Button westButton;
@@ -67,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     public ProgressBar progressBar;
     public RecyclerView mRecyclerView;
     public RelativeLayout splash;
-    public boolean northPressed = false;
-    public boolean centralPressed = false;
-    public boolean westPressed = false;
-    public boolean swipesPressed = false;
-    public boolean brbPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +85,9 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         bnv = findViewById(R.id.bottom_navigation);
         splash = findViewById(R.id.relative_layout_splash);
         bnv.setVisibility(View.GONE);
-        getSupportActionBar().hide();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
 
         ConnectionUtilities con = new ConnectionUtilities(this);
         if (!con.isNetworkAvailable()) {
@@ -146,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         bnv.setSelectedItemId(R.id.action_home);
     }
@@ -157,25 +155,58 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         bgShape.setColor(Color.parseColor(backgroundColor));
     }
 
-    private ArrayList<CafeteriaModel> filterCafeListByArea(CafeteriaModel.CafeteriaArea area) {
-        ArrayList<CafeteriaModel> areaFilteredList = new ArrayList<>();
-        for (CafeteriaModel model : cafeList) {
-            if (model.getArea() == area) {
-                areaFilteredList.add(model);
+    private void filterCurrentList() {
+        for (CafeteriaModel model : currentList) {
+            final boolean areaFuzzyMatches = getCurrentArea() == null || model.getArea() == getCurrentArea();
+            final boolean paymentFuzzyMatches =
+                    getCurrentPaymentType() == null || model.getPay_methods().contains(getCurrentPaymentType());
+            if (areaFuzzyMatches && paymentFuzzyMatches) {
+                model.setMatchesFilter(true);
+            } else {
+                model.setMatchesFilter(false);
             }
         }
-        return areaFilteredList;
     }
 
-    private ArrayList<CafeteriaModel> filterSearchListByPayment(CafeteriaModel.CafeteriaArea area, String paymentType) {
-        ArrayList<CafeteriaModel> paymentFilteredSearchList = new ArrayList<>();
-        for (CafeteriaModel model : searchList) {
-            final boolean areaFuzzyMatches = area == null || model.getArea() == area;
-            if (areaFuzzyMatches && model.getPay_methods().contains(paymentType)) {
-                paymentFilteredSearchList.add(model);
+    private void unfilterCurrentList(@NonNull String paymentType) {
+        for (CafeteriaModel model : currentList) {
+            final boolean areaFuzzyMatches = getCurrentArea() == null || model.getArea() == getCurrentArea();
+            if (areaFuzzyMatches && !model.getPay_methods().contains(paymentType)) {
+                model.setMatchesFilter(true);
             }
         }
-        return paymentFilteredSearchList;
+    }
+
+    private void unfilterCurrentList(@NonNull CafeteriaModel.CafeteriaArea area) {
+        for (CafeteriaModel model : currentList) {
+            final boolean paymentFuzzyMatches =
+                    getCurrentPaymentType() == null || model.getPay_methods().contains(getCurrentPaymentType());
+            if (model.getArea() != area && paymentFuzzyMatches) {
+                model.setMatchesFilter(true);
+            }
+        }
+    }
+
+    private CafeteriaModel.CafeteriaArea getCurrentArea() {
+        if (northButton.equals(areaButtonPressed)) {
+            return NORTH;
+        } else if (westButton.equals(areaButtonPressed)) {
+            return WEST;
+        } else if (centralButton.equals(areaButtonPressed)) {
+            return CENTRAL;
+        } else {
+            return null;
+        }
+    }
+
+    private String getCurrentPaymentType() {
+        if (brbButton.equals(paymentButtonPressed)) {
+            return PAYMENT_CARD;
+        } else if (swipesButton.equals(paymentButtonPressed)) {
+            return PAYMENT_SWIPE;
+        } else {
+            return null;
+        }
     }
 
     private void handleAreaButtonPress(Button button, CafeteriaModel.CafeteriaArea area) {
@@ -185,16 +216,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
             }
             areaButtonPressed = button;
-            currentList = filterCafeListByArea(area);
-            locationList = currentList;
+            filterCurrentList();
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             areaButtonPressed = null;
-            if (paymentButtonPressed == null) {
-                currentList = searchList;
-            } else {
-                currentList = paymentList;
-            }
+            unfilterCurrentList(area);
         }
     }
 
@@ -205,32 +231,16 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
             }
             paymentButtonPressed = button;
-
-            if (northButton.equals(areaButtonPressed)) {
-                currentList = filterSearchListByPayment(NORTH, payment);
-            } else if (westButton.equals(areaButtonPressed)) {
-                currentList = filterSearchListByPayment(WEST, payment);
-            } else if (centralButton.equals(areaButtonPressed)) {
-                currentList = filterSearchListByPayment(CENTRAL, payment);
-            } else {
-                currentList = filterSearchListByPayment(null, payment);
-            }
-            paymentList = currentList;
+            filterCurrentList();
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             paymentButtonPressed = null;
-            if (areaButtonPressed == null) {
-                currentList = searchList;
-            } else {
-                currentList = locationList;
-            }
+            unfilterCurrentList(payment);
         }
     }
 
     public void filterClick(View view) {
-        int id = view.getId();
-
-        switch (id) {
+        switch (view.getId()) {
             case R.id.northButton:
                 handleAreaButtonPress(northButton, NORTH);
                 break;
@@ -247,8 +257,15 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 handlePaymentButtonPress(brbButton, PAYMENT_CARD);
                 break;
         }
-        Collections.sort(currentList);
-        listAdapter.setList(currentList, currentList.size(), null);
+        ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
+        for (CafeteriaModel cm : currentList) {
+            if (cm.matchesFilter()) {
+                cafesToDisplay.add(cm);
+            }
+        }
+        searchList = cafesToDisplay;
+        Collections.sort(cafesToDisplay);
+        listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
     }
 
     @Override
@@ -281,7 +298,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         SearchView searchView = (SearchView) searchItem.getActionView();
         setTitle("Eateries");
         AutoCompleteTextView searchTextView = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        int max = searchView.getMaxWidth();
         searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
@@ -293,118 +309,72 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            ArrayList<CafeteriaModel> searchList(String query) {
-                final boolean noFilter = areaButtonPressed == null && paymentButtonPressed == null;
-                ArrayList<CafeteriaModel> searchedList = noFilter ? cafeList : currentList;
-                ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
-                for (CafeteriaModel model : searchedList) {
-                    HashSet<String> mealSet = model.getMealItems();
+            private void searchList(String query) {
+                final String lowercaseQuery = query.toLowerCase();
+                for (CafeteriaModel model : searchList) {
+                    final HashSet<String> mealSet = model.getMealItems();
 
-                    //check the nickname of the cafe and if it's not already in the filtered list add it to the list
-                    if (model.getNickName().toLowerCase().contains((query.toLowerCase())) && !filteredList.contains(model)) {
-                        filteredList.add(model);
+                    boolean foundNickName = false;
+                    if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
+                        foundNickName = true;
                     }
 
+                    ArrayList<String> matchedItems = new ArrayList<>();
+                    boolean foundItem = false;
                     for (String item : mealSet) {
-                        if (item.toLowerCase().contains(query.toLowerCase())) {
-                            if (!filteredList.contains(model)) {
-                                filteredList.add(model);
-                            }
+                        if (item.toLowerCase().contains(lowercaseQuery)) {
+                            foundItem = true;
+                            matchedItems.add(item);
                         }
                     }
 
+                    if (model.matchesFilter() && (foundItem || foundNickName)) {
+                        if (foundNickName) {
+                            model.setSearchedItems(new ArrayList<>(mealSet));
+                        } else {
+                            model.setSearchedItems(matchedItems);
+                        }
+                        model.setMatchesSearch(true);
+                    } else {
+                        model.setMatchesSearch(false);
+                    }
                 }
-                return filteredList;
             }
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
                 if (query.length() == 0) {
-                    searchList = cafeList;
+                    searchList = currentList;
                     searchPressed = false;
+                    for (CafeteriaModel cm : searchList) {
+                        if (cm.matchesFilter()) {
+                            cafesToDisplay.add(cm);
+                        }
+                    }
                 } else {
                     searchPressed = true;
-                    searchList = searchList(query.trim());
+                    searchList(query);
+                    for (CafeteriaModel cm : searchList) {
+                        if (cm.matchesSearch()) {
+                            cafesToDisplay.add(cm);
+                        }
+                    }
                 }
-                
-                Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size(), query.length() == 0 ? null : query);
+                Collections.sort(cafesToDisplay);
+                listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query.length() == 0 ? null : query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                // No text given
-                if (newText.length() == 0) {
-                    searchList = cafeList;
-                    searchPressed = false;
-                }
-                // Some text given
-                else {
-                    newText = newText.trim();
-                    ArrayList<CafeteriaModel> filteredList = new ArrayList<>();
-                    searchPressed = true;
-                    // If no buttons clicked, loop through cafelist
-                    if (areaButtonPressed == null && paymentButtonPressed == null) {
-                        for (CafeteriaModel model : cafeList) {
-
-                            HashSet<String> mealSet = model.getMealItems();
-                            ArrayList<String> matchedItems = new ArrayList<>();
-                            ArrayList<String> full_items = new ArrayList<>();
-
-                            boolean found_item = false;
-                            for (String item : mealSet) {
-                                if (item.toLowerCase().contains(newText.toLowerCase())) {
-                                    matchedItems.add(item);
-                                    found_item = true;
-                                }
-                                full_items.add(item);
-
-                            }
-                            if (found_item) {
-                                model.setSearchedItems(matchedItems);
-                                if (!filteredList.contains(model))
-                                    filteredList.add(model);
-                            }
-
-                            //check the nickname of the cafe and if it's not already in the filtered list add it to the list
-                            if (model.getNickName().toLowerCase().contains((newText.toLowerCase())) && !filteredList.contains(model) && model.isOpen().equals("Open")) {
-                                model.setSearchedItems(full_items);
-                                filteredList.add(model);
-                            }
-                        }
-                        searchList = filteredList;
-                    }
-                    // If any button clicked, loop through currentList
-                    else {
-                        for (CafeteriaModel model : currentList) {
-                            HashSet<String> mealSet = model.getMealItems();
-                            ArrayList<String> matchedItems = new ArrayList<>();
-                            boolean found_item = false;
-                            for (String item : mealSet) {
-                                if (item.toLowerCase().contains(newText.toLowerCase())) {
-                                    matchedItems.add(item);
-                                    found_item = true;
-                                }
-                            }
-                            if (found_item) {
-                                model.setSearchedItems(matchedItems);
-                                if (!filteredList.contains(model))
-                                    filteredList.add(model);
-                            }
-                        }
-                        searchList = filteredList;
-                    }
-                }
-                Collections.sort(searchList);
-                listAdapter.setList(searchList, searchList.size(), newText.length() == 0 ? null : newText);
-                return false;
+                return onQueryTextSubmit(newText);
             }
         });
         return super.onCreateOptionsMenu(menu);
     }
 
-    public class SnackBarListener implements View.OnClickListener{
+    public class SnackBarListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent browser = new Intent(Intent.ACTION_VIEW,
@@ -413,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         }
     }
 
-    public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>>{
+    public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>> {
 
         @Override
         protected ArrayList<CafeteriaModel> doInBackground(String... params) {
@@ -421,9 +391,10 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
             dbHelper.addData(json);
 
             cafeList = JsonUtilities.parseJson(json, getApplicationContext());
+            Collections.sort(cafeList);
             currentList = cafeList;
             searchList = cafeList;
-            Collections.sort(cafeList);
+
             return cafeList;
         }
 
