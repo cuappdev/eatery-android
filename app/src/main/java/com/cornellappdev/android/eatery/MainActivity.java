@@ -34,8 +34,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.CENTRAL;
 import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.NORTH;
@@ -169,25 +167,6 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
         }
     }
 
-    private void unfilterCurrentList(@NonNull String paymentType) {
-        for (CafeteriaModel model : currentList) {
-            final boolean areaFuzzyMatches = getCurrentArea() == null || model.getArea() == getCurrentArea();
-            if (areaFuzzyMatches && !model.getPay_methods().contains(paymentType)) {
-                model.setMatchesFilter(true);
-            }
-        }
-    }
-
-    private void unfilterCurrentList(@NonNull CafeteriaModel.CafeteriaArea area) {
-        for (CafeteriaModel model : currentList) {
-            final boolean paymentFuzzyMatches =
-                    getCurrentPaymentType() == null || model.getPay_methods().contains(getCurrentPaymentType());
-            if (model.getArea() != area && paymentFuzzyMatches) {
-                model.setMatchesFilter(true);
-            }
-        }
-    }
-
     private CafeteriaModel.CafeteriaArea getCurrentArea() {
         if (northButton.equals(areaButtonPressed)) {
             return NORTH;
@@ -217,12 +196,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
             }
             areaButtonPressed = button;
-            filterCurrentList();
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             areaButtonPressed = null;
-            unfilterCurrentList(area);
         }
+        filterCurrentList();
     }
 
     private void handlePaymentButtonPress(Button button, String payment) {
@@ -232,12 +210,11 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
             }
             paymentButtonPressed = button;
-            filterCurrentList();
         } else {
             changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
             paymentButtonPressed = null;
-            unfilterCurrentList(payment);
         }
+        filterCurrentList();
     }
 
     public void filterClick(View view) {
