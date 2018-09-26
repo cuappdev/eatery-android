@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 switch (item.getItemId()) {
                     case R.id.action_home:
                         ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
-                        sv.scrollTo(0, 0);
+                        sv.smoothScrollTo(0, 0);
                         break;
                     case R.id.action_week:
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
