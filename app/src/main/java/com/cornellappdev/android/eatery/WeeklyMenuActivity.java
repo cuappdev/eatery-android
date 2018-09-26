@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -208,6 +209,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                         break;
                     case R.id.action_week:
+                        ScrollView sv = findViewById(R.id.weekly_scroll);
+                        sv.smoothScrollTo(0,0);
                         break;
                     case R.id.action_brb:
                         Snackbar snackbar = Snackbar.make(findViewById(R.id.weekly_activity), "If you would like" +
