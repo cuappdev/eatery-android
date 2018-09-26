@@ -111,7 +111,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         headerText.setText(m);
         headerText.setTypeface(null, Typeface.NORMAL);
 
-
         TextView timetext1 = view.findViewById(R.id.time1);
 
         try {
@@ -158,9 +157,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     ) {
                 timetext1.setText("Open from " + startTime + " to " + endTime);
                 timetext1.setTextColor(Color.parseColor("#1a84db"));
-            }
-
-            else{
+            } else{
                 String mealString = "";
                 if(mealIndex == 0) {
                     mealString = "Breakfast";
@@ -173,8 +170,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 }
                 timetext1.setText("Closed for " + mealString);
                 timetext1.setTextColor(Color.parseColor("#989898"));
-
             }
+
+
 
 
         } catch (Exception e) {
