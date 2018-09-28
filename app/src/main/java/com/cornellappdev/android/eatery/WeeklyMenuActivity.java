@@ -14,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Model.CafeteriaModel;
@@ -125,6 +126,16 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         dateList.add((TextView) findViewById(R.id.date5));
         dateList.add((TextView) findViewById(R.id.date6));
 
+        // When changing date, highlight Breakfast textview
+        linDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                breakfastText.setTextColor(Color.parseColor("#000000"));
+                lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+                dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+            }
+        });
+
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
@@ -196,7 +207,33 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             }
         });
 
-        changeListAdapter("breakfast", 0);
+
+        Date date = new Date();
+        if(date.getHours() < 11) {
+            changeListAdapter("breakfast", 0);
+            mealType = "breakfast";
+            breakfastText.setTextColor(Color.parseColor("#000000"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        } else if(date.getHours() < 16) {
+            changeListAdapter("lunch", 0);
+            mealType = "lunch";
+            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+            lunchText.setTextColor(Color.parseColor("#000000"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        } else if(date.getHours() < 22) {
+            changeListAdapter("dinner", 0);
+            mealType = "dinner";
+            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#000000"));
+        } else{
+            changeListAdapter("breakfast", 1);
+            mealType = "breakfast";
+            breakfastText.setTextColor(Color.parseColor("#000000"));
+            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
+            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+        }
 
         // Adds functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -208,6 +245,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                         break;
                     case R.id.action_week:
+                        ScrollView sv = findViewById(R.id.weekly_scroll);
+                        sv.smoothScrollTo(0,0);
                         break;
                     case R.id.action_brb:
                         Snackbar snackbar = Snackbar.make(findViewById(R.id.weekly_activity), "If you would like" +
@@ -233,6 +272,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         changeDateColor(tv);
 
         int id = tv.getId();
+
         switch (id){
             case R.id.date0:
                 selectedDate = 0;
@@ -355,13 +395,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                             dinnerList.put(m.getNickName(), n);
                         }
                     }
-
                 }
             }
         }
         finalList.add(breakfastList);
         finalList.add(lunchList);
         finalList.add(dinnerList);
+
         return finalList;
     }
 

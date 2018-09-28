@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -99,11 +100,16 @@ public class MenuActivity extends AppCompatActivity {
 
         // Format string for opening/closing time
         cafeIsOpen = findViewById(R.id.ind_open);
-        cafeIsOpen.setText(cafeData.isOpen());
-        if (cafeData.isOpen().equals("Open")) {
-            cafeIsOpen.setTextColor(Color.parseColor("#7dd600"));
-        } else {
-            cafeIsOpen.setTextColor(Color.parseColor("#d82e41"));
+
+        if (cafeData.getCurrentStatus() == CafeteriaModel.Status.OPEN) {
+            cafeIsOpen.setText("Open");
+            cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+        } else if(cafeData.getCurrentStatus() == CafeteriaModel.Status.CLOSINGSOON){
+            cafeIsOpen.setText("Closing Soon");
+            cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+        } else{
+            cafeIsOpen.setText("Closed");
+            cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
         }
 
         cafeText = findViewById(R.id.ind_time);

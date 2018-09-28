@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements MainListAdapter.L
                 Intent intent;
                 switch (item.getItemId()) {
                     case R.id.action_home:
+                        ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
+                        sv.smoothScrollTo(0, 0);
                         break;
                     case R.id.action_week:
                         intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
