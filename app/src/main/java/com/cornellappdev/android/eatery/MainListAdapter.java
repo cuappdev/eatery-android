@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
@@ -95,34 +97,34 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
+        final CafeteriaModel cafeteriaModel = cafeListFiltered.get(position);
         switch (input_holder.getItemViewType()) {
             case IMAGE:
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
-                holder.cafeName.setText(cafeListFiltered.get(position).getNickName());
+                holder.cafeName.setText(cafeteriaModel.getNickName());
 
                 String imageLocation =
                         "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-                                + convertName(cafeListFiltered.get(position).getNickName() + ".jpg");
+                                + convertName(cafeteriaModel.getNickName() + ".jpg");
                 Uri uri = Uri.parse(imageLocation);
                 holder.cafeDrawee.setImageURI(uri);
 
-                SpannableString openString = new SpannableString(cafeListFiltered.get(position).isOpen());
-                openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeListFiltered.get(position).isOpen().length(),
+                SpannableString openString = new SpannableString(cafeteriaModel.isOpen());
+                openString.setSpan(new StyleSpan(Typeface.BOLD), 0, cafeteriaModel.isOpen().length(),
                         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 Collections.sort(cafeListFiltered);
-                if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSED){
+                if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSED) {
                     holder.cafeOpen.setText("Closed");
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                     holder.rlayout.setAlpha(.6f);
 
-                } else if(cafeListFiltered.get(position).getCurrentStatus()==CafeteriaModel.Status.CLOSINGSOON){
+                } else if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSINGSOON) {
                     holder.cafeOpen.setText("Closing Soon");
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                     holder.rlayout.setAlpha(1f);
-                    
-                } else{
+                } else {
                     holder.cafeOpen.setText("Open");
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                     holder.rlayout.setAlpha(1f);
@@ -130,25 +132,26 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 holder.brb_icon.setVisibility(View.GONE);
                 holder.swipe_icon.setVisibility(View.GONE);
-                for (String pay : cafeListFiltered.get(position).getPay_methods()) {
+                for (String pay : cafeteriaModel.getPay_methods()) {
                     if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
                         holder.brb_icon.setVisibility(View.VISIBLE);
                     }
                 }
 
-                if (cafeListFiltered.get(position).getIs_diningHall()) {
+                if (cafeteriaModel.getIs_diningHall()) {
                     holder.swipe_icon.setVisibility(View.VISIBLE);
                 }
 
-                holder.cafeTime.setText(cafeListFiltered.get(position).getCloseTime());
+                holder.cafeTime.setText(cafeteriaModel.getCloseTime());
                 break;
             case TEXT:
                 TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
-                holder2.cafe_name.setText(cafeListFiltered.get(position).getNickName());
-                holder2.cafe_time.setText(cafeListFiltered.get(position).isOpen());
-                holder2.cafe_time_info.setText(cafeListFiltered.get(position).getCloseTime());
+                holder2.cafe_name.setText(cafeteriaModel.getNickName());
+                holder2.cafe_time.setText(cafeteriaModel.isOpen());
+                holder2.cafe_time_info.setText(cafeteriaModel.getCloseTime());
 
-                ArrayList<String> itemList = cafeListFiltered.get(position).getSearchedItems();
+                ArrayList<String> itemList = cafeteriaModel.getSearchedItems();
+                cafeteriaModel.setSearchedItems(null);
                 if (itemList == null) {
                     holder2.cafe_items.setText("");
                     break;
@@ -186,6 +189,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return TEXT;
         }
     }
+
     @Override
     public int getItemCount() {
         return mCount;
