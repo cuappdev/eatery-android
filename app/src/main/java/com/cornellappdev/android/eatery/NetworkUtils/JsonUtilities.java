@@ -56,7 +56,7 @@ public final class JsonUtilities {
         JSONObject basicInfo = hardCodedEateries.getJSONObject(i);
         cafeteriaModel.setName(basicInfo.getString("name"));
         cafeteriaModel.setNickName(basicInfo.getString("nameshort"));
-        cafeteriaModel.setIs_diningHall(false);
+        cafeteriaModel.setIsDiningHall(false);
         cafeteriaModel.setBuildingLocation(basicInfo.getString("location"));
         Double lng = basicInfo.getDouble("longitude");
         Double lat = basicInfo.getDouble("latitude");
@@ -80,7 +80,7 @@ public final class JsonUtilities {
           JSONObject method = methods.getJSONObject(j);
           payMethods.add(method.getString("descrshort"));
         }
-        cafeteriaModel.setPay_methods(payMethods);
+        cafeteriaModel.setPayMethods(payMethods);
 
         CafeModel cafe = new CafeModel();
         // Parse cafe items available at eatery
@@ -194,7 +194,7 @@ public final class JsonUtilities {
           JSONObject method = methods.getJSONObject(j);
           payMethods.add(method.getString("descrshort"));
         }
-        cafeteriaModel.setPay_methods(payMethods);
+        cafeteriaModel.setPayMethods(payMethods);
 
         // Find geographical area for eatery
         String area = individualEatery.getJSONObject("campusArea").getString("descrshort");
@@ -212,10 +212,10 @@ public final class JsonUtilities {
         ArrayList<String> cafeItems = new ArrayList<>();
 
         if (diningHallIds.contains(individualEatery.getInt("id"))) {
-          cafeteriaModel.setIs_diningHall(true);
+          cafeteriaModel.setIsDiningHall(true);
         }
 
-        if (cafeteriaModel.getIs_diningHall()) {
+        if (cafeteriaModel.getIsDiningHall()) {
           JSONArray operatingHours = individualEatery.getJSONArray("operatingHours");
           // Note(lesley): A single operatingHours object contains operating times for a single day
           for (int k = 0; k < operatingHours.length(); k++) {

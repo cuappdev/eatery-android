@@ -12,13 +12,13 @@ public class MealModel implements Serializable {
   private String type;
   private HashMap<String, ArrayList<String>> menu;
 
-  // toString() but better
+  // debug version of toString()
   public String stringTo() {
-    String info = type + " on " + " from: " + start.toString() + " to: " + end.toString() + "\n";
+    String info = String.format("%s on from %s to %s\n", type, start.toString(), end.toString());
     for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
       String key = entry.getKey();
       Object value = entry.getValue();
-      info = info + " " + key + ": " + value.toString() + "\n";
+      info += String.format(" key: %s\n", value.toString());
     }
     return info;
   }

@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
           getCurrentArea() == null || model.getArea() == getCurrentArea();
       final boolean paymentFuzzyMatches =
           getCurrentPaymentType() == null
-              || model.getPay_methods().contains(getCurrentPaymentType());
+              || model.getPayMethods().contains(getCurrentPaymentType());
       if (areaFuzzyMatches && paymentFuzzyMatches) {
         model.setMatchesFilter(true);
       } else {
