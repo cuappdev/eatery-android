@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected ArrayList<CafeteriaModel> doInBackground(String... params) {
-      String json = NetworkUtilities.getJson();
+      String json = NetworkUtilities.getJSON();
       dbHelper.addData(json);
 
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());

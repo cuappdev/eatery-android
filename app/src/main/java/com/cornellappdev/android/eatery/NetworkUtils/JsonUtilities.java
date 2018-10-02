@@ -16,8 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/** Created by JC on 3/2/18. */
 public final class JsonUtilities {
+  public final static int MILLISECONDS_PER_DAY = 86400000;
+
   /** Reads JSON text with meal details from file */
   public static String loadJSONFromAsset(Context context, String fileName) {
     String json = null;
@@ -30,7 +31,6 @@ public final class JsonUtilities {
       json = new String(buffer, "UTF-8");
     } catch (IOException ex) {
       ex.printStackTrace();
-      return null;
     }
     return json;
   }
@@ -96,7 +96,7 @@ public final class JsonUtilities {
         // hours>
         HashMap<Integer, ArrayList<Date>> cafeHoursHardCoded =
             new HashMap<Integer, ArrayList<Date>>();
-        // Note(lesley): A single operatingHours object contains operating times for a single day
+        // operatingHours object contains operating times for a single day
         JSONArray operatingHours = basicInfo.getJSONArray("operatingHours");
         for (int c = 0; c < operatingHours.length(); c++) {
           // Find start and end operating times for cafe
@@ -160,17 +160,8 @@ public final class JsonUtilities {
       JSONArray eateries = data.getJSONArray("eateries");
 
       // Hardcoded IDs of dining halls from main JSON, found by inspection
-      HashSet<Integer> diningHallIds = new HashSet<>();
-      diningHallIds.add(31);
-      diningHallIds.add(25);
-      diningHallIds.add(26);
-      diningHallIds.add(27);
-      diningHallIds.add(29);
-      diningHallIds.add(3);
-      diningHallIds.add(20);
-      diningHallIds.add(4);
-      diningHallIds.add(5);
-      diningHallIds.add(30);
+      HashSet<Integer> diningHallIds =
+          new HashSet<>(Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30));
 
       // Parse through each eatery in main JSON
       for (int i = 0; i < eateries.length(); i++) {
@@ -240,8 +231,8 @@ public final class JsonUtilities {
               if (endTime.length() == 6) {
                 endTime = "0" + endTime;
               }
-              String start = date + " " + startTime;
-              String end = date + " " + endTime;
+              String start = String.format("%s %s", date, startTime);
+              String end = String.format("%s %s", date, endTime);
               mealModel.setStart(mealTimeFormat.parse(start));
               mealModel.setEnd(mealTimeFormat.parse(end));
 
@@ -276,26 +267,28 @@ public final class JsonUtilities {
             cafeItems.add(item.getString("item"));
           }
 
-          // Note(lesley): trillium is missing cafe items data in the JSON, so it requires
-          // hardcoded items
+          // trillium is missing cafe items data in JSON, requiring hardcoded items
           if (cafeteriaModel.getName().equalsIgnoreCase("trillium")) {
-            cafeItems.add("Starbucks Coffees");
-            cafeItems.add("Pepsi Beverages");
-            cafeItems.add("Breakfast Menu");
-            cafeItems.add("Salads");
-            cafeItems.add("Soup");
-            cafeItems.add("Chili");
-            cafeItems.add("Personal Pizzas");
-            cafeItems.add("Burgers");
-            cafeItems.add("Chicken Tenders");
-            cafeItems.add("Quesadillas");
-            cafeItems.add("Burritos");
-            cafeItems.add("Tacos");
-            cafeItems.add("Hot Wraps");
-            cafeItems.add("Bok Choy");
-            cafeItems.add("Fried Rice");
-            cafeItems.add("Lo Mein");
-            cafeItems.add("Baked Goods");
+            String trilliumItems[] = {
+              "Starbucks Coffees",
+              "Pepsi Beverages",
+              "Breakfast Menu",
+              "Salads",
+              "Soup",
+              "Chili",
+              "Personal Pizzas",
+              "Burgers",
+              "Chicken Tenders",
+              "Quesadillas",
+              "Burritos",
+              "Tacos",
+              "Hot Wraps",
+              "Bok Choy",
+              "Fried Rice",
+              "Lo Mein",
+              "Baked Goods"
+            };
+            for (String item : trilliumItems) cafeItems.add(item);
           }
           cafe.setCafeMenu(cafeItems);
 
@@ -325,16 +318,14 @@ public final class JsonUtilities {
               if (endTime.length() == 6) {
                 endTime = "0" + endTime;
               }
-              String start = date + " " + startTime;
-              String end = date + " " + endTime;
+              String start = String.format("%s %s", date, startTime);
+              String end = String.format("%s %s", date, endTime);
 
               Date cafeStartTime = mealTimeFormat.parse(start);
               Date cafeEndTime = mealTimeFormat.parse(end);
 
-              // TODO(lesley): someone please explain the logic for this bit
               if (cafeEndTime.before(cafeStartTime)) {
-                // Note(lesley): 86400000 ms = 1 day
-                cafeEndTime = new Date(cafeEndTime.getTime() + 86400000);
+                cafeEndTime = new Date(cafeEndTime.getTime() + MILLISECONDS_PER_DAY);
                 cafeteriaModel.setOpenPastMidnight(true);
               }
               dailyHours.add(cafeStartTime);

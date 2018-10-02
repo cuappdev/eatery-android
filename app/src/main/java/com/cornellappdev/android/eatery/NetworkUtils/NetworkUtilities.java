@@ -7,13 +7,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/** Created by JC on 2/15/18. */
 public final class NetworkUtilities {
-  private static final String URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
+  private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
 
-  public static String getJson() {
+  public static String getJSON() {
     try {
-      URL url = new URL(URI);
+      URL url = new URL(DINING_URI);
       BufferedReader reader = null;
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
