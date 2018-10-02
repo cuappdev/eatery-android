@@ -137,14 +137,14 @@ public class MenuActivity extends AppCompatActivity {
     //        });
 
     brb_icon = findViewById(R.id.brb_icon);
-    for (String pay : cafeData.getPay_methods()) {
+    for (String pay : cafeData.getPayMethods()) {
       if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
         brb_icon.setVisibility(View.VISIBLE);
       }
     }
 
     swipe_icon = findViewById(R.id.swipe_icon);
-    if (cafeData.getIs_diningHall()) {
+    if (cafeData.getIsDiningHall()) {
       swipe_icon.setVisibility(View.VISIBLE);
     }
 
@@ -153,7 +153,7 @@ public class MenuActivity extends AppCompatActivity {
     linLayout = findViewById(R.id.linear);
 
     // Formatting for when eatery is a cafe
-    if (!cafeData.getIs_diningHall()) {
+    if (!cafeData.getIsDiningHall()) {
       customPager.setVisibility(View.GONE);
       tabLayout.setVisibility(View.GONE);
       linLayout.setVisibility(View.VISIBLE);
@@ -190,7 +190,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     // Formatting for when eatery is a dining hall and has a menu
-    else if (cafeData.getIs_diningHall()
+    else if (cafeData.getIsDiningHall()
         && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);

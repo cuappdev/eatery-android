@@ -24,8 +24,7 @@ public class CafeModel implements Serializable {
     return hours;
   }
 
-  // Note(lesley): This method assumes that a cafe has only one opening and closing time window per
-  // day
+  // This method assumes that a cafe has only one opening and closing time window per day
   public void setHours(HashMap<Date, ArrayList<Date>> hours) {
     this.hours = hours;
   }

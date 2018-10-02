@@ -128,13 +128,13 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         holder.brb_icon.setVisibility(View.GONE);
         holder.swipe_icon.setVisibility(View.GONE);
-        for (String pay : cafeteriaModel.getPay_methods()) {
+        for (String pay : cafeteriaModel.getPayMethods()) {
           if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
             holder.brb_icon.setVisibility(View.VISIBLE);
           }
         }
 
-        if (cafeteriaModel.getIs_diningHall()) {
+        if (cafeteriaModel.getIsDiningHall()) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
 

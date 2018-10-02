@@ -168,7 +168,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
     // Get list of dining halls
     for (CafeteriaModel m : cafeData) {
-      if (m.getIs_diningHall()) {
+      if (m.getIsDiningHall()) {
         diningHall.add(m);
       }
     }
