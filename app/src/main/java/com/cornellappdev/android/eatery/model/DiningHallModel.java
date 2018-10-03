@@ -251,7 +251,6 @@ public class DiningHallModel extends EateryModel {
         if (meal.has("start")) {
           String rawStart = meal.getString("start").toUpperCase();
           LocalTime localTime = LocalTime.parse(rawStart, timeFormatter);
-
           start = localTime.atDate(localDate);
         }
 
@@ -260,7 +259,6 @@ public class DiningHallModel extends EateryModel {
         if (meal.has("end")) {
           String rawEnd = meal.getString("end").toUpperCase();
           LocalTime localTime = LocalTime.parse(rawEnd, timeFormatter);
-
           end = localTime.atDate(localDate);
         }
 
@@ -281,7 +279,6 @@ public class DiningHallModel extends EateryModel {
 
           JSONArray menu = meal.getJSONArray("menu");
           MealMenuModel menuModel = MealMenuModel.fromJSONArray(menu);
-
           mealModel.setMenu(menuModel);
           mealModelArray.add(mealModel);
         }

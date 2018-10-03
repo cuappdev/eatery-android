@@ -10,7 +10,6 @@ public class TimeUtil {
     if (instance == null) {
       instance = new TimeUtil();
     }
-    
     return instance;
   }
 
