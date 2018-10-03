@@ -84,6 +84,27 @@ public class DiningHallModel extends EateryModel {
 
     ZonedDateTime closestStartTime = null;
 
+    Map<DayOfWeek, List<MealModel>> weeklyMenu = getWeeklyMenu();
+
+    DayOfWeek currentDay = LocalDateTime.now().getDayOfWeek();
+
+    for (int i = 0; i < DayOfWeek.values().length; currentDay.plus(++i)) {
+      List<MealModel> menu = weeklyMenu.get(currentDay);
+
+      if (menu != null) {
+        for (MealModel meal : menu) {
+          ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+          ZonedDateTime startTime = meal.getStart().atZone(cornell);
+
+          if (startTime.isAfter(time) && (closestStartTime == null || closestStartTime
+              .isAfter(startTime))) {
+            closestStartTime = startTime;
+          }
+        }
+      }
+    }
+
     for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
       for (MealModel meal : day.getValue()) {
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
@@ -92,7 +113,6 @@ public class DiningHallModel extends EateryModel {
 
         if (startTime.isAfter(time) && (closestStartTime == null || closestStartTime
             .isAfter(startTime))) {
-          // TODO have to loop through everything currently as the mapping is not sorted by day.
           closestStartTime = startTime;
         }
       }
