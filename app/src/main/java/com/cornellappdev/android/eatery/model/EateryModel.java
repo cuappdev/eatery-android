@@ -31,6 +31,10 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
 
   public abstract ZonedDateTime getCloseTime();
 
+  public abstract List<String> getMealItems();
+
+  public abstract Status getCurrentStatus();
+
   public String stringTo() {
     String info = "Name/mNickName: " + mName + "/" + mNickName;
     String locationString = "Location: " + ", Area: " + mArea;
@@ -40,13 +44,9 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
         + menuString;
   }
 
-  public abstract List<String> getMealItems();
-
   public boolean isOpen() {
     return getCurrentStatus() == Status.OPEN;
   }
-
-  public abstract Status getCurrentStatus();
 
   public String getName() {
     return mName;
@@ -158,8 +158,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
 
     mArea = CampusArea.fromShortDescription(area);
   }
-
-
 }
 
 
