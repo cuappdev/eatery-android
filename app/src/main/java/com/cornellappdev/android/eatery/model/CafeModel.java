@@ -14,12 +14,14 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.temporal.TemporalAdjusters;
 
 /**
  * Created by abdullahislam on 3/2/18.
@@ -73,7 +75,7 @@ public class CafeModel extends EateryModel implements Serializable {
     List<Interval> sortedHours = new ArrayList<>(hours);
     Collections.sort(sortedHours, Interval::compareTo);
 
-    this.mHours.put(date, hours);
+    this.mHours.put(date, sortedHours);
   }
 
 
@@ -215,61 +217,95 @@ public class CafeModel extends EateryModel implements Serializable {
 
     for (int c = 0; c < operatingHours.length(); c++) {
       // First entry represents opening time, second entry represents closing time
-      List<Interval> dailyHours = new ArrayList<>();
       JSONObject operatingPeriod = operatingHours.getJSONObject(c);
       JSONArray events = operatingPeriod.getJSONArray("events");
 
-      LocalDate localDate;
+      List<LocalDate> localDates = new ArrayList<>();
 
       if (operatingPeriod.has("date")) {
         String rawDate = operatingPeriod.getString("date");
-        localDate = LocalDate.parse(rawDate, DateTimeFormatter
+        LocalDate localDate = LocalDate.parse(rawDate, DateTimeFormatter
             .ofPattern("yyyy-MM-dd", context.getResources().getConfiguration().locale));
-      } else {
-        localDate = LocalDate.now(ZoneId.systemDefault());
+        localDates.add(localDate);
       }
 
-      for (int e = 0; e < events.length(); e++) {
-        JSONObject obj = events.getJSONObject(e);
+      if (operatingPeriod.has("weekday")) {
+        LocalDate localDate = LocalDate.now(TimeUtil.getInstance().getCornellTimeZone());
 
-        LocalDateTime start = null, end = null;
+        String rawDays = operatingPeriod.getString("weekday").toUpperCase();
+        String[] rawDayArr = rawDays.split("-");
+        String rawEnd = null, rawStart = rawDayArr[0].trim();
 
-        if (obj.has("start")) {
-          // TODO: Java only parses AM/PM (not am/pm), so add a case insensitive parser
-          String rawStart = obj.getString("start").toUpperCase();
-
-          LocalTime localTime = LocalTime.parse(rawStart, DateTimeFormatter
-              .ofPattern("h:mma", context.getResources().getConfiguration().locale));
-
-          start = localTime.atDate(localDate);
+        if (rawDayArr.length > 1) {
+          rawEnd = rawDayArr[1].trim();
         }
 
-        if (obj.has("end")) {
-          String rawEnd = obj.getString("end").toUpperCase();
+        DayOfWeek start = DayOfWeek.valueOf(rawStart);
 
-          LocalTime localTime = LocalTime.parse(rawEnd, DateTimeFormatter
-              .ofPattern("h:mma", context.getResources().getConfiguration().locale));
+        if (rawEnd != null) {
+          DayOfWeek end = DayOfWeek.valueOf(rawEnd);
+          DayOfWeek endPlusOne = end.plus(1);
 
-          end = localTime.atDate(localDate);
-        }
+          for (DayOfWeek current = start; !current.equals(endPlusOne); current = current.plus(1)) {
+            LocalDate nextLocalDateOfCurrent = localDate
+                .with(TemporalAdjusters.nextOrSame(current));
+            localDates.add(nextLocalDateOfCurrent);
+          }
+        } else {
+          localDate = localDate.with(TemporalAdjusters.nextOrSame(start));
 
-        LocalDateTime midnightTomorrow = localDate
-            .atTime(LocalTime.MIDNIGHT);
-
-        if (start != null && end != null && end.isBefore(start) && (end.isEqual(midnightTomorrow)
-            || end
-            .isAfter(midnightTomorrow))) {
-          mOpenPastMidnight = true;
-
-          end = end.plusDays(1);
-        }
-
-        if (start != null && end != null) {
-          dailyHours.add(new Interval(start, end));
+          localDates.add(localDate);
         }
       }
 
-      setHours(localDate, dailyHours);
+      for (LocalDate localDate : localDates) {
+        List<Interval> dailyHours = new ArrayList<>();
+
+        for (int e = 0; e < events.length(); e++) {
+          JSONObject obj = events.getJSONObject(e);
+
+          LocalDateTime start = null, end = null;
+
+          dailyHours = new ArrayList<>();
+
+          // TODO Don't read start again for everydate (not a huge performance impact)
+
+          if (obj.has("start")) {
+            // TODO: Java only parses AM/PM (not am/pm), so add a case insensitive parser
+            String rawStart = obj.getString("start").toUpperCase();
+
+            LocalTime localTime = LocalTime.parse(rawStart, DateTimeFormatter
+                .ofPattern("h:mma", context.getResources().getConfiguration().locale));
+
+            start = localTime.atDate(localDate);
+          }
+
+          if (obj.has("end")) {
+            String rawEnd = obj.getString("end").toUpperCase();
+
+            LocalTime localTime = LocalTime.parse(rawEnd, DateTimeFormatter
+                .ofPattern("h:mma", context.getResources().getConfiguration().locale));
+
+            end = localTime.atDate(localDate);
+          }
+
+          LocalDateTime midnightTomorrow = localDate
+              .atTime(LocalTime.MIDNIGHT);
+
+          if (start != null && end != null) {
+            if (end.isBefore(start) && (end.isEqual(midnightTomorrow) || end
+                .isAfter(midnightTomorrow))) {
+              mOpenPastMidnight = true;
+
+              end = end.plusDays(1);
+            }
+
+            dailyHours.add(new Interval(start, end));
+          }
+        }
+
+        setHours(localDate, dailyHours);
+      }
     }
   }
 
