@@ -36,6 +36,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
@@ -211,12 +212,16 @@ public class MenuActivity extends AppCompatActivity {
           linLayout.addView(divider);
         }
       }
-    }
+    } else if (mEatery instanceof DiningHallModel
+        && !((DiningHallModel) mEatery)
+        .getMenuForDay(LocalDate.now(TimeUtil.getInstance().getCornellTimeZone()).getDayOfWeek())
+        .isEmpty()) {
 
-    // Formatting for when eatery is a dining hall and has a menu
-    else if (mEatery instanceof DiningHallModel
-        && !((DiningHallModel) mEatery).getMenuForDay(DayOfWeek.of(0)).toString()
-        .equals("[]")) {
+      // Formatting for when eatery is a dining hall and has a menu
+
+      // TODO Why does the second half of this condition exist/should it be refactored?
+      // TODO I honestly am unsure of what its intent was... I tried to honor it though.
+
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
       customPager.setVisibility(View.VISIBLE);
