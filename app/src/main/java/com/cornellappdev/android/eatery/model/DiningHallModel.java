@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 import com.cornellappdev.android.eatery.TimeUtil;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,8 +231,10 @@ public class DiningHallModel extends EateryModel {
         }
       }
 
+      Collections.sort(mealModelArray);
       weeklyMenu.add(mealModelArray);
     }
+
     setWeeklyMenu(weeklyMenu);
   }
 
