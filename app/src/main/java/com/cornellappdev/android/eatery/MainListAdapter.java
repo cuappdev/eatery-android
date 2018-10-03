@@ -177,18 +177,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder2.cafe_time_info.setVisibility(View.INVISIBLE);
         }
 
-        List<String> itemList = eateryModel.getSearchedItems();
-        eateryModel.setSearchedItems(null);
-        if (itemList == null)
+        //   List<String> itemList = eateryModel.getSearchedItems();
+        // eateryModel.setSearchedItems(null);
+        // if (itemList == null)
 
-        {
-          holder2.cafe_items.setText("");
-          break;
-        }
-        Collections.sort(itemList);
-        String items = itemList.toString().substring(1, itemList.toString().length() - 1);
+        //{
+        //holder2.cafe_items.setText("");
+        // break;
+        //}
+        //Collections.sort(itemList);
+        //String items = itemList.toString().substring(1, itemList.toString().length() - 1);
 
-        if (mQuery != null)
+      /*  if (mQuery != null)
 
         {
           // Fixes conflict with replacing character 'b' after inserting HTML bold tags
@@ -208,6 +208,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
+    */
         break;
     }
   }

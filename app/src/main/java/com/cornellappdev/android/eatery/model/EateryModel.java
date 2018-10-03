@@ -10,7 +10,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 
 /**
@@ -20,27 +19,15 @@ import org.threeten.bp.ZonedDateTime;
 public abstract class EateryModel implements Model, Cloneable, Serializable,
     Comparable<EateryModel> {
 
-  private boolean isHardCoded;
-  protected int id;
-  private double lat, lng;
-  protected String mName;
-  protected String mNickName;
-  private String mCloseTime;
+  protected int mId;
+  private double mLatitude, mLongitude;
+  protected boolean mOpenPastMidnight;
+
+  protected String mName, mNickName;
   protected CampusArea mArea;
-  private boolean mMatchesFilter = true;
-  private boolean mMatchesSearch = true;
   private String mBuildingLocation;
   protected List<String> mPayMethods;
-  private List<String> mSearchedItems;
-  private boolean openPastMidnight;
 
-  public List<String> getSearchedItems() {
-    return mSearchedItems;
-  }
-
-  public void setSearchedItems(List<String> searchedItems) {
-    this.mSearchedItems = searchedItems;
-  }
 
   public abstract ZonedDateTime getNextOpening();
 
@@ -76,83 +63,33 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     return mNickName;
   }
 
-  public void setNickName(String nickName) {
-    this.mNickName = nickName;
-  }
-
-  public boolean matchesFilter() {
-    return mMatchesFilter;
-  }
-
-  public void setMatchesFilter(boolean yesOrNo) {
-    mMatchesFilter = yesOrNo;
-  }
-
-  public boolean matchesSearch() {
-    return mMatchesSearch;
-  }
-
-  public void setMatchesSearch(boolean yesOrNo) {
-    mMatchesSearch = yesOrNo;
-  }
-
   public List<String> getPayMethods() {
     return mPayMethods;
-  }
-
-  public void setPayMethods(List<String> paymentMethods) {
-    this.mPayMethods = paymentMethods;
   }
 
   public String getBuildingLocation() {
     return mBuildingLocation;
   }
 
-  public void setBuildingLocation(String buildingLocation) {
-    this.mBuildingLocation = buildingLocation;
-  }
-
   public int getId() {
-    return id;
+    return mId;
   }
 
   public void setId(int id) {
-    this.id = id;
-  }
-
-  public boolean isHardCoded() {
-    return isHardCoded;
-  }
-
-  public void setHardCoded(boolean hardCoded) {
-    isHardCoded = hardCoded;
+    this.mId = id;
   }
 
   public LatLng getLatLng() {
-    return new LatLng(lat, lng);
-  }
-
-  public void setLatLng(LatLng latlng) {
-    this.lat = latlng.latitude;
-    this.lng = latlng.longitude;
+    return new LatLng(mLatitude, mLongitude);
   }
 
   public boolean isOpenPastMidnight() {
-    return openPastMidnight;
-  }
-
-  public void setOpenPastMidnight(boolean openPastMidnight) {
-    this.openPastMidnight = openPastMidnight;
+    return mOpenPastMidnight;
   }
 
   public CampusArea getArea() {
     return mArea;
   }
-
-  public void setArea(CampusArea area) {
-    this.mArea = area;
-  }
-
 
   public enum Status {
     OPEN,
@@ -162,7 +99,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     public boolean isOpen() {
       return this == OPEN || this == CLOSING_SOON;
     }
-
   }
 
   /**
@@ -179,46 +115,45 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
   }
 
   /*Comparator for sorting the list by EateryModel's nickname*/
-  public static Comparator<EateryModel> cafeNameComparator = new Comparator<EateryModel>() {
-    @Override
-    public int compare(EateryModel s1, EateryModel s2) {
-      String str1 = s1.getNickName();
-      String str2 = s2.getNickName();
+  public static Comparator<EateryModel> cafeNameComparator = (s1, s2) -> {
+    String str1 = s1.getNickName();
+    String str2 = s2.getNickName();
 
-      // TODO Why?
+    // TODO Why?
 
-      if (str1.startsWith("1")) {
-        return -1;
-      }
-
-      if (str2.startsWith("1")) {
-        return 1;
-      }
-
-      //ascending order
-
-      return str1.compareToIgnoreCase(str2);
+    if (str1.startsWith("1")) {
+      return -1;
     }
+
+    if (str2.startsWith("1")) {
+      return 1;
+    }
+
+    //ascending order
+
+    return str1.compareToIgnoreCase(str2);
   };
 
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
       throws JSONException {
-    isHardCoded = hardcoded;
     mName = eatery.getString("name");
     mBuildingLocation = eatery.getString("location");
     mNickName = eatery.getString("nameshort");
 
-    this.lat = eatery.getDouble("latitude");
-    this.lng = eatery.getDouble("longitude");
+    mLatitude = eatery.getDouble("latitude");
+    mLongitude = eatery.getDouble("longitude");
+
     // Parse payment methods available at eatery
     JSONArray methods = eatery.getJSONArray("payMethods");
     List<String> payMethods = new ArrayList<>();
+
     for (int j = 0; j < methods.length(); j++) {
       JSONObject method = methods.getJSONObject(j);
       payMethods.add(method.getString("descrshort"));
     }
+
     mPayMethods = payMethods;
 
     // Find geographical area for eatery
