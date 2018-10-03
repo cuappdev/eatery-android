@@ -19,15 +19,13 @@ import org.threeten.bp.ZonedDateTime;
 public abstract class EateryModel implements Model, Cloneable, Serializable,
     Comparable<EateryModel> {
 
-  protected int mId;
-  private double mLatitude, mLongitude;
-  protected boolean mOpenPastMidnight;
-
   protected String mName, mNickName;
   protected CampusArea mArea;
   private String mBuildingLocation;
   protected List<String> mPayMethods;
-
+  protected boolean mOpenPastMidnight;
+  private double mLatitude, mLongitude;
+  protected int mId;
 
   public abstract ZonedDateTime getNextOpening();
 
@@ -38,7 +36,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     String locationString = "Location: " + ", Area: " + mArea;
     String payMethodsString = "Pay Methods: " + mPayMethods.toString();
     String menuString = "";
-
     return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n"
         + menuString;
   }
@@ -129,7 +126,7 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
       return 1;
     }
 
-    //ascending order
+    // ascending order
 
     return str1.compareToIgnoreCase(str2);
   };

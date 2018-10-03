@@ -50,7 +50,6 @@ public class CafeModel extends EateryModel implements Serializable {
       "Lo Mein",
       "Baked Goods"));
 
-
   public CafeModel() {
     this.mHours = new HashMap<>();
     this.mCafeMenu = new ArrayList<>();
@@ -74,7 +73,6 @@ public class CafeModel extends EateryModel implements Serializable {
   public void setHours(LocalDate date, List<Interval> hours) {
     List<Interval> sortedHours = new ArrayList<>(hours);
     Collections.sort(sortedHours, Interval::compareTo);
-
     this.mHours.put(date, sortedHours);
   }
 
@@ -88,7 +86,6 @@ public class CafeModel extends EateryModel implements Serializable {
       if (hours != null) {
         for (Interval openPeriod : hours) {
           ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-
           ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
 
           if (startTime.isAfter(now)) {
@@ -104,7 +101,6 @@ public class CafeModel extends EateryModel implements Serializable {
   @Override
   public ZonedDateTime getCloseTime() {
     ZonedDateTime now = ZonedDateTime.now();
-
     List<Interval> hours = getHours(now.toLocalDate());
 
     if (hours != null) {
@@ -122,7 +118,6 @@ public class CafeModel extends EateryModel implements Serializable {
 
     if (isOpenPastMidnight()) {
       hours = getHours(now.toLocalDate().minusDays(1));
-
       Interval openPeriod = hours.get(hours.size() - 1);
 
       ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
@@ -161,7 +156,6 @@ public class CafeModel extends EateryModel implements Serializable {
             // 60 seconds in 1 minute, 30 minutes = half-hour,
             return Status.CLOSING_SOON;
           }
-
           return Status.OPEN;
         }
       }
@@ -183,11 +177,9 @@ public class CafeModel extends EateryModel implements Serializable {
           // 60 seconds in 1 minute, 30 minutes = half-hour,
           return Status.CLOSING_SOON;
         }
-
         return Status.OPEN;
       }
     }
-
     return Status.CLOSED;
   }
 
@@ -299,11 +291,9 @@ public class CafeModel extends EateryModel implements Serializable {
 
               end = end.plusDays(1);
             }
-
             dailyHours.add(new Interval(start, end));
           }
         }
-
         setHours(localDate, dailyHours);
       }
     }

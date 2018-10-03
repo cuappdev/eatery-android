@@ -15,6 +15,7 @@ import com.cornellappdev.android.eatery.WeeklyMenuActivity.MenuListItem;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealModel;
+import com.cornellappdev.android.eatery.model.MealType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +124,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         List<MealModel> day = ((DiningHallModel) eatery).getWeeklyMenu().get(dayOfWeek);
         int length = day.size() - 1;
 
-        //finding correct idx to get desired meal model from day array
+        // finding correct idx to get desired meal model from day array
         MealModel meal;
         if (length == 1) {
           meal = day.get(mealIndex / 2);
@@ -146,8 +147,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
         ZonedDateTime endTime = meal.getStart().atZone(cornell);
 
-        //meal date seems to be off by one day
-        // TODO
         if ((now.isAfter(startTime) && now.isBefore(endTime)) || now.isBefore(startTime) || now
             .isAfter(startTime)) {
           timetext1.setText(
@@ -157,7 +156,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           String mealString = "";
           if (mealIndex == 0) {
             mealString = "Breakfast";
-          } else if (meal.getType().equals("Brunch")) {
+          } else if (meal.getType() == MealType.BRUNCH) {
             mealString = "Brunch";
           } else if (mealIndex == 1) {
             mealString = "Lunch";

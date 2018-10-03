@@ -27,10 +27,8 @@ public class MealModel extends Interval implements Serializable {
         type + " on " + " from: " + getStart() + " to: " + getEnd() + "\n");
     for (String category : menu.getCategories()) {
       List<String> value = menu.getItems(category);
-
       info.append(" ").append(category).append(": ").append(value.toString()).append("\n");
     }
-
     return info.toString();
   }
 

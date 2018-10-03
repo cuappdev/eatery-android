@@ -43,11 +43,8 @@ public class EateryStringsUtil {
               formattedNextOpening
           );
         }
-
       }
     }
-
     return null;
   }
-
 }

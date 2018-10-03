@@ -85,11 +85,9 @@ public class DiningHallModel extends EateryModel {
   @Override
   public ZonedDateTime getNextOpening() {
     ZonedDateTime time = ZonedDateTime.now();
-
     ZonedDateTime closestStartTime = null;
 
     Map<DayOfWeek, List<MealModel>> weeklyMenu = getWeeklyMenu();
-
     DayOfWeek currentDay = LocalDateTime.now().getDayOfWeek();
 
     /*
