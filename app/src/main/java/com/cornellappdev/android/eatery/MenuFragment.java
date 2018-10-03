@@ -14,16 +14,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/** A simple {@link Fragment} subclass. */
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class MenuFragment extends Fragment {
-  int position;
-  ArrayList<MealModel> menus;
-  LinearLayout linear;
+
+  private int position;
+  private List<MealModel> menus;
+  private LinearLayout linear;
 
   @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    menus = (ArrayList<MealModel>) getArguments().getSerializable("cafeData");
+    menus = (List<MealModel>) getArguments().getSerializable("cafeData");
     View view = inflater.inflate(R.layout.fragment_menu, container, false);
     linear = view.findViewById(R.id.linearFragment);
 

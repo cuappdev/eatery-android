@@ -36,6 +36,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
     implements MainListAdapter.ListAdapterOnClickHandler {
@@ -255,9 +256,9 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onClick(int position, ArrayList<CafeteriaModel> list) {
+  public void onClick(int position, List<CafeteriaModel> list) {
     Intent intent = new Intent(this, MenuActivity.class);
-    intent.putExtra("testData", list);
+    intent.putExtra("testData", new ArrayList<>(list));
     intent.putExtra("cafeInfo", list.get(position));
     intent.putExtra("locName", list.get(position).getNickName());
     startActivity(intent);

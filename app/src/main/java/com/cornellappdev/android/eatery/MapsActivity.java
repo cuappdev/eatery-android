@@ -29,12 +29,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
   private GoogleMap mMap;
-  ArrayList<CafeteriaModel> cafeData;
+  private List<CafeteriaModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-  public BottomNavigationView bnv;
+  private BottomNavigationView bnv;
 
   class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
@@ -97,7 +99,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               case R.id.action_week:
                 finish();
                 intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("cafeData", cafeData);
+                intent.putExtra("cafeData", new ArrayList<>(cafeData));
                 startActivity(intent);
                 break;
               case R.id.action_brb:
@@ -165,7 +167,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               }
             }
             // TODO(lesley): is testData necessary??? Might have to be removed
-            intent.putExtra("testData", cafeData);
+            intent.putExtra("testData", new ArrayList<>(cafeData));
             intent.putExtra("cafeInfo", cafeData.get(position));
             intent.putExtra("locName", cafeData.get(position).getNickName());
 
@@ -187,8 +189,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(
           this,
-          new String[] {
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+          new String[]{
+              Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
           },
           LOCATION_PERMISSION_REQUEST_CODE);
     } else if (mMap != null) {
@@ -198,9 +200,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
   private void showDefaultLocation() {
     Toast.makeText(
-            this,
-            "Location permission not granted, " + "showing default location",
-            Toast.LENGTH_SHORT)
+        this,
+        "Location permission not granted, " + "showing default location",
+        Toast.LENGTH_SHORT)
         .show();
     // (42.4471,-76.4832) is the location for Day Hall
     LatLng cornell = new LatLng(42.4471, -76.4832);
@@ -212,15 +214,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   public void onRequestPermissionsResult(
       int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     switch (requestCode) {
-      case LOCATION_PERMISSION_REQUEST_CODE:
-        {
-          if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            enableMyLocationIfPermitted();
-          } else {
-            showDefaultLocation();
-          }
-          return;
+      case LOCATION_PERMISSION_REQUEST_CODE: {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          enableMyLocationIfPermitted();
+        } else {
+          showDefaultLocation();
         }
+        return;
+      }
     }
   }
 
@@ -239,6 +240,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   }
 
   public class SnackBarListener implements View.OnClickListener {
+
     @Override
     public void onClick(View v) {
       Intent browser =

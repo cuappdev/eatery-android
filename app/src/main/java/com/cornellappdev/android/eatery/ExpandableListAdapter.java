@@ -14,28 +14,30 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.TreeMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-  private Context context;
-  private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
-  private ArrayList<String> cafeKeys = new ArrayList<>();
 
-  private TreeMap<String, ArrayList<String>> mealMap = new TreeMap<>();
-  View line;
+  private Context context;
+  private List<CafeteriaModel> cafeData;
+  private List<String> cafeKeys = new ArrayList<>();
+
+  private Map<String, List<String>> mealMap;
+  private View line;
   private int mealIndex;
   private int dateOffset;
 
-  public ExpandableListAdapter(
+  ExpandableListAdapter(
       Context context,
-      TreeMap<String, ArrayList<String>> mealMap,
+      Map<String, List<String>> mealMap,
       int dateOffset,
       int mealIndex,
-      ArrayList<CafeteriaModel> cafeData) {
+      List<CafeteriaModel> cafeData) {
     this.context = context;
     this.mealMap = mealMap;
     this.mealIndex = mealIndex;
@@ -43,9 +45,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     this.cafeData = cafeData;
 
     if (mealMap != null) {
-      for (String str : mealMap.keySet()) {
-        cafeKeys.add(str);
-      }
+      cafeKeys.addAll(mealMap.keySet());
     }
   }
 
@@ -209,9 +209,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
   @Override
   public boolean isChildSelectable(int i, int i1) {
-    if (getChildrenCount(i) == 1) {
-      return true;
-    }
-    return false;
+    return getChildrenCount(i) == 1;
   }
 }

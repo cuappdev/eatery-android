@@ -25,19 +25,22 @@ import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
   private final Context mContext;
   private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
   private int mCount;
   private String mQuery;
-  private ArrayList<CafeteriaModel> cafeListFiltered;
+  private List<CafeteriaModel> cafeListFiltered;
   private final int TEXT = 1;
   private final int IMAGE = 0;
 
   public interface ListAdapterOnClickHandler {
-    void onClick(int position, ArrayList<CafeteriaModel> list);
+
+    void onClick(int position, List<CafeteriaModel> list);
   }
 
   MainListAdapter(
@@ -66,7 +69,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     notifyDataSetChanged();
   }
 
-  /** Set view to layout of CardView */
+  /**
+   * Set view to layout of CardView
+   */
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     final View view;
@@ -157,7 +162,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (mQuery != null) {
           // Fixes conflict with replacing character 'b' after inserting HTML bold tags
-          if (mQuery.equals("B")) mQuery = "b";
+          if (mQuery.equals("B")) {
+            mQuery = "b";
+          }
 
           // Find case-matching instances to bold
           items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
@@ -190,6 +197,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
     TextView cafeName;
     TextView cafeTime;
     TextView cafeOpen;
@@ -218,6 +226,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   class TextAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
     TextView cafe_name;
     TextView cafe_time;
     TextView cafe_time_info;
@@ -240,13 +249,27 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   private static String convertName(String str) {
-    if (str.equals("104West!.jpg")) return "104-West.jpg";
-    if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
-    if (str.equals("Franny's.jpg")) return "frannys.jpg";
-    if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
-    if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
-    if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
-    if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
+    if (str.equals("104West!.jpg")) {
+      return "104-West.jpg";
+    }
+    if (str.equals("McCormick's.jpg")) {
+      return "mccormicks.jpg";
+    }
+    if (str.equals("Franny's.jpg")) {
+      return "frannys.jpg";
+    }
+    if (str.equals("Ice Cream Cart.jpg")) {
+      return "icecreamcart.jpg";
+    }
+    if (str.equals("Risley Dining Room.jpg")) {
+      return "Risley-Dining.jpg";
+    }
+    if (str.equals("Martha's Express.jpg")) {
+      return "Marthas-Cafe.jpg";
+    }
+    if (str.equals("Bus Stop Bagels.jpg")) {
+      return "Bug-Stop-Bagels.jpg";
+    }
 
     str = str.replaceAll("!", "");
     str = str.replaceAll("[&\']", "");
