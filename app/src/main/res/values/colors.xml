@@ -20,4 +20,5 @@
   <color name="inactiveMealText">#cdcdcd</color>
   <color name="activeMealText">#000000</color>
   <color name="missingMenuTest">#de000000</color>
+  <color name="activeFilterText">#000000</color>
 </resources>

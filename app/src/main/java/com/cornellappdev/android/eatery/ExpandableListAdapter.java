@@ -18,6 +18,7 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -35,14 +36,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
   private Map<String, List<MenuListItem>> mealMap;
   private int mealIndex;
-  private int dateOffset;
+  private DayOfWeek dayOfWeek;
 
   ExpandableListAdapter(Context context, Map<String, List<MenuListItem>> mealMap,
-      int dateOffset, int mealIndex, List<EateryModel> cafeData) {
+      DayOfWeek dateOffset, int mealIndex, List<EateryModel> cafeData) {
     this.context = context;
     this.mealMap = mealMap;
     this.mealIndex = mealIndex;
-    this.dateOffset = dateOffset;
+    this.dayOfWeek = dateOffset;
     this.cafeData = cafeData;
 
     if (mealMap != null) {
@@ -119,7 +120,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         count++;
       }
       if (eatery instanceof DiningHallModel) {
-        List<MealModel> day = ((DiningHallModel) eatery).getWeeklyMenu().get(dateOffset + 1);
+        List<MealModel> day = ((DiningHallModel) eatery).getWeeklyMenu().get(dayOfWeek);
         int length = day.size() - 1;
 
         //finding correct idx to get desired meal model from day array

@@ -27,7 +27,13 @@ public class DiningHallModel extends EateryModel {
   }
 
   public List<MealModel> getMenuForDay(DayOfWeek day) {
-    return mWeeklyMenu.get(day.getValue());
+    List<MealModel> val = mWeeklyMenu.get(day.getValue());
+
+    if (val != null) {
+      return val;
+    }
+
+    return Collections.emptyList();
   }
 
   public Map<DayOfWeek, List<MealModel>> getWeeklyMenu() {
@@ -35,6 +41,12 @@ public class DiningHallModel extends EateryModel {
 
     for (Map.Entry<Integer, List<MealModel>> entry : mWeeklyMenu.entrySet()) {
       mapping.put(DayOfWeek.of(entry.getKey()), entry.getValue());
+    }
+
+    for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+      if (!mapping.containsKey(dayOfWeek)) {
+        mapping.put(dayOfWeek, Collections.emptyList());
+      }
     }
 
     return mapping;

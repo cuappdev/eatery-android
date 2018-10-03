@@ -215,7 +215,8 @@ public class MenuActivity extends AppCompatActivity {
 
     // Formatting for when eatery is a dining hall and has a menu
     else if (mEatery instanceof DiningHallModel
-        && !((DiningHallModel) mEatery).getWeeklyMenu().get(0).toString().equals("[]")) {
+        && !((DiningHallModel) mEatery).getMenuForDay(DayOfWeek.of(0)).toString()
+        .equals("[]")) {
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
       customPager.setVisibility(View.VISIBLE);

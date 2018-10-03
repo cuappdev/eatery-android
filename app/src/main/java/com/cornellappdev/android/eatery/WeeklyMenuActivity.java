@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeModel;
-import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealMenuModel;
@@ -28,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
@@ -43,13 +43,13 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   private List<DiningHallModel> mDiningHalls = new ArrayList<>();
   private List<EateryModel> mEateries;
   private MealType mealType;
-  private int selectedDate;
+  private DayOfWeek selectedDayOfWeek;
   private TextView breakfastText;
   private TextView lunchText;
   private TextView dinnerText;
   private LinearLayout linDate;
   private List<TextView> dateList = new ArrayList<>();
-  private List<List<Map<String, MealModel>>> weeklyMenu;
+  private Map<DayOfWeek, List<Map<String, MealModel>>> weeklyMenu;
   private int lastExpandedPosition;
   private NonScrollExpandableListView lastClickedListView;
 
@@ -179,7 +179,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
           dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
           mealType = MealType.BREAKFAST;
-          changeListAdapter(mealType, selectedDate);
+          changeListAdapter(mealType, selectedDayOfWeek);
         });
 
     lunchText.setOnClickListener(
@@ -189,7 +189,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
           dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
           mealType = MealType.LUNCH;
-          changeListAdapter(mealType, selectedDate);
+          changeListAdapter(mealType, selectedDayOfWeek);
         });
 
     dinnerText.setOnClickListener(
@@ -199,7 +199,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
           dinnerText.setTextColor(Color.parseColor("#000000"));
 
           mealType = MealType.DINNER;
-          changeListAdapter(mealType, selectedDate);
+          changeListAdapter(mealType, selectedDayOfWeek);
         });
 
     ZonedDateTime zonedDateTime = ZonedDateTime.now();
@@ -209,22 +209,24 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     LocalTime dinnerCutoff = LocalTime.of(16, 0);
     LocalTime breakfastCutoff = LocalTime.of(22, 0);
 
+    DayOfWeek currentDayOfWeek = ZonedDateTime.now().getDayOfWeek();
+
     if (time.isAfter(breakfastCutoff) && time.isBefore(lunchCutoff)) {
-      changeListAdapter(MealType.BREAKFAST, 0);
+      changeListAdapter(MealType.BREAKFAST, currentDayOfWeek);
       mealType = MealType.BREAKFAST;
 
       breakfastText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
       lunchText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
       dinnerText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
     } else if (time.isBefore(dinnerCutoff) && time.isAfter(lunchCutoff)) {
-      changeListAdapter(MealType.LUNCH, 0);
+      changeListAdapter(MealType.LUNCH, currentDayOfWeek);
       mealType = MealType.LUNCH;
 
       breakfastText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
       lunchText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
       dinnerText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
     } else {
-      changeListAdapter(MealType.DINNER, 0);
+      changeListAdapter(MealType.DINNER, currentDayOfWeek);
       mealType = MealType.DINNER;
 
       breakfastText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
@@ -265,35 +267,42 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   public void dateFilterClick(View v) {
     TextView tv = (TextView) v;
 
-    tv.setTextColor(Color.parseColor("#000000"));
+    tv.setTextColor(ContextCompat.getColor(this, R.color.activeFilterText));
     changeDateColor(tv);
 
     int id = tv.getId();
 
+    DayOfWeek dayOfWeek = ZonedDateTime.now().getDayOfWeek();
+
+    int selectedDateOffset = 0;
+
     switch (id) {
       case R.id.date0:
-        selectedDate = 0;
+        selectedDateOffset = 0;
         break;
       case R.id.date1:
-        selectedDate = 1;
+        selectedDateOffset = 1;
         break;
       case R.id.date2:
-        selectedDate = 2;
+        selectedDateOffset = 2;
         break;
       case R.id.date3:
-        selectedDate = 3;
+        selectedDateOffset = 3;
         break;
       case R.id.date4:
-        selectedDate = 4;
+        selectedDateOffset = 4;
         break;
       case R.id.date5:
-        selectedDate = 5;
+        selectedDateOffset = 5;
         break;
       case R.id.date6:
-        selectedDate = 6;
+        selectedDateOffset = 6;
         break;
     }
-    changeListAdapter(mealType, selectedDate);
+
+    selectedDayOfWeek = dayOfWeek.plus(selectedDateOffset);
+
+    changeListAdapter(mealType, selectedDayOfWeek);
   }
 
   /**
@@ -310,7 +319,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   /**
    * Updates the list of dining halls and menus that is displayed
    */
-  public void changeListAdapter(MealType mealType, int dateOffset) {
+  public void changeListAdapter(MealType mealType, DayOfWeek dayOfWeek) {
     int mealIndex = 0;
     switch (mealType) {
       case BREAKFAST:
@@ -323,7 +332,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         mealIndex = 2;
         break;
     }
-    MenusByCampusArea finalList = generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
+    MenusByCampusArea finalList = generateFinalList(weeklyMenu.get(dayOfWeek).get(mealIndex));
 
     // Hides layout elements if there is nothing in the list corresponding to a certain
     // CafeteriaArea
@@ -337,7 +346,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       listAdapterWest = new ExpandableListAdapter(
           getApplicationContext(),
           finalList.west,
-          dateOffset,
+          dayOfWeek,
           mealIndex,
           mEateries
       );
@@ -354,7 +363,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       listAdapterNorth = new ExpandableListAdapter(
           getApplicationContext(),
           finalList.north,
-          dateOffset, mealIndex,
+          dayOfWeek, mealIndex,
           mEateries
       );
       expListViewNorth.setAdapter(listAdapterNorth);
@@ -370,7 +379,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       listAdapterCentral = new ExpandableListAdapter(
           getApplicationContext(),
           finalList.central,
-          dateOffset, mealIndex,
+          dayOfWeek, mealIndex,
           mEateries
       );
       expListViewCentral.setAdapter(listAdapterCentral);
@@ -381,7 +390,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
    * Generates a list of for breakfast, lunch, and dinner for a particular day. Day is determined by
    * the dateOffset from the current time.
    */
-  public List<Map<String, MealModel>> generateMealLists(int dateOffset) {
+  public List<Map<String, MealModel>> generateMealLists(DayOfWeek dayOfWeek) {
     List<Map<String, MealModel>> finalList = new ArrayList<>();
     Map<String, MealModel> breakfastList = new TreeMap<>();
     Map<String, MealModel> lunchList = new TreeMap<>();
@@ -391,8 +400,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       // Checks that dining hall is opened
 
       // Get MealModel for the day and split into three hashmaps
-      List<MealModel> meals = m.getWeeklyMenu()
-          .get(ZonedDateTime.now().getDayOfWeek().plus(dateOffset));
+      List<MealModel> meals = m.getWeeklyMenu().get(dayOfWeek);
+
       for (MealModel n : meals) {
         if (n.getMenu().getNumberOfCategories() > 0) {
           MealType type = n.getType();
@@ -515,13 +524,14 @@ public class WeeklyMenuActivity extends AppCompatActivity {
    * dinnerlist) for each day in the dateList. Each of the meal lists is a hashmap of EateryModels
    * that have that specific meal and the menu
    */
-  public List<List<Map<String, MealModel>>> parseWeeklyMenu(@NonNull List<TextView> dateList) {
-    List<List<Map<String, MealModel>>> mainList = new ArrayList<>();
+  public Map<DayOfWeek, List<Map<String, MealModel>>> parseWeeklyMenu(
+      @NonNull List<TextView> dateList) {
+    Map<DayOfWeek, List<Map<String, MealModel>>> mainList = new HashMap<>();
 
-    for (int i = 0; i < dateList.size(); i++) {
+    for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
       // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
-      List<Map<String, MealModel>> dailyList = generateMealLists(i);
-      mainList.add(dailyList);
+      List<Map<String, MealModel>> dailyList = generateMealLists(dayOfWeek);
+      mainList.put(dayOfWeek, dailyList);
     }
     return mainList;
   }
