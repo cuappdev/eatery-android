@@ -8,9 +8,6 @@ import java.util.GregorianCalendar;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
-/**
- * Created by Evan Welsh on 10/3/18.
- */
 public class EateryStringsUtil {
 
   public static String getOpeningClosingDescription(Context context, EateryModel eatery) {
