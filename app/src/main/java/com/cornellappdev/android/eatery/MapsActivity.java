@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,7 +34,7 @@ import java.util.List;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
   private GoogleMap mMap;
-  private List<CafeteriaModel> cafeData;
+  private List<EateryModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
   private BottomNavigationView bnv;
 
@@ -84,7 +84,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
     Intent intent = getIntent();
-    cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
+    cafeData = (ArrayList<EateryModel>) intent.getSerializableExtra("mEatery");
     bnv = findViewById(R.id.bottom_navigation);
     bnv.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -99,7 +99,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
               case R.id.action_week:
                 finish();
                 intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("cafeData", new ArrayList<>(cafeData));
+                intent.putExtra("mEatery", new ArrayList<>(cafeData));
                 startActivity(intent);
                 break;
               case R.id.action_brb:
@@ -125,22 +125,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // (42.4471,-76.4832) is the location for Day Hall
     LatLng cornell = new LatLng(42.451092, -76.482654);
     for (int i = 0; i < cafeData.size(); i++) {
-      CafeteriaModel cafe = cafeData.get(i);
-      Double lat = cafe.getLat();
-      Double lng = cafe.getLng();
-      LatLng latLng = new LatLng(lat, lng);
+      EateryModel cafe = cafeData.get(i);
+      LatLng latLng = cafe.getLatLng();
       String name = cafe.getNickName();
-      String isOpenedStr = cafe.isOpen();
+      boolean isOpenedStr = cafe.isOpen();
       String loc = cafe.getCloseTime();
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
       cafeMarker.setSnippet(isOpenedStr + " " + loc);
 
-      if (cafe.getCurrentStatus() == CafeteriaModel.Status.CLOSED) {
+      if (cafe.getCurrentStatus() == EateryModel.Status.CLOSED) {
         cafeMarker.setIcon(
             BitmapDescriptorFactory.fromBitmap(
                 Bitmap.createScaledBitmap(
                     bitmapDescriptorFromVector(this, R.drawable.gray_pin), 72, 96, false)));
-      } else if (cafe.getCurrentStatus() == CafeteriaModel.Status.OPEN) {
+      } else if (cafe.getCurrentStatus() == EateryModel.Status.OPEN) {
         cafeMarker.setIcon(
             BitmapDescriptorFactory.fromBitmap(
                 Bitmap.createScaledBitmap(

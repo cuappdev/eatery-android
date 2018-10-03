@@ -1,8 +1,23 @@
 <resources>
-    <string name="app_name">eatery-android</string>
+  <string name="app_name">eatery-android</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main">Eateries</string>
-
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_activity_maps">Map</string>
+  <string name="title_activity_main">Eateries</string>
+  <string name="no_menu_available">No menu available</string>
+  <string name="cafe_open">Open</string>
+  <string name="cafe_closing_soon">Closing Soon</string>
+  <string name="open_from_a_to_b">Open from %s to %s</string>
+  <string name="closed_for_a">Closed for %s</string>
+  <string name="closing_at_a">Closing at %s</string>
+  <string name="opening_at_a">Opening at %s</string>
+  <string name="opening_on_a_at_b">Opening on %s at %s</string>
+  <string name="open">Open</string>
+  <string name="closing_soon">Closing Soon</string>
+  <string name="closed">Closed</string>
+  <string name="brunch">Brunch</string>
+  <string name="dinner">Dinner</string>
+  <string name="lunch">Lunch</string>
+  <string name="lite_lunch">Lite Lunch</string>
+  <string name="breakfast">Breakfast</string>
 </resources>

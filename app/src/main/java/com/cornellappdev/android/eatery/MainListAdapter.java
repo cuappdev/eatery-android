@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.EateryModel;
+import com.cornellappdev.android.eatery.model.EateryModel.Status;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -34,20 +36,20 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
   private int mCount;
   private String mQuery;
-  private List<CafeteriaModel> cafeListFiltered;
+  private List<EateryModel> cafeListFiltered;
   private final int TEXT = 1;
   private final int IMAGE = 0;
 
   public interface ListAdapterOnClickHandler {
 
-    void onClick(int position, List<CafeteriaModel> list);
+    void onClick(int position, List<EateryModel> list);
   }
 
   MainListAdapter(
       Context context,
       ListAdapterOnClickHandler clickHandler,
       int count,
-      ArrayList<CafeteriaModel> list) {
+      List<EateryModel> list) {
     mContext = context;
     mListAdapterOnClickHandler = clickHandler;
     mCount = count;
@@ -62,7 +64,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     FLog.setMinimumLoggingLevel(FLog.VERBOSE);
   }
 
-  void setList(ArrayList<CafeteriaModel> list, int count, String query) {
+  void setList(ArrayList<EateryModel> list, int count, String query) {
     mQuery = query;
     mCount = count;
     cafeListFiltered = list;
@@ -94,73 +96,84 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   @Override
-  public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
-    final CafeteriaModel cafeteriaModel = cafeListFiltered.get(position);
-    switch (input_holder.getItemViewType()) {
+  public void onBindViewHolder(RecyclerView.ViewHolder inputHolder, int position) {
+    final EateryModel eateryModel = cafeListFiltered.get(position);
+    switch (inputHolder.getItemViewType()) {
       case IMAGE:
-        ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
+        ListAdapterViewHolder holder = (ListAdapterViewHolder) inputHolder;
 
-        holder.cafeName.setText(cafeteriaModel.getNickName());
+        holder.cafeName.setText(eateryModel.getNickName());
 
         String imageLocation =
             "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-                + convertName(cafeteriaModel.getNickName() + ".jpg");
+                + convertName(eateryModel.getNickName() + ".jpg");
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
-
-        SpannableString openString = new SpannableString(cafeteriaModel.isOpen());
-        openString.setSpan(
-            new StyleSpan(Typeface.BOLD),
-            0,
-            cafeteriaModel.isOpen().length(),
+        SpannableString openString = new SpannableString(eateryModel.isOpen() ? "Open" : "Closed");
+        openString.setSpan(new StyleSpan(Typeface.BOLD), 0,
+            (eateryModel.isOpen() ? "Open" : "Closed").length(),
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         Collections.sort(cafeListFiltered);
-        if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSED) {
-          holder.cafeOpen.setText("Closed");
+
+        if (eateryModel.getCurrentStatus() == EateryModel.Status.CLOSED) {
+          holder.cafeOpen.setText(mContext.getString(R.string.closed));
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
           holder.rlayout.setAlpha(.6f);
-
-        } else if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSINGSOON) {
-          holder.cafeOpen.setText("Closing Soon");
+        } else if (eateryModel.getCurrentStatus() == EateryModel.Status.CLOSING_SOON) {
+          holder.cafeOpen.setText(mContext.getString(R.string.closing_soon));
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
           holder.rlayout.setAlpha(1f);
         } else {
-          holder.cafeOpen.setText("Open");
+          holder.cafeOpen.setText(mContext.getString(R.string.open));
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
           holder.rlayout.setAlpha(1f);
         }
 
         holder.brb_icon.setVisibility(View.GONE);
         holder.swipe_icon.setVisibility(View.GONE);
-        for (String pay : cafeteriaModel.getPayMethods()) {
+        for (String pay : eateryModel.getPayMethods()) {
           if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
             holder.brb_icon.setVisibility(View.VISIBLE);
           }
         }
 
-        if (cafeteriaModel.getIsDiningHall()) {
+        if (eateryModel instanceof DiningHallModel) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
 
-        holder.cafeTime.setText(cafeteriaModel.getCloseTime());
+        holder.cafeTime.setText(eateryModel.getCloseTime());
         break;
       case TEXT:
-        TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
-        holder2.cafe_name.setText(cafeteriaModel.getNickName());
-        holder2.cafe_time.setText(cafeteriaModel.isOpen());
-        holder2.cafe_time_info.setText(cafeteriaModel.getCloseTime());
+        TextAdapterViewHolder holder2 = (TextAdapterViewHolder) inputHolder;
+        holder2.cafe_name.setText(eateryModel.getNickName());
+        Status status = eateryModel.getCurrentStatus();
 
-        ArrayList<String> itemList = cafeteriaModel.getSearchedItems();
-        cafeteriaModel.setSearchedItems(null);
-        if (itemList == null) {
+        if (status == Status.OPEN) {
+          holder2.cafe_time.setText(mContext.getString(R.string.open));
+        } else if (status == Status.CLOSING_SOON) {
+          holder2.cafe_time.setText(mContext.getString(R.string.closing_soon));
+        } else {
+          holder2.cafe_time.setText(mContext.getString(R.string.closed));
+        }
+
+        holder2.cafe_time.setText(mContext.getString(R.string.open));
+        holder2.cafe_time_info.setText(eateryModel.getCloseTime());
+
+        List<String> itemList = eateryModel.getSearchedItems();
+        eateryModel.setSearchedItems(null);
+        if (itemList == null)
+
+        {
           holder2.cafe_items.setText("");
           break;
         }
         Collections.sort(itemList);
         String items = itemList.toString().substring(1, itemList.toString().length() - 1);
 
-        if (mQuery != null) {
+        if (mQuery != null)
+
+        {
           // Fixes conflict with replacing character 'b' after inserting HTML bold tags
           if (mQuery.equals("B")) {
             mQuery = "b";
@@ -246,6 +259,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       int adapterPosition = getAdapterPosition();
       mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
     }
+
   }
 
   private static String convertName(String str) {

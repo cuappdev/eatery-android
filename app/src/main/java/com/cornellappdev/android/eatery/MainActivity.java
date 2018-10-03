@@ -1,8 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.NORTH;
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.WEST;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,14 +25,14 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.CampusArea;
+import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -50,9 +47,9 @@ public class MainActivity extends AppCompatActivity
 
   public static boolean searchPressed = false;
 
-  public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); // holds all cafes
-  public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); // button filter list
-  public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
+  public List<EateryModel> cafeList = new ArrayList<>(); // holds all cafes
+  public List<EateryModel> currentList = new ArrayList<>(); // button filter list
+  public List<EateryModel> searchList = new ArrayList<>(); // searchbar filter list
   public BottomNavigationView bnv;
   public Button northButton;
   public Button westButton;
@@ -124,7 +121,7 @@ public class MainActivity extends AppCompatActivity
                 break;
               case R.id.action_week:
                 intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("cafeData", cafeList);
+                intent.putExtra("mEatery", new ArrayList<>(cafeList));
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
@@ -158,7 +155,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void filterCurrentList() {
-    for (CafeteriaModel model : currentList) {
+    for (EateryModel model : currentList) {
       final boolean areaFuzzyMatches =
           getCurrentArea() == null || model.getArea() == getCurrentArea();
       final boolean paymentFuzzyMatches =
@@ -172,13 +169,13 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private CafeteriaModel.CafeteriaArea getCurrentArea() {
+  private CampusArea getCurrentArea() {
     if (northButton.equals(areaButtonPressed)) {
-      return NORTH;
+      return CampusArea.NORTH;
     } else if (westButton.equals(areaButtonPressed)) {
-      return WEST;
+      return CampusArea.WEST;
     } else if (centralButton.equals(areaButtonPressed)) {
-      return CENTRAL;
+      return CampusArea.CENTRAL;
     } else {
       return null;
     }
@@ -194,7 +191,7 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private void handleAreaButtonPress(Button button, CafeteriaModel.CafeteriaArea area) {
+  private void handleAreaButtonPress(Button button, CampusArea area) {
     if (!button.equals(areaButtonPressed)) {
       changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
       if (areaButtonPressed != null) {
@@ -225,13 +222,13 @@ public class MainActivity extends AppCompatActivity
   public void filterClick(View view) {
     switch (view.getId()) {
       case R.id.northButton:
-        handleAreaButtonPress(northButton, NORTH);
+        handleAreaButtonPress(northButton, CampusArea.NORTH);
         break;
       case R.id.centralButton:
-        handleAreaButtonPress(centralButton, CENTRAL);
+        handleAreaButtonPress(centralButton, CampusArea.CENTRAL);
         break;
       case R.id.westButton:
-        handleAreaButtonPress(westButton, WEST);
+        handleAreaButtonPress(westButton, CampusArea.WEST);
         break;
       case R.id.swipes:
         handlePaymentButtonPress(swipesButton, PAYMENT_SWIPE);
@@ -240,8 +237,8 @@ public class MainActivity extends AppCompatActivity
         handlePaymentButtonPress(brbButton, PAYMENT_CARD);
         break;
     }
-    ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
-    for (CafeteriaModel cm : currentList) {
+    ArrayList<EateryModel> cafesToDisplay = new ArrayList<>();
+    for (EateryModel cm : currentList) {
       if (cm.matchesFilter()) {
         cafesToDisplay.add(cm);
       }
@@ -256,7 +253,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onClick(int position, List<CafeteriaModel> list) {
+  public void onClick(int position, List<EateryModel> list) {
     Intent intent = new Intent(this, MenuActivity.class);
     intent.putExtra("testData", new ArrayList<>(list));
     intent.putExtra("cafeInfo", list.get(position));
@@ -269,7 +266,7 @@ public class MainActivity extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.action_map:
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-        intent.putExtra("cafeData", cafeList);
+        intent.putExtra("mEatery", new ArrayList<>(cafeList));
         startActivity(intent);
         return true;
       default:
@@ -294,7 +291,7 @@ public class MainActivity extends AppCompatActivity
           searchTextView,
           R.drawable
               .cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
-                        // on white background
+      // on white background
     } catch (Exception e) {
       // Don't do anything
     }
@@ -309,8 +306,8 @@ public class MainActivity extends AppCompatActivity
 
     private void searchList(String query) {
       final String lowercaseQuery = query.toLowerCase();
-      for (CafeteriaModel model : searchList) {
-        final HashSet<String> mealSet = model.getMealItems();
+      for (EateryModel model : searchList) {
+        final List<String> mealSet = model.getMealItems();
 
         boolean foundNickName = false;
         if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
@@ -342,11 +339,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
       this.query = query;
-      ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
+      ArrayList<EateryModel> cafesToDisplay = new ArrayList<>();
       if (query.length() == 0) {
         searchList = currentList;
         searchPressed = false;
-        for (CafeteriaModel cm : searchList) {
+        for (EateryModel cm : searchList) {
           if (cm.matchesFilter()) {
             cafesToDisplay.add(cm);
           }
@@ -354,7 +351,7 @@ public class MainActivity extends AppCompatActivity
       } else {
         searchPressed = true;
         searchList(query);
-        for (CafeteriaModel cm : searchList) {
+        for (EateryModel cm : searchList) {
           if (cm.matchesFilter() && cm.matchesSearch()) {
             cafesToDisplay.add(cm);
           }
@@ -373,6 +370,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   public class SnackBarListener implements View.OnClickListener {
+
     @Override
     public void onClick(View v) {
       Intent browser =
@@ -381,10 +379,10 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>> {
+  public class ProcessJson extends AsyncTask<String, Void, List<EateryModel>> {
 
     @Override
-    protected ArrayList<CafeteriaModel> doInBackground(String... params) {
+    protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
       dbHelper.addData(json);
 
@@ -397,7 +395,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPostExecute(ArrayList<CafeteriaModel> result) {
+    protected void onPostExecute(List<EateryModel> result) {
       super.onPostExecute(result);
 
       splash.setVisibility(View.GONE);
@@ -410,7 +408,8 @@ public class MainActivity extends AppCompatActivity
       mRecyclerView.setLayoutManager(layoutManager);
 
       listAdapter =
-          new MainListAdapter(getApplicationContext(), MainActivity.this, result.size(), cafeList);
+          new MainListAdapter(getApplicationContext(), MainActivity.this, result.size(),
+              new ArrayList<>(cafeList));
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);
       progressBar.setVisibility(View.GONE);

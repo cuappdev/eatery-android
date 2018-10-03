@@ -1,18 +1,21 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,15 +23,20 @@ import java.util.List;
 public class MenuFragment extends Fragment {
 
   private int position;
-  private List<MealModel> menus;
-  private LinearLayout linear;
 
   @Override
   public View onCreateView(
-      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    menus = (List<MealModel>) getArguments().getSerializable("cafeData");
+      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    List<MealModel> menus = (List<MealModel>) getArguments().getSerializable("mEatery");
     View view = inflater.inflate(R.layout.fragment_menu, container, false);
-    linear = view.findViewById(R.id.linearFragment);
+    LinearLayout linear = view.findViewById(R.id.linearFragment);
+    Context context = getContext();
+
+    int mealTextColor = -1;
+
+    if (context != null) {
+      mealTextColor = ContextCompat.getColor(context, R.color.missingMenuTest);
+    }
 
     try {
       position = getArguments().getInt("position");
@@ -38,26 +46,29 @@ public class MenuFragment extends Fragment {
 
     float scale = getResources().getDisplayMetrics().density;
     // Checks for unavailable or missing menus
-    if (menus.get(position).getMenu().entrySet().isEmpty()) {
+    if (menus.get(position).getMenu().getNumberOfCategories() == 0) {
       TextView missingMenuText = new TextView(getContext());
-      missingMenuText.setText("No menu available");
-      missingMenuText.setTextColor(Color.parseColor("#de000000"));
+      missingMenuText.setText(R.string.no_menu_available);
+
+      if (context != null) {
+        missingMenuText.setTextColor(ContextCompat.getColor(context, R.color.missingMenuTest));
+      }
+
       missingMenuText.setPadding((int) (16 * scale + 0.5f), 0, 0, (int) (12 * scale + 0.5f));
       missingMenuText.setTextSize(14);
       linear.addView(missingMenuText);
     }
 
     int counter = 0;
-    for (HashMap.Entry<String, ArrayList<String>> entry :
-        menus.get(position).getMenu().entrySet()) {
+    MealMenuModel menu = menus.get(position).getMenu();
+    for (String category : menu.getCategories()) {
       // Add subheading for category of food
-      String key = entry.getKey();
-      List<String> value = entry.getValue();
-      TextView categoryText = new TextView(getContext());
+      List<String> value = menu.getItems(category);
+
+      TextView categoryText = new TextView(context);
       categoryText.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-      categoryText.setText(key);
+      categoryText.setText(category);
       categoryText.setTextSize(16);
-      categoryText.setTextColor(Color.parseColor("#de000000"));
 
       // Note(lesley): there's extra padding added to the first category somewhere and I
       // don't know how to fix it
@@ -82,7 +93,7 @@ public class MenuFragment extends Fragment {
         TextView mealItemText = new TextView(getContext());
         mealItemText.setText(value.get(i));
         mealItemText.setTextSize(14);
-        mealItemText.setTextColor(Color.parseColor("#de000000"));
+        mealItemText.setTextColor(mealTextColor);
         mealItemText.setPadding(
             (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0, (int) (8 * scale + 0.5f));
         linear.addView(mealItemText);
@@ -100,7 +111,7 @@ public class MenuFragment extends Fragment {
       }
 
       // Add horizontal line that separates each category
-      if (counter != menus.get(position).getMenu().entrySet().size() - 1) {
+      if (counter != menus.get(position).getMenu().getNumberOfCategories()) {
         View divider = new View(getContext());
         divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
         divider.setLayoutParams(

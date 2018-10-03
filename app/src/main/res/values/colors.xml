@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand">#4e80bd</color>
-    <color name="secondary">#a8a8a8</color>
-    <color name="primary">#000000</color>
-    <color name="red">#d82e41</color>
-    <color name="green">#7dd600</color>
-    <color name="sec">#57000000</color>
-    <color name="blue">#4a90e2</color>
-    <color name="colorPrimary">#5482BA</color>
-    <color name="colorPrimaryDark">#476693</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="eateryblue">#4B7FBE</color>
-    <color name="colorWhite">#FFFFFF</color>
+  <color name="brand">#4e80bd</color>
+  <color name="secondary">#a8a8a8</color>
+  <color name="primary">#000000</color>
+  <color name="red">#d82e41</color>
+  <color name="green">#7dd600</color>
+  <color name="sec">#57000000</color>
+  <color name="blue">#4a90e2</color>
+  <color name="colorPrimary">#5482BA</color>
+  <color name="colorPrimaryDark">#476693</color>
+  <color name="colorAccent">#FF4081</color>
+  <color name="eateryblue">#4B7FBE</color>
+  <color name="colorWhite">#FFFFFF</color>
+  <color name="eateryOpenColor">#1a84db</color>
+  <color name="filterBgActive">#4B7FBE</color>
+  <color name="filterBgInactive">#F2F2F2</color>
+  <color name="filterFgActive">#FFFFFF</color>
+  <color name="filterFgInactive">#4B7FBE</color>
+  <color name="inactiveMealText">#cdcdcd</color>
+  <color name="activeMealText">#000000</color>
+  <color name="missingMenuTest">#de000000</color>
 </resources>
