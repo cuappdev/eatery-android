@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.Data;
+package com.cornellappdev.android.eatery.data;
 
 import android.content.ContentValues;
 import android.content.Context;

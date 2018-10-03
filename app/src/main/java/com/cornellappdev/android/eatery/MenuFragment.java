@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.Model.MealModel;
+import com.cornellappdev.android.eatery.model.MealModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

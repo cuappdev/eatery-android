@@ -1,8 +1,8 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.CENTRAL;
-import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.NORTH;
-import static com.cornellappdev.android.eatery.Model.CafeteriaModel.CafeteriaArea.WEST;
+import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.NORTH;
+import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.WEST;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,11 +27,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.Data.CafeteriaDbHelper;
-import com.cornellappdev.android.eatery.Model.CafeteriaModel;
-import com.cornellappdev.android.eatery.NetworkUtils.ConnectionUtilities;
-import com.cornellappdev.android.eatery.NetworkUtils.JsonUtilities;
-import com.cornellappdev.android.eatery.NetworkUtils.NetworkUtilities;
+import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
+import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.network.ConnectionUtilities;
+import com.cornellappdev.android.eatery.network.JsonUtilities;
+import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
