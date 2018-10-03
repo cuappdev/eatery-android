@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="?android:progressBarStyle"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="24dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="8dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerInParent="true"
+    android:layout_centerVertical="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+  <ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="60dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+
+      <HorizontalScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+          android:id="@+id/linear"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+          <Button
+            android:id="@+id/northButton"
+            android:textStyle="normal"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:onClick="filterClick"
+            android:text="North"
+            android:textAllCaps="false"
+            android:textColor="#4B7FBE"
+            android:textSize="14sp"/>
+
+          <Button
+            android:id="@+id/westButton"
+            android:textStyle="normal"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:onClick="filterClick"
+            android:text="West"
+            android:textAllCaps="false"
+            android:textColor="#4B7FBE"
+            android:textSize="14sp"/>
+
+          <Button
+            android:id="@+id/centralButton"
+            android:textStyle="normal"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:onClick="filterClick"
+            android:text="Central"
+            android:textAllCaps="false"
+            android:textColor="#4B7FBE"
+            android:textSize="14sp"/>
+
+          <Button
+            android:id="@+id/swipes"
+            android:textStyle="normal"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:onClick="filterClick"
+            android:text="Swipes"
+            android:textAllCaps="false"
+            android:textColor="#4B7FBE"
+            android:textSize="14sp"/>
+
+          <Button
+            android:id="@+id/brb"
+            android:textStyle="normal"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:padding="8dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:onClick="filterClick"
+            android:text="BRB"
+            android:textAllCaps="false"
+            android:textColor="#4B7FBE"
+            android:textSize="14sp"/>
+
+        </LinearLayout>
+      </HorizontalScrollView>
+      <android.support.v7.widget.RecyclerView
+        android:id="@+id/cafe_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/scroll"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:onClick="filterClick"
+        android:visibility="gone"/>
+    </RelativeLayout>
+  </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -1,20 +1,20 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
@@ -33,15 +33,15 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
-public class WeeklyMenuActivity extends AppCompatActivity {
+public class WeeklyMenuFragment extends Fragment {
 
-  private BottomNavigationView bnv;
+
   private ExpandableListAdapter listAdapterWest, listAdapterNorth, listAdapterCentral;
   private NonScrollExpandableListView expListViewWest, expListViewNorth, expListViewCentral;
   private TextView westText, northText, centralText;
   private List<CafeModel> mCafes = new ArrayList<>();
   private List<DiningHallModel> mDiningHalls = new ArrayList<>();
-  private List<EateryModel> mEateries;
+  private List<EateryModel> mEateries = new ArrayList<>();
   private MealType mealType;
   private DayOfWeek selectedDayOfWeek;
   private TextView breakfastText;
@@ -53,29 +53,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   private int lastExpandedPosition;
   private NonScrollExpandableListView lastClickedListView;
 
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_weekly_menu);
-    bnv = findViewById(R.id.bottom_navigation);
-    breakfastText = findViewById(R.id.breakfast);
-    lunchText = findViewById(R.id.lunch);
-    dinnerText = findViewById(R.id.dinner);
-    linDate = findViewById(R.id.lin_date);
-    expListViewWest = findViewById(R.id.expandablelistview_west);
-    expListViewNorth = findViewById(R.id.expandablelistview_north);
-    expListViewCentral = findViewById(R.id.expandablelistview_central);
-    westText = findViewById(R.id.west_header);
-    northText = findViewById(R.id.north_header);
-    centralText = findViewById(R.id.central_header);
-
-    Intent intent = getIntent();
-    List<? extends EateryModel> eateries = (ArrayList<? extends EateryModel>) intent
-        .getSerializableExtra("mEatery");
-
-    // Get list of dining halls
-
+  public void updateEateries(List<? extends EateryModel> eateries) {
     for (EateryModel m : eateries) {
       if (m instanceof DiningHallModel) {
         mDiningHalls.add((DiningHallModel) m);
@@ -83,12 +61,39 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         mCafes.add((CafeModel) m);
       }
     }
-    mEateries = new ArrayList<>(eateries);
+    mEateries.addAll(eateries);
+
+    // Parse the weekly menu when the user starts this activity
+    weeklyMenu = parseWeeklyMenu(dateList);
+
+    changeListAdapter(MealType.BREAKFAST, selectedDayOfWeek);
+  }
+
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    /* Setup reports recycler view... */
+
+    super.onCreate(savedInstanceState);
+
+    final View weeklyMenuFragment = inflater
+        .inflate(R.layout.activity_weekly_menu, container, false);
+
+    breakfastText = weeklyMenuFragment.findViewById(R.id.breakfast);
+    lunchText = weeklyMenuFragment.findViewById(R.id.lunch);
+    dinnerText = weeklyMenuFragment.findViewById(R.id.dinner);
+    linDate = weeklyMenuFragment.findViewById(R.id.lin_date);
+    expListViewWest = weeklyMenuFragment.findViewById(R.id.expandablelistview_west);
+    expListViewNorth = weeklyMenuFragment.findViewById(R.id.expandablelistview_north);
+    expListViewCentral = weeklyMenuFragment.findViewById(R.id.expandablelistview_central);
+    westText = weeklyMenuFragment.findViewById(R.id.west_header);
+    northText = weeklyMenuFragment.findViewById(R.id.north_header);
+    centralText = weeklyMenuFragment.findViewById(R.id.central_header);
 
     // Layout for menu list
-    setTitle("Upcoming Menus");
+    //setTitle("Upcoming Menus");
     DisplayMetrics dm = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(dm);
+    //getWindowManager().getDefaultDisplay().getMetrics(dm);
     int width = dm.widthPixels;
     expListViewWest.setIndicatorBounds(width - 250, width);
     expListViewNorth.setIndicatorBounds(width - 250, width);
@@ -130,21 +135,29 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         });
 
     // Populate list of date TextViews on header
-    dateList.add((TextView) findViewById(R.id.date0));
-    dateList.add((TextView) findViewById(R.id.date1));
-    dateList.add((TextView) findViewById(R.id.date2));
-    dateList.add((TextView) findViewById(R.id.date3));
-    dateList.add((TextView) findViewById(R.id.date4));
-    dateList.add((TextView) findViewById(R.id.date5));
-    dateList.add((TextView) findViewById(R.id.date6));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date0));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date1));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date2));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date3));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date4));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date5));
+    dateList.add((TextView) weeklyMenuFragment.findViewById(R.id.date6));
+
+    for (TextView tv : dateList) {
+      tv.setOnClickListener(this::dateFilterClick);
+    }
+
+    final Context context = getContext();
 
     // When changing date, highlight Breakfast textview
     linDate.setOnClickListener(
         view -> {
-          breakfastText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
-          lunchText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
-          dinnerText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
+          breakfastText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+          lunchText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+          dinnerText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
         });
+
+    selectedDayOfWeek = ZonedDateTime.now().getDayOfWeek();
 
     LocalDateTime dateTime = LocalDateTime.now();
 
@@ -165,12 +178,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
       dateTime = dateTime.plusDays(1);
     }
-
-    // Highlight the icon selected
-    bnv.setSelectedItemId(R.id.action_week);
-
-    // Parse the weekly menu when the user starts this activity
-    weeklyMenu = parseWeeklyMenu(dateList);
 
     breakfastText.setOnClickListener(
         view -> {
@@ -215,50 +222,64 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       changeListAdapter(MealType.BREAKFAST, currentDayOfWeek);
       mealType = MealType.BREAKFAST;
 
-      breakfastText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
-      lunchText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
-      dinnerText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
     } else if (time.isBefore(dinnerCutoff) && time.isAfter(lunchCutoff)) {
       changeListAdapter(MealType.LUNCH, currentDayOfWeek);
       mealType = MealType.LUNCH;
 
-      breakfastText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
-      lunchText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
-      dinnerText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
     } else {
       changeListAdapter(MealType.DINNER, currentDayOfWeek);
       mealType = MealType.DINNER;
 
-      breakfastText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
-      lunchText.setTextColor(ContextCompat.getColor(this, R.color.inactiveMealText));
-      dinnerText.setTextColor(ContextCompat.getColor(this, R.color.activeMealText));
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
     }
 
-    // Adds functionality to bottom nav bar
-    bnv.setOnNavigationItemSelectedListener(
-        item -> {
-          switch (item.getItemId()) {
-            case R.id.action_home:
-              finish();
-              overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-              break;
-            case R.id.action_week:
-              ScrollView sv = findViewById(R.id.weekly_scroll);
-              sv.smoothScrollTo(0, 0);
-              break;
-            case R.id.action_brb:
-              Snackbar snackbar =
-                  Snackbar.make(
-                      findViewById(R.id.weekly_activity),
-                      "If you would like"
-                          + " to see this feature, consider joining our Android dev team!",
-                      Snackbar.LENGTH_LONG);
-              snackbar.setAction("Apply", new SnackBarListener());
-              snackbar.show();
-              break;
-          }
-          return true;
-        });
+    return weeklyMenuFragment;
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Context context = getContext();
+    ZonedDateTime zonedDateTime = ZonedDateTime.now();
+    LocalTime time = zonedDateTime.toLocalTime();
+
+    LocalTime lunchCutoff = LocalTime.of(11, 0);
+    LocalTime dinnerCutoff = LocalTime.of(16, 0);
+    LocalTime breakfastCutoff = LocalTime.of(22, 0);
+
+    DayOfWeek currentDayOfWeek = ZonedDateTime.now().getDayOfWeek();
+
+    if (time.isAfter(breakfastCutoff) && time.isBefore(lunchCutoff)) {
+      changeListAdapter(MealType.BREAKFAST, currentDayOfWeek);
+      mealType = MealType.BREAKFAST;
+
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+    } else if (time.isBefore(dinnerCutoff) && time.isAfter(lunchCutoff)) {
+      changeListAdapter(MealType.LUNCH, currentDayOfWeek);
+      mealType = MealType.LUNCH;
+
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+    } else {
+      changeListAdapter(MealType.DINNER, currentDayOfWeek);
+      mealType = MealType.DINNER;
+
+      breakfastText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      lunchText.setTextColor(ContextCompat.getColor(context, R.color.inactiveMealText));
+      dinnerText.setTextColor(ContextCompat.getColor(context, R.color.activeMealText));
+    }
+
   }
 
   /**
@@ -267,7 +288,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   public void dateFilterClick(View v) {
     TextView tv = (TextView) v;
 
-    tv.setTextColor(ContextCompat.getColor(this, R.color.activeFilterText));
+    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.activeFilterText));
     changeDateColor(tv);
 
     int id = tv.getId();
@@ -332,57 +353,67 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         mealIndex = 2;
         break;
     }
-    MenusByCampusArea finalList = generateFinalList(weeklyMenu.get(dayOfWeek).get(mealIndex));
 
-    // Hides layout elements if there is nothing in the list corresponding to a certain
-    // CafeteriaArea
-    if (finalList.west.isEmpty()) {
-      westText.setVisibility(View.GONE);
-      expListViewWest.setVisibility(View.GONE);
-    } else {
-      westText.setVisibility(View.VISIBLE);
-      expListViewWest.setVisibility(View.VISIBLE);
+    List<Map<String, MealModel>> dayMenu = weeklyMenu.get(dayOfWeek);
 
-      listAdapterWest = new ExpandableListAdapter(
-          getApplicationContext(),
-          finalList.west,
-          dayOfWeek,
-          mealIndex,
-          mEateries
-      );
-      expListViewWest.setAdapter(listAdapterWest);
-    }
+    if (dayMenu != null) {
+      Map<String, MealModel> mealMenu = dayMenu.get(mealIndex);
 
-    if (finalList.north.isEmpty()) {
-      northText.setVisibility(View.GONE);
-      expListViewNorth.setVisibility(View.GONE);
-    } else {
-      northText.setVisibility(View.VISIBLE);
-      expListViewNorth.setVisibility(View.VISIBLE);
+      if (mealMenu != null) {
 
-      listAdapterNorth = new ExpandableListAdapter(
-          getApplicationContext(),
-          finalList.north,
-          dayOfWeek, mealIndex,
-          mEateries
-      );
-      expListViewNorth.setAdapter(listAdapterNorth);
-    }
+        MenusByCampusArea finalList = generateFinalList(mealMenu);
 
-    if (finalList.central.isEmpty()) {
-      centralText.setVisibility(View.GONE);
-      expListViewCentral.setVisibility(View.GONE);
-    } else {
-      centralText.setVisibility(View.VISIBLE);
-      expListViewCentral.setVisibility(View.VISIBLE);
+        // Hides layout elements if there is nothing in the list corresponding to a certain
+        // CafeteriaArea
+        if (finalList.west.isEmpty()) {
+          westText.setVisibility(View.GONE);
+          expListViewWest.setVisibility(View.GONE);
+        } else {
+          westText.setVisibility(View.VISIBLE);
+          expListViewWest.setVisibility(View.VISIBLE);
 
-      listAdapterCentral = new ExpandableListAdapter(
-          getApplicationContext(),
-          finalList.central,
-          dayOfWeek, mealIndex,
-          mEateries
-      );
-      expListViewCentral.setAdapter(listAdapterCentral);
+          listAdapterWest = new ExpandableListAdapter(
+              getContext().getApplicationContext(),
+              finalList.west,
+              dayOfWeek,
+              mealIndex,
+              mEateries
+          );
+          expListViewWest.setAdapter(listAdapterWest);
+        }
+
+        if (finalList.north.isEmpty()) {
+          northText.setVisibility(View.GONE);
+          expListViewNorth.setVisibility(View.GONE);
+        } else {
+          northText.setVisibility(View.VISIBLE);
+          expListViewNorth.setVisibility(View.VISIBLE);
+
+          listAdapterNorth = new ExpandableListAdapter(
+              getContext().getApplicationContext(),
+              finalList.north,
+              dayOfWeek, mealIndex,
+              mEateries
+          );
+          expListViewNorth.setAdapter(listAdapterNorth);
+        }
+
+        if (finalList.central.isEmpty()) {
+          centralText.setVisibility(View.GONE);
+          expListViewCentral.setVisibility(View.GONE);
+        } else {
+          centralText.setVisibility(View.VISIBLE);
+          expListViewCentral.setVisibility(View.VISIBLE);
+
+          listAdapterCentral = new ExpandableListAdapter(
+              getContext().getApplicationContext(),
+              finalList.central,
+              dayOfWeek, mealIndex,
+              mEateries
+          );
+          expListViewCentral.setAdapter(listAdapterCentral);
+        }
+      }
     }
   }
 

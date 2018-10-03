@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.WeeklyMenuActivity.MenuListItem;
+import com.cornellappdev.android.eatery.WeeklyMenuFragment.MenuListItem;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealModel;
@@ -24,7 +24,7 @@ import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
- * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
+ * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuFragment, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
  */
 

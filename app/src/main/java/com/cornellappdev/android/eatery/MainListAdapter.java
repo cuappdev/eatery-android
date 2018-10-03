@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +20,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZonedDateTime;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -214,7 +207,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public int getItemViewType(int position) {
-    if (!MainActivity.searchPressed) {
+    if (!EateriesFragment.searchPressed) {
       return IMAGE;
     } else {
       return TEXT;

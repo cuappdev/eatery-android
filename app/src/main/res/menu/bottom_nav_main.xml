@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_home"
+        android:id="@+id/action_eateries"
         android:enabled="true"
         android:icon="@drawable/ic_eateries_copy"
         android:title="Eateries"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_week"
+        android:id="@+id/action_weekly_menu"
         android:enabled="true"
         android:icon="@drawable/ic_menu"
         android:title="Weekly Menu"

@@ -16,14 +16,18 @@
     android:name="com.cornellappdev.android.eatery.EateryApplication"
     android:supportsRtl="true">
     <activity
-      android:name="com.cornellappdev.android.eatery.MainActivity"
-      android:screenOrientation="portrait"
-      android:theme="@style/AppTheme"
-      android:windowSoftInputMode="adjustPan">
+      android:name=".SplashActivity"
+      android:theme="@style/SplashTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+    </activity>
+    <activity
+      android:name="com.cornellappdev.android.eatery.MainActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/AppTheme"
+      android:windowSoftInputMode="adjustPan">
     </activity>
     <activity
       android:name="com.cornellappdev.android.eatery.MenuActivity"
@@ -32,7 +36,7 @@
       />
 
     <activity
-      android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
+      android:name="com.cornellappdev.android.eatery.WeeklyMenuFragment"
       android:screenOrientation="portrait"
       android:theme="@style/AppTheme"
       />

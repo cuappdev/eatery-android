@@ -15,7 +15,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -30,17 +29,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import org.threeten.bp.ZonedDateTime;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
   private GoogleMap mMap;
   private List<EateryModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-  private BottomNavigationView bnv;
 
   class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
@@ -62,13 +57,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       cafe_name.setText(marker.getTitle());
       TextView cafe_open = ((TextView) myContentsView.findViewById(R.id.info_cafe_open));
       TextView cafe_desc = ((TextView) myContentsView.findViewById(R.id.info_cafe_desc));
+
+      // TODO what is this supposed to actually do?
       String firstword = marker.getSnippet().split(" ")[0];
+
       if (firstword.equalsIgnoreCase("open")) {
-        cafe_open.setText("Open");
+        cafe_open.setText(R.string.open);
         cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         cafe_desc.setText(marker.getSnippet().substring(5));
       } else if (firstword.equalsIgnoreCase("closing")) {
-        cafe_open.setText("Closing Soon");
+        cafe_open.setText(R.string.closing_soon);
         cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         cafe_desc.setText(marker.getSnippet().substring(13));
       } else {
@@ -89,38 +87,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mapFragment.getMapAsync(this);
     Intent intent = getIntent();
     cafeData = (ArrayList<EateryModel>) intent.getSerializableExtra("mEatery");
-    bnv = findViewById(R.id.bottom_navigation);
-    bnv.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Toast toast;
-            Intent intent;
-            switch (item.getItemId()) {
-              case R.id.action_home:
-                finish();
-                break;
-              case R.id.action_week:
-                finish();
-                intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("mEatery", new ArrayList<>(cafeData));
-                startActivity(intent);
-                break;
-              case R.id.action_brb:
-                Snackbar snackbar =
-                    Snackbar.make(
-                        findViewById(R.id.maps_activity),
-                        "If you would like"
-                            + " to see this feature, consider joining our Android dev team!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Apply", new SnackBarListener());
-                snackbar.show();
-
-                break;
-            }
-            return true;
-          }
-        });
   }
 
   @Override
@@ -162,24 +128,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     // Clicking on an eatery icon on the map will take the user to the MenuActivity of that eatery
     mMap.setOnInfoWindowClickListener(
-        new GoogleMap.OnInfoWindowClickListener() {
-          @Override
-          public void onInfoWindowClick(Marker marker) {
-            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-            String markerName = marker.getTitle();
-            int position = 0;
-            for (int i = 0; i < cafeData.size(); i++) {
-              if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
-                position = i;
-              }
+        marker -> {
+          Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+          String markerName = marker.getTitle();
+          int position = 0;
+          for (int i = 0; i < cafeData.size(); i++) {
+            if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
+              position = i;
             }
-            // TODO(lesley): is testData necessary??? Might have to be removed
-            intent.putExtra("testData", new ArrayList<>(cafeData));
-            intent.putExtra("cafeInfo", cafeData.get(position));
-            intent.putExtra("locName", cafeData.get(position).getNickName());
-
-            startActivity(intent);
           }
+          // TODO(lesley): is testData necessary??? Might have to be removed
+          intent.putExtra("testData", new ArrayList<>(cafeData));
+          intent.putExtra("cafeInfo", cafeData.get(position));
+          intent.putExtra("locName", cafeData.get(position).getNickName());
+
+          startActivity(intent);
         });
 
     mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
