@@ -101,7 +101,6 @@ public class DiningHallModel extends EateryModel {
 
       for (MealModel meal : menu) {
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
 
         if (startTime.isAfter(time) && (closestStartTime == null || closestStartTime
