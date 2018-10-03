@@ -107,6 +107,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         holder.cafeName.setText(eateryModel.getNickName());
 
+        // TODO Always use the path/uri library when concatenating urls
+
         String imageLocation =
             "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
                 + convertName(eateryModel.getNickName() + ".jpg");
@@ -177,7 +179,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder2.cafe_time_info.setVisibility(View.INVISIBLE);
         }
 
-        //   List<String> itemList = eateryModel.getSearchedItems();
+        // TODO Search Reimplementation List<String> itemList = eateryModel.getSearchedItems();
         // eateryModel.setSearchedItems(null);
         // if (itemList == null)
 
