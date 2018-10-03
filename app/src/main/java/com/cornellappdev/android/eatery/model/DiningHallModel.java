@@ -82,18 +82,23 @@ public class DiningHallModel extends EateryModel {
   public ZonedDateTime getNextOpening() {
     ZonedDateTime time = ZonedDateTime.now();
 
+    ZonedDateTime closestStartTime = null;
+
     for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
       for (MealModel meal : day.getValue()) {
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
 
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
 
-        if (startTime.isAfter(time)) {
-          return startTime;
+        if (startTime.isAfter(time) && (closestStartTime == null || closestStartTime
+            .isAfter(startTime))) {
+          // TODO have to loop through everything currently as the mapping is not sorted by day.
+          closestStartTime = startTime;
         }
       }
     }
-    return null;
+
+    return closestStartTime;
   }
 
   public String stringTo() {
@@ -210,7 +215,7 @@ public class DiningHallModel extends EateryModel {
     DateTimeFormatter dateFormatter = DateTimeFormatter
         .ofPattern("yyyy-MM-dd", context.getResources().getConfiguration().locale);
 
-    this.id = eatery.getInt("id");
+    mId = eatery.getInt("id");
 
     // Note(lesley): A single operatingHours object contains operating times for a single day
     for (int k = 0; k < operatingHours.length(); k++) {
@@ -276,7 +281,7 @@ public class DiningHallModel extends EateryModel {
         }
       }
 
-      Collections.sort(mealModelArray);
+      Collections.sort(mealModelArray, MealModel::compareTo);
       setMenuForDay(localDate.getDayOfWeek(), mealModelArray);
     }
   }

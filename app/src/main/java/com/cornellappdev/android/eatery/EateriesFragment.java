@@ -150,9 +150,9 @@ public class EateriesFragment extends Fragment implements
           getCurrentPaymentType() == null
               || model.getPayMethods().contains(getCurrentPaymentType());
       if (areaFuzzyMatches && paymentFuzzyMatches) {
-        model.setMatchesFilter(true);
+        // model.setMatchesFilter(true);
       } else {
-        model.setMatchesFilter(false);
+        //model.setMatchesFilter(false);
       }
     }
   }
@@ -227,9 +227,9 @@ public class EateriesFragment extends Fragment implements
     }
     ArrayList<EateryModel> cafesToDisplay = new ArrayList<>();
     for (EateryModel cm : currentList) {
-      if (cm.matchesFilter()) {
-        cafesToDisplay.add(cm);
-      }
+      //if (cm.matchesFilter()) {
+      cafesToDisplay.add(cm);
+      //}
     }
     searchList = cafesToDisplay;
 
@@ -265,7 +265,7 @@ public class EateriesFragment extends Fragment implements
           }
         }
 
-        if (model.matchesFilter() && (foundItem || foundNickName)) {
+        /*if (model.matchesFilter() && (foundItem || foundNickName)) {
           if (foundNickName) {
             model.setSearchedItems(new ArrayList<>(mealSet));
           } else {
@@ -274,7 +274,7 @@ public class EateriesFragment extends Fragment implements
           model.setMatchesSearch(true);
         } else {
           model.setMatchesSearch(false);
-        }
+        }*/
       }
     }
 
@@ -286,17 +286,17 @@ public class EateriesFragment extends Fragment implements
         searchList = currentList;
         searchPressed = false;
         for (EateryModel cm : searchList) {
-          if (cm.matchesFilter()) {
-            cafesToDisplay.add(cm);
-          }
+          // if (cm.matchesFilter()) {
+          cafesToDisplay.add(cm);
+          // }
         }
       } else {
         searchPressed = true;
         searchList(query);
         for (EateryModel cm : searchList) {
-          if (cm.matchesFilter() && cm.matchesSearch()) {
-            cafesToDisplay.add(cm);
-          }
+          //if (cm.matchesFilter() && cm.matchesSearch()) {
+          cafesToDisplay.add(cm);
+          //}
         }
       }
       Collections.sort(cafesToDisplay);

@@ -71,7 +71,7 @@ public class CafeModel extends EateryModel implements Serializable {
   // Note(lesley): This method assumes that a cafe has only one opening and closing time window per day
   public void setHours(LocalDate date, List<Interval> hours) {
     List<Interval> sortedHours = new ArrayList<>(hours);
-    Collections.sort(sortedHours);
+    Collections.sort(sortedHours, Interval::compareTo);
 
     this.mHours.put(date, hours);
   }
@@ -205,35 +205,28 @@ public class CafeModel extends EateryModel implements Serializable {
 
     // Note(lesley): trillium is missing cafe items data in the JSON, so it requires
     // hardcoded items
-    if (getName().equalsIgnoreCase("trillium")) {
+    if (mName.equalsIgnoreCase("trillium")) {
       cafeItems.addAll(HARDCODED_CAFE_ITEMS);
     }
 
     mCafeMenu = cafeItems;
 
-    // cafeHours contains <Date object: unique date> : <daily hours with opening and closing time>
-    //   LongSparseArray<List<Interval>> cafeHours = new LongSparseArray<>();
-    // Note(lesley): A single operatingHours object contains operating times for a single day
-    JSONArray operatingHours = cafe
-        .getJSONArray("operatingHours"); //a single operating hour is a single day
+    JSONArray operatingHours = cafe.getJSONArray("operatingHours");
 
     for (int c = 0; c < operatingHours.length(); c++) {
-      // TODO FIX
-
       // First entry represents opening time, second entry represents closing time
       List<Interval> dailyHours = new ArrayList<>();
-      JSONObject operating = operatingHours.getJSONObject(c);
-      JSONArray events = operating.getJSONArray("events");
+      JSONObject operatingPeriod = operatingHours.getJSONObject(c);
+      JSONArray events = operatingPeriod.getJSONArray("events");
 
       LocalDate localDate;
 
-      if (operating.has("date")) {
-        String rawDate = operating.getString("date");
+      if (operatingPeriod.has("date")) {
+        String rawDate = operatingPeriod.getString("date");
         localDate = LocalDate.parse(rawDate, DateTimeFormatter
             .ofPattern("yyyy-MM-dd", context.getResources().getConfiguration().locale));
       } else {
-        // TODO
-        localDate = LocalDate.now();
+        localDate = LocalDate.now(ZoneId.systemDefault());
       }
 
       for (int e = 0; e < events.length(); e++) {
@@ -242,6 +235,7 @@ public class CafeModel extends EateryModel implements Serializable {
         LocalDateTime start = null, end = null;
 
         if (obj.has("start")) {
+          // TODO: Java only parses AM/PM (not am/pm), so add a case insensitive parser
           String rawStart = obj.getString("start").toUpperCase();
 
           LocalTime localTime = LocalTime.parse(rawStart, DateTimeFormatter
@@ -259,14 +253,13 @@ public class CafeModel extends EateryModel implements Serializable {
           end = localTime.atDate(localDate);
         }
 
-        LocalDateTime now = LocalDateTime.now();
-
         LocalDateTime midnightTomorrow = localDate
             .atTime(LocalTime.MIDNIGHT);
 
-        if (end != null && end.isBefore(start) && (end.isEqual(midnightTomorrow) || end
+        if (start != null && end != null && end.isBefore(start) && (end.isEqual(midnightTomorrow)
+            || end
             .isAfter(midnightTomorrow))) {
-          setOpenPastMidnight(true);
+          mOpenPastMidnight = true;
 
           end = end.plusDays(1);
         }
@@ -275,6 +268,7 @@ public class CafeModel extends EateryModel implements Serializable {
           dailyHours.add(new Interval(start, end));
         }
       }
+
       setHours(localDate, dailyHours);
     }
   }
