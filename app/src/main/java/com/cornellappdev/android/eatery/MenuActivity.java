@@ -77,35 +77,35 @@ public class MenuActivity extends AppCompatActivity {
 
     // Shows/hides title depending on scroll offset
     appbar = findViewById(R.id.appbar);
-    appbar.addOnOffsetChangedListener(
-        new AppBarLayout.OnOffsetChangedListener() {
-          boolean isShow = true;
-          int scrollRange = -1;
+    appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+      boolean isShow = true;
+      int scrollRange = -1;
 
-          @Override
-          public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            if (scrollRange == -1) {
-              scrollRange = appBarLayout.getTotalScrollRange();
-            }
-            if (scrollRange + verticalOffset == 0) {
-              collapsingToolbar.setTitle(cafeName);
-              isShow = true;
-            } else if (isShow) {
-              collapsingToolbar.setTitle(" ");
-              isShow = false;
-            }
-          }
-        });
+      @Override
+      public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (scrollRange == -1) {
+          scrollRange = appBarLayout.getTotalScrollRange();
+        }
+        if (scrollRange + verticalOffset == 0) {
+          collapsingToolbar.setTitle(cafeName);
+          isShow = true;
+        } else if (isShow) {
+          collapsingToolbar.setTitle(" ");
+          isShow = false;
+        }
+      }
+    });
 
     cafeList = (ArrayList<EateryModel>) intent.getSerializableExtra("testData");
     mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
 
-    // TODO(lesley): do this removal on the JSON side, also I'm certain that the logic to remove
+    // TODO(lesley): do this removal on the JSON side, also I'm certain that the
+    // logic to remove
     // Becker is broken
     // Remove Lite Lunch for North Star and Becker
-    if (mEatery instanceof DiningHallModel &&
-        (mEatery.getNickName().equals("North Star")
-            || mEatery.getNickName().equals("Becker House Dining"))) {
+    if (mEatery instanceof DiningHallModel
+        && (mEatery.getNickName().equals("North Star") || mEatery.getNickName()
+        .equals("Becker House Dining"))) {
       List<MealModel> menu = ((DiningHallModel) mEatery)
           .getMenuForDay(ZonedDateTime.now().getDayOfWeek());
       if (menu.size() > 2) {
@@ -150,15 +150,15 @@ public class MenuActivity extends AppCompatActivity {
     Uri uri = Uri.parse(imageLocation);
     cafeImage.setImageURI(uri);
 
-    //        getDirections = findViewById(R.id.ind_direction);
-    //        getDirections.setOnClickListener(new View.OnClickListener() {
-    //            @Override
-    //            public void onClick(View view) {
-    //                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-    //                intent.putExtra("mEatery", cafeList);
-    //                startActivity(intent);
-    //            }
-    //        });
+    // getDirections = findViewById(R.id.ind_direction);
+    // getDirections.setOnClickListener(new View.OnClickListener() {
+    // @Override
+    // public void onClick(View view) {
+    // Intent intent = new Intent(view.getContext(), MapsActivity.class);
+    // intent.putExtra("mEatery", cafeList);
+    // startActivity(intent);
+    // }
+    // });
 
     brb_icon = findViewById(R.id.brb_icon);
     for (String pay : mEatery.getPayMethods()) {
@@ -196,31 +196,32 @@ public class MenuActivity extends AppCompatActivity {
         mealItemText.setText(cafe.getCafeMenu().get(i));
         mealItemText.setTextSize(14);
         mealItemText.setTextColor(Color.parseColor("#de000000"));
-        mealItemText.setPadding(
-            (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0, (int) (8 * scale + 0.5f));
+        mealItemText.setPadding((int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
+            (int) (8 * scale + 0.5f));
         linLayout.addView(mealItemText);
 
         // Add divider if text is not the last item in list
         if (i != cafe.getCafeMenu().size() - 1) {
           View divider = new View(this);
           divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
-          LinearLayout.LayoutParams dividerParams =
-              new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+          LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
+              LinearLayout.LayoutParams.MATCH_PARENT, 1);
           dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
           divider.setElevation(-1);
           divider.setLayoutParams(dividerParams);
           linLayout.addView(divider);
         }
       }
-    } else if (mEatery instanceof DiningHallModel
-        && !((DiningHallModel) mEatery)
+    } else if (mEatery instanceof DiningHallModel && !((DiningHallModel) mEatery)
         .getMenuForDay(LocalDate.now(TimeUtil.getInstance().getCornellTimeZone()).getDayOfWeek())
         .isEmpty()) {
 
       // Formatting for when eatery is a dining hall and has a menu
 
-      // TODO Why does the second half of this condition exist/should it be refactored?
-      // TODO I honestly am unsure of what its intent was... I tried to honor it though.
+      // TODO Why does the second half of this condition exist/should it be
+      // refactored?
+      // TODO I honestly am unsure of what its intent was... I tried to honor it
+      // though.
 
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
@@ -234,8 +235,8 @@ public class MenuActivity extends AppCompatActivity {
   }
 
   private void setupViewPager(CustomPager customPager) {
-    ViewPagerAdapter adapter =
-        new ViewPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+    ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(),
+        getSupportFragmentManager());
     customPager.setAdapter(adapter);
   }
 
@@ -272,8 +273,9 @@ public class MenuActivity extends AppCompatActivity {
       b.putInt("position", position);
 
       if (mEatery instanceof DiningHallModel) {
-        b.putSerializable("mEatery", new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
-            .get(ZonedDateTime.now().getDayOfWeek())));
+        b.putSerializable("mEatery",
+            new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
+                .get(ZonedDateTime.now().getDayOfWeek())));
       }
 
       MenuFragment f = new MenuFragment();
@@ -283,20 +285,17 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public int getCount() {
-
-      int n;
+      int n = 0;
 
       try {
         if (mEatery instanceof DiningHallModel) {
-          n = ((DiningHallModel) mEatery).getWeeklyMenu()
-              .get(ZonedDateTime.now().getDayOfWeek())
-              .size();
-        } else {
-          n = 0;
+          DayOfWeek current = ZonedDateTime.now().getDayOfWeek();
+          n = ((DiningHallModel) mEatery).getMenuForDay(current).size();
         }
       } catch (Exception e) {
         n = 0;
       }
+
       return n;
     }
 
@@ -328,8 +327,8 @@ public class MenuActivity extends AppCompatActivity {
   /**
    * Returns scaled size for images NOTE: borrowed from Android Studio reference*
    */
-  public static int calculateInSampleSize(
-      BitmapFactory.Options options, int reqWidth, int reqHeight) {
+  public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth,
+      int reqHeight) {
     // Raw height and width of image
     final int height = options.outHeight;
     final int width = options.outWidth;
@@ -349,8 +348,8 @@ public class MenuActivity extends AppCompatActivity {
   }
 
   // NOTE: borrowed from Android Studio reference
-  public static Bitmap decodeSampledBitmapFromResource(
-      Resources res, int resId, int reqWidth, int reqHeight) {
+  public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth,
+      int reqHeight) {
 
     // First decode with inJustDecodeBounds=true to check dimensions
     final BitmapFactory.Options options = new BitmapFactory.Options();
