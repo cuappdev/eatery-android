@@ -10,9 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Evan Welsh on 10/2/18.
- */
 public class MealMenuModel implements Serializable {
 
   private Map<String, List<String>> menu = new HashMap<>();

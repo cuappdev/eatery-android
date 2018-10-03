@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +30,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import org.threeten.bp.ZonedDateTime;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -128,10 +132,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       EateryModel cafe = cafeData.get(i);
       LatLng latLng = cafe.getLatLng();
       String name = cafe.getNickName();
-      boolean isOpenedStr = cafe.isOpen();
-      String loc = cafe.getCloseTime();
+
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-      cafeMarker.setSnippet(isOpenedStr + " " + loc);
+
+      String openingClosingDescription = EateryStringsUtil
+          .getOpeningClosingDescription(this, cafe);
+
+      if (openingClosingDescription != null) {
+        cafeMarker.setSnippet(openingClosingDescription);
+      }
 
       if (cafe.getCurrentStatus() == EateryModel.Status.CLOSED) {
         cafeMarker.setIcon(

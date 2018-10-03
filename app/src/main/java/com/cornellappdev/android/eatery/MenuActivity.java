@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,10 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.MealType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -120,7 +124,15 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     cafeText = findViewById(R.id.ind_time);
-    cafeText.setText(mEatery.getCloseTime());
+
+    String openingClosingDescription = EateryStringsUtil
+        .getOpeningClosingDescription(this, mEatery);
+
+    if (openingClosingDescription != null) {
+      cafeText.setText(openingClosingDescription);
+    } else {
+      cafeText.setVisibility(View.INVISIBLE);
+    }
 
     cafeLoc = findViewById(R.id.ind_loc);
     cafeLoc.setText(mEatery.getBuildingLocation());

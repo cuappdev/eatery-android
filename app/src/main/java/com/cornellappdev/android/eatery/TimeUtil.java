@@ -2,9 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import org.threeten.bp.ZoneId;
 
-/**
- * Created by Evan Welsh on 10/2/18.
- */
 public class TimeUtil {
 
   private static TimeUtil instance;

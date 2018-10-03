@@ -1,8 +1,6 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import android.support.v4.util.LongSparseArray;
-import android.support.v4.util.Pair;
 import com.cornellappdev.android.eatery.TimeUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 public class CafeModel extends EateryModel implements Serializable {
 
   private List<String> mCafeMenu;
-  private Map<LocalDate, List<Interval>> mHours, mHoursHardcoded;
+  private Map<LocalDate, List<Interval>> mHours;
 
   private static Set<String> HARDCODED_CAFE_ITEMS = new HashSet<>(Arrays.asList("Starbucks Coffees",
       "Pepsi Beverages",
@@ -53,7 +51,6 @@ public class CafeModel extends EateryModel implements Serializable {
 
   public CafeModel() {
     this.mHours = new HashMap<>();
-    this.mHoursHardcoded = new HashMap<>();
     this.mCafeMenu = new ArrayList<>();
   }
 
@@ -61,12 +58,14 @@ public class CafeModel extends EateryModel implements Serializable {
     return mCafeMenu;
   }
 
-  public void setCafeMenu(List<String> cafeMenu) {
-    this.mCafeMenu = cafeMenu;
-  }
-
   public List<Interval> getHours(LocalDate date) {
-    return mHours.get(date);
+    List<Interval> hours = mHours.get(date);
+
+    if (hours != null) {
+      return new ArrayList<>(hours);
+    }
+
+    return Collections.emptyList();
   }
 
   // Note(lesley): This method assumes that a cafe has only one opening and closing time window per day
@@ -75,6 +74,119 @@ public class CafeModel extends EateryModel implements Serializable {
     Collections.sort(sortedHours);
 
     this.mHours.put(date, hours);
+  }
+
+
+  public ZonedDateTime getNextOpening() {
+    ZonedDateTime now = ZonedDateTime.now();
+
+    for (int dayOffset = 0; dayOffset < 3; dayOffset++) {
+      List<Interval> hours = getHours(now.toLocalDate().plusDays(dayOffset));
+
+      if (hours != null) {
+        for (Interval openPeriod : hours) {
+          ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+          ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+
+          if (startTime.isAfter(now)) {
+            return startTime;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  @Override
+  public ZonedDateTime getCloseTime() {
+    ZonedDateTime now = ZonedDateTime.now();
+
+    List<Interval> hours = getHours(now.toLocalDate());
+
+    if (hours != null) {
+      for (Interval openPeriod : hours) {
+        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+        ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+        ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+        if (now.isAfter(startTime) && now.isBefore(endTime)) {
+          return endTime;
+        }
+      }
+    }
+
+    if (isOpenPastMidnight()) {
+      hours = getHours(now.toLocalDate().minusDays(1));
+
+      Interval openPeriod = hours.get(hours.size() - 1);
+
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+      if (endTime.toLocalDate().isEqual(now.toLocalDate())
+          && now.isAfter(startTime) && now.isBefore(endTime)) {
+        return endTime;
+      }
+    }
+
+    return null;
+  }
+
+  public List<String> getMealItems() {
+    return getCafeMenu();
+  }
+
+  @Override
+  public Status getCurrentStatus() {
+    ZonedDateTime now = ZonedDateTime.now();
+
+    List<Interval> hours = getHours(now.toLocalDate());
+
+    if (hours != null) {
+      for (Interval openPeriod : hours) {
+        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+        ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+        ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+        if (now.isAfter(startTime) && now.isBefore(endTime)) {
+          if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+            // 60 seconds in 1 minute, 30 minutes = half-hour,
+            return Status.CLOSING_SOON;
+          }
+
+          return Status.OPEN;
+        }
+      }
+    }
+
+    if (isOpenPastMidnight()) {
+      hours = getHours(now.toLocalDate().minusDays(1));
+
+      Interval openPeriod = hours.get(hours.size() - 1);
+
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+      if (endTime.toLocalDate().isEqual(now.toLocalDate())
+          && now.isAfter(startTime) && now.isBefore(endTime)) {
+        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+          // 60 seconds in 1 minute, 30 minutes = half-hour,
+          return Status.CLOSING_SOON;
+        }
+
+        return Status.OPEN;
+      }
+    }
+
+    return Status.CLOSED;
   }
 
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject cafe)
@@ -165,63 +277,6 @@ public class CafeModel extends EateryModel implements Serializable {
       }
       setHours(localDate, dailyHours);
     }
-  }
-
-  @Override
-  public LocalDateTime getNextOpening(LocalDateTime time) {
-    return null;
-  }
-
-  public List<String> getMealItems() {
-    return getCafeMenu();
-  }
-
-  @Override
-  public Status getCurrentStatus() {
-    ZonedDateTime now = ZonedDateTime.now();
-
-    List<Interval> hours = getHours(now.toLocalDate());
-
-    if (hours != null) {
-      for (Interval openPeriod : hours) {
-        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-
-        ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
-        ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
-
-        if (now.isAfter(startTime) && now.isBefore(endTime)) {
-          if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
-            // 60 seconds in 1 minute, 30 minutes = half-hour,
-            return Status.CLOSING_SOON;
-          }
-
-          return Status.OPEN;
-        }
-      }
-    }
-
-    if (isOpenPastMidnight()) {
-      hours = getHours(now.toLocalDate().minusDays(1));
-
-      Interval openPeriod = hours.get(hours.size() - 1);
-
-      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-
-      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
-      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
-
-      if (endTime.toLocalDate().isEqual(now.toLocalDate())
-          && now.isAfter(startTime) && now.isBefore(endTime)) {
-        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
-          // 60 seconds in 1 minute, 30 minutes = half-hour,
-          return Status.CLOSING_SOON;
-        }
-
-        return Status.OPEN;
-      }
-    }
-
-    return Status.CLOSED;
   }
 
   public static CafeModel fromJSONObject(Context context, boolean hardcoded, JSONObject cafe)

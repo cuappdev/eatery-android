@@ -5,9 +5,6 @@ import java.io.Serializable;
 import org.threeten.bp.LocalDateTime;
 
 
-/**
- * Created by Evan Welsh on 10/2/18.
- */
 public class Interval implements Serializable, Comparable<Interval> {
 
   @NonNull

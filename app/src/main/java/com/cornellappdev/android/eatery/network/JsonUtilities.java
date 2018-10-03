@@ -18,9 +18,6 @@ import org.json.JSONObject;
 
 public final class JsonUtilities {
 
-  public final static int MILLISECONDS_PER_DAY = 86400000;
-
-
   private static final Set<Integer> DINING_HALL_IDS = new HashSet<>(
       Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30)
   );
@@ -72,8 +69,6 @@ public final class JsonUtilities {
         } else {
           model = CafeModel.fromJSONObject(mainContext, true, obj);
         }
-
-        System.out.println(model);
 
         if (model != null) {
           eateryModels.add(model);

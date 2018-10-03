@@ -1,15 +1,12 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +21,17 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -138,7 +141,16 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
 
-        holder.cafeTime.setText(eateryModel.getCloseTime());
+        String openingClosingDescription = EateryStringsUtil
+            .getOpeningClosingDescription(mContext, eateryModel);
+
+        if (openingClosingDescription != null) {
+          holder.cafeTime
+              .setText(openingClosingDescription);
+        } else {
+          holder.cafeTime.setVisibility(View.INVISIBLE);
+        }
+
         break;
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) inputHolder;
@@ -154,7 +166,16 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         holder2.cafe_time.setText(mContext.getString(R.string.open));
-        holder2.cafe_time_info.setText(eateryModel.getCloseTime());
+
+        openingClosingDescription = EateryStringsUtil
+            .getOpeningClosingDescription(mContext, eateryModel);
+
+        if (openingClosingDescription != null) {
+          holder2.cafe_time_info.
+              setText(openingClosingDescription);
+        } else {
+          holder2.cafe_time_info.setVisibility(View.INVISIBLE);
+        }
 
         List<String> itemList = eateryModel.getSearchedItems();
         eateryModel.setSearchedItems(null);

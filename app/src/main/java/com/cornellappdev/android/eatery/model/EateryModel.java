@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZonedDateTime;
 
 /**
  * Created by JC on 2/15/18. This represents a single Cafeteria (either a cafe or a dining hall)
@@ -41,15 +42,9 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     this.mSearchedItems = searchedItems;
   }
 
-  public abstract LocalDateTime getNextOpening(LocalDateTime time);
+  public abstract ZonedDateTime getNextOpening();
 
-  public String getCloseTime() {
-    return mCloseTime;
-  }
-
-  public void setCloseTime(String closeTime) {
-    this.mCloseTime = closeTime;
-  }
+  public abstract ZonedDateTime getCloseTime();
 
   public String stringTo() {
     String info = "Name/mNickName: " + mName + "/" + mNickName;

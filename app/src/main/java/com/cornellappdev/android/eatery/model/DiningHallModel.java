@@ -4,9 +4,7 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.TimeUtil;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,9 +15,6 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
-/**
- * Created by Evan Welsh on 10/2/18.
- */
 public class DiningHallModel extends EateryModel {
 
   private List<List<MealModel>> mWeeklyMenu;
@@ -76,13 +71,17 @@ public class DiningHallModel extends EateryModel {
   }
 
   @Override
-  public LocalDateTime getNextOpening(LocalDateTime time) {
+  public ZonedDateTime getNextOpening() {
+    ZonedDateTime time = ZonedDateTime.now();
+
     for (List<MealModel> day : getWeeklyMenu()) {
       for (MealModel meal : day) {
-        if (meal.getStart().isBefore(time) && meal.getEnd().isAfter(time)) {
-          return time;
-        } else if (meal.getStart().isAfter(time)) {
-          return meal.getStart();
+        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+        ZonedDateTime startTime = meal.getStart().atZone(cornell);
+       
+        if (startTime.isAfter(time)) {
+          return startTime;
         }
       }
     }
@@ -152,6 +151,47 @@ public class DiningHallModel extends EateryModel {
 
     return Status.CLOSED;
   }
+
+
+  @Override
+  public ZonedDateTime getCloseTime() {
+    ZonedDateTime now = ZonedDateTime.now();
+
+    List<MealModel> mealModels = getWeeklyMenu().get(now.getDayOfWeek().getValue());
+
+    for (MealModel meal : mealModels) {
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = meal.getStart().atZone(cornell);
+      ZonedDateTime endTime = meal.getEnd().atZone(cornell);
+
+      if (now.isAfter(startTime) && now.isBefore(endTime)) {
+        return endTime;
+      }
+    }
+
+    if (isOpenPastMidnight()) {
+      mealModels = getWeeklyMenu().get(now
+          .minusDays(1)
+          .getDayOfWeek()
+          .getValue()
+      );
+      MealModel openPeriod = mealModels.get(mealModels.size() - 1);
+
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+      if (endTime.toLocalDate().isEqual(now.toLocalDate())
+          && now.isAfter(startTime) && now.isBefore(endTime)) {
+        return endTime;
+      }
+    }
+
+    return null;
+  }
+
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery) throws
