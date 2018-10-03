@@ -58,10 +58,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
 
   public abstract List<String> getMealItems();
 
-  public int indexOfCurrentDay() {
-    return 0;
-  }
-
   public boolean isOpen() {
     return getCurrentStatus() == Status.OPEN;
   }

@@ -389,25 +389,25 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
     for (DiningHallModel m : mDiningHalls) {
       // Checks that dining hall is opened
-      if (m.indexOfCurrentDay() != -1) {
-        // Get MealModel for the day and split into three hashmaps
-        List<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
-        for (MealModel n : meals) {
-          if (n.getMenu().getNumberOfCategories() > 0) {
-            MealType type = n.getType();
 
-            if ((type == MealType.BREAKFAST || type == MealType.BRUNCH)) {
-              breakfastList.put(m.getNickName(), n);
-            }
+      // Get MealModel for the day and split into three hashmaps
+      List<MealModel> meals = m.getWeeklyMenu()
+          .get(ZonedDateTime.now().getDayOfWeek().plus(dateOffset));
+      for (MealModel n : meals) {
+        if (n.getMenu().getNumberOfCategories() > 0) {
+          MealType type = n.getType();
 
-            if (type == MealType.LUNCH
-                || type == MealType.BRUNCH
-                || type == MealType.LITE_LUNCH) {
-              lunchList.put(m.getNickName(), n);
-            }
-            if (type == MealType.DINNER) {
-              dinnerList.put(m.getNickName(), n);
-            }
+          if ((type == MealType.BREAKFAST || type == MealType.BRUNCH)) {
+            breakfastList.put(m.getNickName(), n);
+          }
+
+          if (type == MealType.LUNCH
+              || type == MealType.BRUNCH
+              || type == MealType.LITE_LUNCH) {
+            lunchList.put(m.getNickName(), n);
+          }
+          if (type == MealType.DINNER) {
+            dinnerList.put(m.getNickName(), n);
           }
         }
       }

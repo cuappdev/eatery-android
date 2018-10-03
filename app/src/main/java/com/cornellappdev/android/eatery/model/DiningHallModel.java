@@ -4,10 +4,13 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.TimeUtil;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
@@ -17,18 +20,28 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 public class DiningHallModel extends EateryModel {
 
-  private List<List<MealModel>> mWeeklyMenu;
+  private Map<Integer, List<MealModel>> mWeeklyMenu;
 
   public DiningHallModel() {
-    this.mWeeklyMenu = new ArrayList<>();
+    this.mWeeklyMenu = new HashMap<>();
   }
 
-  public List<List<MealModel>> getWeeklyMenu() {
-    return mWeeklyMenu;
+  public List<MealModel> getMenuForDay(DayOfWeek day) {
+    return mWeeklyMenu.get(day.getValue());
   }
 
-  private void setWeeklyMenu(List<List<MealModel>> mWeeklyMenu) {
-    this.mWeeklyMenu = mWeeklyMenu;
+  public Map<DayOfWeek, List<MealModel>> getWeeklyMenu() {
+    Map<DayOfWeek, List<MealModel>> mapping = new HashMap<>();
+
+    for (Map.Entry<Integer, List<MealModel>> entry : mWeeklyMenu.entrySet()) {
+      mapping.put(DayOfWeek.of(entry.getKey()), entry.getValue());
+    }
+
+    return mapping;
+  }
+
+  private void setMenuForDay(DayOfWeek day, List<MealModel> mWeeklyMenu) {
+    this.mWeeklyMenu.put(day.getValue(), mWeeklyMenu);
   }
 
   public List<String> getMealItems() {
@@ -38,8 +51,8 @@ public class DiningHallModel extends EateryModel {
     if (status.isOpen()) {
       LocalDateTime now = LocalDateTime.now();
 
-      for (List<MealModel> day : getWeeklyMenu()) {
-        for (MealModel meal : day) {
+      for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
+        for (MealModel meal : day.getValue()) {
           LocalDateTime startTime = meal.getStart(), endTime = meal.getEnd();
 
           if (now.isAfter(startTime) && now.isBefore(endTime)) {
@@ -53,33 +66,16 @@ public class DiningHallModel extends EateryModel {
     return items;
   }
 
-  public int indexOfCurrentDay() {
-    LocalDate now = LocalDate.now();
-
-    for (int i = 0; i < getWeeklyMenu().size(); i++) {
-      List<MealModel> day = getWeeklyMenu().get(i);
-      if (day.size() > 0) {
-        MealModel firstMeal = day.get(0);
-
-        if (firstMeal.getStart().toLocalDate().isEqual(now)) {
-          return i;
-        }
-      }
-    }
-
-    return 0;
-  }
-
   @Override
   public ZonedDateTime getNextOpening() {
     ZonedDateTime time = ZonedDateTime.now();
 
-    for (List<MealModel> day : getWeeklyMenu()) {
-      for (MealModel meal : day) {
+    for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
+      for (MealModel meal : day.getValue()) {
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
 
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
-       
+
         if (startTime.isAfter(time)) {
           return startTime;
         }
@@ -94,11 +90,10 @@ public class DiningHallModel extends EateryModel {
     String payMethodsString = "Pay Methods: " + mPayMethods.toString();
     StringBuilder menuString = new StringBuilder();
 
-    for (List<MealModel> meal : getWeeklyMenu()) {
-      for (MealModel mealIndiv : meal) {
-        menuString.append(mealIndiv.stringTo());
+    for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
+      for (MealModel meal : day.getValue()) {
+        menuString.append(meal.stringTo());
       }
-
     }
 
     return info + "\n" + locationString + "\n" + payMethodsString + "\n" + "Menu" + "\n"
@@ -109,7 +104,7 @@ public class DiningHallModel extends EateryModel {
   public Status getCurrentStatus() {
     ZonedDateTime now = ZonedDateTime.now();
 
-    List<MealModel> mealModels = getWeeklyMenu().get(now.getDayOfWeek().getValue());
+    List<MealModel> mealModels = getMenuForDay(now.getDayOfWeek());
     for (MealModel meal : mealModels) {
       ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
 
@@ -126,10 +121,9 @@ public class DiningHallModel extends EateryModel {
     }
 
     if (isOpenPastMidnight()) {
-      mealModels = getWeeklyMenu().get(now
+      mealModels = getMenuForDay(now
           .minusDays(1)
           .getDayOfWeek()
-          .getValue()
       );
       MealModel openPeriod = mealModels.get(mealModels.size() - 1);
 
@@ -157,7 +151,7 @@ public class DiningHallModel extends EateryModel {
   public ZonedDateTime getCloseTime() {
     ZonedDateTime now = ZonedDateTime.now();
 
-    List<MealModel> mealModels = getWeeklyMenu().get(now.getDayOfWeek().getValue());
+    List<MealModel> mealModels = getMenuForDay(now.getDayOfWeek());
 
     for (MealModel meal : mealModels) {
       ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
@@ -171,10 +165,9 @@ public class DiningHallModel extends EateryModel {
     }
 
     if (isOpenPastMidnight()) {
-      mealModels = getWeeklyMenu().get(now
+      mealModels = getMenuForDay(now
           .minusDays(1)
           .getDayOfWeek()
-          .getValue()
       );
       MealModel openPeriod = mealModels.get(mealModels.size() - 1);
 
@@ -197,7 +190,7 @@ public class DiningHallModel extends EateryModel {
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery) throws
       JSONException {
     super.parseJSONObject(context, hardcoded, eatery);
-    List<List<MealModel>> weeklyMenu = new ArrayList<>();
+    Map<DayOfWeek, List<MealModel>> weeklyMenu = new HashMap<>();
     JSONArray operatingHours = eatery.getJSONArray("operatingHours");
 
     DateTimeFormatter timeFormatter = DateTimeFormatter
@@ -272,10 +265,8 @@ public class DiningHallModel extends EateryModel {
       }
 
       Collections.sort(mealModelArray);
-      weeklyMenu.add(mealModelArray);
+      setMenuForDay(localDate.getDayOfWeek(), mealModelArray);
     }
-
-    setWeeklyMenu(weeklyMenu);
   }
 
   public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)

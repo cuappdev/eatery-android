@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
+import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
@@ -103,9 +105,10 @@ public class MenuActivity extends AppCompatActivity {
     if (mEatery instanceof DiningHallModel &&
         (mEatery.getNickName().equals("North Star")
             || mEatery.getNickName().equals("Becker House Dining"))) {
-      List<List<MealModel>> menu = ((DiningHallModel) mEatery).getWeeklyMenu();
-      if (menu.get(mEatery.indexOfCurrentDay()).size() > 2) {
-        menu.get(mEatery.indexOfCurrentDay()).remove(2);
+      List<MealModel> menu = ((DiningHallModel) mEatery)
+          .getMenuForDay(ZonedDateTime.now().getDayOfWeek());
+      if (menu.size() > 2) {
+        menu.remove(2);
       }
     }
 
@@ -264,7 +267,7 @@ public class MenuActivity extends AppCompatActivity {
 
       if (mEatery instanceof DiningHallModel) {
         b.putSerializable("mEatery", new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
-            .get(mEatery.indexOfCurrentDay())));
+            .get(ZonedDateTime.now().getDayOfWeek())));
       }
 
       MenuFragment f = new MenuFragment();
@@ -279,7 +282,9 @@ public class MenuActivity extends AppCompatActivity {
 
       try {
         if (mEatery instanceof DiningHallModel) {
-          n = ((DiningHallModel) mEatery).getWeeklyMenu().get(mEatery.indexOfCurrentDay()).size();
+          n = ((DiningHallModel) mEatery).getWeeklyMenu()
+              .get(ZonedDateTime.now().getDayOfWeek())
+              .size();
         } else {
           n = 0;
         }
@@ -293,7 +298,7 @@ public class MenuActivity extends AppCompatActivity {
     public CharSequence getPageTitle(int position) {
       if (mEatery instanceof DiningHallModel) {
         MealType type = ((DiningHallModel) mEatery).getWeeklyMenu()
-            .get(mEatery.indexOfCurrentDay())
+            .get(ZonedDateTime.now().getDayOfWeek())
             .get(position).getType();
 
         switch (type) {
