@@ -7,6 +7,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/
 
 # Generated files
 .idea/**/contentModel.xml
@@ -58,3 +59,5 @@ build/
 
 # Custom
 app/src/main/res/values/google_maps_api.xml
+app/bin/*
+.project

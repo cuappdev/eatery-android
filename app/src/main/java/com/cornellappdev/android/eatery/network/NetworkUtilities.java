@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.NetworkUtils;
+package com.cornellappdev.android.eatery.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;

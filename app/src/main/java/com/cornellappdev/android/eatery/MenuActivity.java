@@ -17,17 +17,29 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.Model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.CafeModel;
+import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.EateryModel;
+import com.cornellappdev.android.eatery.model.MealModel;
+import com.cornellappdev.android.eatery.model.MealType;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+import org.threeten.bp.DayOfWeek;
+import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
+
   TextView cafeText;
   SimpleDraweeView cafeImage;
   TextView cafeLoc;
@@ -38,8 +50,8 @@ public class MenuActivity extends AppCompatActivity {
   LinearLayout linLayout;
   private TabLayout tabLayout;
   private CustomPager customPager;
-  ArrayList<CafeteriaModel> cafeList;
-  CafeteriaModel cafeData;
+  ArrayList<EateryModel> cafeList;
+  EateryModel mEatery;
   Toolbar toolbar;
   AppBarLayout appbar;
   CollapsingToolbarLayout collapsingToolbar;
@@ -84,38 +96,49 @@ public class MenuActivity extends AppCompatActivity {
           }
         });
 
-    cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
-    cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
+    cafeList = (ArrayList<EateryModel>) intent.getSerializableExtra("testData");
+    mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
 
     // TODO(lesley): do this removal on the JSON side, also I'm certain that the logic to remove
     // Becker is broken
     // Remove Lite Lunch for North Star and Becker
-    if (cafeData.getNickName().equals("North Star")
-        || cafeData.getNickName().equals("Becker House Dining")) {
-      if (cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size() > 2) {
-        cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
+    if (mEatery instanceof DiningHallModel &&
+        (mEatery.getNickName().equals("North Star")
+            || mEatery.getNickName().equals("Becker House Dining"))) {
+      List<MealModel> menu = ((DiningHallModel) mEatery)
+          .getMenuForDay(ZonedDateTime.now().getDayOfWeek());
+      if (menu.size() > 2) {
+        menu.remove(2);
       }
     }
 
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
 
-    if (cafeData.getCurrentStatus() == CafeteriaModel.Status.OPEN) {
-      cafeIsOpen.setText("Open");
+    if (mEatery.getCurrentStatus() == EateryModel.Status.OPEN) {
+      cafeIsOpen.setText(getString(R.string.open));
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-    } else if (cafeData.getCurrentStatus() == CafeteriaModel.Status.CLOSINGSOON) {
-      cafeIsOpen.setText("Closing Soon");
+    } else if (mEatery.getCurrentStatus() == EateryModel.Status.CLOSING_SOON) {
+      cafeIsOpen.setText(getString(R.string.closing_soon));
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
     } else {
-      cafeIsOpen.setText("Closed");
+      cafeIsOpen.setText(getString(R.string.closed));
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
     }
 
     cafeText = findViewById(R.id.ind_time);
-    cafeText.setText(cafeData.getCloseTime());
+
+    String openingClosingDescription = EateryStringsUtil
+        .getOpeningClosingDescription(this, mEatery);
+
+    if (openingClosingDescription != null) {
+      cafeText.setText(openingClosingDescription);
+    } else {
+      cafeText.setVisibility(View.INVISIBLE);
+    }
 
     cafeLoc = findViewById(R.id.ind_loc);
-    cafeLoc.setText(cafeData.getBuildingLocation());
+    cafeLoc.setText(mEatery.getBuildingLocation());
 
     cafeImage = findViewById(R.id.ind_image);
     cafeImage.setBackgroundColor(0xFFff0000);
@@ -131,20 +154,20 @@ public class MenuActivity extends AppCompatActivity {
     //            @Override
     //            public void onClick(View view) {
     //                Intent intent = new Intent(view.getContext(), MapsActivity.class);
-    //                intent.putExtra("cafeData", cafeList);
+    //                intent.putExtra("mEatery", cafeList);
     //                startActivity(intent);
     //            }
     //        });
 
     brb_icon = findViewById(R.id.brb_icon);
-    for (String pay : cafeData.getPayMethods()) {
+    for (String pay : mEatery.getPayMethods()) {
       if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
         brb_icon.setVisibility(View.VISIBLE);
       }
     }
 
     swipe_icon = findViewById(R.id.swipe_icon);
-    if (cafeData.getIsDiningHall()) {
+    if (mEatery instanceof DiningHallModel) {
       swipe_icon.setVisibility(View.VISIBLE);
     }
 
@@ -153,7 +176,8 @@ public class MenuActivity extends AppCompatActivity {
     linLayout = findViewById(R.id.linear);
 
     // Formatting for when eatery is a cafe
-    if (!cafeData.getIsDiningHall()) {
+    if (mEatery instanceof CafeModel) {
+      CafeModel cafe = (CafeModel) mEatery;
       customPager.setVisibility(View.GONE);
       tabLayout.setVisibility(View.GONE);
       linLayout.setVisibility(View.VISIBLE);
@@ -166,9 +190,9 @@ public class MenuActivity extends AppCompatActivity {
       linLayout.addView(blank);
 
       float scale = getResources().getDisplayMetrics().density;
-      for (int i = 0; i < cafeData.getCafeInfo().getCafeMenu().size(); i++) {
+      for (int i = 0; i < cafe.getCafeMenu().size(); i++) {
         TextView mealItemText = new TextView(this);
-        mealItemText.setText(cafeData.getCafeInfo().getCafeMenu().get(i));
+        mealItemText.setText(cafe.getCafeMenu().get(i));
         mealItemText.setTextSize(14);
         mealItemText.setTextColor(Color.parseColor("#de000000"));
         mealItemText.setPadding(
@@ -176,7 +200,7 @@ public class MenuActivity extends AppCompatActivity {
         linLayout.addView(mealItemText);
 
         // Add divider if text is not the last item in list
-        if (i != cafeData.getCafeInfo().getCafeMenu().size() - 1) {
+        if (i != cafe.getCafeMenu().size() - 1) {
           View divider = new View(this);
           divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
           LinearLayout.LayoutParams dividerParams =
@@ -190,8 +214,9 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     // Formatting for when eatery is a dining hall and has a menu
-    else if (cafeData.getIsDiningHall()
-        && !cafeData.getWeeklyMenu().get(0).toString().equals("[]")) {
+    else if (mEatery instanceof DiningHallModel
+        && !((DiningHallModel) mEatery).getMenuForDay(DayOfWeek.of(0)).toString()
+        .equals("[]")) {
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
       customPager.setVisibility(View.VISIBLE);
@@ -210,6 +235,7 @@ public class MenuActivity extends AppCompatActivity {
   }
 
   class ViewPagerAdapter extends FragmentPagerAdapter {
+
     private Context mContext;
     private int mCurrentPosition = -1;
 
@@ -223,7 +249,9 @@ public class MenuActivity extends AppCompatActivity {
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
       super.setPrimaryItem(container, position, object);
       if (position != mCurrentPosition) {
-        if (mCurrentPosition == -1) position = 0;
+        if (mCurrentPosition == -1) {
+          position = 0;
+        }
         Fragment fragment = (Fragment) object;
         CustomPager pager = (CustomPager) container;
         if (fragment != null && fragment.getView() != null) {
@@ -237,7 +265,12 @@ public class MenuActivity extends AppCompatActivity {
     public Fragment getItem(int position) {
       Bundle b = new Bundle();
       b.putInt("position", position);
-      b.putSerializable("cafeData", cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()));
+
+      if (mEatery instanceof DiningHallModel) {
+        b.putSerializable("mEatery", new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
+            .get(ZonedDateTime.now().getDayOfWeek())));
+      }
+
       MenuFragment f = new MenuFragment();
       f.setArguments(b);
       return f;
@@ -245,9 +278,17 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public int getCount() {
+
       int n;
+
       try {
-        n = cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size();
+        if (mEatery instanceof DiningHallModel) {
+          n = ((DiningHallModel) mEatery).getWeeklyMenu()
+              .get(ZonedDateTime.now().getDayOfWeek())
+              .size();
+        } else {
+          n = 0;
+        }
       } catch (Exception e) {
         n = 0;
       }
@@ -256,11 +297,32 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public CharSequence getPageTitle(int position) {
-      return cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).get(position).getType();
+      if (mEatery instanceof DiningHallModel) {
+        MealType type = ((DiningHallModel) mEatery).getWeeklyMenu()
+            .get(ZonedDateTime.now().getDayOfWeek())
+            .get(position).getType();
+
+        switch (type) {
+          case BREAKFAST:
+            return getString(R.string.breakfast);
+          case LITE_LUNCH:
+            getString(R.string.lite_lunch);
+          case LUNCH:
+            getString(R.string.lunch);
+          case DINNER:
+            getString(R.string.dinner);
+          case BRUNCH:
+            getString(R.string.brunch);
+        }
+      }
+
+      return "";
     }
   }
 
-  /** Returns scaled size for images NOTE: borrowed from Android Studio reference* */
+  /**
+   * Returns scaled size for images NOTE: borrowed from Android Studio reference*
+   */
   public static int calculateInSampleSize(
       BitmapFactory.Options options, int reqWidth, int reqHeight) {
     // Raw height and width of image
@@ -298,15 +360,31 @@ public class MenuActivity extends AppCompatActivity {
     return BitmapFactory.decodeResource(res, resId, options);
   }
 
-  /** Gets name of corresponding picture to cafe* */
+  /**
+   * Gets name of corresponding picture to cafe*
+   */
   public static String convertName(String str) {
-    if (str.equals("104West!.jpg")) return "104-West.jpg";
-    if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
-    if (str.equals("Franny's.jpg")) return "frannys.jpg";
-    if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
-    if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
-    if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
-    if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
+    if (str.equals("104West!.jpg")) {
+      return "104-West.jpg";
+    }
+    if (str.equals("McCormick's.jpg")) {
+      return "mccormicks.jpg";
+    }
+    if (str.equals("Franny's.jpg")) {
+      return "frannys.jpg";
+    }
+    if (str.equals("Ice Cream Cart.jpg")) {
+      return "icecreamcart.jpg";
+    }
+    if (str.equals("Risley Dining Room.jpg")) {
+      return "Risley-Dining.jpg";
+    }
+    if (str.equals("Martha's Express.jpg")) {
+      return "Marthas-Cafe.jpg";
+    }
+    if (str.equals("Bus Stop Bagels.jpg")) {
+      return "Bug-Stop-Bagels.jpg";
+    }
 
     str = str.replaceAll("!", "");
     str = str.replaceAll("[&\']", "");
