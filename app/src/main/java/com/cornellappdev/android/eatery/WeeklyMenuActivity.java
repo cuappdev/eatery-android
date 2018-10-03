@@ -343,7 +343,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       );
       expListViewWest.setAdapter(listAdapterWest);
     }
-    if (finalList.north.size() == 0) {
+
+    if (finalList.north.isEmpty()) {
       northText.setVisibility(View.GONE);
       expListViewNorth.setVisibility(View.GONE);
     } else {
@@ -358,7 +359,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       );
       expListViewNorth.setAdapter(listAdapterNorth);
     }
-    if (finalList.central.size() == 0) {
+
+    if (finalList.central.isEmpty()) {
       centralText.setVisibility(View.GONE);
       expListViewCentral.setVisibility(View.GONE);
     } else {
@@ -456,8 +458,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
    * Converts the MealModel object of the map into an Arraylist
    */
   private MenusByCampusArea generateFinalList(Map<String, MealModel> listToParse) {
-    Map<CampusArea, Map<String, List<String>>> mapping = new HashMap<>();
-
     Map<String, List<MenuListItem>> finalWest = new TreeMap<>();
     Map<String, List<MenuListItem>> finalNorth = new TreeMap<>();
     Map<String, List<MenuListItem>> finalCentral = new TreeMap<>();
@@ -485,9 +485,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       EateryModel myCafe = null;
       int count = 0;
 
-      while (count < mCafes.size()) {
-        if (mCafes.get(count).getNickName().equals(cafe.getKey())) {
-          myCafe = mCafes.get(count);
+      while (count < mEateries.size()) {
+        if (mEateries.get(count).getNickName().equals(cafe.getKey())) {
+          myCafe = mEateries.get(count);
         }
         count++;
       }

@@ -109,10 +109,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 + convertName(eateryModel.getNickName() + ".jpg");
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
-        SpannableString openString = new SpannableString(eateryModel.isOpen() ? "Open" : "Closed");
-        openString.setSpan(new StyleSpan(Typeface.BOLD), 0,
-            (eateryModel.isOpen() ? "Open" : "Closed").length(),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         Collections.sort(cafeListFiltered);
 

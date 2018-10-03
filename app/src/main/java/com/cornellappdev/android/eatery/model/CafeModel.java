@@ -7,6 +7,7 @@ import com.cornellappdev.android.eatery.TimeUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,15 +71,10 @@ public class CafeModel extends EateryModel implements Serializable {
 
   // Note(lesley): This method assumes that a cafe has only one opening and closing time window per day
   public void setHours(LocalDate date, List<Interval> hours) {
+    List<Interval> sortedHours = new ArrayList<>(hours);
+    Collections.sort(sortedHours);
+
     this.mHours.put(date, hours);
-  }
-
-  public List<Interval> getHardcodedHours(LocalDate date) {
-    return mHoursHardcoded.get(date);
-  }
-
-  public void setHoursHardcoded(LocalDate date, List<Interval> hoursH) {
-    this.mHoursHardcoded.put(date, hoursH);
   }
 
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject cafe)
@@ -156,7 +152,8 @@ public class CafeModel extends EateryModel implements Serializable {
         LocalDateTime midnightTomorrow = localDate
             .atTime(LocalTime.MIDNIGHT);
 
-        if (end != null && end.isBefore(start) && (end.isEqual(midnightTomorrow) || end.isAfter(midnightTomorrow))) {
+        if (end != null && end.isBefore(start) && (end.isEqual(midnightTomorrow) || end
+            .isAfter(midnightTomorrow))) {
           setOpenPastMidnight(true);
 
           end = end.plusDays(1);
@@ -202,6 +199,28 @@ public class CafeModel extends EateryModel implements Serializable {
         }
       }
     }
+
+    if (isOpenPastMidnight()) {
+      hours = getHours(now.toLocalDate().minusDays(1));
+
+      Interval openPeriod = hours.get(hours.size() - 1);
+
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+      if (endTime.toLocalDate().isEqual(now.toLocalDate())
+          && now.isAfter(startTime) && now.isBefore(endTime)) {
+        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+          // 60 seconds in 1 minute, 30 minutes = half-hour,
+          return Status.CLOSING_SOON;
+        }
+
+        return Status.OPEN;
+      }
+    }
+
     return Status.CLOSED;
   }
 

@@ -23,16 +23,8 @@ public class DiningHallModel extends EateryModel {
 
   private List<List<MealModel>> mWeeklyMenu;
 
-
   public DiningHallModel() {
     this.mWeeklyMenu = new ArrayList<>();
-  }
-
-  public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)
-      throws JSONException {
-    DiningHallModel model = new DiningHallModel();
-    model.parseJSONObject(context, hardcoded, eatery);
-    return model;
   }
 
   public List<List<MealModel>> getWeeklyMenu() {
@@ -117,21 +109,43 @@ public class DiningHallModel extends EateryModel {
   public Status getCurrentStatus() {
     ZonedDateTime now = ZonedDateTime.now();
 
-    for (List<MealModel> day : getWeeklyMenu()) {
-      for (MealModel meal : day) {
-        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+    List<MealModel> mealModels = getWeeklyMenu().get(now.getDayOfWeek().getValue());
+    for (MealModel meal : mealModels) {
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
 
-        ZonedDateTime startTime = meal.getStart().atZone(cornell);
-        ZonedDateTime endTime = meal.getEnd().atZone(cornell);
+      ZonedDateTime startTime = meal.getStart().atZone(cornell);
+      ZonedDateTime endTime = meal.getEnd().atZone(cornell);
 
-        if (now.isAfter(startTime) && now.isBefore(endTime)) {
-          if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
-            // 60 seconds in 1 minute, 30 minutes = half-hour,
-            return Status.CLOSING_SOON;
-          }
-
-          return Status.OPEN;
+      if (now.isAfter(startTime) && now.isBefore(endTime)) {
+        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+          // 60 seconds in 1 minute, 30 minutes = half-hour,
+          return Status.CLOSING_SOON;
         }
+        return Status.OPEN;
+      }
+    }
+
+    if (isOpenPastMidnight()) {
+      mealModels = getWeeklyMenu().get(now
+          .minusDays(1)
+          .getDayOfWeek()
+          .getValue()
+      );
+      MealModel openPeriod = mealModels.get(mealModels.size() - 1);
+
+      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+
+      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+
+      if (endTime.toLocalDate().isEqual(now.toLocalDate())
+          && now.isAfter(startTime) && now.isBefore(endTime)) {
+        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+          // 60 seconds in 1 minute, 30 minutes = half-hour,
+          return Status.CLOSING_SOON;
+        }
+
+        return Status.OPEN;
       }
     }
 
@@ -171,9 +185,9 @@ public class DiningHallModel extends EateryModel {
 
       // Iterates through each meal in one dining hall
       for (int l = 0; l < events.length(); l++) {
-        MealModel mealModel = new MealModel();
         // Meal object represents a single meal at the eatery (ie. lunch)
         JSONObject meal = events.getJSONObject(l);
+        LocalDateTime start = null, end = null;
 
         /* Start Time */
 
@@ -181,7 +195,7 @@ public class DiningHallModel extends EateryModel {
           String rawStart = meal.getString("start").toUpperCase();
           LocalTime localTime = LocalTime.parse(rawStart, timeFormatter);
 
-          mealModel.setStart(localTime.atDate(localDate));
+          start = localTime.atDate(localDate);
         }
 
         /* End Time */
@@ -190,7 +204,7 @@ public class DiningHallModel extends EateryModel {
           String rawEnd = meal.getString("end").toUpperCase();
           LocalTime localTime = LocalTime.parse(rawEnd, timeFormatter);
 
-          mealModel.setEnd(localTime.atDate(localDate));
+          end = localTime.atDate(localDate);
         }
 
         /* Meal Type */
@@ -201,19 +215,30 @@ public class DiningHallModel extends EateryModel {
           type = MealType.BREAKFAST; // TODO should this be the default?
         }
 
-        mealModel.setType(type);
+        if (start != null && end != null) {
+          MealModel mealModel = new MealModel(start, end);
 
-        /* Meal Menu */
+          mealModel.setType(type);
 
-        JSONArray menu = meal.getJSONArray("menu");
-        MealMenuModel menuModel = MealMenuModel.fromJSONArray(menu);
+          /* Meal Menu */
 
-        mealModel.setMenu(menuModel);
-        mealModelArray.add(mealModel);
+          JSONArray menu = meal.getJSONArray("menu");
+          MealMenuModel menuModel = MealMenuModel.fromJSONArray(menu);
+
+          mealModel.setMenu(menuModel);
+          mealModelArray.add(mealModel);
+        }
       }
 
       weeklyMenu.add(mealModelArray);
     }
     setWeeklyMenu(weeklyMenu);
+  }
+
+  public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)
+      throws JSONException {
+    DiningHallModel model = new DiningHallModel();
+    model.parseJSONObject(context, hardcoded, eatery);
+    return model;
   }
 }
