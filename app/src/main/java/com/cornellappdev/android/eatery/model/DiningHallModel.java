@@ -57,8 +57,7 @@ public class DiningHallModel extends EateryModel {
 
   public List<String> getMealItems() {
     List<String> items = new ArrayList<>();
-    Status status = getCurrentStatus();
-    if (status.isOpen()) {
+    if (isOpen()) {
       LocalDateTime now = LocalDateTime.now();
       for (Map.Entry<DayOfWeek, List<MealModel>> day : getWeeklyMenu().entrySet()) {
         for (MealModel meal : day.getValue()) {

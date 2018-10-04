@@ -45,7 +45,8 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
   }
 
   public boolean isOpen() {
-    return getCurrentStatus() == Status.OPEN;
+    Status status = getCurrentStatus();
+    return status == Status.OPEN || status == Status.CLOSING_SOON;
   }
 
   public String getName() {
@@ -92,10 +93,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     OPEN,
     CLOSING_SOON,
     CLOSED;
-
-    public boolean isOpen() {
-      return this == OPEN || this == CLOSING_SOON;
-    }
   }
 
   /**
