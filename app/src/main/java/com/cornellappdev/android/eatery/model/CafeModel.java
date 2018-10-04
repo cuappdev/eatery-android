@@ -228,8 +228,7 @@ public class CafeModel extends EateryModel implements Serializable {
                 .ofPattern("h:mma", context.getResources().getConfiguration().locale));
             end = localTime.atDate(localDate);
           }
-          LocalDateTime midnightTomorrow = localDate
-              .atTime(LocalTime.MIDNIGHT);
+          LocalDateTime midnightTomorrow = localDate.atTime(LocalTime.MIDNIGHT);
           if (start != null && end != null) {
             if (end.isBefore(start) && (end.isEqual(midnightTomorrow) || end
                 .isAfter(midnightTomorrow))) {

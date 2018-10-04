@@ -136,8 +136,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
         ZonedDateTime endTime = meal.getStart().atZone(cornell);
-        if ((now.isAfter(startTime) && now.isBefore(endTime)) || now.isBefore(startTime) || now
-            .isAfter(startTime)) {
+        if ((now.isAfter(startTime) && now.isBefore(endTime)) ||
+            now.isBefore(startTime) || now.isAfter(startTime)) {
           timetext1.setText(
               res.getString(R.string.open_from_a_to_b, formattedStartTime, formattedEndTime));
           timetext1.setTextColor(ContextCompat.getColor(context, R.color.eateryOpenColor));
