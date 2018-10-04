@@ -43,7 +43,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final int IMAGE = 0;
 
   public interface ListAdapterOnClickHandler {
-
     void onClick(int position, List<EateryModel> list);
   }
 
