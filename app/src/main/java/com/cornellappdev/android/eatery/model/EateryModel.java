@@ -111,7 +111,7 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     }
   }
 
-  /*Comparator for sorting the list by EateryModel's nickname*/
+  /* Comparator for sorting the list by EateryModel's nickname */
   public static Comparator<EateryModel> cafeNameComparator = (s1, s2) -> {
     String str1 = s1.getNickName();
     String str2 = s2.getNickName();
