@@ -6,11 +6,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 /**
- * from https://stackoverflow.com/questions/37605545/
- * android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when*
+ * from https://stackoverflow.com/questions/37605545/ android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when*
  */
 public class NonScrollExpandableListView extends ExpandableListView {
-
   public NonScrollExpandableListView(Context context) {
     super(context);
   }

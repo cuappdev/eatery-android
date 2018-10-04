@@ -36,7 +36,6 @@ import java.util.List;
 import org.threeten.bp.ZonedDateTime;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-
   private GoogleMap mMap;
   private List<EateryModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -115,7 +114,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Snackbar.LENGTH_LONG);
                 snackbar.setAction("Apply", new SnackBarListener());
                 snackbar.show();
-
                 break;
             }
             return true;
@@ -132,16 +130,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       EateryModel cafe = cafeData.get(i);
       LatLng latLng = cafe.getLatLng();
       String name = cafe.getNickName();
-
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-
       String openingClosingDescription = EateryStringsUtil
           .getOpeningClosingDescription(this, cafe);
-
       if (openingClosingDescription != null) {
         cafeMarker.setSnippet(openingClosingDescription);
       }
-
       if (cafe.getCurrentStatus() == EateryModel.Status.CLOSED) {
         cafeMarker.setIcon(
             BitmapDescriptorFactory.fromBitmap(
@@ -159,7 +153,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     bitmapDescriptorFromVector(this, R.drawable.blue_pin), 72, 96, false)));
       }
     }
-
     // Clicking on an eatery icon on the map will take the user to the MenuActivity of that eatery
     mMap.setOnInfoWindowClickListener(
         new GoogleMap.OnInfoWindowClickListener() {
@@ -177,11 +170,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             intent.putExtra("testData", new ArrayList<>(cafeData));
             intent.putExtra("cafeInfo", cafeData.get(position));
             intent.putExtra("locName", cafeData.get(position).getNickName());
-
             startActivity(intent);
           }
         });
-
     mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
     mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
     enableMyLocationIfPermitted();

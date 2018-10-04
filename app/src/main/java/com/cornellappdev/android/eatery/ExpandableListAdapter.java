@@ -28,9 +28,7 @@ import org.threeten.bp.format.DateTimeFormatter;
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
  */
-
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-
   private Context context;
   private List<EateryModel> cafeData;
   private List<String> cafeKeys = new ArrayList<>();
@@ -46,7 +44,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     this.mealIndex = mealIndex;
     this.dayOfWeek = dateOffset;
     this.cafeData = cafeData;
-
     if (mealMap != null) {
       cafeKeys.addAll(mealMap.keySet());
     }
@@ -103,14 +100,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       view = infalInflater.inflate(R.layout.list_view_header, viewGroup, false);
     }
-
     String m = (String) getGroup(i);
     TextView headerText = view.findViewById(R.id.header);
     headerText.setText(m);
     headerText.setTypeface(null, Typeface.NORMAL);
-
     TextView timetext1 = view.findViewById(R.id.time1);
-
     try {
       EateryModel eatery = null;
       int count = 0;
@@ -123,7 +117,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       if (eatery instanceof DiningHallModel) {
         List<MealModel> day = ((DiningHallModel) eatery).getWeeklyMenu().get(dayOfWeek);
         int length = day.size() - 1;
-
         // finding correct idx to get desired meal model from day array
         MealModel meal;
         if (length == 1) {
@@ -135,18 +128,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else {
           meal = day.get(0);
         }
-
         DateTimeFormatter localDateFormat = DateTimeFormatter.ofPattern("h:mma");
         ZonedDateTime now = ZonedDateTime.now();
         Resources res = context.getResources();
-
         String formattedEndTime = localDateFormat.format(meal.getEnd());
         String formattedStartTime = localDateFormat.format(meal.getStart());
-
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
         ZonedDateTime endTime = meal.getStart().atZone(cornell);
-
         if ((now.isAfter(startTime) && now.isBefore(endTime)) || now.isBefore(startTime) || now
             .isAfter(startTime)) {
           timetext1.setText(
@@ -163,7 +152,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           } else {
             mealString = "Dinner";
           }
-
           timetext1.setText(res.getString(R.string.closed_for_a, mealString));
           timetext1.setTextColor(Color.parseColor("#989898"));
         }
@@ -182,14 +170,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       view = infalInflater.inflate(R.layout.list_view_body, viewGroup, false);
     }
-
     // Horizontal line that separates each eatery entry
     View line = view.findViewById(R.id.horiline);
     line.setVisibility(View.GONE);
     String str = (String) getChild(i, i1);
-
     TextView tv = view.findViewById(R.id.menu_title);
-
     if (str == null) {
       System.out.println("dingdongditch");
       tv.setText(R.string.no_menu_available);
@@ -212,7 +197,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       tv.setTextSize(14);
       tv.setPadding(0, 0, 0, 0);
     }
-
     return view;
   }
 

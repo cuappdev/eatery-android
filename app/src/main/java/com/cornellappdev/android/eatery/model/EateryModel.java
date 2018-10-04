@@ -115,22 +115,16 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
   public static Comparator<EateryModel> cafeNameComparator = (s1, s2) -> {
     String str1 = s1.getNickName();
     String str2 = s2.getNickName();
-
     // TODO Why?
-
     if (str1.startsWith("1")) {
       return -1;
     }
-
     if (str2.startsWith("1")) {
       return 1;
     }
-
     // ascending order
-
     return str1.compareToIgnoreCase(str2);
   };
-
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
@@ -138,24 +132,18 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     mName = eatery.getString("name");
     mBuildingLocation = eatery.getString("location");
     mNickName = eatery.getString("nameshort");
-
     mLatitude = eatery.getDouble("latitude");
     mLongitude = eatery.getDouble("longitude");
-
     // Parse payment methods available at eatery
     JSONArray methods = eatery.getJSONArray("payMethods");
     List<String> payMethods = new ArrayList<>();
-
     for (int j = 0; j < methods.length(); j++) {
       JSONObject method = methods.getJSONObject(j);
       payMethods.add(method.getString("descrshort"));
     }
-
     mPayMethods = payMethods;
-
     // Find geographical area for eatery
     String area = eatery.getJSONObject("campusArea").getString("descrshort");
-
     mArea = CampusArea.fromShortDescription(area);
   }
 }

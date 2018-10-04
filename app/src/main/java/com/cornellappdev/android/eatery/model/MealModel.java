@@ -12,7 +12,6 @@ import java.util.Map;
  */
 
 public class MealModel extends Interval implements Serializable {
-
   private MealMenuModel menu;
   private MealType type;
 

@@ -1,6 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -84,7 +83,6 @@ public class MainActivity extends AppCompatActivity
     if (getSupportActionBar() != null) {
       getSupportActionBar().hide();
     }
-
     ConnectionUtilities con = new ConnectionUtilities(this);
     if (!con.isNetworkAvailable()) {
       cafeList = new ArrayList<>();
@@ -94,12 +92,10 @@ public class MainActivity extends AppCompatActivity
       Collections.sort(cafeList);
       currentList = cafeList;
       searchList = cafeList;
-
       mRecyclerView.setHasFixedSize(true);
       LinearLayoutManager layoutManager =
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
-
       listAdapter =
           new MainListAdapter(
               getApplicationContext(), MainActivity.this, cafeList.size(), cafeList);
@@ -107,7 +103,6 @@ public class MainActivity extends AppCompatActivity
     } else {
       new ProcessJson().execute("");
     }
-
     // Add functionality to bottom nav bar
     bnv.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -134,7 +129,6 @@ public class MainActivity extends AppCompatActivity
                         Snackbar.LENGTH_LONG);
                 snackbar.setAction("Apply", new SnackBarListener());
                 snackbar.show();
-
                 break;
             }
             return true;
@@ -155,18 +149,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void filterCurrentList() {
-    for (EateryModel model : currentList) {
-      final boolean areaFuzzyMatches =
-          getCurrentArea() == null || model.getArea() == getCurrentArea();
-      final boolean paymentFuzzyMatches =
-          getCurrentPaymentType() == null
-              || model.getPayMethods().contains(getCurrentPaymentType());
-      if (areaFuzzyMatches && paymentFuzzyMatches) {
-        // TODO Search Reimplementation Search Reimplementation model.setMatchesFilter(true);
-      } else {
-        // model.setMatchesFilter(false);
-      }
-    }
   }
 
   private CampusArea getCurrentArea() {
@@ -220,36 +202,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   public void filterClick(View view) {
-    switch (view.getId()) {
-      case R.id.northButton:
-        handleAreaButtonPress(northButton, CampusArea.NORTH);
-        break;
-      case R.id.centralButton:
-        handleAreaButtonPress(centralButton, CampusArea.CENTRAL);
-        break;
-      case R.id.westButton:
-        handleAreaButtonPress(westButton, CampusArea.WEST);
-        break;
-      case R.id.swipes:
-        handlePaymentButtonPress(swipesButton, PAYMENT_SWIPE);
-        break;
-      case R.id.brb:
-        handlePaymentButtonPress(brbButton, PAYMENT_CARD);
-        break;
-    }
-    ArrayList<EateryModel> cafesToDisplay = new ArrayList<>();
-    for (EateryModel cm : currentList) {
-      // TODO Search Reimplementation if (cm.matchesFilter()) {
-      cafesToDisplay.add(cm);
-      // }
-    }
-    searchList = cafesToDisplay;
-    if (searchPressed) {
-      queryListener.onQueryTextChange(queryListener.query);
-    } else {
-      Collections.sort(cafesToDisplay);
-      listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
-    }
   }
 
   @Override
@@ -295,7 +247,6 @@ public class MainActivity extends AppCompatActivity
     } catch (Exception e) {
       // Don't do anything
     }
-
     searchView.setOnQueryTextListener(queryListener);
     return super.onCreateOptionsMenu(menu);
   }
@@ -308,58 +259,22 @@ public class MainActivity extends AppCompatActivity
       final String lowercaseQuery = query.toLowerCase();
       for (EateryModel model : searchList) {
         final List<String> mealSet = model.getMealItems();
-
         boolean foundNickName = false;
         if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
           foundNickName = true;
         }
-
         ArrayList<String> matchedItems = new ArrayList<>();
         boolean foundItem = false;
         for (String item : mealSet) {
           if (item.toLowerCase().contains(lowercaseQuery)) {
-            foundItem = true;
             matchedItems.add(item);
           }
         }
-
-        /* TODO Search Reimplementation if (model.matchesFilter() && (foundItem || foundNickName)) {
-          if (foundNickName) {
-            model.setSearchedItems(new ArrayList<>(mealSet));
-          } else {
-            model.setSearchedItems(matchedItems);
-          }
-          model.setMatchesSearch(true);
-        } else {
-          model.setMatchesSearch(false);
-        } */
       }
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-      this.query = query;
-      ArrayList<EateryModel> cafesToDisplay = new ArrayList<>();
-      if (query.length() == 0) {
-        searchList = currentList;
-        searchPressed = false;
-        for (EateryModel cm : searchList) {
-          // TODO Search Reimplementation if (cm.matchesFilter()) {
-            cafesToDisplay.add(cm);
-          // }
-        }
-      } else {
-        searchPressed = true;
-        searchList(query);
-        for (EateryModel cm : searchList) {
-          // TODO Search Reimplementation if (cm.matchesFilter() && cm.matchesSearch()) {
-          cafesToDisplay.add(cm);
-          // }
-        }
-      }
-      Collections.sort(cafesToDisplay);
-      listAdapter.setList(
-          cafesToDisplay, cafesToDisplay.size(), query.length() == 0 ? null : query);
       return false;
     }
 
@@ -385,28 +300,23 @@ public class MainActivity extends AppCompatActivity
     protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
       dbHelper.addData(json);
-
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());
       Collections.sort(cafeList);
       currentList = cafeList;
       searchList = cafeList;
-
       return cafeList;
     }
 
     @Override
     protected void onPostExecute(List<EateryModel> result) {
       super.onPostExecute(result);
-
       splash.setVisibility(View.GONE);
       bnv.setVisibility(View.VISIBLE);
       getSupportActionBar().show();
-
       mRecyclerView.setHasFixedSize(true);
       LinearLayoutManager layoutManager =
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
-
       listAdapter =
           new MainListAdapter(getApplicationContext(), MainActivity.this, result.size(),
               new ArrayList<>(cafeList));

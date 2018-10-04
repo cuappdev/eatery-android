@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery;
 import org.threeten.bp.ZoneId;
 
 public class TimeUtil {
-
   private static TimeUtil instance;
 
   public static TimeUtil getInstance() {
@@ -23,11 +22,9 @@ public class TimeUtil {
     if (cornellTimeZone == null) {
       cornellTimeZone = ZoneId.of("America/New_York");
     }
-
     if (cornellTimeZone == null) {
       cornellTimeZone = ZoneId.of("EDT");
     }
-
     return cornellTimeZone;
   }
 }

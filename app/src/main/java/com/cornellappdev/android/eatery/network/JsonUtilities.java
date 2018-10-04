@@ -27,7 +27,6 @@ public final class JsonUtilities {
    */
   private static String loadJSONFromAsset(Context context, String fileName) {
     String json = null;
-
     try {
       InputStream is = context.getAssets().open(fileName);
       int size = is.available();
@@ -39,7 +38,6 @@ public final class JsonUtilities {
       ex.printStackTrace();
       return null;
     }
-
     return json;
   }
 
@@ -50,40 +48,31 @@ public final class JsonUtilities {
     DateFormat mealTimeFormat = DateFormat.getDateTimeInstance();
     DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mainContext);
     DateFormat mealHourFormat = android.text.format.DateFormat.getTimeFormat(mainContext);
-
     List<EateryModel> eateryModels = new ArrayList<>();
-
     // Parse external eateries from hardcoded JSON
     JSONObject hardCodedData = null;
     try {
       hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
-
       JSONArray hardCodedEateries = hardCodedData.getJSONArray("eateries");
-
       for (int i = 0; i < hardCodedEateries.length(); i++) {
         JSONObject obj = hardCodedEateries.getJSONObject(i);
         EateryModel model;
-
         if (obj.has("id") && DINING_HALL_IDS.contains(obj.getInt("id"))) {
           model = DiningHallModel.fromJSON(mainContext, true, obj);
         } else {
           model = CafeModel.fromJSONObject(mainContext, true, obj);
         }
-
         if (model != null) {
           eateryModels.add(model);
         }
       }
-
       // Parse eateries from main source
       JSONObject parentObject = new JSONObject(json);
       JSONObject data = parentObject.getJSONObject("data");
       JSONArray eateries = data.getJSONArray("eateries");
-
       for (int i = 0; i < eateries.length(); i++) {
         JSONObject obj = eateries.getJSONObject(i);
         EateryModel model;
-
         if (DINING_HALL_IDS.contains(obj.getInt("id"))) {
           model = DiningHallModel.fromJSON(mainContext, false, obj);
         } else {

@@ -40,7 +40,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
-
   TextView cafeText;
   SimpleDraweeView cafeImage;
   TextView cafeLoc;
@@ -61,12 +60,10 @@ public class MenuActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_menu);
-
     toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setHomeButtonEnabled(true);
-
     Intent intent = getIntent();
     final String cafeName = (String) intent.getSerializableExtra("locName");
     cafeText = findViewById(R.id.ind_cafe_name);
@@ -74,7 +71,6 @@ public class MenuActivity extends AppCompatActivity {
     collapsingToolbar = findViewById(R.id.collapsing_toolbar);
     collapsingToolbar.setTitle(" ");
     collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayout);
-
     // Shows/hides title depending on scroll offset
     appbar = findViewById(R.id.appbar);
     appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -95,10 +91,8 @@ public class MenuActivity extends AppCompatActivity {
         }
       }
     });
-
     cafeList = (ArrayList<EateryModel>) intent.getSerializableExtra("testData");
     mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
-
     // TODO(lesley): do this removal on the JSON side, also I'm certain that the
     // logic to remove
     // Becker is broken
@@ -112,10 +106,8 @@ public class MenuActivity extends AppCompatActivity {
         menu.remove(2);
       }
     }
-
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
-
     if (mEatery.getCurrentStatus() == EateryModel.Status.OPEN) {
       cafeIsOpen.setText(getString(R.string.open));
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
@@ -126,70 +118,48 @@ public class MenuActivity extends AppCompatActivity {
       cafeIsOpen.setText(getString(R.string.closed));
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
     }
-
     cafeText = findViewById(R.id.ind_time);
-
     String openingClosingDescription = EateryStringsUtil
         .getOpeningClosingDescription(this, mEatery);
-
     if (openingClosingDescription != null) {
       cafeText.setText(openingClosingDescription);
     } else {
       cafeText.setVisibility(View.INVISIBLE);
     }
-
     cafeLoc = findViewById(R.id.ind_loc);
     cafeLoc.setText(mEatery.getBuildingLocation());
-
     cafeImage = findViewById(R.id.ind_image);
     cafeImage.setBackgroundColor(0xFFff0000);
-
     String imageLocation =
         "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
             + convertName(cafeName + ".jpg");
     Uri uri = Uri.parse(imageLocation);
     cafeImage.setImageURI(uri);
-
-    // getDirections = findViewById(R.id.ind_direction);
-    // getDirections.setOnClickListener(new View.OnClickListener() {
-    // @Override
-    // public void onClick(View view) {
-    // Intent intent = new Intent(view.getContext(), MapsActivity.class);
-    // intent.putExtra("mEatery", cafeList);
-    // startActivity(intent);
-    // }
-    // });
-
     brb_icon = findViewById(R.id.brb_icon);
     for (String pay : mEatery.getPayMethods()) {
       if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
         brb_icon.setVisibility(View.VISIBLE);
       }
     }
-
     swipe_icon = findViewById(R.id.swipe_icon);
     if (mEatery instanceof DiningHallModel) {
       swipe_icon.setVisibility(View.VISIBLE);
     }
-
     customPager = findViewById(R.id.pager);
     tabLayout = findViewById(R.id.tabs);
     linLayout = findViewById(R.id.linear);
-
     // Formatting for when eatery is a cafe
     if (mEatery instanceof CafeModel) {
       CafeModel cafe = (CafeModel) mEatery;
       customPager.setVisibility(View.GONE);
       tabLayout.setVisibility(View.GONE);
       linLayout.setVisibility(View.VISIBLE);
-
       View blank = new View(this);
       blank.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
       blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
       blank.setElevation(-1);
       linLayout.addView(blank);
-
       float scale = getResources().getDisplayMetrics().density;
       for (int i = 0; i < cafe.getCafeMenu().size(); i++) {
         TextView mealItemText = new TextView(this);
@@ -199,7 +169,6 @@ public class MenuActivity extends AppCompatActivity {
         mealItemText.setPadding((int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
             (int) (8 * scale + 0.5f));
         linLayout.addView(mealItemText);
-
         // Add divider if text is not the last item in list
         if (i != cafe.getCafeMenu().size() - 1) {
           View divider = new View(this);
@@ -215,14 +184,11 @@ public class MenuActivity extends AppCompatActivity {
     } else if (mEatery instanceof DiningHallModel && !((DiningHallModel) mEatery)
         .getMenuForDay(LocalDate.now(TimeUtil.getInstance().getCornellTimeZone()).getDayOfWeek())
         .isEmpty()) {
-
       // Formatting for when eatery is a dining hall and has a menu
-
       // TODO Why does the second half of this condition exist/should it be
       // refactored?
       // TODO I honestly am unsure of what its intent was... I tried to honor it
       // though.
-
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
       customPager.setVisibility(View.VISIBLE);
@@ -271,13 +237,11 @@ public class MenuActivity extends AppCompatActivity {
     public Fragment getItem(int position) {
       Bundle b = new Bundle();
       b.putInt("position", position);
-
       if (mEatery instanceof DiningHallModel) {
         b.putSerializable("mEatery",
             new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
                 .get(ZonedDateTime.now().getDayOfWeek())));
       }
-
       MenuFragment f = new MenuFragment();
       f.setArguments(b);
       return f;
@@ -286,7 +250,6 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public int getCount() {
       int n = 0;
-
       try {
         if (mEatery instanceof DiningHallModel) {
           DayOfWeek current = ZonedDateTime.now().getDayOfWeek();
@@ -295,7 +258,6 @@ public class MenuActivity extends AppCompatActivity {
       } catch (Exception e) {
         n = 0;
       }
-
       return n;
     }
 
@@ -305,7 +267,6 @@ public class MenuActivity extends AppCompatActivity {
         MealType type = ((DiningHallModel) mEatery).getWeeklyMenu()
             .get(ZonedDateTime.now().getDayOfWeek())
             .get(position).getType();
-
         switch (type) {
           case BREAKFAST:
             return getString(R.string.breakfast);
@@ -319,7 +280,6 @@ public class MenuActivity extends AppCompatActivity {
             getString(R.string.brunch);
         }
       }
-
       return "";
     }
   }
@@ -333,11 +293,9 @@ public class MenuActivity extends AppCompatActivity {
     final int height = options.outHeight;
     final int width = options.outWidth;
     int inSampleSize = 1;
-
     if (height > reqHeight || width > reqWidth) {
       final int halfHeight = height / 2;
       final int halfWidth = width / 2;
-
       // Calculate the largest inSampleSize value that is a power of 2 and keeps both
       // height and width larger than the requested height and width.
       while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
@@ -350,15 +308,12 @@ public class MenuActivity extends AppCompatActivity {
   // NOTE: borrowed from Android Studio reference
   public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth,
       int reqHeight) {
-
     // First decode with inJustDecodeBounds=true to check dimensions
     final BitmapFactory.Options options = new BitmapFactory.Options();
     options.inJustDecodeBounds = true;
     BitmapFactory.decodeResource(res, resId, options);
-
     // Calculate inSampleSize
     options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
     // Decode bitmap with inSampleSize set
     options.inJustDecodeBounds = false;
     return BitmapFactory.decodeResource(res, resId, options);
@@ -389,7 +344,6 @@ public class MenuActivity extends AppCompatActivity {
     if (str.equals("Bus Stop Bagels.jpg")) {
       return "Bug-Stop-Bagels.jpg";
     }
-
     str = str.replaceAll("!", "");
     str = str.replaceAll("[&\']", "");
     str = str.replaceAll(" ", "-");

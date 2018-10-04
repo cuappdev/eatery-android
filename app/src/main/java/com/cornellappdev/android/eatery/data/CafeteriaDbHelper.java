@@ -7,7 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/** Created by JC on 3/2/18. */
+/**
+ * Created by JC on 3/2/18.
+ */
 public class CafeteriaDbHelper extends SQLiteOpenHelper {
   public static final String DATABASE_NAME = "cafeteria.db";
   private static final int DATABASE_VERSION = 2;
@@ -84,20 +86,17 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper {
     String dbString = "";
     SQLiteDatabase db = getWritableDatabase();
     String query = "SELECT * FROM " + CafeteriaContract.CafeteriaEntry.TABLE_NAME + " WHERE 1";
-
     // Cursor point to a location in your results
     // rawQuery can do SELECT etc
     // CURSOR points to first in the queried result
     Cursor c = db.rawQuery(query, null);
     c.moveToFirst();
-
     while (c.moveToNext()) {
       if (c.getString(c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA)) != null) {
         dbString +=
             (c.getString(c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA))) + " ";
       }
     }
-
     db.close();
     return dbString;
   }

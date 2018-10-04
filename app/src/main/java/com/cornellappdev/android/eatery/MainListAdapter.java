@@ -34,7 +34,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZonedDateTime;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
   private final Context mContext;
   private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
   private int mCount;
@@ -57,7 +56,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     mListAdapterOnClickHandler = clickHandler;
     mCount = count;
     cafeListFiltered = list;
-
     // Logcat for Fresco
     Set<RequestListener> requestListeners = new HashSet<>();
     requestListeners.add(new RequestLoggingListener());
@@ -104,19 +102,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     switch (inputHolder.getItemViewType()) {
       case IMAGE:
         ListAdapterViewHolder holder = (ListAdapterViewHolder) inputHolder;
-
         holder.cafeName.setText(eateryModel.getNickName());
-
         // TODO Always use the path/uri library when concatenating urls
-
         String imageLocation =
             "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
                 + convertName(eateryModel.getNickName() + ".jpg");
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
-
         Collections.sort(cafeListFiltered);
-
         if (eateryModel.getCurrentStatus() == EateryModel.Status.CLOSED) {
           holder.cafeOpen.setText(mContext.getString(R.string.closed));
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
@@ -130,7 +123,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
           holder.rlayout.setAlpha(1f);
         }
-
         holder.brb_icon.setVisibility(View.GONE);
         holder.swipe_icon.setVisibility(View.GONE);
         for (String pay : eateryModel.getPayMethods()) {
@@ -138,27 +130,22 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.brb_icon.setVisibility(View.VISIBLE);
           }
         }
-
         if (eateryModel instanceof DiningHallModel) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
-
         String openingClosingDescription = EateryStringsUtil
             .getOpeningClosingDescription(mContext, eateryModel);
-
         if (openingClosingDescription != null) {
           holder.cafeTime
               .setText(openingClosingDescription);
         } else {
           holder.cafeTime.setVisibility(View.INVISIBLE);
         }
-
         break;
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) inputHolder;
         holder2.cafe_name.setText(eateryModel.getNickName());
         Status status = eateryModel.getCurrentStatus();
-
         if (status == Status.OPEN) {
           holder2.cafe_time.setText(mContext.getString(R.string.open));
         } else if (status == Status.CLOSING_SOON) {
@@ -166,51 +153,15 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
           holder2.cafe_time.setText(mContext.getString(R.string.closed));
         }
-
         holder2.cafe_time.setText(mContext.getString(R.string.open));
-
         openingClosingDescription = EateryStringsUtil
             .getOpeningClosingDescription(mContext, eateryModel);
-
         if (openingClosingDescription != null) {
           holder2.cafe_time_info.
               setText(openingClosingDescription);
         } else {
           holder2.cafe_time_info.setVisibility(View.INVISIBLE);
         }
-
-        // TODO Search Reimplementation List<String> itemList = eateryModel.getSearchedItems();
-        // eateryModel.setSearchedItems(null);
-        // if (itemList == null)
-
-        //{
-        //holder2.cafe_items.setText("");
-        // break;
-        //}
-        //Collections.sort(itemList);
-        //String items = itemList.toString().substring(1, itemList.toString().length() - 1);
-
-      /*  if (mQuery != null)
-
-        {
-          // Fixes conflict with replacing character 'b' after inserting HTML bold tags
-          if (mQuery.equals("B")) {
-            mQuery = "b";
-          }
-
-          // Find case-matching instances to bold
-          items = items.replaceAll(mQuery, "<b>" + mQuery + "</b>");
-
-          // Find instances that don't match the case of the query and bold them
-          int begIndex = items.replaceAll(mQuery, " ").toLowerCase().indexOf(mQuery.toLowerCase());
-          if (begIndex >= 0) {
-            String queryMatchingItemCase = items.substring(begIndex, begIndex + mQuery.length());
-            items = items.replaceAll(queryMatchingItemCase, "<b>" + queryMatchingItemCase + "</b>");
-          }
-        }
-
-        holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
-    */
         break;
     }
   }
@@ -304,7 +255,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     if (str.equals("Bus Stop Bagels.jpg")) {
       return "Bug-Stop-Bagels.jpg";
     }
-
     str = str.replaceAll("!", "");
     str = str.replaceAll("[&\']", "");
     str = str.replaceAll(" ", "-");

@@ -5,7 +5,9 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-/** Created by Ningning on 3/14/2018. */
+/**
+ * Created by Ningning on 3/14/2018.
+ */
 public class CustomPager extends ViewPager {
   private View mCurrentView;
 
@@ -29,9 +31,10 @@ public class CustomPager extends ViewPager {
     int height = 0;
     mCurrentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
     int h = mCurrentView.getMeasuredHeight();
-    if (h > height) height = h;
+    if (h > height) {
+      height = h;
+    }
     heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 

@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery.model;
 
 public enum MealType {
-
   BREAKFAST,
   LUNCH,
   DINNER,
@@ -21,7 +20,6 @@ public enum MealType {
       case "brunch":
         return BRUNCH;
     }
-
     return null;
   }
 }
