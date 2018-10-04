@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class JsonUtilities {
-
   private static final Set<Integer> DINING_HALL_IDS = new HashSet<>(
       Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30)
   );

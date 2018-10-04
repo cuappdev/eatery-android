@@ -181,7 +181,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
     TextView cafeName;
     TextView cafeTime;
     TextView cafeOpen;
@@ -210,7 +209,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   class TextAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
     TextView cafe_name;
     TextView cafe_time;
     TextView cafe_time_info;

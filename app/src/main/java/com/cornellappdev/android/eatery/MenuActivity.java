@@ -207,7 +207,6 @@ public class MenuActivity extends AppCompatActivity {
   }
 
   class ViewPagerAdapter extends FragmentPagerAdapter {
-
     private Context mContext;
     private int mCurrentPosition = -1;
 

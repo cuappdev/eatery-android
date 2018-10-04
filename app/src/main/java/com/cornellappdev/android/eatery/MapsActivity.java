@@ -42,7 +42,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   private BottomNavigationView bnv;
 
   class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-
     private View myContentsView;
 
     MyInfoWindowAdapter() {
@@ -238,7 +237,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   }
 
   public class SnackBarListener implements View.OnClickListener {
-
     @Override
     public void onClick(View v) {
       Intent browser =

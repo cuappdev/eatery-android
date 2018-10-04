@@ -377,7 +377,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   }
 
   private class MenusByCampusArea {
-
     @NonNull
     final Map<String, List<MenuListItem>> west, north, central;
 
@@ -391,14 +390,12 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   }
 
   private class MenuListCategory extends MenuListItem {
-
     MenuListCategory(String item) {
       super(item);
     }
   }
 
   class MenuListItem {
-
     private final String item;
 
     MenuListItem(String item) {
@@ -474,7 +471,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   }
 
   public class SnackBarListener implements View.OnClickListener {
-
     @Override
     public void onClick(View v) {
       Intent browser =

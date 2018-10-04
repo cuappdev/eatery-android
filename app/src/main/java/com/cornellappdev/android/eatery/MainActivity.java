@@ -252,7 +252,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   public class QueryListener implements SearchView.OnQueryTextListener {
-
     public String query = "";
 
     private void searchList(String query) {
@@ -285,7 +284,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   public class SnackBarListener implements View.OnClickListener {
-
     @Override
     public void onClick(View v) {
       Intent browser =
@@ -295,7 +293,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   public class ProcessJson extends AsyncTask<String, Void, List<EateryModel>> {
-
     @Override
     protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
