@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
@@ -16,12 +11,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.MealType;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,22 +35,22 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
   private BottomNavigationView bnv;
-  private ExpandableListAdapter listAdapterWest, listAdapterNorth, listAdapterCentral;
+  private TextView breakfastText;
+  private List<TextView> dateList = new ArrayList<>();
+  private TextView dinnerText;
   private NonScrollExpandableListView expListViewWest, expListViewNorth, expListViewCentral;
-  private TextView westText, northText, centralText;
+  private NonScrollExpandableListView lastClickedListView;
+  private int lastExpandedPosition;
+  private LinearLayout linDate;
+  private ExpandableListAdapter listAdapterWest, listAdapterNorth, listAdapterCentral;
+  private TextView lunchText;
   private List<CafeModel> mCafes = new ArrayList<>();
   private List<DiningHallModel> mDiningHalls = new ArrayList<>();
   private List<EateryModel> mEateries;
   private MealType mealType;
   private DayOfWeek selectedDayOfWeek;
-  private TextView breakfastText;
-  private TextView lunchText;
-  private TextView dinnerText;
-  private LinearLayout linDate;
-  private List<TextView> dateList = new ArrayList<>();
   private Map<DayOfWeek, List<Map<String, MealModel>>> weeklyMenu;
-  private int lastExpandedPosition;
-  private NonScrollExpandableListView lastClickedListView;
+  private TextView westText, northText, centralText;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -376,37 +376,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     return finalList;
   }
 
-  private class MenusByCampusArea {
-    @NonNull
-    final Map<String, List<MenuListItem>> west, north, central;
-
-    MenusByCampusArea(@NonNull Map<String, List<MenuListItem>> west,
-        @NonNull Map<String, List<MenuListItem>> north,
-        @NonNull Map<String, List<MenuListItem>> central) {
-      this.west = west;
-      this.north = north;
-      this.central = central;
-    }
-  }
-
-  private class MenuListCategory extends MenuListItem {
-    MenuListCategory(String item) {
-      super(item);
-    }
-  }
-
-  class MenuListItem {
-    private final String item;
-
-    MenuListItem(String item) {
-      this.item = item;
-    }
-
-    public String getItem() {
-      return item;
-    }
-  }
-
   /**
    * Converts the MealModel object of the map into an Arraylist
    */
@@ -468,6 +437,37 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       mainList.put(dayOfWeek, dailyList);
     }
     return mainList;
+  }
+
+  private class MenusByCampusArea {
+    @NonNull
+    final Map<String, List<MenuListItem>> west, north, central;
+
+    MenusByCampusArea(@NonNull Map<String, List<MenuListItem>> west,
+        @NonNull Map<String, List<MenuListItem>> north,
+        @NonNull Map<String, List<MenuListItem>> central) {
+      this.west = west;
+      this.north = north;
+      this.central = central;
+    }
+  }
+
+  private class MenuListCategory extends MenuListItem {
+    MenuListCategory(String item) {
+      super(item);
+    }
+  }
+
+  class MenuListItem {
+    private final String item;
+
+    MenuListItem(String item) {
+      this.item = item;
+    }
+
+    public String getItem() {
+      return item;
+    }
   }
 
   public class SnackBarListener implements View.OnClickListener {

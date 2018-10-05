@@ -1,7 +1,7 @@
 package com.cornellappdev.android.eatery;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import androidx.recyclerview.widget.RecyclerView;
 import com.cornellappdev.android.eatery.databinding.CardItemBinding;
 import com.cornellappdev.android.eatery.databinding.CardTextBinding;
 import com.cornellappdev.android.eatery.model.EateryModel;

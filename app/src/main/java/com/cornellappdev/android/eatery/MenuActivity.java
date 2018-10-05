@@ -8,21 +8,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
@@ -30,28 +27,98 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.MealType;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
-  TextView cafeText;
+  AppBarLayout appbar;
+  ImageView brb_icon;
   SimpleDraweeView cafeImage;
-  TextView cafeLoc;
   TextView cafeIsOpen;
+  ArrayList<EateryModel> cafeList;
+  TextView cafeLoc;
+  TextView cafeText;
+  CollapsingToolbarLayout collapsingToolbar;
+  LinearLayout linLayout;
+  EateryModel mEatery;
   TextView menuText;
   ImageView swipe_icon;
-  ImageView brb_icon;
-  LinearLayout linLayout;
-  private TabLayout tabLayout;
-  private CustomPager customPager;
-  ArrayList<EateryModel> cafeList;
-  EateryModel mEatery;
   Toolbar toolbar;
-  AppBarLayout appbar;
-  CollapsingToolbarLayout collapsingToolbar;
+  private CustomPager customPager;
+  private TabLayout tabLayout;
+
+  /**
+   * Returns scaled size for images NOTE: borrowed from Android Studio reference*
+   */
+  public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth,
+      int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+    if (height > reqHeight || width > reqWidth) {
+      final int halfHeight = height / 2;
+      final int halfWidth = width / 2;
+      // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+      // height and width larger than the requested height and width.
+      while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+        inSampleSize *= 2;
+      }
+    }
+    return inSampleSize;
+  }
+
+  // NOTE: borrowed from Android Studio reference
+  public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth,
+      int reqHeight) {
+    // First decode with inJustDecodeBounds=true to check dimensions
+    final BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inJustDecodeBounds = true;
+    BitmapFactory.decodeResource(res, resId, options);
+    // Calculate inSampleSize
+    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+    // Decode bitmap with inSampleSize set
+    options.inJustDecodeBounds = false;
+    return BitmapFactory.decodeResource(res, resId, options);
+  }
+
+  /**
+   * Gets name of corresponding picture to cafe*
+   */
+  public static String convertName(String str) {
+    if (str.equals("104West!.jpg")) {
+      return "104-West.jpg";
+    }
+    if (str.equals("McCormick's.jpg")) {
+      return "mccormicks.jpg";
+    }
+    if (str.equals("Franny's.jpg")) {
+      return "frannys.jpg";
+    }
+    if (str.equals("Ice Cream Cart.jpg")) {
+      return "icecreamcart.jpg";
+    }
+    if (str.equals("Risley Dining Room.jpg")) {
+      return "Risley-Dining.jpg";
+    }
+    if (str.equals("Martha's Express.jpg")) {
+      return "Marthas-Cafe.jpg";
+    }
+    if (str.equals("Bus Stop Bagels.jpg")) {
+      return "Bug-Stop-Bagels.jpg";
+    }
+    str = str.replaceAll("!", "");
+    str = str.replaceAll("[&\']", "");
+    str = str.replaceAll(" ", "-");
+    str = str.replaceAll("é", "e");
+    return str;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +270,17 @@ public class MenuActivity extends AppCompatActivity {
     customPager.setAdapter(adapter);
   }
 
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
   class ViewPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private int mCurrentPosition = -1;
@@ -277,84 +355,6 @@ public class MenuActivity extends AppCompatActivity {
         }
       }
       return "";
-    }
-  }
-
-  /**
-   * Returns scaled size for images NOTE: borrowed from Android Studio reference*
-   */
-  public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth,
-      int reqHeight) {
-    // Raw height and width of image
-    final int height = options.outHeight;
-    final int width = options.outWidth;
-    int inSampleSize = 1;
-    if (height > reqHeight || width > reqWidth) {
-      final int halfHeight = height / 2;
-      final int halfWidth = width / 2;
-      // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-      // height and width larger than the requested height and width.
-      while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
-        inSampleSize *= 2;
-      }
-    }
-    return inSampleSize;
-  }
-
-  // NOTE: borrowed from Android Studio reference
-  public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth,
-      int reqHeight) {
-    // First decode with inJustDecodeBounds=true to check dimensions
-    final BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inJustDecodeBounds = true;
-    BitmapFactory.decodeResource(res, resId, options);
-    // Calculate inSampleSize
-    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-    // Decode bitmap with inSampleSize set
-    options.inJustDecodeBounds = false;
-    return BitmapFactory.decodeResource(res, resId, options);
-  }
-
-  /**
-   * Gets name of corresponding picture to cafe*
-   */
-  public static String convertName(String str) {
-    if (str.equals("104West!.jpg")) {
-      return "104-West.jpg";
-    }
-    if (str.equals("McCormick's.jpg")) {
-      return "mccormicks.jpg";
-    }
-    if (str.equals("Franny's.jpg")) {
-      return "frannys.jpg";
-    }
-    if (str.equals("Ice Cream Cart.jpg")) {
-      return "icecreamcart.jpg";
-    }
-    if (str.equals("Risley Dining Room.jpg")) {
-      return "Risley-Dining.jpg";
-    }
-    if (str.equals("Martha's Express.jpg")) {
-      return "Marthas-Cafe.jpg";
-    }
-    if (str.equals("Bus Stop Bagels.jpg")) {
-      return "Bug-Stop-Bagels.jpg";
-    }
-    str = str.replaceAll("!", "");
-    str = str.replaceAll("[&\']", "");
-    str = str.replaceAll(" ", "-");
-    str = str.replaceAll("é", "e");
-    return str;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
     }
   }
 }

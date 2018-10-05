@@ -9,82 +9,47 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import org.threeten.bp.ZonedDateTime;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-  private GoogleMap mMap;
-  private List<EateryModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
   private BottomNavigationView bnv;
-
-  class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-    private View myContentsView;
-
-    MyInfoWindowAdapter() {
-      myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
-      return null;
-    }
-
-    @Override
-    public View getInfoWindow(Marker marker) {
-      myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
-      TextView cafe_name = ((TextView) myContentsView.findViewById(R.id.info_cafe_name));
-      cafe_name.setText(marker.getTitle());
-      TextView cafe_open = ((TextView) myContentsView.findViewById(R.id.info_cafe_open));
-      TextView cafe_desc = ((TextView) myContentsView.findViewById(R.id.info_cafe_desc));
-      String firstword = marker.getSnippet().split(" ")[0];
-      if (firstword.equalsIgnoreCase("open")) {
-        cafe_open.setText("Open");
-        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-        cafe_desc.setText(marker.getSnippet().substring(5));
-      } else if (firstword.equalsIgnoreCase("closing")) {
-        cafe_open.setText("Closing Soon");
-        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-        cafe_desc.setText(marker.getSnippet().substring(13));
-      } else {
-        cafe_open.setText(firstword);
-        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
-        cafe_desc.setText(marker.getSnippet().substring(7));
-      }
-      return myContentsView;
-    }
-  }
+  private List<EateryModel> cafeData;
+  private GoogleMap mMap;
+  private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
+      new GoogleMap.OnMyLocationButtonClickListener() {
+        @Override
+        public boolean onMyLocationButtonClick() {
+          mMap.setMinZoomPreference(15);
+          return false;
+        }
+      };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_maps);
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-    mapFragment.getMapAsync(this);
+    // TODO SupportMapFragment mapFragment;// = getSupportFragmentManager().findFragmentById(R.id.map);
+    // mapFragment.getMapAsync(this);
     Intent intent = getIntent();
     cafeData = (ArrayList<EateryModel>) intent.getSerializableExtra("mEatery");
     bnv = findViewById(R.id.bottom_navigation);
@@ -236,6 +201,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     return bitmap;
   }
 
+  class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private View myContentsView;
+
+    MyInfoWindowAdapter() {
+      myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+      return null;
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+      myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
+      TextView cafe_name = ((TextView) myContentsView.findViewById(R.id.info_cafe_name));
+      cafe_name.setText(marker.getTitle());
+      TextView cafe_open = ((TextView) myContentsView.findViewById(R.id.info_cafe_open));
+      TextView cafe_desc = ((TextView) myContentsView.findViewById(R.id.info_cafe_desc));
+      String firstword = marker.getSnippet().split(" ")[0];
+      if (firstword.equalsIgnoreCase("open")) {
+        cafe_open.setText("Open");
+        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+        cafe_desc.setText(marker.getSnippet().substring(5));
+      } else if (firstword.equalsIgnoreCase("closing")) {
+        cafe_open.setText("Closing Soon");
+        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+        cafe_desc.setText(marker.getSnippet().substring(13));
+      } else {
+        cafe_open.setText(firstword);
+        cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+        cafe_desc.setText(marker.getSnippet().substring(7));
+      }
+      return myContentsView;
+    }
+  }
+
   public class SnackBarListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
@@ -244,13 +246,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       startActivity(browser);
     }
   }
-
-  private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
-      new GoogleMap.OnMyLocationButtonClickListener() {
-        @Override
-        public boolean onMyLocationButtonClick() {
-          mMap.setMinZoomPreference(15);
-          return false;
-        }
-      };
 }

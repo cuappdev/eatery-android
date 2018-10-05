@@ -1,9 +1,9 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import android.databinding.BindingAdapter;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.maps.model.LatLng;
 import java.io.Serializable;

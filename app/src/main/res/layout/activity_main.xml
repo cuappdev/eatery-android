@@ -1,168 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main_activity"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:focusableInTouchMode="true"
+  tools:context="com.cornellappdev.android.eatery.MainActivity">
+  <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:id="@+id/main_activity"
-    tools:context="com.cornellappdev.android.eatery.MainActivity">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_centerVertical="true" />
+    android:layout_height="match_parent">
+  </RelativeLayout>
+  <ProgressBar
+    android:id="@+id/progress_bar"
+    style="?android:progressBarStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_centerInParent="true"
+    android:layout_centerVertical="true"/>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="60dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <HorizontalScrollView
-                android:id="@+id/scroll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/linear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/northButton"
-                        android:layout_width="65dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center_horizontal"
-                        android:onClick="filterClick"
-                        android:padding="8dp"
-                        android:text="North"
-                        android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
-                    <Button
-                        android:id="@+id/westButton"
-                        android:layout_width="65dp"
-                        android:layout_height="35dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center_horizontal"
-                        android:onClick="filterClick"
-                        android:padding="8dp"
-                        android:text="West"
-                        android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
-                    <Button
-                        android:id="@+id/centralButton"
-                        android:layout_width="65dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center_horizontal"
-                        android:onClick="filterClick"
-                        android:padding="8dp"
-                        android:text="Central"
-                        android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
-                    <Button
-                        android:id="@+id/swipes"
-                        android:layout_width="65dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center_horizontal"
-                        android:onClick="filterClick"
-                        android:padding="8dp"
-                        android:text="Swipes"
-                        android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
-                    <Button
-                        android:id="@+id/brb"
-                        android:layout_width="65dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/button"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center_horizontal"
-                        android:onClick="filterClick"
-                        android:padding="8dp"
-                        android:text="BRB"
-                        android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-            </HorizontalScrollView>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cafe_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/scroll"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:onClick="filterClick"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </ScrollView>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorWhite"
-        app:menu="@menu/bottom_nav_main" />
+  <ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="60dp">
 
     <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+
+      <HorizontalScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+          android:id="@+id/linear"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+          <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+            <com.google.android.material.chip.Chip
+              android:id="@+id/northButton"
+              style="@style/Widget.MaterialComponents.Chip.Filter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/area_north"/>
+            <com.google.android.material.chip.Chip
+              android:id="@+id/westButton"
+              style="@style/Widget.MaterialComponents.Chip.Filter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/area_west"/>
+            <com.google.android.material.chip.Chip
+              android:id="@+id/centralButton"
+              style="@style/Widget.MaterialComponents.Chip.Filter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/area_east"/>
+          </com.google.android.material.chip.ChipGroup>
+          <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+            <com.google.android.material.chip.Chip
+              android:id="@+id/brbButton"
+              style="@style/Widget.MaterialComponents.Chip.Filter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/payment_brb"/>
+            <com.google.android.material.chip.Chip
+              android:id="@+id/swipesButton"
+              style="@style/Widget.MaterialComponents.Chip.Filter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/payment_swipes"/>
+          </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+      </HorizontalScrollView>
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/cafe_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relative_layout_splash">
-
-        <include layout="@layout/splash_screen"/>
+        android:layout_below="@+id/scroll"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:onClick="filterClick"
+        android:visibility="gone"/>
     </RelativeLayout>
+  </ScrollView>
+
+  <com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/bottom_navigation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    app:itemBackground="@color/colorWhite"
+    app:menu="@menu/bottom_nav_main"/>
+
+  <RelativeLayout
+    android:id="@+id/relative_layout_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/splash_screen"/>
+  </RelativeLayout>
 
 </android.widget.RelativeLayout>

@@ -24,7 +24,7 @@
     android:paddingRight="4dp"
     android:background="#f2f2f2">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
       android:id="@+id/cv"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
       app:cardPreventCornerOverlap="true"
       app:cardUseCompatPadding="true">
 
-      <android.support.constraint.ConstraintLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -145,8 +145,8 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"/>
 
-      </android.support.constraint.ConstraintLayout>
+      </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
   </LinearLayout>
 </layout>

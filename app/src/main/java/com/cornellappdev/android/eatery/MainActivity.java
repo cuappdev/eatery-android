@@ -6,13 +6,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +16,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
@@ -30,6 +28,9 @@ import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.snackbar.Snackbar;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
   public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
   public static final String FILTER_TXT_COLOR_OFF = "#4B7FBE";
   public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
-  public static final String PAYMENT_CARD = "Cornell Card";
-  public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
+
   private static final EateryModelFilter<CampusArea> AREA_FILTER = (model, area) -> area == model
       .getArea();
   private static final EateryModelFilter<PaymentMethod> PAYMENT_FILTER = EateryModel::hasPaymentMethod;
@@ -64,19 +64,20 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
   public static boolean searchPressed = false;
   public Button areaButtonPressed;
   public BottomNavigationView bnv;
-  public Button brbButton;
-  public Button centralButton;
+  public Chip brbButton;
+  public Chip centralButton;
   public CafeteriaDbHelper dbHelper;
   public List<EateryModel> eateries = new ArrayList<>(); // holds all cafes
   public EateryRecyclerViewAdapter listAdapter;
   //final QueryListener queryListener = new QueryListener();
   public RecyclerView mRecyclerView;
-  public Button northButton;
+  public Chip northButton;
   public Button paymentButtonPressed;
   public ProgressBar progressBar;
   public RelativeLayout splash;
-  public Button swipesButton;
-  public Button westButton;
+  public Chip swipesButton;
+  public Chip westButton;
+  private String mCurrentQuery;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     northButton = findViewById(R.id.northButton);
     westButton = findViewById(R.id.westButton);
     centralButton = findViewById(R.id.centralButton);
-    swipesButton = findViewById(R.id.swipes);
-    brbButton = findViewById(R.id.brb);
+    swipesButton = findViewById(R.id.swipesButton);
+    brbButton = findViewById(R.id.brbButton);
     progressBar = findViewById(R.id.progress_bar);
     bnv = findViewById(R.id.bottom_navigation);
     splash = findViewById(R.id.relative_layout_splash);
@@ -110,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter = new EateryRecyclerViewAdapter(
           getApplicationContext(),
-          eateries.size(),
           eateries,
           EateryModel::compareTo
       );
@@ -233,10 +233,10 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
       case R.id.centralButton:
         handleAreaButtonPress(centralButton, CampusArea.CENTRAL);
         return;
-      case R.id.swipes:
+      case R.id.swipesButton:
         handlePaymentButtonPress(swipesButton, PaymentMethod.SWIPES);
         return;
-      case R.id.brb:
+      case R.id.brbButton:
         handlePaymentButtonPress(brbButton, PaymentMethod.BRB);
     }
   }
@@ -261,32 +261,40 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     final MenuItem searchItem = menu.findItem(R.id.action_search);
     SearchView searchView = (SearchView) searchItem.getActionView();
     setTitle("Eateries");
-    AutoCompleteTextView searchTextView =
-        searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-    searchView.setMaxWidth(2000);
-    try {
-      Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-      mCursorDrawableRes.setAccessible(true);
-      mCursorDrawableRes.set(
-          searchTextView,
-          R.drawable
-              .cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
-      // on white background
-    } catch (Exception e) {
-      // Don't do anything
+    if (searchView != null) {
+      AutoCompleteTextView searchTextView =
+          searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+      searchView.setMaxWidth(2000);
+
+      try {
+        Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+        mCursorDrawableRes.setAccessible(true);
+        mCursorDrawableRes.set(
+            searchTextView,
+            R.drawable
+                .cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
+        // on white background
+      } catch (Exception e) {
+        // Don't do anything
+      }
+      searchView.setOnQueryTextListener(this);
     }
-    searchView.setOnQueryTextListener(this);
+
     return super.onCreateOptionsMenu(menu);
   }
 
   @Override
   public boolean onQueryTextSubmit(String query) {
-    return false;
+    mCurrentQuery = query;
+    listAdapter.addFilter(query, SEARCH_FILTER);
+    listAdapter.filter();
+    return true;
   }
 
   @Override
   public boolean onQueryTextChange(String newText) {
-    return false;
+    listAdapter.removeFilter(mCurrentQuery, SEARCH_FILTER);
+    return onQueryTextSubmit(newText);
   }
 
   public class SnackBarListener implements View.OnClickListener {
@@ -319,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
-          new EateryRecyclerViewAdapter(getApplicationContext(), result.size(),
-              new ArrayList<>(eateries), EateryModel::compareTo);
+          new EateryRecyclerViewAdapter(getApplicationContext(), new ArrayList<>(eateries),
+              EateryModel::compareTo);
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);
       progressBar.setVisibility(View.GONE);

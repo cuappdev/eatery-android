@@ -1,11 +1,9 @@
 package com.cornellappdev.android.eatery.model;
 
-import android.support.annotation.NonNull;
-import org.threeten.bp.LocalDateTime;
-
+import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
+import org.threeten.bp.LocalDateTime;
 
 /**
  * Created by abdullahislam on 2/18/18.

@@ -25,4 +25,9 @@
   <string name="description_cash_payment_method">Has cash payment method.</string>
   <string name="description_brb_payment_method">Has BRB payment method.</string>
   <string name="description_swipes_payment_method">Has meal swipes payment method.</string>
+  <string name="area_north">North</string>
+  <string name="area_east">East</string>
+  <string name="area_west">West</string>
+  <string name="payment_brb">BRB</string>
+  <string name="payment_swipes">Swipes</string>
 </resources>
