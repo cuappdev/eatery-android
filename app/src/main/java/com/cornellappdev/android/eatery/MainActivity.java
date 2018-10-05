@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
+import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
@@ -42,14 +43,31 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
   public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
   public static final String PAYMENT_CARD = "Cornell Card";
   public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
+  private static final EateryModelFilter<CampusArea> AREA_FILTER = (model, area) -> area == model
+      .getArea();
+  private static final EateryModelFilter<PaymentMethod> PAYMENT_FILTER = EateryModel::hasPaymentMethod;
+  private static final EateryModelFilter<String> SEARCH_FILTER = (model, query) -> {
+    String cleanQuery = query.trim().toLowerCase();
+    boolean remove = true;
+    if (model.getNickName().contains(query)) {
+      remove = false;
+    }
+
+    List<String> mealItems = model.getMealItems();
+    for (String mealItem : mealItems) {
+      if (mealItem.toLowerCase().contains(cleanQuery)) {
+        remove = false;
+      }
+    }
+    return remove;
+  };
   public static boolean searchPressed = false;
   public Button areaButtonPressed;
   public BottomNavigationView bnv;
   public Button brbButton;
-  public List<EateryModel> cafeList = new ArrayList<>(); // holds all cafes
   public Button centralButton;
-  public List<EateryModel> currentList = new ArrayList<>(); // button filter list
   public CafeteriaDbHelper dbHelper;
+  public List<EateryModel> eateries = new ArrayList<>(); // holds all cafes
   public EateryRecyclerViewAdapter listAdapter;
   //final QueryListener queryListener = new QueryListener();
   public RecyclerView mRecyclerView;
@@ -81,19 +99,21 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     }
     ConnectionUtilities con = new ConnectionUtilities(this);
     if (!con.isNetworkAvailable()) {
-      cafeList = new ArrayList<>();
+      eateries = new ArrayList<>();
       if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-        cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
+        eateries = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
       }
-      Collections.sort(cafeList);
-      currentList = cafeList;
+      Collections.sort(eateries);
       mRecyclerView.setHasFixedSize(true);
       LinearLayoutManager layoutManager =
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
-      listAdapter =
-          new EateryRecyclerViewAdapter(
-              getApplicationContext(), cafeList.size(), cafeList);
+      listAdapter = new EateryRecyclerViewAdapter(
+          getApplicationContext(),
+          eateries.size(),
+          eateries,
+          EateryModel::compareTo
+      );
       mRecyclerView.setAdapter(listAdapter);
     } else {
       new ProcessJson().execute("");
@@ -109,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
               break;
             case R.id.action_week:
               intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-              intent.putExtra("mEatery", new ArrayList<>(cafeList));
+              intent.putExtra("mEatery", new ArrayList<>(eateries));
               startActivity(intent);
               overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
               break;
@@ -140,9 +160,6 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     bgShape.setColor(Color.parseColor(backgroundColor));
   }
 
-  private void filterCurrentList() {
-  }
-
   private CampusArea getCurrentArea() {
     if (northButton.equals(areaButtonPressed)) {
       return CampusArea.NORTH;
@@ -155,45 +172,73 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     }
   }
 
-  private String getCurrentPaymentType() {
+  private PaymentMethod getCurrentPaymentType() {
     if (brbButton.equals(paymentButtonPressed)) {
-      return PAYMENT_CARD;
+      return PaymentMethod.BRB;
     } else if (swipesButton.equals(paymentButtonPressed)) {
-      return PAYMENT_SWIPE;
+      return PaymentMethod.SWIPES;
     } else {
       return null;
     }
   }
 
   private void handleAreaButtonPress(Button button, CampusArea area) {
+    CampusArea currentArea = getCurrentArea();
     if (!button.equals(areaButtonPressed)) {
       changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
       if (areaButtonPressed != null) {
         changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
       }
+      if (currentArea != null) {
+        listAdapter.removeFilter(currentArea, AREA_FILTER);
+      }
       areaButtonPressed = button;
+      listAdapter.addFilter(area, AREA_FILTER);
     } else {
       changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
       areaButtonPressed = null;
+      listAdapter.removeFilter(area, AREA_FILTER);
     }
-    filterCurrentList();
+    listAdapter.filter();
   }
 
-  private void handlePaymentButtonPress(Button button, String payment) {
+  private void handlePaymentButtonPress(Button button, PaymentMethod payment) {
+    PaymentMethod paymentMethod = getCurrentPaymentType();
     if (!button.equals(paymentButtonPressed)) {
       changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
       if (paymentButtonPressed != null) {
         changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
       }
+      if (paymentMethod != null) {
+        listAdapter.removeFilter(paymentMethod, PAYMENT_FILTER);
+      }
       paymentButtonPressed = button;
+      listAdapter.addFilter(payment, PAYMENT_FILTER);
     } else {
       changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
       paymentButtonPressed = null;
+      listAdapter.removeFilter(payment, PAYMENT_FILTER);
     }
-    filterCurrentList();
+    listAdapter.filter();
   }
 
   public void filterClick(View view) {
+    switch (view.getId()) {
+      case R.id.northButton:
+        handleAreaButtonPress(northButton, CampusArea.NORTH);
+        return;
+      case R.id.westButton:
+        handleAreaButtonPress(westButton, CampusArea.WEST);
+        return;
+      case R.id.centralButton:
+        handleAreaButtonPress(centralButton, CampusArea.CENTRAL);
+        return;
+      case R.id.swipes:
+        handlePaymentButtonPress(swipesButton, PaymentMethod.SWIPES);
+        return;
+      case R.id.brb:
+        handlePaymentButtonPress(brbButton, PaymentMethod.BRB);
+    }
   }
 
   @Override
@@ -201,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     switch (item.getItemId()) {
       case R.id.action_map:
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-        intent.putExtra("mEatery", new ArrayList<>(cafeList));
+        intent.putExtra("mEatery", new ArrayList<>(eateries));
         startActivity(intent);
         return true;
       default:
@@ -258,10 +303,9 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
       dbHelper.addData(json);
-      cafeList = JsonUtilities.parseJson(json, getApplicationContext());
-      Collections.sort(cafeList);
-      currentList = cafeList;
-      return cafeList;
+      eateries = JsonUtilities.parseJson(json, getApplicationContext());
+      Collections.sort(eateries);
+      return eateries;
     }
 
     @Override
@@ -276,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
           new EateryRecyclerViewAdapter(getApplicationContext(), result.size(),
-              new ArrayList<>(cafeList));
+              new ArrayList<>(eateries), EateryModel::compareTo);
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);
       progressBar.setVisibility(View.GONE);

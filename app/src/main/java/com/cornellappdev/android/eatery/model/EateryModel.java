@@ -22,13 +22,32 @@ import org.threeten.bp.ZonedDateTime;
 public abstract class EateryModel implements Model, Cloneable, Serializable,
     Comparable<EateryModel> {
 
-  protected String mName, mNickName, mSlug;
+  /* Comparator for sorting the list by EateryModel's nickname */
+  public static Comparator<EateryModel> cafeNameComparator = (s1, s2) -> {
+    String str1 = s1.getNickName();
+    String str2 = s2.getNickName();
+    // TODO Why?
+    if (str1.startsWith("1")) {
+      return -1;
+    }
+    if (str2.startsWith("1")) {
+      return 1;
+    }
+    // ascending order
+    return str1.compareToIgnoreCase(str2);
+  };
   protected CampusArea mArea;
-  private String mBuildingLocation;
-  protected List<PaymentMethod> mPayMethods;
-  protected boolean mOpenPastMidnight;
-  private double mLatitude, mLongitude;
   protected int mId;
+  protected String mName, mNickName, mSlug;
+  protected boolean mOpenPastMidnight;
+  protected List<PaymentMethod> mPayMethods;
+  private String mBuildingLocation;
+  private double mLatitude, mLongitude;
+
+  @BindingAdapter({"app:imageUrl"})
+  public static void loadImage(SimpleDraweeView view, Uri uri) {
+    view.setImageURI(uri);
+  }
 
   public abstract ZonedDateTime getNextOpening();
 
@@ -100,12 +119,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     return mSlug;
   }
 
-  public enum Status {
-    OPEN,
-    CLOSING_SOON,
-    CLOSED;
-  }
-
   /**
    * Compared the time of two EateryModel
    **/
@@ -118,21 +131,6 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
       return 1;
     }
   }
-
-  /* Comparator for sorting the list by EateryModel's nickname */
-  public static Comparator<EateryModel> cafeNameComparator = (s1, s2) -> {
-    String str1 = s1.getNickName();
-    String str2 = s2.getNickName();
-    // TODO Why?
-    if (str1.startsWith("1")) {
-      return -1;
-    }
-    if (str2.startsWith("1")) {
-      return 1;
-    }
-    // ascending order
-    return str1.compareToIgnoreCase(str2);
-  };
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
@@ -156,9 +154,10 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     mArea = CampusArea.fromShortDescription(area);
   }
 
-  @BindingAdapter({"app:imageUrl"})
-  public static void loadImage(SimpleDraweeView view, Uri uri) {
-    view.setImageURI(uri);
+  public enum Status {
+    OPEN,
+    CLOSING_SOON,
+    CLOSED;
   }
 }
 

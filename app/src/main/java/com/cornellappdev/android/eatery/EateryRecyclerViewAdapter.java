@@ -2,6 +2,8 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +17,71 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHolder> {
-  private final int IMAGE = 0;
-  private final int TEXT = 1;
+  private static final int IMAGE = 0;
+  private static final int TEXT = 1;
   private final Context mContext;
-  private List<EateryModel> cafeListFiltered;
-  private int mCount;
+  private final List<EateryModel> mEateries;
+  private Comparator<EateryModel> mComparator;
+  private final SortedList<EateryModel> mSortedList = new SortedList<>(EateryModel.class,
+      new SortedList.Callback<EateryModel>() {
+        @Override
+        public int compare(EateryModel a, EateryModel b) {
+          return mComparator.compare(a, b);
+        }
 
-  EateryRecyclerViewAdapter(Context context, int count, List<EateryModel> list) {
+        @Override
+        public void onInserted(int position, int count) {
+          notifyItemRangeInserted(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+          notifyItemRangeRemoved(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+          notifyItemMoved(fromPosition, toPosition);
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+          notifyItemRangeChanged(position, count);
+        }
+
+        @Override
+        public boolean areContentsTheSame(EateryModel oldModel, EateryModel newModel) {
+          return oldModel.equals(newModel);
+        }
+
+        @Override
+        public boolean areItemsTheSame(EateryModel a, EateryModel b) {
+          return a.getId() == b.getId();
+        }
+      });
+  private Map<Object, EateryModelFilter> mFilters = new HashMap<>();
+
+  EateryRecyclerViewAdapter(Context context, List<EateryModel> list,
+      Comparator<EateryModel> comparator) {
+    mComparator = comparator;
     mContext = context;
-    mCount = count;
-    cafeListFiltered = list;
+    mEateries = new ArrayList<>(list);
+
+    Collections.sort(mEateries, EateryModel::compareTo);
+    for (EateryModel m : mEateries) {
+      mSortedList.add(m);
+    }
     // Logcat for Fresco
     Set<RequestListener> requestListeners = new HashSet<>();
     requestListeners.add(new RequestLoggingListener());
@@ -37,6 +89,57 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
         ImagePipelineConfig.newBuilder(context).setRequestListeners(requestListeners).build();
     Fresco.initialize(context, config);
     FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+  }
+
+  public <T> void removeFilter(@NonNull T t, EateryModelFilter<T> filter) {
+    mFilters.remove(t);
+  }
+
+  public <T> void addFilter(@NonNull T t, EateryModelFilter<T> filter) {
+    mFilters.put(t, filter);
+  }
+
+  public void filter() {
+    List<EateryModel> filtered = new ArrayList<>();
+    // TODO Cleanup this raw access.
+    for (int i = mEateries.size() - 1; i >= 0; i--) {
+      final EateryModel model = mEateries.get(i);
+      boolean keep = true;
+      for (Entry<Object, EateryModelFilter> retainedFilter : mFilters.entrySet()) {
+        keep = retainedFilter.getValue().filter(model, retainedFilter.getKey());
+        if (!keep) {
+          break;
+        }
+      }
+      if (keep) {
+        filtered.add(model);
+      }
+    }
+    replaceAll(filtered);
+  }
+
+  public void reset() {
+    replaceAll(mEateries);
+  }
+
+  public void removeAll(List<EateryModel> models) {
+    mSortedList.beginBatchedUpdates();
+    for (EateryModel model : models) {
+      mSortedList.remove(model);
+    }
+    mSortedList.endBatchedUpdates();
+  }
+
+  public void replaceAll(List<EateryModel> models) {
+    mSortedList.beginBatchedUpdates();
+    for (int i = mSortedList.size() - 1; i >= 0; i--) {
+      final EateryModel model = mSortedList.get(i);
+      if (!models.contains(model)) {
+        mSortedList.remove(model);
+      }
+    }
+    mSortedList.addAll(models);
+    mSortedList.endBatchedUpdates();
   }
 
   /**
@@ -70,8 +173,7 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
 
   @Override
   public void onBindViewHolder(CardViewHolder inputHolder, int position) {
-    final EateryModel eateryModel = cafeListFiltered.get(position);
-
+    final EateryModel eateryModel = mSortedList.get(position);
     inputHolder.bind(eateryModel, eatery -> {
       Intent intent = new Intent(mContext, MenuActivity.class);
       intent.putExtra("cafeInfo", eatery);
@@ -91,11 +193,6 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
 
   @Override
   public int getItemCount() {
-    return mCount;
+    return mSortedList.size();
   }
-
-  public interface ListAdapterOnClickHandler {
-    void onClick(int position, List<EateryModel> list);
-  }
-
 }
