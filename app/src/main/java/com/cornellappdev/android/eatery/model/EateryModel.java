@@ -1,7 +1,10 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.maps.model.LatLng;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,10 +22,10 @@ import org.threeten.bp.ZonedDateTime;
 public abstract class EateryModel implements Model, Cloneable, Serializable,
     Comparable<EateryModel> {
 
-  protected String mName, mNickName;
+  protected String mName, mNickName, mSlug;
   protected CampusArea mArea;
   private String mBuildingLocation;
-  protected List<String> mPayMethods;
+  protected List<PaymentMethod> mPayMethods;
   protected boolean mOpenPastMidnight;
   private double mLatitude, mLongitude;
   protected int mId;
@@ -61,8 +64,12 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     return mNickName;
   }
 
-  public List<String> getPayMethods() {
+  public List<PaymentMethod> getPaymentMethods() {
     return mPayMethods;
+  }
+
+  public boolean hasPaymentMethod(PaymentMethod method) {
+    return mPayMethods.contains(method);
   }
 
   public String getBuildingLocation() {
@@ -87,6 +94,10 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
 
   public CampusArea getArea() {
     return mArea;
+  }
+
+  public String getSlug() {
+    return mSlug;
   }
 
   public enum Status {
@@ -131,17 +142,23 @@ public abstract class EateryModel implements Model, Cloneable, Serializable,
     mNickName = eatery.getString("nameshort");
     mLatitude = eatery.getDouble("latitude");
     mLongitude = eatery.getDouble("longitude");
+    mSlug = eatery.getString("slug");
     // Parse payment methods available at eatery
     JSONArray methods = eatery.getJSONArray("payMethods");
-    List<String> payMethods = new ArrayList<>();
+    List<PaymentMethod> payMethods = new ArrayList<>();
     for (int j = 0; j < methods.length(); j++) {
       JSONObject method = methods.getJSONObject(j);
-      payMethods.add(method.getString("descrshort"));
+      payMethods.add(PaymentMethod.fromShortDescription(method.getString("descrshort")));
     }
     mPayMethods = payMethods;
     // Find geographical area for eatery
     String area = eatery.getJSONObject("campusArea").getString("descrshort");
     mArea = CampusArea.fromShortDescription(area);
+  }
+
+  @BindingAdapter({"app:imageUrl"})
+  public static void loadImage(SimpleDraweeView view, Uri uri) {
+    view.setImageURI(uri);
   }
 }
 

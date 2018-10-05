@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +28,10 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.MealType;
+import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
@@ -136,11 +133,11 @@ public class MenuActivity extends AppCompatActivity {
     Uri uri = Uri.parse(imageLocation);
     cafeImage.setImageURI(uri);
     brb_icon = findViewById(R.id.brb_icon);
-    for (String pay : mEatery.getPayMethods()) {
-      if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
-        brb_icon.setVisibility(View.VISIBLE);
-      }
+
+    if (mEatery.hasPaymentMethod(PaymentMethod.BRB)) {
+      brb_icon.setVisibility(View.VISIBLE);
     }
+
     swipe_icon = findViewById(R.id.swipe_icon);
     if (mEatery instanceof DiningHallModel) {
       swipe_icon.setVisibility(View.VISIBLE);

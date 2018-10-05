@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.cornellappdev.android.eatery.MainListAdapter.ListAdapterOnClickHandler;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
@@ -34,35 +36,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-    implements MainListAdapter.ListAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements OnQueryTextListener {
 
-  public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
-  public static final String PAYMENT_CARD = "Cornell Card";
-  public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
   public static final String FILTER_BG_COLOR_OFF = "#F2F2F2";
-  public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
+  public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
   public static final String FILTER_TXT_COLOR_OFF = "#4B7FBE";
-
+  public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
+  public static final String PAYMENT_CARD = "Cornell Card";
+  public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
   public static boolean searchPressed = false;
-
-  public List<EateryModel> cafeList = new ArrayList<>(); // holds all cafes
-  public List<EateryModel> currentList = new ArrayList<>(); // button filter list
-  public List<EateryModel> searchList = new ArrayList<>(); // searchbar filter list
-  public BottomNavigationView bnv;
-  public Button northButton;
-  public Button westButton;
-  public Button centralButton;
-  public Button swipesButton;
-  public Button brbButton;
   public Button areaButtonPressed;
-  public Button paymentButtonPressed;
+  public BottomNavigationView bnv;
+  public Button brbButton;
+  public List<EateryModel> cafeList = new ArrayList<>(); // holds all cafes
+  public Button centralButton;
+  public List<EateryModel> currentList = new ArrayList<>(); // button filter list
   public CafeteriaDbHelper dbHelper;
   public MainListAdapter listAdapter;
-  public ProgressBar progressBar;
-  final QueryListener queryListener = new QueryListener();
+  //final QueryListener queryListener = new QueryListener();
   public RecyclerView mRecyclerView;
+  public Button northButton;
+  public Button paymentButtonPressed;
+  public ProgressBar progressBar;
   public RelativeLayout splash;
+  public Button swipesButton;
+  public Button westButton;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,48 +89,44 @@ public class MainActivity extends AppCompatActivity
       }
       Collections.sort(cafeList);
       currentList = cafeList;
-      searchList = cafeList;
       mRecyclerView.setHasFixedSize(true);
       LinearLayoutManager layoutManager =
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
           new MainListAdapter(
-              getApplicationContext(), MainActivity.this, cafeList.size(), cafeList);
+              getApplicationContext(), cafeList.size(), cafeList);
       mRecyclerView.setAdapter(listAdapter);
     } else {
       new ProcessJson().execute("");
     }
     // Add functionality to bottom nav bar
     bnv.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Intent intent;
-            switch (item.getItemId()) {
-              case R.id.action_home:
-                ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
-                sv.smoothScrollTo(0, 0);
-                break;
-              case R.id.action_week:
-                intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("mEatery", new ArrayList<>(cafeList));
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                break;
-              case R.id.action_brb:
-                Snackbar snackbar =
-                    Snackbar.make(
-                        findViewById(R.id.main_activity),
-                        "If you would like"
-                            + " to see this feature, consider joining our Android dev team!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Apply", new SnackBarListener());
-                snackbar.show();
-                break;
-            }
-            return true;
+        item -> {
+          Intent intent;
+          switch (item.getItemId()) {
+            case R.id.action_home:
+              ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
+              sv.smoothScrollTo(0, 0);
+              break;
+            case R.id.action_week:
+              intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+              intent.putExtra("mEatery", new ArrayList<>(cafeList));
+              startActivity(intent);
+              overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+              break;
+            case R.id.action_brb:
+              Snackbar snackbar =
+                  Snackbar.make(
+                      findViewById(R.id.main_activity),
+                      "If you would like"
+                          + " to see this feature, consider joining our Android dev team!",
+                      Snackbar.LENGTH_LONG);
+              snackbar.setAction("Apply", new SnackBarListener());
+              snackbar.show();
+              break;
           }
+          return true;
         });
   }
 
@@ -205,15 +199,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onClick(int position, List<EateryModel> list) {
-    Intent intent = new Intent(this, MenuActivity.class);
-    intent.putExtra("testData", new ArrayList<>(list));
-    intent.putExtra("cafeInfo", list.get(position));
-    intent.putExtra("locName", list.get(position).getNickName());
-    startActivity(intent);
-  }
-
-  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_map:
@@ -247,40 +232,18 @@ public class MainActivity extends AppCompatActivity
     } catch (Exception e) {
       // Don't do anything
     }
-    searchView.setOnQueryTextListener(queryListener);
+    searchView.setOnQueryTextListener(this);
     return super.onCreateOptionsMenu(menu);
   }
 
-  public class QueryListener implements SearchView.OnQueryTextListener {
-    public String query = "";
+  @Override
+  public boolean onQueryTextSubmit(String query) {
+    return false;
+  }
 
-    private void searchList(String query) {
-      final String lowercaseQuery = query.toLowerCase();
-      for (EateryModel model : searchList) {
-        final List<String> mealSet = model.getMealItems();
-        boolean foundNickName = false;
-        if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
-          foundNickName = true;
-        }
-        ArrayList<String> matchedItems = new ArrayList<>();
-        boolean foundItem = false;
-        for (String item : mealSet) {
-          if (item.toLowerCase().contains(lowercaseQuery)) {
-            matchedItems.add(item);
-          }
-        }
-      }
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-      return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-      return onQueryTextSubmit(newText);
-    }
+  @Override
+  public boolean onQueryTextChange(String newText) {
+    return false;
   }
 
   public class SnackBarListener implements View.OnClickListener {
@@ -300,7 +263,6 @@ public class MainActivity extends AppCompatActivity
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());
       Collections.sort(cafeList);
       currentList = cafeList;
-      searchList = cafeList;
       return cafeList;
     }
 
@@ -315,7 +277,7 @@ public class MainActivity extends AppCompatActivity
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
-          new MainListAdapter(getApplicationContext(), MainActivity.this, result.size(),
+          new MainListAdapter(getApplicationContext(), result.size(),
               new ArrayList<>(cafeList));
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);

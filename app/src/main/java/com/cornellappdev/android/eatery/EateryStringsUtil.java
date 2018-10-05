@@ -3,12 +3,25 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.text.format.DateFormat;
 import com.cornellappdev.android.eatery.model.EateryModel;
+import com.cornellappdev.android.eatery.model.EateryModel.Status;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
 public class EateryStringsUtil {
+  public static int getStatusString(Status status) {
+    switch (status) {
+      case OPEN:
+        return R.string.open;
+      case CLOSED:
+        return R.string.closed;
+      case CLOSING_SOON:
+        return R.string.closing_soon;
+    }
+    return 0;
+  }
+
   public static String getOpeningClosingDescription(Context context, EateryModel eatery) {
     if (eatery.isOpen()) {
       ZonedDateTime closeTime = eatery.getCloseTime();

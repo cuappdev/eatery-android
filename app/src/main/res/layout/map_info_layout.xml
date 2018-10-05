@@ -51,7 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/map_arrow"
-        android:layout_below="@id/cafe_image"
+        android:layout_below="@id/cafeImage"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="200dp"

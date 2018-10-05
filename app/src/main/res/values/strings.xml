@@ -21,4 +21,8 @@
   <string name="opening_tomorrow_at_a">Opening tomorrow at %s</string>
   <string name="title_activity_main">Eateries</string>
   <string name="title_activity_maps">Map</string>
+  <string name="search_hint">Search for food, eateries...</string>
+  <string name="description_cash_payment_method">Has cash payment method.</string>
+  <string name="description_brb_payment_method">Has BRB payment method.</string>
+  <string name="description_swipes_payment_method">Has meal swipes payment method.</string>
 </resources>
