@@ -19,14 +19,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainListAdapter extends RecyclerView.Adapter<CardViewHolder> {
+public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHolder> {
   private final int IMAGE = 0;
   private final int TEXT = 1;
   private final Context mContext;
   private List<EateryModel> cafeListFiltered;
   private int mCount;
 
-  MainListAdapter(Context context, int count, List<EateryModel> list) {
+  EateryRecyclerViewAdapter(Context context, int count, List<EateryModel> list) {
     mContext = context;
     mCount = count;
     cafeListFiltered = list;

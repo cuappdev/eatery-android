@@ -6,7 +6,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.MainListAdapter.ListAdapterOnClickHandler;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
   public Button centralButton;
   public List<EateryModel> currentList = new ArrayList<>(); // button filter list
   public CafeteriaDbHelper dbHelper;
-  public MainListAdapter listAdapter;
+  public EateryRecyclerViewAdapter listAdapter;
   //final QueryListener queryListener = new QueryListener();
   public RecyclerView mRecyclerView;
   public Button northButton;
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
-          new MainListAdapter(
+          new EateryRecyclerViewAdapter(
               getApplicationContext(), cafeList.size(), cafeList);
       mRecyclerView.setAdapter(listAdapter);
     } else {
@@ -277,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
           new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
       mRecyclerView.setLayoutManager(layoutManager);
       listAdapter =
-          new MainListAdapter(getApplicationContext(), result.size(),
+          new EateryRecyclerViewAdapter(getApplicationContext(), result.size(),
               new ArrayList<>(cafeList));
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);
