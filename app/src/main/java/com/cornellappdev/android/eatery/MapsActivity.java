@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,23 +16,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-  private BottomNavigationView bnv;
-  private List<EateryModel> cafeData;
+  private List<EateryModel> mEateries;
   private GoogleMap mMap;
   private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =
       new GoogleMap.OnMyLocationButtonClickListener() {
@@ -47,42 +45,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_maps);
-    // TODO SupportMapFragment mapFragment;// = getSupportFragmentManager().findFragmentById(R.id.map);
-    // mapFragment.getMapAsync(this);
     Intent intent = getIntent();
-    cafeData = (ArrayList<EateryModel>) intent.getSerializableExtra("mEatery");
-    bnv = findViewById(R.id.bottom_navigation);
-    bnv.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Toast toast;
-            Intent intent;
-            switch (item.getItemId()) {
-              case R.id.action_home:
-                finish();
-                break;
-              case R.id.action_week:
-                finish();
-                intent = new Intent(getApplicationContext(), WeeklyMenuFragment.class);
-                intent.putExtra("mEatery", new ArrayList<>(cafeData));
-                startActivity(intent);
-                break;
-              case R.id.action_brb:
-                Snackbar snackbar =
-                    Snackbar.make(
-                        findViewById(R.id.maps_activity),
-                        "If you would like"
-                            + " to see this feature, consider joining our Android dev team!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Apply", new SnackBarListener());
-                snackbar.show();
-                break;
-            }
-            return true;
-          }
-        });
+    mEateries = (ArrayList<EateryModel>) intent.getSerializableExtra("mEatery");
+    setContentView(R.layout.activity_maps);
+    Fragment mapFragment = getSupportFragmentManager().findFragmentById(R.id.map);
+
+    if (mapFragment instanceof SupportMapFragment) {
+      ((SupportMapFragment) mapFragment).getMapAsync(this);
+    }
   }
 
   @Override
@@ -90,8 +60,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     mMap = googleMap;
     // (42.4471,-76.4832) is the location for Day Hall
     LatLng cornell = new LatLng(42.451092, -76.482654);
-    for (int i = 0; i < cafeData.size(); i++) {
-      EateryModel cafe = cafeData.get(i);
+    for (int i = 0; i < mEateries.size(); i++) {
+      EateryModel cafe = mEateries.get(i);
       LatLng latLng = cafe.getLatLng();
       String name = cafe.getNickName();
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
@@ -119,23 +89,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     // Clicking on an eatery icon on the map will take the user to the MenuActivity of that eatery
     mMap.setOnInfoWindowClickListener(
-        new GoogleMap.OnInfoWindowClickListener() {
-          @Override
-          public void onInfoWindowClick(Marker marker) {
-            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-            String markerName = marker.getTitle();
-            int position = 0;
-            for (int i = 0; i < cafeData.size(); i++) {
-              if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
-                position = i;
-              }
+        marker -> {
+          Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+          String markerName = marker.getTitle();
+          int position = 0;
+          for (int i = 0; i < mEateries.size(); i++) {
+            if (mEateries.get(i).getNickName().equalsIgnoreCase(markerName)) {
+              position = i;
             }
-            // TODO(lesley): is testData necessary??? Might have to be removed
-            intent.putExtra("testData", new ArrayList<>(cafeData));
-            intent.putExtra("cafeInfo", cafeData.get(position));
-            intent.putExtra("locName", cafeData.get(position).getNickName());
-            startActivity(intent);
           }
+          intent.putExtra("cafeInfo", mEateries.get(position));
+          intent.putExtra("locName", mEateries.get(position).getNickName());
+          startActivity(intent);
         });
     mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
     mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);

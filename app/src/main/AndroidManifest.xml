@@ -31,12 +31,6 @@
       android:theme="@style/NoActionBar"
       />
 
-    <activity
-      android:name="com.cornellappdev.android.eatery.WeeklyMenuFragment"
-      android:screenOrientation="portrait"
-      android:theme="@style/AppTheme"
-      />
-
     <meta-data
       android:name="com.google.android.geo.API_KEY"
       android:value="@string/google_maps_key"/>
