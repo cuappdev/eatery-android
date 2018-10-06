@@ -24,10 +24,16 @@ public class MealMenuModel implements Serializable {
     }
 
     public List<String> getItems(String category) {
+        if(menu.get(category) == null){
+            return new ArrayList<>();
+        }
         return new ArrayList<>(menu.get(category));
     }
 
     public List<String> getCategories() {
+        if(menu.isEmpty()){
+            return new ArrayList<>();
+        }
         return new ArrayList<>(menu.keySet());
     }
 

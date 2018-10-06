@@ -18,15 +18,16 @@ public class MealModel extends Interval implements Serializable {
         super(start, end);
     }
 
-    //TODO: Keep it for now for testing. Get rid of it later
-    public String stringTo() {
+    // Keep it for now for testing. Get rid of it later
+    public String mealToString() {
         StringBuilder info = new StringBuilder(
-                String.format("%s from: %s to: %s\n", type, getStart(), getEnd())
-        );
+                String.format("%s from: %s to: %s\n", type, getStart(), getEnd()));
+
         for (String category : menu.getCategories()) {
             List<String> value = menu.getItems(category);
             info.append(String.format(" %s: %s\n", category, value.toString()));
         }
+
         return info.toString();
     }
 
