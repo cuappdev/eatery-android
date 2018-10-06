@@ -113,6 +113,10 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
   }
 
   public void filter() {
+    if (mFilterValues.size() == 0) {
+      reset();
+    }
+
     List<EateryModel> filtered = new ArrayList<>();
     // TODO Cleanup this raw access.
     for (int i = mEateries.size() - 1; i >= 0; i--) {
