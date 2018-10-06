@@ -196,13 +196,13 @@ public class MainActivity extends AppCompatActivity {
           new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-              return mAdapter.getItem(mBottomNavigationView.getSelectedItemId())
+              return mAdapter.getItem(mViewPager.getCurrentItem())
                   .onQueryTextSubmit(query);
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-              return mAdapter.getItem(mBottomNavigationView.getSelectedItemId())
+              return mAdapter.getItem(mViewPager.getCurrentItem())
                   .onQueryTextChange(newText);
             }
           }

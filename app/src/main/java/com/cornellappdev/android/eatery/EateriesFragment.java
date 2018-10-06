@@ -29,7 +29,7 @@ public class EateriesFragment extends EateryTabFragment implements OnQueryTextLi
   private static final EateryModelFilter<String> SEARCH_FILTER = (model, query) -> {
     String cleanQuery = query.trim().toLowerCase();
     boolean remove = true;
-    if (model.getNickName().contains(cleanQuery)) {
+    if (model.getNickName().toLowerCase().contains(cleanQuery)) {
       remove = false;
     }
 
@@ -178,7 +178,7 @@ public class EateriesFragment extends EateryTabFragment implements OnQueryTextLi
 
   @Override
   public boolean onQueryTextChange(String newText) {
-    mRecyclerAdapter.removeFilter(mCurrentQuery, SEARCH_FILTER);
+    mRecyclerAdapter.removeFilters(SEARCH_FILTER);
     return onQueryTextSubmit(newText);
   }
 
