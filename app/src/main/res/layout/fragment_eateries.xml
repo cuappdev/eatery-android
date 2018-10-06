@@ -7,21 +7,22 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:paddingBottom="60dp"
-  >
+  android:background="@color/colorWhite">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
+    android:background="@color/colorWhite">
 
 
     <HorizontalScrollView
       android:id="@+id/horizontalScrollView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginStart="8dp"
       android:animateLayoutChanges="true"
+      android:background="@color/colorWhite"
+      android:scrollbars="none"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent">
@@ -35,6 +36,7 @@
           style="@style/GroupedChipGroup"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_margin="10dp"
           android:animateLayoutChanges="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="@+id/cafe_list"
@@ -72,7 +74,7 @@
             style="@style/GroupedChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/area_east"
+            android:text="@string/area_central"
             app:checkedIconEnabled="true"
             app:closeIconEnabled="false"/>
         </com.cornellappdev.android.eatery.HideUnselectedChipGroup>
@@ -81,9 +83,10 @@
           style="@style/GroupedChipGroup"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_margin="10dp"
           android:animateLayoutChanges="true"
-          app:layout_constraintStart_toEndOf="@+id/chipGroup"
-          app:layout_constraintTop_toTopOf="@+id/chipGroup"
+          app:layout_constraintStart_toEndOf="@+id/campusAreaChipGroup"
+          app:layout_constraintTop_toTopOf="@+id/campusAreaChipGroup"
           app:singleLine="true"
           app:singleSelection="true">
           <com.google.android.material.chip.Chip
@@ -119,6 +122,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="8dp"
       android:layout_marginEnd="8dp"
+      android:background="@color/colorWhite"
       android:clipToPadding="false"
       android:nestedScrollingEnabled="false"
       android:visibility="visible"

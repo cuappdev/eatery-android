@@ -24,7 +24,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="01"
       android:textColor="#000000"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
@@ -38,7 +37,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="02"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
@@ -51,7 +49,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="03"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
@@ -64,7 +61,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="04"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
@@ -77,7 +73,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="05"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
@@ -90,7 +85,6 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="06"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
@@ -103,156 +97,151 @@
       android:layout_weight="1"
       android:padding="5dp"
       android:gravity="center"
-      android:text="07"
       app:checkedIconEnabled="false"
       app:chipIconEnabled="false"
       app:closeIconEnabled="false"/>
   </com.cornellappdev.android.eatery.DateButtonGroup>
-  <LinearLayout
-    android:id="@+id/lin"
+
+  <HorizontalScrollView
+    android:id="@+id/filterScroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:layout_below="@id/dateButtonGroup"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:orientation="horizontal">
-    <HorizontalScrollView
-      android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
+    android:scrollbars="none">
+    <LinearLayout
+      android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:layout_weight="1"
       android:animateLayoutChanges="true"
-      android:scrollbars="none">
-      <LinearLayout
+      android:orientation="horizontal">
+      <com.cornellappdev.android.eatery.HideUnselectedChipGroup
+        android:id="@+id/mealTypeChipGroup"
+        style="@style/GroupedChipGroup"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
         android:animateLayoutChanges="true"
-        android:orientation="horizontal">
-        <com.cornellappdev.android.eatery.HideUnselectedChipGroup
-          android:id="@+id/mealTypeChipGroup"
-          style="@style/GroupedChipGroup"
+        app:chipSpacing="0dp"
+        app:singleLine="true"
+        app:singleSelection="true">
+        <com.google.android.material.chip.Chip
+          android:id="@+id/breakfast"
+          style="@style/GroupedChip"
           android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:outlineProvider="bounds"
+          android:text="Breakfast"
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+        <View
+          android:layout_width="1dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:animateLayoutChanges="true"
-          app:chipSpacing="0dp"
-          app:singleLine="true"
-          app:singleSelection="true">
-          <com.google.android.material.chip.Chip
-            android:id="@+id/breakfast"
-            style="@style/GroupedChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:outlineProvider="bounds"
-            android:text="Breakfast"
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-          <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/chip_group_divider"/>
-          <com.google.android.material.chip.Chip
-            android:id="@+id/lunch"
-            style="@style/GroupedChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:outlineProvider="bounds"
-            android:text="Lunch"
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-          <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:paddingBottom="0dp"
-            android:background="@drawable/chip_group_divider"/>
-          <com.google.android.material.chip.Chip
-            android:id="@+id/dinner"
-            style="@style/GroupedChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:text="Dinner"
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-        </com.cornellappdev.android.eatery.HideUnselectedChipGroup>
-        <com.cornellappdev.android.eatery.HideUnselectedChipGroup
-          android:id="@+id/areaChipGroup"
-          style="@style/GroupedChipGroup"
+          android:background="@drawable/chip_group_divider"/>
+        <com.google.android.material.chip.Chip
+          android:id="@+id/lunch"
+          style="@style/GroupedChip"
           android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:outlineProvider="bounds"
+          android:text="Lunch"
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+        <View
+          android:layout_width="1dp"
           android:layout_height="match_parent"
-          android:layout_weight="1"
-          android:animateLayoutChanges="true"
-          app:chipSpacing="0dp"
-          app:singleLine="true"
-          app:singleSelection="true">
-          <com.google.android.material.chip.Chip
-            android:id="@+id/north"
-            style="@style/GroupedChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:text="North"
+          android:paddingBottom="0dp"
+          android:background="@drawable/chip_group_divider"/>
+        <com.google.android.material.chip.Chip
+          android:id="@+id/dinner"
+          style="@style/GroupedChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:text="Dinner"
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+      </com.cornellappdev.android.eatery.HideUnselectedChipGroup>
+      <com.cornellappdev.android.eatery.HideUnselectedChipGroup
+        android:id="@+id/areaChipGroup"
+        style="@style/GroupedChipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:animateLayoutChanges="true"
+        app:chipSpacing="0dp"
+        app:singleLine="true"
+        app:singleSelection="true">
+        <com.google.android.material.chip.Chip
+          android:id="@+id/north"
+          style="@style/GroupedChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:text="North"
 
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-          <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/chip_group_divider"/>
-          <com.google.android.material.chip.Chip
-            android:id="@+id/central"
-            style="@style/GroupedChip"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:text="Central"
-            android:textSize="18sp"
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-          <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:paddingBottom="0dp"
-            android:background="@drawable/chip_group_divider"/>
-          <com.google.android.material.chip.Chip
-            android:id="@+id/west"
-            style="@style/GroupedChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:checkable="true"
-            android:gravity="center"
-            android:text="West"
-            app:checkedIconEnabled="true"
-            app:chipIconEnabled="false"
-            app:closeIconEnabled="false"/>
-        </com.cornellappdev.android.eatery.HideUnselectedChipGroup>
-      </LinearLayout>
-    </HorizontalScrollView>
-  </LinearLayout>
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+        <View
+          android:layout_width="1dp"
+          android:layout_height="match_parent"
+          android:background="@drawable/chip_group_divider"/>
+        <com.google.android.material.chip.Chip
+          android:id="@+id/central"
+          style="@style/GroupedChip"
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:text="Central"
+          android:textSize="18sp"
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+        <View
+          android:layout_width="1dp"
+          android:layout_height="match_parent"
+          android:paddingBottom="0dp"
+          android:background="@drawable/chip_group_divider"/>
+        <com.google.android.material.chip.Chip
+          android:id="@+id/west"
+          style="@style/GroupedChip"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="0.3"
+          android:checkable="true"
+          android:gravity="center"
+          android:text="West"
+          app:checkedIconEnabled="true"
+          app:chipIconEnabled="false"
+          app:closeIconEnabled="false"/>
+      </com.cornellappdev.android.eatery.HideUnselectedChipGroup>
+    </LinearLayout>
+  </HorizontalScrollView>
+
   <ScrollView
     android:id="@+id/weekly_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_below="@id/lin">
+    android:layout_below="@id/filterScroll">
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
