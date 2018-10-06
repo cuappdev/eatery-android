@@ -1,8 +1,6 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SearchView.OnQueryTextListener;
+import androidx.arch.core.util.Function;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
@@ -38,18 +38,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnQueryTextListener {
 
-  public static final String FILTER_BG_COLOR_OFF = "#F2F2F2";
-  public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
-  public static final String FILTER_TXT_COLOR_OFF = "#4B7FBE";
-  public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
-
   private static final EateryModelFilter<CampusArea> AREA_FILTER = (model, area) -> area == model
       .getArea();
   private static final EateryModelFilter<PaymentMethod> PAYMENT_FILTER = EateryModel::hasPaymentMethod;
   private static final EateryModelFilter<String> SEARCH_FILTER = (model, query) -> {
     String cleanQuery = query.trim().toLowerCase();
     boolean remove = true;
-    if (model.getNickName().contains(query)) {
+    if (model.getNickName().contains(cleanQuery)) {
       remove = false;
     }
 
@@ -59,10 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         remove = false;
       }
     }
-    return remove;
+    return !remove;
   };
   public static boolean searchPressed = false;
-  public Button areaButtonPressed;
   public BottomNavigationView bnv;
   public Chip brbButton;
   public Chip centralButton;
@@ -72,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
   //final QueryListener queryListener = new QueryListener();
   public RecyclerView mRecyclerView;
   public Chip northButton;
-  public Button paymentButtonPressed;
   public ProgressBar progressBar;
   public RelativeLayout splash;
   public Chip swipesButton;
@@ -146,99 +139,37 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
           }
           return true;
         });
+
+    Function<PaymentMethod, OnCheckedChangeListener> paymentListener = (paymentMethod) -> (compoundButton, b) -> {
+      if (b) {
+        listAdapter.addFilter(paymentMethod, PAYMENT_FILTER);
+      } else {
+        listAdapter.removeFilters(PAYMENT_FILTER);
+      }
+      listAdapter.filter();
+    };
+
+    Function<CampusArea, OnCheckedChangeListener> areaListener = (area) -> (compoundButton, b) -> {
+      if (b) {
+        listAdapter.addFilter(area, AREA_FILTER);
+      } else {
+        listAdapter.removeFilters(AREA_FILTER);
+      }
+      listAdapter.filter();
+    };
+
+    swipesButton.setOnCheckedChangeListener(paymentListener.apply(PaymentMethod.SWIPES));
+    brbButton.setOnCheckedChangeListener(paymentListener.apply(PaymentMethod.BRB));
+
+    northButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.NORTH));
+    westButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.WEST));
+    centralButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.CENTRAL));
   }
 
   @Override
   public void onResume() {
     super.onResume();
     bnv.setSelectedItemId(R.id.action_home);
-  }
-
-  public void changeButtonColor(String textColor, String backgroundColor, Button button) {
-    button.setTextColor(Color.parseColor(textColor));
-    GradientDrawable bgShape = (GradientDrawable) button.getBackground();
-    bgShape.setColor(Color.parseColor(backgroundColor));
-  }
-
-  private CampusArea getCurrentArea() {
-    if (northButton.equals(areaButtonPressed)) {
-      return CampusArea.NORTH;
-    } else if (westButton.equals(areaButtonPressed)) {
-      return CampusArea.WEST;
-    } else if (centralButton.equals(areaButtonPressed)) {
-      return CampusArea.CENTRAL;
-    } else {
-      return null;
-    }
-  }
-
-  private PaymentMethod getCurrentPaymentType() {
-    if (brbButton.equals(paymentButtonPressed)) {
-      return PaymentMethod.BRB;
-    } else if (swipesButton.equals(paymentButtonPressed)) {
-      return PaymentMethod.SWIPES;
-    } else {
-      return null;
-    }
-  }
-
-  private void handleAreaButtonPress(Button button, CampusArea area) {
-    CampusArea currentArea = getCurrentArea();
-    if (!button.equals(areaButtonPressed)) {
-      changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
-      if (areaButtonPressed != null) {
-        changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
-      }
-      if (currentArea != null) {
-        listAdapter.removeFilter(currentArea, AREA_FILTER);
-      }
-      areaButtonPressed = button;
-      listAdapter.addFilter(area, AREA_FILTER);
-    } else {
-      changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
-      areaButtonPressed = null;
-      listAdapter.removeFilter(area, AREA_FILTER);
-    }
-    listAdapter.filter();
-  }
-
-  private void handlePaymentButtonPress(Button button, PaymentMethod payment) {
-    PaymentMethod paymentMethod = getCurrentPaymentType();
-    if (!button.equals(paymentButtonPressed)) {
-      changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
-      if (paymentButtonPressed != null) {
-        changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
-      }
-      if (paymentMethod != null) {
-        listAdapter.removeFilter(paymentMethod, PAYMENT_FILTER);
-      }
-      paymentButtonPressed = button;
-      listAdapter.addFilter(payment, PAYMENT_FILTER);
-    } else {
-      changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
-      paymentButtonPressed = null;
-      listAdapter.removeFilter(payment, PAYMENT_FILTER);
-    }
-    listAdapter.filter();
-  }
-
-  public void filterClick(View view) {
-    switch (view.getId()) {
-      case R.id.northButton:
-        handleAreaButtonPress(northButton, CampusArea.NORTH);
-        return;
-      case R.id.westButton:
-        handleAreaButtonPress(westButton, CampusArea.WEST);
-        return;
-      case R.id.centralButton:
-        handleAreaButtonPress(centralButton, CampusArea.CENTRAL);
-        return;
-      case R.id.swipesButton:
-        handlePaymentButtonPress(swipesButton, PaymentMethod.SWIPES);
-        return;
-      case R.id.brbButton:
-        handlePaymentButtonPress(brbButton, PaymentMethod.BRB);
-    }
   }
 
   @Override

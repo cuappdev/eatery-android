@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.LayoutInflater.Filter;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -70,7 +71,7 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
           return a.getId() == b.getId();
         }
       });
-  private Map<Object, EateryModelFilter> mFilters = new HashMap<>();
+  private Map<EateryModelFilter<?>, List<Object>> mFilterValues = new HashMap<>();
 
   EateryRecyclerViewAdapter(Context context, List<EateryModel> list,
       Comparator<EateryModel> comparator) {
@@ -92,11 +93,23 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
   }
 
   public <T> void removeFilter(@NonNull T t, EateryModelFilter<T> filter) {
-    mFilters.remove(t);
+    List<Object> objs = mFilterValues.get(filter);
+    if (objs != null) {
+      objs.remove(t);
+    }
+  }
+
+  public <T> void removeFilters(EateryModelFilter<T> filter) {
+    mFilterValues.put(filter, new ArrayList<>());
   }
 
   public <T> void addFilter(@NonNull T t, EateryModelFilter<T> filter) {
-    mFilters.put(t, filter);
+    List<Object> objs = mFilterValues.get(filter);
+    if (objs == null) {
+      objs = new ArrayList<>();
+    }
+    objs.add(t);
+    mFilterValues.put(filter, objs);
   }
 
   public void filter() {
@@ -105,8 +118,15 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
     for (int i = mEateries.size() - 1; i >= 0; i--) {
       final EateryModel model = mEateries.get(i);
       boolean keep = true;
-      for (Entry<Object, EateryModelFilter> retainedFilter : mFilters.entrySet()) {
-        keep = retainedFilter.getValue().filter(model, retainedFilter.getKey());
+      for (Entry<EateryModelFilter<?>, List<Object>> retainedFilter : mFilterValues
+          .entrySet()) {
+        for (Object obj : retainedFilter.getValue()) {
+          EateryModelFilter filter = retainedFilter.getKey();
+          @SuppressWarnings("unchecked")
+          boolean toKeep = filter.filter(model, obj);
+          keep = toKeep;
+        }
+
         if (!keep) {
           break;
         }
