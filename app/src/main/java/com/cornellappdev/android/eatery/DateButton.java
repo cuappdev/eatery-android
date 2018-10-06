@@ -39,7 +39,7 @@ public class DateButton extends LinearLayout implements Checkable {
   }
 
   private void init(Context context) {
-    View v = View.inflate(context, R.layout.date_button, this);
+    View v = View.inflate(context, R.layout.button_date, this);
     this.dayTextView = v.findViewById(R.id.dayText);
     this.dateTextView = v.findViewById(R.id.dateText);
 

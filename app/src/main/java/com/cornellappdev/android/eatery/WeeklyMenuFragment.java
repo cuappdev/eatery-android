@@ -1,15 +1,12 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import com.cornellappdev.android.eatery.DateButtonGroup.OnCheckedChangeListener;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
@@ -51,7 +48,7 @@ public class WeeklyMenuFragment extends EateryTabFragment {
     super.onCreate(savedInstanceState);
 
     final View weeklyMenuFragment = inflater
-        .inflate(R.layout.activity_weekly_menu, container, false);
+        .inflate(R.layout.fragment_weekly_menu, container, false);
 
     mealTypeChipGroup = weeklyMenuFragment.findViewById(R.id.mealTypeChipGroup);
     areaChipGroup = weeklyMenuFragment.findViewById(R.id.areaChipGroup);

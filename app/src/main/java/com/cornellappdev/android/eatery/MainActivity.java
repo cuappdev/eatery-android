@@ -8,18 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SearchView.OnQueryTextListener;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
@@ -27,7 +22,7 @@ import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
-import com.cornellappdev.android.eatery.network.JsonUtilities;
+import com.cornellappdev.android.eatery.network.JSONUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
@@ -142,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
     ConnectionUtilities con = new ConnectionUtilities(this);
     if (!con.isNetworkAvailable()) {
       mEateries = new ArrayList<>();
-      if (JsonUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext()) != null) {
-        mEateries = JsonUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext());
+      if (JSONUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext()) != null) {
+        mEateries = JSONUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext());
       }
       Collections.sort(mEateries);
 
@@ -151,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         fragment.onDataLoaded(Collections.unmodifiableList(mEateries));
       });
     } else {
-      new ProcessJson().execute("");
+      new ProcessJSON().execute("");
     }
   }
 
@@ -226,12 +221,12 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  public class ProcessJson extends AsyncTask<String, Void, List<EateryModel>> {
+  public class ProcessJSON extends AsyncTask<String, Void, List<EateryModel>> {
     @Override
     protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
       mDBHelper.addData(json);
-      mEateries = JsonUtilities.parseJson(json, getApplicationContext());
+      mEateries = JSONUtilities.parseJson(json, getApplicationContext());
       Collections.sort(mEateries);
       return mEateries;
     }

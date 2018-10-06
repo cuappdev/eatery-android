@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +74,7 @@ public class EateriesFragment extends EateryTabFragment implements OnQueryTextLi
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    final View eateriesFragment = inflater.inflate(R.layout.eateries_fragment, container, false);
+    final View eateriesFragment = inflater.inflate(R.layout.fragment_eateries, container, false);
 
     mRecyclerView = eateriesFragment.findViewById(R.id.cafe_list);
     paymentChipGroup = eateriesFragment.findViewById(R.id.paymentChipGroup);
