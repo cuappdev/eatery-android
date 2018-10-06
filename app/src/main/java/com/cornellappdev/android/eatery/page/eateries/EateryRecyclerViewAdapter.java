@@ -1,18 +1,20 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page.eateries;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.LayoutInflater.Filter;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SortedList;
-import com.cornellappdev.android.eatery.CardViewHolder.ImageCardViewHolder;
+import com.cornellappdev.android.eatery.MainActivity;
+import com.cornellappdev.android.eatery.MenuActivity;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.databinding.CardItemBinding;
 import com.cornellappdev.android.eatery.databinding.CardTextBinding;
 import com.cornellappdev.android.eatery.model.EateryModel;
+import com.cornellappdev.android.eatery.page.eateries.CardViewHolder.ImageCardViewHolder;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;

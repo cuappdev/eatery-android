@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page;
 
 import android.util.Log;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import com.cornellappdev.android.eatery.page.eateries.EateriesFragment;
+import com.cornellappdev.android.eatery.page.menu.WeeklyMenuFragment;
 import java.lang.ref.WeakReference;
 
 public class EateryPagerAdapter extends FragmentPagerAdapter {
@@ -14,7 +16,7 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
   private static final String TAG = "EateryPagerAdapter";
   private WeakReference<EateryTabFragment> eateries, weeklyMenu;
 
-  EateryPagerAdapter(FragmentManager fm) {
+  public EateryPagerAdapter(FragmentManager fm) {
     super(fm);
   }
 
@@ -108,7 +110,7 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
     forAllItems.action(getItem(Page.WEEKLY_MENU));
   }
 
-  interface ForAllItems {
+  public interface ForAllItems {
     void action(EateryTabFragment fragment);
   }
 }

@@ -1,9 +1,8 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import com.cornellappdev.android.eatery.TimeUtil;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

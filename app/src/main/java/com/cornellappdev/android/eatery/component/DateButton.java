@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.component;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,7 @@ import android.widget.Checkable;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
+import com.cornellappdev.android.eatery.R;
 
 public class DateButton extends LinearLayout implements Checkable {
 

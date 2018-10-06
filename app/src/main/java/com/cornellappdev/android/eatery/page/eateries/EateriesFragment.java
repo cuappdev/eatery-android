@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page.eateries;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.arch.core.util.Function;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.cornellappdev.android.eatery.page.EateryTabFragment;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.PaymentMethod;

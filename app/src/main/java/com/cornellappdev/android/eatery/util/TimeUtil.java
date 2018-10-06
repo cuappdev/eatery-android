@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.util;
 
 import org.threeten.bp.ZoneId;
 

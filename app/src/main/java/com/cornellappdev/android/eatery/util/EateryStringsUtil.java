@@ -1,7 +1,8 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.util;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.EateryModel.Status;
 import java.util.Calendar;

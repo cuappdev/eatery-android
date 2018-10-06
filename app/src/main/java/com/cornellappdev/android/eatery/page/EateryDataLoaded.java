@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page;
 
 import com.cornellappdev.android.eatery.model.EateryModel;
 import java.util.List;

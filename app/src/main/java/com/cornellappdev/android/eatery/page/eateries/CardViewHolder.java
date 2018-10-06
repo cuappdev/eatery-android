@@ -1,7 +1,8 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page.eateries;
 
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
+import com.cornellappdev.android.eatery.OnItemClickListener;
 import com.cornellappdev.android.eatery.databinding.CardItemBinding;
 import com.cornellappdev.android.eatery.databinding.CardTextBinding;
 import com.cornellappdev.android.eatery.model.EateryModel;

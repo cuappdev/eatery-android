@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page.menu;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import com.cornellappdev.android.eatery.component.DateButton;
+import com.cornellappdev.android.eatery.component.DateButtonGroup;
+import com.cornellappdev.android.eatery.page.EateryTabFragment;
+import com.cornellappdev.android.eatery.component.NonScrollExpandableListView;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.DiningHallModel;

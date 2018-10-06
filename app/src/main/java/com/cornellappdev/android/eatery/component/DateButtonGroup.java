@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.component;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,7 +8,7 @@ import android.view.ViewGroup.OnHierarchyChangeListener;
 import android.widget.LinearLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import com.cornellappdev.android.eatery.DateButton.OnCheckChangedListener;
+import com.cornellappdev.android.eatery.component.DateButton.OnCheckChangedListener;
 
 public class DateButtonGroup extends LinearLayout implements OnHierarchyChangeListener,
     OnCheckChangedListener {

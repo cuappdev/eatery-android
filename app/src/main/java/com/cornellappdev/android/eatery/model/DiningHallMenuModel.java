@@ -1,7 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import androidx.annotation.NonNull;
-import com.cornellappdev.android.eatery.TimeUtil;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,19 +39,34 @@ public class DiningHallMenuModel implements Iterable<MealModel>, Serializable {
   }
 
   public MealModel getMeal(int mealOrder) {
+    MealModel meal;
     switch (mealOrder) {
       case 0:
-        return getMeal(MealType.BREAKFAST);
+        meal = getMeal(MealType.BREAKFAST);
+        if (meal != null) {
+          break;
+        }
       case 1:
-        return getMeal(MealType.BRUNCH);
+        meal = getMeal(MealType.BRUNCH);
+        if (meal != null) {
+          break;
+        }
       case 2:
-        return getMeal(MealType.LITE_LUNCH);
+        meal = getMeal(MealType.LITE_LUNCH);
+        if (meal != null) {
+          break;
+        }
       case 3:
-        return getMeal(MealType.LITE_LUNCH);
+        meal = getMeal(MealType.LITE_LUNCH);
+        if (meal != null) {
+          break;
+        }
       case 4:
       default:
-        return getMeal(MealType.DINNER);
+        meal = getMeal(MealType.DINNER);
+        break;
     }
+    return meal;
   }
 
   public MealModel getCurrentMeal() {

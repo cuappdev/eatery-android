@@ -20,11 +20,15 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import com.cornellappdev.android.eatery.model.CafeModel;
+import com.cornellappdev.android.eatery.model.DiningHallMenuModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealType;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
+import com.cornellappdev.android.eatery.util.EateryStringsUtil;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -46,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
   TextView menuText;
   ImageView swipe_icon;
   Toolbar toolbar;
-  private CustomPager customPager;
+  private ViewPager customPager;
   private TabLayout tabLayout;
 
   /**
@@ -250,7 +254,7 @@ public class MenuActivity extends AppCompatActivity {
     }
   }
 
-  private void setupViewPager(CustomPager customPager) {
+  private void setupViewPager(ViewPager customPager) {
     ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(),
         getSupportFragmentManager());
     customPager.setAdapter(adapter);
@@ -285,10 +289,9 @@ public class MenuActivity extends AppCompatActivity {
           position = 0;
         }
         Fragment fragment = (Fragment) object;
-        CustomPager pager = (CustomPager) container;
+        ViewPager pager = (ViewPager) container;
         if (fragment != null && fragment.getView() != null) {
           mCurrentPosition = position;
-          pager.measureCurrentView(fragment.getView());
         }
       }
     }
@@ -324,11 +327,9 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public CharSequence getPageTitle(int position) {
       if (mEatery instanceof DiningHallModel) {
-        MealType type = ((DiningHallModel) mEatery)
-            .getWeeklyMenu()
-            .get(ZonedDateTime.now().getDayOfWeek())
-            .getMeal(position)
-            .getType();
+        DiningHallMenuModel menu = ((DiningHallModel) mEatery)
+            .getMenuForDay(ZonedDateTime.now().getDayOfWeek());
+        MealType type = menu.getMeal(position).getType();
         switch (type) {
           case BREAKFAST:
             return getString(R.string.breakfast);

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <data>
-    <import type="com.cornellappdev.android.eatery.EateryStringsUtil"/>
+    <import type="com.cornellappdev.android.eatery.util.EateryStringsUtil"/>
     <import type="com.cornellappdev.android.eatery.model.EateryModel.Status"/>
     <import type="com.cornellappdev.android.eatery.model.PaymentMethod"/>
     <import type="com.cornellappdev.android.eatery.model.DiningHallModel"/>

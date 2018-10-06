@@ -12,8 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import com.cornellappdev.android.eatery.model.DiningHallMenuModel;
 import com.cornellappdev.android.eatery.model.MealMenuModel;
-import com.cornellappdev.android.eatery.model.MealModel;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public class MenuFragment extends Fragment {
   @Override
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    List<MealModel> menus = (List<MealModel>) getArguments().getSerializable("mEatery");
+    DiningHallMenuModel menus = (DiningHallMenuModel) getArguments().getSerializable("mEatery");
     View view = inflater.inflate(R.layout.fragment_menu, container, false);
     LinearLayout linear = view.findViewById(R.id.linearFragment);
     Context context = getContext();
@@ -40,7 +40,7 @@ public class MenuFragment extends Fragment {
     }
     float scale = getResources().getDisplayMetrics().density;
     // Checks for unavailable or missing menus
-    if (menus.get(position).getMenu().getNumberOfCategories() == 0) {
+    if (menus.getMeal(position).getMenu().getNumberOfCategories() == 0) {
       TextView missingMenuText = new TextView(getContext());
       missingMenuText.setText(R.string.no_menu_available);
       if (context != null) {
@@ -51,7 +51,7 @@ public class MenuFragment extends Fragment {
       linear.addView(missingMenuText);
     }
     int counter = 0;
-    MealMenuModel menu = menus.get(position).getMenu();
+    MealMenuModel menu = menus.getMeal(position).getMenu();
     for (String category : menu.getCategories()) {
       // Add subheading for category of food
       List<String> value = menu.getItems(category);
@@ -95,7 +95,7 @@ public class MenuFragment extends Fragment {
         }
       }
       // Add horizontal line that separates each category
-      if (counter != menus.get(position).getMenu().getNumberOfCategories()) {
+      if (counter != menus.getMeal(position).getMenu().getNumberOfCategories()) {
         View divider = new View(getContext());
         divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
         divider.setLayoutParams(

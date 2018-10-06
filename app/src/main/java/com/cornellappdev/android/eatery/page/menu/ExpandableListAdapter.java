@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.page.menu;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
-import com.cornellappdev.android.eatery.WeeklyMenuFragment.MenuListItem;
+import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.util.TimeUtil;
+import com.cornellappdev.android.eatery.page.menu.WeeklyMenuFragment.MenuListItem;
 import com.cornellappdev.android.eatery.model.DiningHallMenuModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;

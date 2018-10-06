@@ -150,7 +150,7 @@
         android:background="#ffffff"
         app:tabIndicatorColor="#4e80bd"
         app:tabTextAppearance="@style/tabLayoutText"/>
-      <com.cornellappdev.android.eatery.CustomPager
+      <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
