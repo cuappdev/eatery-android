@@ -27,6 +27,7 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealType;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
+import com.cornellappdev.android.eatery.network.UriUtil;
 import com.cornellappdev.android.eatery.util.EateryStringsUtil;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -38,20 +39,15 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.ZonedDateTime;
 
 public class MenuActivity extends AppCompatActivity {
-  AppBarLayout appbar;
-  ImageView brb_icon;
-  SimpleDraweeView cafeImage;
-  TextView cafeIsOpen;
-  TextView cafeLoc;
-  TextView cafeText;
-  CollapsingToolbarLayout collapsingToolbar;
-  LinearLayout linLayout;
-  EateryModel mEatery;
-  TextView menuText;
-  ImageView swipe_icon;
-  Toolbar toolbar;
-  private ViewPager customPager;
-  private TabLayout tabLayout;
+  private AppBarLayout appbar;
+  private ImageView brbIcon, swipeIcon;
+  private SimpleDraweeView cafeImage;
+  private TextView cafeIsOpen, cafeLocation, cafeText;
+  private CollapsingToolbarLayout collapsingToolbar;
+  private LinearLayout linLayout;
+  private EateryModel mEatery;
+  private TextView menuText;
+  private Toolbar toolbar;
 
   /**
    * Returns scaled size for images NOTE: borrowed from Android Studio reference*
@@ -88,38 +84,6 @@ public class MenuActivity extends AppCompatActivity {
     return BitmapFactory.decodeResource(res, resId, options);
   }
 
-  /**
-   * Gets name of corresponding picture to cafe*
-   */
-  public static String convertName(String str) {
-    if (str.equals("104West!.jpg")) {
-      return "104-West.jpg";
-    }
-    if (str.equals("McCormick's.jpg")) {
-      return "mccormicks.jpg";
-    }
-    if (str.equals("Franny's.jpg")) {
-      return "frannys.jpg";
-    }
-    if (str.equals("Ice Cream Cart.jpg")) {
-      return "icecreamcart.jpg";
-    }
-    if (str.equals("Risley Dining Room.jpg")) {
-      return "Risley-Dining.jpg";
-    }
-    if (str.equals("Martha's Express.jpg")) {
-      return "Marthas-Cafe.jpg";
-    }
-    if (str.equals("Bus Stop Bagels.jpg")) {
-      return "Bug-Stop-Bagels.jpg";
-    }
-    str = str.replaceAll("!", "");
-    str = str.replaceAll("[&\']", "");
-    str = str.replaceAll(" ", "-");
-    str = str.replaceAll("é", "e");
-    return str;
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -130,6 +94,8 @@ public class MenuActivity extends AppCompatActivity {
     getSupportActionBar().setHomeButtonEnabled(true);
     Intent intent = getIntent();
     final String cafeName = (String) intent.getSerializableExtra("locName");
+    mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
+
     cafeText = findViewById(R.id.ind_cafe_name);
     cafeText.setText(cafeName);
     collapsingToolbar = findViewById(R.id.collapsing_toolbar);
@@ -156,22 +122,10 @@ public class MenuActivity extends AppCompatActivity {
       }
     });
 
-    mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
-
     // TODO Remove lite lunch for North Star and Becker?
-
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
-    if (mEatery.getCurrentStatus() == EateryModel.Status.OPEN) {
-      cafeIsOpen.setText(getString(R.string.open));
-      cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-    } else if (mEatery.getCurrentStatus() == EateryModel.Status.CLOSING_SOON) {
-      cafeIsOpen.setText(getString(R.string.closing_soon));
-      cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
-    } else {
-      cafeIsOpen.setText(getString(R.string.closed));
-      cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
-    }
+    cafeIsOpen.setText(EateryStringsUtil.getStatusString(mEatery.getCurrentStatus()));
     cafeText = findViewById(R.id.ind_time);
     String openingClosingDescription = EateryStringsUtil
         .getOpeningClosingDescription(this, mEatery);
@@ -180,27 +134,29 @@ public class MenuActivity extends AppCompatActivity {
     } else {
       cafeText.setVisibility(View.INVISIBLE);
     }
-    cafeLoc = findViewById(R.id.ind_loc);
-    cafeLoc.setText(mEatery.getBuildingLocation());
+    cafeLocation = findViewById(R.id.ind_loc);
+    cafeLocation.setText(mEatery.getBuildingLocation());
+    Uri uri = UriUtil.getImageUri(mEatery);
     cafeImage = findViewById(R.id.ind_image);
     cafeImage.setBackgroundColor(0xFFff0000);
-    String imageLocation =
-        "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-            + convertName(cafeName + ".jpg");
-    Uri uri = Uri.parse(imageLocation);
     cafeImage.setImageURI(uri);
-    brb_icon = findViewById(R.id.brb_icon);
+
+    brbIcon = findViewById(R.id.brb_icon);
 
     if (mEatery.hasPaymentMethod(PaymentMethod.BRB)) {
-      brb_icon.setVisibility(View.VISIBLE);
+      brbIcon.setVisibility(View.VISIBLE);
+    } else {
+      brbIcon.setVisibility(View.GONE);
+    }
+    swipeIcon = findViewById(R.id.swipe_icon);
+    if (mEatery instanceof DiningHallModel) {
+      swipeIcon.setVisibility(View.VISIBLE);
+    } else {
+      brbIcon.setVisibility(View.GONE);
     }
 
-    swipe_icon = findViewById(R.id.swipe_icon);
-    if (mEatery instanceof DiningHallModel) {
-      swipe_icon.setVisibility(View.VISIBLE);
-    }
-    customPager = findViewById(R.id.pager);
-    tabLayout = findViewById(R.id.tabs);
+    ViewPager customPager = findViewById(R.id.pager);
+    TabLayout tabLayout = findViewById(R.id.tabs);
     linLayout = findViewById(R.id.linear);
     // Formatting for when eatery is a cafe
     if (mEatery instanceof CafeModel) {
@@ -211,7 +167,7 @@ public class MenuActivity extends AppCompatActivity {
       View blank = new View(this);
       blank.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-      blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
+
       blank.setElevation(-1);
       linLayout.addView(blank);
       float scale = getResources().getDisplayMetrics().density;
@@ -219,14 +175,12 @@ public class MenuActivity extends AppCompatActivity {
         TextView mealItemText = new TextView(this);
         mealItemText.setText(cafe.getCafeMenu().get(i));
         mealItemText.setTextSize(14);
-        mealItemText.setTextColor(Color.parseColor("#de000000"));
         mealItemText.setPadding((int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
             (int) (8 * scale + 0.5f));
         linLayout.addView(mealItemText);
         // Add divider if text is not the last item in list
         if (i != cafe.getCafeMenu().size() - 1) {
           View divider = new View(this);
-          divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
           LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
               LinearLayout.LayoutParams.MATCH_PARENT, 1);
           dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
@@ -248,36 +202,18 @@ public class MenuActivity extends AppCompatActivity {
       customPager.setVisibility(View.VISIBLE);
       tabLayout.setVisibility(View.VISIBLE);
       linLayout.setVisibility(View.GONE);
-      setupViewPager(customPager);
+      ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(),
+          getSupportFragmentManager());
+      customPager.setAdapter(adapter);
       tabLayout.setupWithViewPager(customPager);
-      tabLayout.setTabTextColors(Color.parseColor("#57000000"), Color.parseColor("#4e80bd"));
-    }
-  }
-
-  private void setupViewPager(ViewPager customPager) {
-    ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(),
-        getSupportFragmentManager());
-    customPager.setAdapter(adapter);
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        onBackPressed();
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
     }
   }
 
   class ViewPagerAdapter extends FragmentPagerAdapter {
-    private Context mContext;
     private int mCurrentPosition = -1;
 
-    public ViewPagerAdapter(Context context, FragmentManager manager) {
+    ViewPagerAdapter(Context context, FragmentManager manager) {
       super(manager);
-      mContext = context;
     }
 
     // Set menu fragment to first MealModel object
@@ -289,7 +225,6 @@ public class MenuActivity extends AppCompatActivity {
           position = 0;
         }
         Fragment fragment = (Fragment) object;
-        ViewPager pager = (ViewPager) container;
         if (fragment != null && fragment.getView() != null) {
           mCurrentPosition = position;
         }
