@@ -1,61 +1,49 @@
 package com.cornellappdev.android.eatery.Model;
 
+import android.support.annotation.NonNull;
+import org.threeten.bp.LocalDateTime;
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
 
 /**
- * Created by abdullahislam on 2/18/18.
+ * Model class to represent each meal
  */
 
-public class MealModel implements Serializable{
-    private Date start;
-    private Date end;
-    private String type;
-    private HashMap<String, ArrayList<String>> menu;
+public class MealModel extends Interval implements Serializable {
+    private MealMenuModel menu;
+    private MealType type;
 
-    // toString() but better
+    MealModel(@NonNull LocalDateTime start, @NonNull LocalDateTime end) {
+        super(start, end);
+    }
+
+    //TODO: Keep it for now for testing. Get rid of it later
     public String stringTo() {
-        String info = type + " on " + " from: " + start.toString() + " to: " + end.toString() + "\n";
-        for (HashMap.Entry<String, ArrayList<String>> entry : menu.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            info = info + " " + key + ": " + value.toString() + "\n";
+        StringBuilder info = new StringBuilder(
+                String.format("%s from: %s to: %s\n", type, getStart(), getEnd())
+        );
+        for (String category : menu.getCategories()) {
+            List<String> value = menu.getItems(category);
+            info.append(String.format(" %s: %s\n", category, value.toString()));
         }
-        return info;
+        return info.toString();
     }
 
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
-
-    public HashMap<String, ArrayList<String>> getMenu() {
+    public MealMenuModel getMenu() {
         return menu;
     }
 
-    public void setMenu(HashMap<String, ArrayList<String>> menu) {
+    public void setMenu(MealMenuModel menu) {
         this.menu = menu;
     }
 
-    public String getType() {
+    public MealType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(MealType type) {
         this.type = type;
     }
-
 }
+
