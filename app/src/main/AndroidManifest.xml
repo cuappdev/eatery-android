@@ -32,7 +32,7 @@
       />
 
     <activity
-      android:name="com.cornellappdev.android.eatery.WeeklyMenuActivity"
+      android:name="com.cornellappdev.android.eatery.WeeklyMenuFragment"
       android:screenOrientation="portrait"
       android:theme="@style/AppTheme"
       />

@@ -195,10 +195,11 @@ public class EateryRecyclerViewAdapter extends RecyclerView.Adapter<CardViewHold
   public void onBindViewHolder(CardViewHolder inputHolder, int position) {
     final EateryModel eateryModel = mSortedList.get(position);
     inputHolder.bind(eateryModel, eatery -> {
-      Intent intent = new Intent(mContext, MenuActivity.class);
+      Intent intent = new Intent(mContext.getApplicationContext(), MenuActivity.class);
       intent.putExtra("cafeInfo", eatery);
       intent.putExtra("locName", eatery.getNickName());
-      mContext.startActivity(intent);
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      mContext.getApplicationContext().startActivity(intent);
     });
   }
 

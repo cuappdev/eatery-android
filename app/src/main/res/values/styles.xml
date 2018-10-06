@@ -23,6 +23,20 @@
     <item name="textAllCaps">false</item>
   </style>
 
+  <style name="GroupedChipGroup">
+    <item name="android:background">@drawable/chip_group_outline</item>
+  </style>
+
+  <style name="GroupedChip" parent="Widget.MaterialComponents.Chip.Filter">
+    <item name="android:checkable">true</item>
+
+    <item name="chipIconVisible">false</item>
+    <item name="closeIconVisible">true</item>
+
+    <item name="chipBackgroundColor">@color/chip_background_color</item>
+    <item name="android:textColor">@color/chip_text_color</item>
+  </style>
+
   <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="android:windowActionBar">false</item>
     <item name="android:windowNoTitle">true</item>

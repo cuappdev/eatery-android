@@ -65,7 +65,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
               case R.id.action_week:
                 finish();
-                intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+                intent = new Intent(getApplicationContext(), WeeklyMenuFragment.class);
                 intent.putExtra("mEatery", new ArrayList<>(cafeData));
                 startActivity(intent);
                 break;

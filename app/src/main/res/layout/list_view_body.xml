@@ -1,23 +1,33 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+  <data>
+    <variable
+      name="model"
+      type="com.cornellappdev.android.eatery.model.EateryModel"/>
+    <variable
+      name="meal"
+      type="com.cornellappdev.android.eatery.model.DiningHallMenuModel"/>
+  </data>
+  <LinearLayout
     android:id="@+id/list_view_body"
-    android:background="#f2f2f2"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingLeft="15dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
 
     <View
-        android:layout_width="match_parent"
-        android:id="@+id/horiline"
-        android:layout_height="1dp"
-        android:background="#c0c0c0"/>
+      android:id="@+id/horiline"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="#c0c0c0"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f2f2f2"
-        android:textSize="18sp"
-        android:id="@+id/menu_title"/>
+      android:id="@+id/menu_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="#f2f2f2"
+      android:textSize="18sp"/>
 
-</LinearLayout>
+  </LinearLayout>
+</layout>

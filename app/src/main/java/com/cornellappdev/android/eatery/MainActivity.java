@@ -8,19 +8,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SearchView.OnQueryTextListener;
-import androidx.arch.core.util.Function;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CampusArea;
 import com.cornellappdev.android.eatery.model.EateryModel;
@@ -29,14 +30,14 @@ import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.chip.Chip;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import com.google.android.material.snackbar.Snackbar;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnQueryTextListener {
+public class MainActivity extends AppCompatActivity {
 
   private static final EateryModelFilter<CampusArea> AREA_FILTER = (model, area) -> area == model
       .getArea();
@@ -57,119 +58,107 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     return !remove;
   };
   public static boolean searchPressed = false;
-  public BottomNavigationView bnv;
-  public Chip brbButton;
-  public Chip centralButton;
-  public CafeteriaDbHelper dbHelper;
-  public List<EateryModel> eateries = new ArrayList<>(); // holds all cafes
-  public EateryRecyclerViewAdapter listAdapter;
-  //final QueryListener queryListener = new QueryListener();
-  public RecyclerView mRecyclerView;
-  public Chip northButton;
-  public ProgressBar progressBar;
-  public RelativeLayout splash;
-  public Chip swipesButton;
-  public Chip westButton;
-  private String mCurrentQuery;
+  private EateryPagerAdapter mAdapter;
+  private BottomNavigationView mBottomNavigationView;
+  private CafeteriaDbHelper mDBHelper;
+  private List<EateryModel> mEateries; // holds all cafes
+  private MenuItem mPrevMenuItem;
+  private OnPageChangeListener mOnPageChangeListener = new OnPageChangeListener() {
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+      if (mPrevMenuItem != null) {
+        mPrevMenuItem.setChecked(false);
+      } else {
+        /* If no menu item was previously selected, deselect EVERYTHING */
+        mBottomNavigationView.getMenu().getItem(Page.EATERIES).setChecked(false);
+        mBottomNavigationView.getMenu().getItem(Page.WEEKLY_MENU).setChecked(false);
+        mBottomNavigationView.getMenu().getItem(Page.BRB).setChecked(false);
+      }
+
+      /* Set currently selected item... */
+      mBottomNavigationView.getMenu().getItem(position).setChecked(true);
+      mPrevMenuItem = mBottomNavigationView.getMenu().getItem(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+  };
+  private ProgressBar mProgressBar;
+  private RelativeLayout mSplash;
+  private ViewPager mViewPager;
+  private OnNavigationItemSelectedListener mOnNavItemSelectedListener = new OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+      switch (item.getItemId()) {
+        case R.id.action_week:
+          mViewPager.setCurrentItem(Page.WEEKLY_MENU);
+          break;
+        case R.id.action_home:
+          mViewPager.setCurrentItem(Page.EATERIES);
+          break;
+        case R.id.action_brb:
+          Snackbar snackbar =
+              Snackbar.make(
+                  findViewById(R.id.main_activity),
+                  "If you would like"
+                      + " to see this feature, consider joining our Android dev team!",
+                  Snackbar.LENGTH_LONG);
+          snackbar.setAction("Apply", new SnackBarListener());
+          snackbar.show();
+          break;
+      }
+      return true;
+    }
+  };
+
+  public MainActivity() {
+    mEateries = new ArrayList<>();
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setTitle("Eatery");
     setContentView(R.layout.activity_main);
-    dbHelper = new CafeteriaDbHelper(this);
-    mRecyclerView = findViewById(R.id.cafe_list);
-    northButton = findViewById(R.id.northButton);
-    westButton = findViewById(R.id.westButton);
-    centralButton = findViewById(R.id.centralButton);
-    swipesButton = findViewById(R.id.swipesButton);
-    brbButton = findViewById(R.id.brbButton);
-    progressBar = findViewById(R.id.progress_bar);
-    bnv = findViewById(R.id.bottom_navigation);
-    splash = findViewById(R.id.relative_layout_splash);
-    bnv.setVisibility(View.GONE);
-    if (getSupportActionBar() != null) {
-      getSupportActionBar().hide();
-    }
+    getSupportActionBar().show();
+    mBottomNavigationView = findViewById(R.id.bottom_navigation);
+    mViewPager = findViewById(R.id.pager);
+    EateryPagerAdapter mViewPagerAdapter = new EateryPagerAdapter(getSupportFragmentManager());
+    mAdapter = mViewPagerAdapter;
+    mViewPager.setAdapter(mViewPagerAdapter);
+    mViewPager.setOffscreenPageLimit(2);
+    mViewPager.addOnPageChangeListener(mOnPageChangeListener);
+    mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavItemSelectedListener);
+    mSplash = findViewById(R.id.splash_layout);
+    mProgressBar = findViewById(R.id.progress_bar);
+    mDBHelper = new CafeteriaDbHelper(this);
     ConnectionUtilities con = new ConnectionUtilities(this);
     if (!con.isNetworkAvailable()) {
-      eateries = new ArrayList<>();
-      if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-        eateries = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
+      mEateries = new ArrayList<>();
+      if (JsonUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext()) != null) {
+        mEateries = JsonUtilities.parseJson(mDBHelper.getLastRow(), getApplicationContext());
       }
-      Collections.sort(eateries);
-      mRecyclerView.setHasFixedSize(true);
-      LinearLayoutManager layoutManager =
-          new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
-      mRecyclerView.setLayoutManager(layoutManager);
-      listAdapter = new EateryRecyclerViewAdapter(
-          getApplicationContext(),
-          eateries,
-          EateryModel::compareTo
-      );
-      mRecyclerView.setAdapter(listAdapter);
+      Collections.sort(mEateries);
+
+      mAdapter.forAllItems((fragment) -> {
+        fragment.onDataLoaded(Collections.unmodifiableList(mEateries));
+      });
     } else {
       new ProcessJson().execute("");
     }
-    // Add functionality to bottom nav bar
-    bnv.setOnNavigationItemSelectedListener(
-        item -> {
-          Intent intent;
-          switch (item.getItemId()) {
-            case R.id.action_home:
-              ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
-              sv.smoothScrollTo(0, 0);
-              break;
-            case R.id.action_week:
-              intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-              intent.putExtra("mEatery", new ArrayList<>(eateries));
-              startActivity(intent);
-              overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-              break;
-            case R.id.action_brb:
-              Snackbar snackbar =
-                  Snackbar.make(
-                      findViewById(R.id.main_activity),
-                      "If you would like"
-                          + " to see this feature, consider joining our Android dev team!",
-                      Snackbar.LENGTH_LONG);
-              snackbar.setAction("Apply", new SnackBarListener());
-              snackbar.show();
-              break;
-          }
-          return true;
-        });
-
-    Function<PaymentMethod, OnCheckedChangeListener> paymentListener = (paymentMethod) -> (compoundButton, b) -> {
-      if (b) {
-        listAdapter.addFilter(paymentMethod, PAYMENT_FILTER);
-      } else {
-        listAdapter.removeFilters(PAYMENT_FILTER);
-      }
-      listAdapter.filter();
-    };
-
-    Function<CampusArea, OnCheckedChangeListener> areaListener = (area) -> (compoundButton, b) -> {
-      if (b) {
-        listAdapter.addFilter(area, AREA_FILTER);
-      } else {
-        listAdapter.removeFilters(AREA_FILTER);
-      }
-      listAdapter.filter();
-    };
-
-    swipesButton.setOnCheckedChangeListener(paymentListener.apply(PaymentMethod.SWIPES));
-    brbButton.setOnCheckedChangeListener(paymentListener.apply(PaymentMethod.BRB));
-
-    northButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.NORTH));
-    westButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.WEST));
-    centralButton.setOnCheckedChangeListener(areaListener.apply(CampusArea.CENTRAL));
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    bnv.setSelectedItemId(R.id.action_home);
+    mBottomNavigationView.setSelectedItemId(R.id.action_home);
   }
 
   @Override
@@ -177,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     switch (item.getItemId()) {
       case R.id.action_map:
         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-        intent.putExtra("mEatery", new ArrayList<>(eateries));
+        intent.putExtra("mEatery", new ArrayList<>(mEateries));
         startActivity(intent);
         return true;
       default:
@@ -208,24 +197,24 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
       } catch (Exception e) {
         // Don't do anything
       }
-      searchView.setOnQueryTextListener(this);
+      searchView.setOnQueryTextListener(
+          new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+              return mAdapter.getItem(mBottomNavigationView.getSelectedItemId())
+                  .onQueryTextSubmit(query);
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+              return mAdapter.getItem(mBottomNavigationView.getSelectedItemId())
+                  .onQueryTextChange(newText);
+            }
+          }
+      );
     }
 
     return super.onCreateOptionsMenu(menu);
-  }
-
-  @Override
-  public boolean onQueryTextSubmit(String query) {
-    mCurrentQuery = query;
-    listAdapter.addFilter(query, SEARCH_FILTER);
-    listAdapter.filter();
-    return true;
-  }
-
-  @Override
-  public boolean onQueryTextChange(String newText) {
-    listAdapter.removeFilter(mCurrentQuery, SEARCH_FILTER);
-    return onQueryTextSubmit(newText);
   }
 
   public class SnackBarListener implements View.OnClickListener {
@@ -241,28 +230,22 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     @Override
     protected List<EateryModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
-      dbHelper.addData(json);
-      eateries = JsonUtilities.parseJson(json, getApplicationContext());
-      Collections.sort(eateries);
-      return eateries;
+      mDBHelper.addData(json);
+      mEateries = JsonUtilities.parseJson(json, getApplicationContext());
+      Collections.sort(mEateries);
+      return mEateries;
     }
 
     @Override
     protected void onPostExecute(List<EateryModel> result) {
       super.onPostExecute(result);
-      splash.setVisibility(View.GONE);
-      bnv.setVisibility(View.VISIBLE);
+      mSplash.setVisibility(View.GONE);
+      mBottomNavigationView.setVisibility(View.VISIBLE);
       getSupportActionBar().show();
-      mRecyclerView.setHasFixedSize(true);
-      LinearLayoutManager layoutManager =
-          new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
-      mRecyclerView.setLayoutManager(layoutManager);
-      listAdapter =
-          new EateryRecyclerViewAdapter(getApplicationContext(), new ArrayList<>(eateries),
-              EateryModel::compareTo);
-      mRecyclerView.setAdapter(listAdapter);
-      mRecyclerView.setVisibility(View.VISIBLE);
-      progressBar.setVisibility(View.GONE);
+      mAdapter.forAllItems((fragment) -> {
+        fragment.onDataLoaded(Collections.unmodifiableList(mEateries));
+      });
+      mProgressBar.setVisibility(View.GONE);
     }
   }
 }

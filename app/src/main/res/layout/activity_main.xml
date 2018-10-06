@@ -21,89 +21,18 @@
     android:layout_centerInParent="true"
     android:layout_centerVertical="true"/>
 
-  <ScrollView
-    android:id="@+id/scrollView"
+  <androidx.viewpager.widget.ViewPager
+    android:id="@+id/pager"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="60dp">
-
-    <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-
-      <HorizontalScrollView
-        android:id="@+id/scroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
-
-        <LinearLayout
-          android:id="@+id/linear"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal">
-          <com.google.android.material.chip.ChipGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:singleSelection="true">
-            <com.google.android.material.chip.Chip
-              android:id="@+id/northButton"
-              style="@style/Widget.MaterialComponents.Chip.Filter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/area_north"/>
-            <com.google.android.material.chip.Chip
-              android:id="@+id/westButton"
-              style="@style/Widget.MaterialComponents.Chip.Filter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/area_west"/>
-            <com.google.android.material.chip.Chip
-              android:id="@+id/centralButton"
-              style="@style/Widget.MaterialComponents.Chip.Filter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/area_east"/>
-          </com.google.android.material.chip.ChipGroup>
-          <com.google.android.material.chip.ChipGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:singleSelection="true">
-            <com.google.android.material.chip.Chip
-              android:id="@+id/brbButton"
-              style="@style/Widget.MaterialComponents.Chip.Filter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/payment_brb"/>
-            <com.google.android.material.chip.Chip
-              android:id="@+id/swipesButton"
-              style="@style/Widget.MaterialComponents.Chip.Filter"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/payment_swipes"/>
-          </com.google.android.material.chip.ChipGroup>
-        </LinearLayout>
-      </HorizontalScrollView>
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cafe_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/scroll"
-        android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        android:onClick="filterClick"
-        android:visibility="gone"/>
-    </RelativeLayout>
-  </ScrollView>
-
+    android:layout_height="match_parent"/>
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     app:itemBackground="@color/colorWhite"
-    app:menu="@menu/bottom_nav_main"/>
+    app:menu="@menu/bottom_nav_main">
+  </com.google.android.material.bottomnavigation.BottomNavigationView>
 
   <RelativeLayout
     android:id="@+id/relative_layout_splash"

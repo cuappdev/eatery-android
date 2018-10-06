@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
+import org.threeten.bp.ZonedDateTime;
+
 public enum MealType {
   BREAKFAST,
   LUNCH,

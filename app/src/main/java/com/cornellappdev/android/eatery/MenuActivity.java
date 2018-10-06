@@ -23,14 +23,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
-import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.MealType;
 import com.cornellappdev.android.eatery.model.PaymentMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
-import java.util.ArrayList;
-import java.util.List;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
@@ -41,7 +38,6 @@ public class MenuActivity extends AppCompatActivity {
   ImageView brb_icon;
   SimpleDraweeView cafeImage;
   TextView cafeIsOpen;
-  ArrayList<EateryModel> cafeList;
   TextView cafeLoc;
   TextView cafeText;
   CollapsingToolbarLayout collapsingToolbar;
@@ -155,21 +151,11 @@ public class MenuActivity extends AppCompatActivity {
         }
       }
     });
-    cafeList = (ArrayList<EateryModel>) intent.getSerializableExtra("testData");
+
     mEatery = (EateryModel) intent.getSerializableExtra("cafeInfo");
-    // TODO(lesley): do this removal on the JSON side, also I'm certain that the
-    // logic to remove
-    // Becker is broken
-    // Remove Lite Lunch for North Star and Becker
-    if (mEatery instanceof DiningHallModel
-        && (mEatery.getNickName().equals("North Star") || mEatery.getNickName()
-        .equals("Becker House Dining"))) {
-      List<MealModel> menu = ((DiningHallModel) mEatery)
-          .getMenuForDay(ZonedDateTime.now().getDayOfWeek());
-      if (menu.size() > 2) {
-        menu.remove(2);
-      }
-    }
+
+    // TODO Remove lite lunch for North Star and Becker?
+
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
     if (mEatery.getCurrentStatus() == EateryModel.Status.OPEN) {
@@ -245,9 +231,9 @@ public class MenuActivity extends AppCompatActivity {
           linLayout.addView(divider);
         }
       }
-    } else if (mEatery instanceof DiningHallModel && !((DiningHallModel) mEatery)
+    } else if (mEatery instanceof DiningHallModel && ((DiningHallModel) mEatery)
         .getMenuForDay(LocalDate.now(TimeUtil.getInstance().getCornellTimeZone()).getDayOfWeek())
-        .isEmpty()) {
+        .numberOfMeals() != 0) {
       // Formatting for when eatery is a dining hall and has a menu
       // TODO Why does the second half of this condition exist/should it be
       // refactored?
@@ -313,8 +299,8 @@ public class MenuActivity extends AppCompatActivity {
       b.putInt("position", position);
       if (mEatery instanceof DiningHallModel) {
         b.putSerializable("mEatery",
-            new ArrayList<>(((DiningHallModel) mEatery).getWeeklyMenu()
-                .get(ZonedDateTime.now().getDayOfWeek())));
+            ((DiningHallModel) mEatery).getMenuForDay(
+                ZonedDateTime.now().getDayOfWeek()));
       }
       MenuFragment f = new MenuFragment();
       f.setArguments(b);
@@ -327,7 +313,7 @@ public class MenuActivity extends AppCompatActivity {
       try {
         if (mEatery instanceof DiningHallModel) {
           DayOfWeek current = ZonedDateTime.now().getDayOfWeek();
-          n = ((DiningHallModel) mEatery).getMenuForDay(current).size();
+          n = ((DiningHallModel) mEatery).getMenuForDay(current).numberOfMeals();
         }
       } catch (Exception e) {
         n = 0;
@@ -338,9 +324,11 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public CharSequence getPageTitle(int position) {
       if (mEatery instanceof DiningHallModel) {
-        MealType type = ((DiningHallModel) mEatery).getWeeklyMenu()
+        MealType type = ((DiningHallModel) mEatery)
+            .getWeeklyMenu()
             .get(ZonedDateTime.now().getDayOfWeek())
-            .get(position).getType();
+            .getMeal(position)
+            .getType();
         switch (type) {
           case BREAKFAST:
             return getString(R.string.breakfast);

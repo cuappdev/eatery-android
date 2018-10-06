@@ -41,14 +41,14 @@ public final class JsonUtilities {
   }
 
   /**
-   * Returns list of all eateries (dining halls, cafes, and external eateries not in main JSON)
+   * Returns list of all mEateries (dining halls, cafes, and external mEateries not in main JSON)
    */
   public static List<EateryModel> parseJson(String json, Context mainContext) {
     DateFormat mealTimeFormat = DateFormat.getDateTimeInstance();
     DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mainContext);
     DateFormat mealHourFormat = android.text.format.DateFormat.getTimeFormat(mainContext);
     List<EateryModel> eateryModels = new ArrayList<>();
-    // Parse external eateries from hardcoded JSON
+    // Parse external mEateries from hardcoded JSON
     JSONObject hardCodedData = null;
     try {
       hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
@@ -65,7 +65,7 @@ public final class JsonUtilities {
           eateryModels.add(model);
         }
       }
-      // Parse eateries from main source
+      // Parse mEateries from main source
       JSONObject parentObject = new JSONObject(json);
       JSONObject data = parentObject.getJSONObject("data");
       JSONArray eateries = data.getJSONArray("eateries");

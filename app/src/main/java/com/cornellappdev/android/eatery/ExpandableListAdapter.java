@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
-import com.cornellappdev.android.eatery.WeeklyMenuActivity.MenuListItem;
+import com.cornellappdev.android.eatery.WeeklyMenuFragment.MenuListItem;
+import com.cornellappdev.android.eatery.model.DiningHallMenuModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryModel;
 import com.cornellappdev.android.eatery.model.MealModel;
@@ -25,25 +26,27 @@ import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
 /**
- * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
+ * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuFragment, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
  */
+
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-  private Context context;
+
   private List<EateryModel> cafeData;
-  private List<String> cafeKeys = new ArrayList<>();
-
-  private Map<String, List<MenuListItem>> mealMap;
-  private int mealIndex;
+  private List<DiningHallModel> cafeKeys = new ArrayList<>();
+  private Context context;
   private DayOfWeek dayOfWeek;
+  private MealType mealIndex;
+  private Map<DiningHallModel, List<MenuListItem>> mealMap;
 
-  ExpandableListAdapter(Context context, Map<String, List<MenuListItem>> mealMap,
-      DayOfWeek dateOffset, int mealIndex, List<EateryModel> cafeData) {
+  ExpandableListAdapter(Context context, Map<DiningHallModel, List<MenuListItem>> mealMap,
+      DayOfWeek dateOffset, MealType mealIndex, List<EateryModel> cafeData) {
     this.context = context;
     this.mealMap = mealMap;
     this.mealIndex = mealIndex;
     this.dayOfWeek = dateOffset;
     this.cafeData = cafeData;
+
     if (mealMap != null) {
       cafeKeys.addAll(mealMap.keySet());
     }
@@ -62,7 +65,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     if (mealMap == null) {
       return 0;
     }
-    String m = cafeKeys.get(i);
+    DiningHallModel m = cafeKeys.get(i);
     return mealMap.get(m).size();
   }
 
@@ -73,7 +76,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
   @Override
   public Object getChild(int i, int i1) {
-    String m = (String) getGroup(i);
+    DiningHallModel m = (DiningHallModel) getGroup(i);
     return mealMap.get(m).get(i1).getItem();
   }
 
@@ -100,59 +103,52 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       view = infalInflater.inflate(R.layout.list_view_header, viewGroup, false);
     }
-    String m = (String) getGroup(i);
+
+    DiningHallModel hall = (DiningHallModel) getGroup(i);
     TextView headerText = view.findViewById(R.id.header);
-    headerText.setText(m);
+    headerText.setText(hall.getNickName());
     headerText.setTypeface(null, Typeface.NORMAL);
+
     TextView timetext1 = view.findViewById(R.id.time1);
+
     try {
       EateryModel eatery = null;
       int count = 0;
       while (count < cafeData.size()) {
-        if (m.equals(cafeData.get(count).getNickName())) {
+        if (hall.getNickName().equals(cafeData.get(count).getNickName())) {
           eatery = cafeData.get(count);
         }
         count++;
       }
       if (eatery instanceof DiningHallModel) {
-        List<MealModel> day = ((DiningHallModel) eatery).getWeeklyMenu().get(dayOfWeek);
-        int length = day.size() - 1;
-        // finding correct idx to get desired meal model from day array
-        MealModel meal;
-        if (length == 1) {
-          meal = day.get(mealIndex / 2);
-        } else if (length == 2) {
-          meal = day.get(mealIndex);
-        } else if (length == 3) {
-          meal = day.get(mealIndex - 2 + length);
-        } else {
-          meal = day.get(0);
-        }
+        DiningHallMenuModel day = ((DiningHallModel) eatery).getMenuForDay(dayOfWeek);
+        int length = day.numberOfMeals() - 1;
+
+        //finding correct idx to get desired meal model from day array
+        MealModel meal = day.getMeal(mealIndex);
+
         DateTimeFormatter localDateFormat = DateTimeFormatter.ofPattern("h:mma");
         ZonedDateTime now = ZonedDateTime.now();
         Resources res = context.getResources();
+
         String formattedEndTime = localDateFormat.format(meal.getEnd());
         String formattedStartTime = localDateFormat.format(meal.getStart());
+
         ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
         ZonedDateTime startTime = meal.getStart().atZone(cornell);
         ZonedDateTime endTime = meal.getStart().atZone(cornell);
-        if ((now.isAfter(startTime) && now.isBefore(endTime)) ||
-            now.isBefore(startTime) || now.isAfter(startTime)) {
+
+        //meal date seems to be off by one day
+        // TODO
+        if ((now.isAfter(startTime) && now.isBefore(endTime)) || now.isBefore(startTime) || now
+            .isAfter(startTime)) {
           timetext1.setText(
               res.getString(R.string.open_from_a_to_b, formattedStartTime, formattedEndTime));
           timetext1.setTextColor(ContextCompat.getColor(context, R.color.eateryOpenColor));
         } else {
           String mealString = "";
-          if (mealIndex == 0) {
-            mealString = "Breakfast";
-          } else if (meal.getType() == MealType.BRUNCH) {
-            mealString = "Brunch";
-          } else if (mealIndex == 1) {
-            mealString = "Lunch";
-          } else {
-            mealString = "Dinner";
-          }
-          timetext1.setText(res.getString(R.string.closed_for_a, mealString));
+
+          timetext1.setText(res.getString(R.string.closed_for_a, mealIndex.toString()));
           timetext1.setTextColor(Color.parseColor("#989898"));
         }
       }
@@ -170,11 +166,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       view = infalInflater.inflate(R.layout.list_view_body, viewGroup, false);
     }
+
     // Horizontal line that separates each eatery entry
     View line = view.findViewById(R.id.horiline);
     line.setVisibility(View.GONE);
     String str = (String) getChild(i, i1);
+
     TextView tv = view.findViewById(R.id.menu_title);
+
     if (str == null) {
       System.out.println("dingdongditch");
       tv.setText(R.string.no_menu_available);
@@ -197,6 +196,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       tv.setTextSize(14);
       tv.setPadding(0, 0, 0, 0);
     }
+
     return view;
   }
 
