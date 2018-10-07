@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.Model;
+package com.cornellappdev.android.eatery.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,6 @@ public class CafeteriaModel implements Cloneable, Serializable, Comparable<Cafet
   private ArrayList<String> payMethods;
   private ArrayList<String> searchedItems;
   private CafeModel cafeInfo = new CafeModel();
-  private CafeteriaArea area;
   private Double lat;
   private Double lng;
   private String buildingLocation;
@@ -29,17 +28,7 @@ public class CafeteriaModel implements Cloneable, Serializable, Comparable<Cafet
   private boolean openPastMidnight = false;
   private int id;
 
-  public enum CafeteriaArea {
-    NORTH,
-    CENTRAL,
-    WEST;
-  }
 
-  public enum Status {
-    OPEN,
-    CLOSINGSOON,
-    CLOSED;
-  }
 
   /** ***************************************** SETTERS AND GETTERS */
   public ArrayList<String> getSearchedItems() {
@@ -178,25 +167,6 @@ public class CafeteriaModel implements Cloneable, Serializable, Comparable<Cafet
     this.area = area;
   }
 
-  /** ***************************************** NORMAL METHODS */
-  public String stringTo() {
-    String info = String.format("Name/nickname: %s/%s", name, nickName);
-    String locationString = String.format("Area: %s", area);
-    String payMethodsString = String.format("Pay Methods: %s", payMethods.toString());
-    String menuString = "";
-
-    if (isDiningHall) {
-      for (ArrayList<MealModel> meal : weeklyMenu) {
-        for (MealModel mealIndiv : meal) {
-          menuString = menuString + mealIndiv.stringTo();
-        }
-      }
-    }
-
-    return String.format(
-        "%s\nlocationString%spayMethodsString\nMenu%s",
-        info, locationString, payMethodsString, menuString);
-  }
 
   public int indexOfCurrentDay() {
     if (!isDiningHall) return 0;

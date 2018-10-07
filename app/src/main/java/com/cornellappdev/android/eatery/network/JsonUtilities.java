@@ -1,9 +1,9 @@
-package com.cornellappdev.android.eatery.NetworkUtils;
+package com.cornellappdev.android.eatery.network;
 
 import android.content.Context;
-import com.cornellappdev.android.eatery.Model.CafeModel;
-import com.cornellappdev.android.eatery.Model.CafeteriaModel;
-import com.cornellappdev.android.eatery.Model.MealModel;
+import com.cornellappdev.android.eatery.model.CafeModel;
+import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.MealModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
