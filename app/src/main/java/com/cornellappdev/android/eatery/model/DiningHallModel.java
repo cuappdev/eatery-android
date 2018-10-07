@@ -139,16 +139,18 @@ public class DiningHallModel extends EateryModel {
     if (isOpenPastMidnight()) {
       mealModels = getMenuForDay(now.minusDays(1).getDayOfWeek());
       MealModel openPeriod = mealModels.getLastMeal();
-      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
-      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
-      if (endTime.toLocalDate().isEqual(now.toLocalDate()) && now.isAfter(startTime) && now
-          .isBefore(endTime)) {
-        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
-          // 60 seconds in 1 minute, 30 minutes = half-hour,
-          return Status.CLOSING_SOON;
+      if (openPeriod != null) {
+        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+        ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+        ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+        if (endTime.toLocalDate().isEqual(now.toLocalDate()) && now.isAfter(startTime) && now
+            .isBefore(endTime)) {
+          if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+            // 60 seconds in 1 minute, 30 minutes = half-hour,
+            return Status.CLOSING_SOON;
+          }
+          return Status.OPEN;
         }
-        return Status.OPEN;
       }
     }
     return Status.CLOSED;

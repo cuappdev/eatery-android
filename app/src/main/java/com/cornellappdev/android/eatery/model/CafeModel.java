@@ -28,9 +28,6 @@ import org.threeten.bp.temporal.TemporalAdjusters;
  */
 
 public class CafeModel extends EateryModel implements Serializable {
-  private List<String> mCafeMenu;
-  private Map<LocalDate, List<Interval>> mHours;
-
   private static Set<String> HARDCODED_CAFE_ITEMS = new HashSet<>(Arrays.asList("Starbucks Coffees",
       "Pepsi Beverages",
       "Breakfast Menu",
@@ -48,10 +45,19 @@ public class CafeModel extends EateryModel implements Serializable {
       "Fried Rice",
       "Lo Mein",
       "Baked Goods"));
+  private List<String> mCafeMenu;
+  private Map<LocalDate, List<Interval>> mHours;
 
   public CafeModel() {
     this.mHours = new HashMap<>();
     this.mCafeMenu = new ArrayList<>();
+  }
+
+  public static CafeModel fromJSONObject(Context context, boolean hardcoded, JSONObject cafe)
+      throws JSONException {
+    CafeModel model = new CafeModel();
+    model.parseJSONObject(context, hardcoded, cafe);
+    return model;
   }
 
   public List<String> getCafeMenu() {
@@ -142,17 +148,19 @@ public class CafeModel extends EateryModel implements Serializable {
     }
     if (isOpenPastMidnight()) {
       hours = getHours(now.toLocalDate().minusDays(1));
-      Interval openPeriod = hours.get(hours.size() - 1);
-      ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
-      ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
-      ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
-      if (endTime.toLocalDate().isEqual(now.toLocalDate())
-          && now.isAfter(startTime) && now.isBefore(endTime)) {
-        if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
-          // 60 seconds in 1 minute, 30 minutes = half-hour,
-          return Status.CLOSING_SOON;
+      if (hours.size() > 0) {
+        Interval openPeriod = hours.get(hours.size() - 1);
+        ZoneId cornell = TimeUtil.getInstance().getCornellTimeZone();
+        ZonedDateTime startTime = openPeriod.getStart().atZone(cornell);
+        ZonedDateTime endTime = openPeriod.getEnd().atZone(cornell);
+        if (endTime.toLocalDate().isEqual(now.toLocalDate())
+            && now.isAfter(startTime) && now.isBefore(endTime)) {
+          if (endTime.toEpochSecond() - now.toEpochSecond() < (60 * 30)) { // TODO
+            // 60 seconds in 1 minute, 30 minutes = half-hour,
+            return Status.CLOSING_SOON;
+          }
+          return Status.OPEN;
         }
-        return Status.OPEN;
       }
     }
     return Status.CLOSED;
@@ -241,12 +249,5 @@ public class CafeModel extends EateryModel implements Serializable {
         setHours(localDate, dailyHours);
       }
     }
-  }
-
-  public static CafeModel fromJSONObject(Context context, boolean hardcoded, JSONObject cafe)
-      throws JSONException {
-    CafeModel model = new CafeModel();
-    model.parseJSONObject(context, hardcoded, cafe);
-    return model;
   }
 }
