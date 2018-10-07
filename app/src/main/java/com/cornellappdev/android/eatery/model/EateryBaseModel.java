@@ -20,8 +20,7 @@ public abstract class EateryBaseModel implements Serializable {
     private boolean matchesSearch = true;
     private boolean openPastMidnight = false;
     private CafeteriaArea mArea;
-    private Double mLattitude;
-    private Double mLongitude;
+    private Double mLattitude, mLongitude;
     private String mBuildingLocation;
     private String mName;
     private String mNickName;
