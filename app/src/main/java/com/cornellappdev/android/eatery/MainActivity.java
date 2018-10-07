@@ -29,7 +29,6 @@ import com.cornellappdev.android.eatery.page.Page;
 import com.cornellappdev.android.eatery.page.eateries.EateryModelFilter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
-import com.google.android.material.snackbar.Snackbar;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
     return !remove;
   };
+  private static final String TAG = "EateryMainActivity";
   public static boolean searchPressed = false;
   private EateryPagerAdapter mAdapter;
   private BottomNavigationView mBottomNavigationView;
@@ -102,14 +102,7 @@ public class MainActivity extends AppCompatActivity {
           mViewPager.setCurrentItem(Page.EATERIES);
           break;
         case R.id.action_brb:
-          Snackbar snackbar =
-              Snackbar.make(
-                  findViewById(R.id.main_activity),
-                  "If you would like"
-                      + " to see this feature, consider joining our Android dev team!",
-                  Snackbar.LENGTH_LONG);
-          snackbar.setAction("Apply", new SnackBarListener());
-          snackbar.show();
+          mViewPager.setCurrentItem(Page.BRB);
           break;
       }
       return true;

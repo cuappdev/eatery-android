@@ -30,4 +30,9 @@
   <string name="search_hint">Search for food, eateries…</string>
   <string name="title_activity_main">Eateries</string>
   <string name="title_activity_maps">Map</string>
+  <string name="payment_method_brb">BRBs</string>
+  <string name="payment_method_swipes">Meal Swipes</string>
+  <string name="payment_method_city_bucks">City Bucks</string>
+  <string name="payment_method_laundry_dollars">Laundry</string>
+  <string name="log_in">Log In</string>
 </resources>

@@ -46,6 +46,9 @@
         android:name="android.support.PARENT_ACTIVITY"
         android:value="com.cornellappdev.android.eatery.MainActivity"/>
     </activity>
+    <activity
+      android:name=".page.brb.BRBLoginView"
+      android:theme="@style/AppTheme"/>
   </application>
 
 </manifest>

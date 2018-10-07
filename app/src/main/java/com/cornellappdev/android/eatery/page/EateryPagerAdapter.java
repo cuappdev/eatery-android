@@ -6,15 +6,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import com.cornellappdev.android.eatery.page.brb.BRBFragment;
 import com.cornellappdev.android.eatery.page.eateries.EateriesFragment;
 import com.cornellappdev.android.eatery.page.menu.WeeklyMenuFragment;
 import java.lang.ref.WeakReference;
 
 public class EateryPagerAdapter extends FragmentPagerAdapter {
 
-  private final static int NUMBER_OF_TABS = 2;
+  private final static int NUMBER_OF_TABS = 3;
   private static final String TAG = "EateryPagerAdapter";
-  private WeakReference<EateryTabFragment> eateries, weeklyMenu;
+  private WeakReference<EateryTabFragment> eateries, weeklyMenu, brb;
 
   public EateryPagerAdapter(FragmentManager fm) {
     super(fm);
@@ -25,6 +26,7 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
     switch (position) {
       case Page.EATERIES:
       case Page.WEEKLY_MENU:
+      case Page.BRB:
         return getTabFragmentInstance(position);
       default:
         Log.d(TAG, "Attempted to retrieve unknown fragment from EateryPagerAdapter");
@@ -46,6 +48,9 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
       case Page.WEEKLY_MENU:
         weeklyMenu = null;
         break;
+      case Page.BRB:
+        brb = null;
+        break;
       default:
     }
 
@@ -60,6 +65,9 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
         break;
       case Page.WEEKLY_MENU:
         weeklyMenu = null;
+        break;
+      case Page.BRB:
+        brb = null;
         break;
       default:
     }
@@ -81,6 +89,9 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
       case Page.WEEKLY_MENU:
         ref = weeklyMenu;
         break;
+      case Page.BRB:
+        ref = brb;
+        break;
       default:
     }
 
@@ -98,6 +109,10 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
           fragment = new WeeklyMenuFragment();
           weeklyMenu = new WeakReference<>(fragment);
           break;
+        case Page.BRB:
+          fragment = new BRBFragment();
+          brb = new WeakReference<>(fragment);
+          break;
         default:
       }
     }
@@ -108,6 +123,7 @@ public class EateryPagerAdapter extends FragmentPagerAdapter {
   public void forAllItems(ForAllItems forAllItems) {
     forAllItems.action(getItem(Page.EATERIES));
     forAllItems.action(getItem(Page.WEEKLY_MENU));
+    forAllItems.action(getItem(Page.BRB));
   }
 
   public interface ForAllItems {
