@@ -28,27 +28,23 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
       android:id="@+id/rlayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      >
+      android:orientation="vertical">
 
       <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/cafeImage"
         android:layout_width="match_parent"
         android:layout_height="95dp"
         app:imageUrl="@{UriUtil.getImageUri(model)}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        fresco:actualImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/my_drawable"/>
+        />
 
       <TextView
         android:id="@+id/cafeName"
         android:textStyle="normal"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginStart="12dp"
@@ -58,89 +54,81 @@
         android:text="@{model.nickName}"
         android:textColor="@color/primary"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/cafeImage"
-        app:layout_constraintTop_toBottomOf="@+id/cafeImage"/>
+        />
 
-      <TextView
-        android:id="@+id/cafeOpen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="12dp"
-        android:paddingBottom="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:lines="1"
-        android:text="@{EateryStringsUtil.getStatusString(model.currentStatus)}"
-        android:textAppearance="@{model.currentStatus == Status.OPEN ? R.style.openStatusText : R.style.closedStatusText}"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cafeName"/>
-      <TextView
-        android:id="@+id/cafeTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:text="@{EateryStringsUtil.getOpeningClosingDescription(context, model)}"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/swipeIcon"
-        app:layout_constraintStart_toEndOf="@+id/cafeOpen"
-        app:layout_constraintTop_toBottomOf="@+id/cafeName"/>
-      <ImageView
-        android:id="@+id/card_dollar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="2dp"
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="12dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/description_cash_payment_method"
-        android:src="@drawable/dollar_icon"
-        android:visibility="@{model.hasPaymentMethod(PaymentMethod.CASH) ? View.VISIBLE : View.GONE}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/space"
-        app:layout_constraintTop_toBottomOf="@+id/cafeName"/>
-      <ImageView
-        android:id="@+id/brbIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/description_brb_payment_method"
-        android:src="@drawable/brb_icon"
-        android:visibility="@{model.hasPaymentMethod(PaymentMethod.BRB) ? View.VISIBLE : View.GONE}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/card_dollar"
-        app:layout_constraintTop_toBottomOf="@+id/cafeName"/>
-      <ImageView
-        android:id="@+id/swipeIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/description_swipes_payment_method"
-        android:src="@drawable/swipe_icon"
-        android:visibility="@{model.hasPaymentMethod(PaymentMethod.SWIPES) ? View.VISIBLE : View.GONE}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/brbIcon"
-        app:layout_constraintTop_toBottomOf="@+id/cafeName"/>
+        android:orientation="horizontal">
+        <TextView
+          android:id="@+id/cafeOpen"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="2dp"
+          android:layout_marginStart="12dp"
+          android:layout_gravity="top"
+          android:paddingBottom="0dp"
+          android:paddingLeft="0dp"
+          android:paddingRight="0dp"
+          android:lines="1"
+          android:text="@{EateryStringsUtil.getStatusString(model.currentStatus)}"
+          android:textAppearance="@{model.currentStatus == Status.OPEN ? R.style.openStatusText : R.style.closedStatusText}"
+          android:textSize="12sp"/>
+        <TextView
+          android:id="@+id/cafeTime"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:layout_marginTop="2dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="8dp"
+          android:layout_gravity="top|end"
+          android:ellipsize="end"
+          android:lines="1"
+          android:text="@{EateryStringsUtil.getOpeningClosingDescription(context, model)}"
+          android:textSize="12sp"/>
+        <ImageView
+          android:id="@+id/card_dollar"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginTop="2dp"
+          android:layout_marginEnd="8dp"
+          android:layout_gravity="start"
+          android:contentDescription="@string/description_cash_payment_method"
+          android:src="@drawable/dollar_icon"
+          android:visibility="@{model.hasPaymentMethod(PaymentMethod.CASH) ? View.VISIBLE : View.GONE}"/>
+        <ImageView
+          android:id="@+id/brbIcon"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginTop="2dp"
+          android:layout_marginEnd="8dp"
+          android:layout_gravity="start"
+          android:contentDescription="@string/description_brb_payment_method"
+          android:src="@drawable/brb_icon"
+          android:visibility="@{model.hasPaymentMethod(PaymentMethod.BRB) ? View.VISIBLE : View.GONE}"/>
+        <ImageView
+          android:id="@+id/swipeIcon"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginTop="2dp"
+          android:layout_marginEnd="8dp"
+          android:layout_gravity="start"
+          android:contentDescription="@string/description_swipes_payment_method"
+          android:src="@drawable/swipe_icon"
+          android:visibility="@{model.hasPaymentMethod(PaymentMethod.SWIPES) ? View.VISIBLE : View.GONE}"/>
+        <Space
+          android:id="@+id/space"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="12dp"
+          android:layout_marginEnd="4dp"
+          />
+      </LinearLayout>
       <!--TODO Consider alternatives to using a space element-->
-      <Space
-        android:id="@+id/space"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
   </androidx.cardview.widget.CardView>
 </layout>

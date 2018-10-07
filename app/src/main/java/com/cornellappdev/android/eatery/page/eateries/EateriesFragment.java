@@ -81,8 +81,10 @@ public class EateriesFragment extends EateryTabFragment implements OnQueryTextLi
     mRecyclerView = eateriesFragment.findViewById(R.id.cafe_list);
     paymentChipGroup = eateriesFragment.findViewById(R.id.paymentChipGroup);
     campusAreaChipGroup = eateriesFragment.findViewById(R.id.campusAreaChipGroup);
-    progressBar = eateriesFragment.findViewById(R.id.progress_bar);
     mRecyclerView.setNestedScrollingEnabled(false);
+    mRecyclerView.setItemViewCacheSize(25);
+    mRecyclerView.setDrawingCacheEnabled(true);
+    mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
     if (eateries != null) {
       Context context = getContext();

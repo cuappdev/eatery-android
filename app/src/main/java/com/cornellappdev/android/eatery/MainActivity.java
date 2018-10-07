@@ -35,26 +35,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-  private static final EateryModelFilter<CampusArea> AREA_FILTER = (model, area) -> area == model
-      .getArea();
-  private static final EateryModelFilter<PaymentMethod> PAYMENT_FILTER = EateryModel::hasPaymentMethod;
-  private static final EateryModelFilter<String> SEARCH_FILTER = (model, query) -> {
-    String cleanQuery = query.trim().toLowerCase();
-    boolean remove = true;
-    if (model.getNickName().contains(cleanQuery)) {
-      remove = false;
-    }
-
-    List<String> mealItems = model.getMealItems();
-    for (String mealItem : mealItems) {
-      if (mealItem.toLowerCase().contains(cleanQuery)) {
-        remove = false;
-      }
-    }
-    return !remove;
-  };
   private static final String TAG = "EateryMainActivity";
+
   public static boolean searchPressed = false;
   private EateryPagerAdapter mAdapter;
   private BottomNavigationView mBottomNavigationView;
@@ -88,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
   };
-  private ProgressBar mProgressBar;
-  private RelativeLayout mSplash;
   private ViewPager mViewPager;
   private OnNavigationItemSelectedListener mOnNavItemSelectedListener = new OnNavigationItemSelectedListener() {
     @Override
@@ -127,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
     mViewPager.setOffscreenPageLimit(2);
     mViewPager.addOnPageChangeListener(mOnPageChangeListener);
     mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavItemSelectedListener);
-    mSplash = findViewById(R.id.splash_layout);
-    mProgressBar = findViewById(R.id.progress_bar);
     mDBHelper = new CafeteriaDbHelper(this);
     ConnectionUtilities con = new ConnectionUtilities(this);
     if (!con.isNetworkAvailable()) {
@@ -208,15 +186,6 @@ public class MainActivity extends AppCompatActivity {
     return super.onCreateOptionsMenu(menu);
   }
 
-  public class SnackBarListener implements View.OnClickListener {
-    @Override
-    public void onClick(View v) {
-      Intent browser =
-          new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cornellappdev.com/apply/"));
-      startActivity(browser);
-    }
-  }
-
   public class ProcessJSON extends AsyncTask<String, Void, List<EateryModel>> {
     @Override
     protected List<EateryModel> doInBackground(String... params) {
@@ -230,13 +199,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(List<EateryModel> result) {
       super.onPostExecute(result);
-      mSplash.setVisibility(View.GONE);
       mBottomNavigationView.setVisibility(View.VISIBLE);
       getSupportActionBar().show();
       mAdapter.forAllItems((fragment) -> {
         fragment.onDataLoaded(Collections.unmodifiableList(mEateries));
       });
-      mProgressBar.setVisibility(View.GONE);
     }
   }
 }

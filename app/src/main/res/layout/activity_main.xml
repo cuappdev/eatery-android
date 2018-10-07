@@ -8,19 +8,6 @@
   android:layout_height="match_parent"
   android:focusableInTouchMode="true"
   tools:context="com.cornellappdev.android.eatery.MainActivity">
-  <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  </RelativeLayout>
-  <ProgressBar
-    android:id="@+id/progress_bar"
-    style="?android:progressBarStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerInParent="true"
-    android:layout_centerVertical="true"/>
-
   <androidx.viewpager.widget.ViewPager
     android:id="@+id/pager"
     android:layout_width="match_parent"
@@ -33,13 +20,5 @@
     app:itemBackground="@color/colorWhite"
     app:menu="@menu/bottom_nav_main">
   </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-  <RelativeLayout
-    android:id="@+id/relative_layout_splash"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <include layout="@layout/splash_screen"/>
-  </RelativeLayout>
 
 </android.widget.RelativeLayout>

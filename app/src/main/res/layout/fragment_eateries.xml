@@ -114,8 +114,6 @@
         </com.cornellappdev.android.eatery.component.HideUnselectedChipGroup>
       </LinearLayout>
     </HorizontalScrollView>
-
-
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/cafe_list"
       android:layout_width="0dp"
