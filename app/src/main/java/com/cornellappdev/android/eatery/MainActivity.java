@@ -1,11 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.NORTH;
-import static com.cornellappdev.android.eatery.model.CafeteriaModel.CafeteriaArea.WEST;
-
-
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;

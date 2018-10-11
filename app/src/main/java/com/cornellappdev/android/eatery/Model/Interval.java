@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.Model;
+package com.cornellappdev.android.eatery.model;
 
 import android.support.annotation.NonNull;
 import org.threeten.bp.LocalDateTime;
@@ -26,6 +26,16 @@ public class Interval implements Serializable, Comparable<Interval> {
     public LocalDateTime getEnd() {
         return end;
     }
+
+    @NonNull
+    public boolean containsTime(LocalDateTime time){
+        if(start.isBefore(time) && end.isAfter(time)){
+            return true;
+        }
+        return false;
+    }
+
+
 
     @Override
     public int compareTo(@NonNull Interval interval) {

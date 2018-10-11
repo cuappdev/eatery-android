@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.Model;
+package com.cornellappdev.android.eatery.model.enums;
 
 import java.util.Comparator;
 
