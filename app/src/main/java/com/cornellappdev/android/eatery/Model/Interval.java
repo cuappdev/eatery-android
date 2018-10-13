@@ -35,6 +35,14 @@ public class Interval implements Serializable, Comparable<Interval> {
         return false;
     }
 
+    @NonNull
+    public boolean afterTime(LocalDateTime time){
+      if(start.isAfter(time)){
+        return true;
+      }
+      return false;
+    }
+
 
 
     @Override

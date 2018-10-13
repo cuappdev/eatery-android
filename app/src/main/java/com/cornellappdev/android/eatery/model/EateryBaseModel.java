@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.LocalDateTime;
-
 
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
@@ -31,7 +29,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   private String mBuildingLocation, mName, mNickName;
   protected int mId;
   private List<PaymentMethod> mPayMethods;
-
 
   // Implemented Getters
   public String getName() {
@@ -64,9 +61,10 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   abstract MealModel getMenu();
 
   /**
-   * This method returns a time. If the eatery has a current status of open or closing soon
+   * This method returns a LocalDateTime. If the eatery has a current status of open or closing soon
    * then the time returned represents the closing time. If the eatery is closed the time returned
-   * represents the opening time (could be null if no further data)
+   * represents the opening time. This method can return null in the case when there is no known
+   * next time for opening.
    */
   public abstract LocalDateTime getChangeTime();
 
@@ -102,7 +100,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   public static Comparator<EateryBaseModel> cafeNameComparator = (s1, s2) -> {
     String str1 = s1.getNickName();
     String str2 = s2.getNickName();
-    // TODO Why?
     if (str1.startsWith("1")) {
       return -1;
     }

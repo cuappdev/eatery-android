@@ -37,19 +37,19 @@ public enum MealType implements Comparable<MealType>{
     }
 }
 
-/**
- * Sorts MealType in following order: Breakfast > Brunch > Lunch > Dinner
- */
-
-class MealComparator implements Comparator<MealType> {
-
-    @Override
-    public int compare(final MealType t1, final MealType t2){
-        if(t1.getIndex() > t2.getIndex()) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
-}
+///**
+// * Sorts MealType in following order: Breakfast > Brunch > Lunch > Dinner
+// */
+//
+//class MealComparator implements Comparator<MealType> {
+//
+//    @Override
+//    public int compare(final MealType t1, final MealType t2){
+//        if(t1.getIndex() > t2.getIndex()) {
+//            return 1;
+//        }
+//        else {
+//            return -1;
+//        }
+//    }
+//}

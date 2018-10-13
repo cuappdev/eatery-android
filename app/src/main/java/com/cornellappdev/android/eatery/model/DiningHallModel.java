@@ -48,7 +48,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 
   private void sortDates(){
     sortedDates.clear();
-    mWeeklyMenu.keySet().addAll(sortedDates);
+    sortedDates.addAll(mWeeklyMenu.keySet());
     Collections.sort(sortedDates);
   }
 
@@ -56,11 +56,15 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     sortDates();
     for(LocalDate date: sortedDates){
       if(date.isAfter(LocalDate.now())|| date.isEqual(LocalDate.now())){
-
+        ArrayList<MealModel> mealsForDate = mWeeklyMenu.get(date).getAllMeals();
+        for(MealModel meal: mealsForDate){
+          if(meal.afterTime(LocalDateTime.now())){
+            return meal.getStart();
+          }
+        }
       }
     }
-
-    return LocalDateTime.now();
+    return null;
   }
 
   // Methods required to be implemented by parent class
@@ -83,6 +87,10 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     else{
       return findNextOpen();
     }
+  }
+
+  public MealModel getMenu(){
+    return getCurrentMeal();
   }
 
   @Override
