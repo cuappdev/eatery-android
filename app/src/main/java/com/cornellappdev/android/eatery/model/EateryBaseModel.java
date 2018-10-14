@@ -23,7 +23,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 
   private boolean matchesFilter = true;
   private boolean matchesSearch = true;
-  protected boolean openPastMidnight = false;
+  protected boolean mOpenPastMidnight = false;
   private CampusArea mArea;
   private Double mLatitude, mLongitude;
   private String mBuildingLocation, mName, mNickName;

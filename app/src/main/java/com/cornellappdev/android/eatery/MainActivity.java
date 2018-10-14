@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -25,6 +24,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
@@ -33,21 +34,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
 public class MainActivity extends AppCompatActivity
     implements MainListAdapter.ListAdapterOnClickHandler {
 
   public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
   public static final String PAYMENT_CARD = "Cornell Card";
-  public static final String FILTER_BG_COLOR_ON = "#4B7FBE";
-  public static final String FILTER_BG_COLOR_OFF = "#F2F2F2";
-  public static final String FILTER_TXT_COLOR_ON = "#FFFFFF";
-  public static final String FILTER_TXT_COLOR_OFF = "#4B7FBE";
+
 
   public static boolean searchPressed = false;
 
-  public ArrayList<CafeteriaModel> cafeList = new ArrayList<>(); // holds all cafes
-  public ArrayList<CafeteriaModel> currentList = new ArrayList<>(); // button filter list
-  public ArrayList<CafeteriaModel> searchList = new ArrayList<>(); // searchbar filter list
+  public ArrayList<EateryBaseModel> cafeList = new ArrayList<>(); // holds all cafes
+  public ArrayList<EateryBaseModel> currentList = new ArrayList<>(); // button filter list
+  public ArrayList<EateryBaseModel> searchList = new ArrayList<>(); // searchbar filter list
   public BottomNavigationView bnv;
   public Button northButton;
   public Button westButton;
@@ -146,14 +148,14 @@ public class MainActivity extends AppCompatActivity
     bnv.setSelectedItemId(R.id.action_home);
   }
 
-  public void changeButtonColor(String textColor, String backgroundColor, Button button) {
-    button.setTextColor(Color.parseColor(textColor));
+  public void changeButtonColor(int textColor, int backgroundColor, Button button) {
+    button.setTextColor(textColor);
     GradientDrawable bgShape = (GradientDrawable) button.getBackground();
-    bgShape.setColor(Color.parseColor(backgroundColor));
+    bgShape.setColor(backgroundColor);
   }
 
   private void filterCurrentList() {
-    for (CafeteriaModel model : currentList) {
+    for (EateryBaseModel model : currentList) {
       final boolean areaFuzzyMatches =
           getCurrentArea() == null || model.getArea() == getCurrentArea();
       final boolean paymentFuzzyMatches =
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private CafeteriaModel.CafeteriaArea getCurrentArea() {
+  private CampusArea getCurrentArea() {
     if (northButton.equals(areaButtonPressed)) {
       return NORTH;
     } else if (westButton.equals(areaButtonPressed)) {
@@ -189,15 +191,15 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private void handleAreaButtonPress(Button button, CafeteriaModel.CafeteriaArea area) {
+  private void handleAreaButtonPress(Button button, CampusArea area) {
     if (!button.equals(areaButtonPressed)) {
-      changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_ON, button);
       if (areaButtonPressed != null) {
-        changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, areaButtonPressed);
+        changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, areaButtonPressed);
       }
       areaButtonPressed = button;
     } else {
-      changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, button);
       areaButtonPressed = null;
     }
     filterCurrentList();
@@ -205,13 +207,13 @@ public class MainActivity extends AppCompatActivity
 
   private void handlePaymentButtonPress(Button button, String payment) {
     if (!button.equals(paymentButtonPressed)) {
-      changeButtonColor(FILTER_TXT_COLOR_ON, FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_ON, button);
       if (paymentButtonPressed != null) {
-        changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, paymentButtonPressed);
+        changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, paymentButtonPressed);
       }
       paymentButtonPressed = button;
     } else {
-      changeButtonColor(FILTER_TXT_COLOR_OFF, FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, button);
       paymentButtonPressed = null;
     }
     filterCurrentList();

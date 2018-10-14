@@ -13,21 +13,18 @@ import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class DiningHallModel extends EateryBaseModel implements Serializable {
 
   private Map<LocalDate, DailyMenuModel> mWeeklyMenu;
-  private List<LocalDate> sortedDates;
+  private List<LocalDate> mSortedDates;
 
   private DailyMenuModel getCurrentDayMenu(){
     LocalDate today = LocalDate.now();
-    if(openPastMidnight && LocalDateTime.now().getHour()<=3){
+    if(mOpenPastMidnight && LocalDateTime.now().getHour()<=3){
       today = today.minusDays(1);
     }
     return mWeeklyMenu.get(today);
@@ -47,14 +44,14 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
   }
 
   private void sortDates(){
-    sortedDates.clear();
-    sortedDates.addAll(mWeeklyMenu.keySet());
-    Collections.sort(sortedDates);
+    mSortedDates.clear();
+    mSortedDates.addAll(mWeeklyMenu.keySet());
+    Collections.sort(mSortedDates);
   }
 
   private LocalDateTime findNextOpen(){
     sortDates();
-    for(LocalDate date: sortedDates){
+    for(LocalDate date: mSortedDates){
       if(date.isAfter(LocalDate.now())|| date.isEqual(LocalDate.now())){
         ArrayList<MealModel> mealsForDate = mWeeklyMenu.get(date).getAllMeals();
         for(MealModel meal: mealsForDate){
@@ -66,6 +63,16 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     }
     return null;
   }
+
+  public MealModel getMealByDateAndType(LocalDate date, MealType mealType){
+    if(mWeeklyMenu.keySet().contains(date)){
+      DailyMenuModel daysMeals = mWeeklyMenu.get(date);
+      return daysMeals.getMeal(mealType);
+    }
+    return null;
+
+  }
+
 
   // Methods required to be implemented by parent class
   public Status getCurrentStatus() {

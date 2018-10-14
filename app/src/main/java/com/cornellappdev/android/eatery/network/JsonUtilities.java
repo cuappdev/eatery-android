@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.network;
 import android.content.Context;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +40,8 @@ public final class JsonUtilities {
   }
 
   /** Returns list of all eateries (dining halls, cafes, and external eateries not in main JSON) */
-  public static ArrayList<CafeteriaModel> parseJson(String json, Context mainContext) {
+  public static ArrayList<EateryBaseModel> parseJson(String json, Context mainContext) {
+    List<EateryBaseModel> = new ArrayList<EateryBaseModel>();
     try {
       SimpleDateFormat mealTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mmaa");
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

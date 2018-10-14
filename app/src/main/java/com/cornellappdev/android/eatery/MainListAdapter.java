@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -32,7 +33,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
   private int mCount;
   private String mQuery;
-  private ArrayList<CafeteriaModel> cafeListFiltered;
+  private ArrayList<EateryBaseModel> cafeListFiltered;
   private final int TEXT = 1;
   private final int IMAGE = 0;
 
@@ -90,7 +91,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
-    final CafeteriaModel cafeteriaModel = cafeListFiltered.get(position);
+    final EateryBaseModel cafeteriaModel = cafeListFiltered.get(position);
     switch (input_holder.getItemViewType()) {
       case IMAGE:
         ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
