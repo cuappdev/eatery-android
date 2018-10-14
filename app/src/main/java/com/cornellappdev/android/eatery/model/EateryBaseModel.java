@@ -2,16 +2,19 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.LocalDateTime;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
@@ -58,7 +61,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   // Abstract Getters
   abstract Status getCurrentStatus();
 
-  abstract MealModel getMenu();
+  abstract com.cornellappdev.android.eatery.model.MealModel getMenu();
 
   /**
    * This method returns a LocalDateTime. If the eatery has a current status of open or closing soon
