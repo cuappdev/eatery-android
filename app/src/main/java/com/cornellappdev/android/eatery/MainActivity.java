@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
+import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
@@ -157,10 +158,8 @@ public class MainActivity extends AppCompatActivity
     for (EateryBaseModel model : currentList) {
       final boolean areaFuzzyMatches =
           getCurrentArea() == null || model.getArea() == getCurrentArea();
-//      final boolean paymentFuzzyMatches =
-//          getCurrentPaymentType() == null || model.getPayMethods().contains(getCurrentPaymentType());
-      final boolean paymentFuzzyMatches = false
-//          getCurrentPaymentType() == null || model.getPayMethods().contains(getCurrentPaymentType());
+      final boolean paymentFuzzyMatches =
+          getCurrentPaymentType() == null || model.hasPaymentMethod(getCurrentPaymentType());
       if (areaFuzzyMatches && paymentFuzzyMatches) {
         model.setMatchesFilter(true);
       } else {
@@ -181,11 +180,11 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private String getCurrentPaymentType() {
+  private PaymentMethod getCurrentPaymentType() {
     if (brbButton.equals(paymentButtonPressed)) {
-      return PAYMENT_CARD;
+      return PaymentMethod.BRB;
     } else if (swipesButton.equals(paymentButtonPressed)) {
-      return PAYMENT_SWIPE;
+      return PaymentMethod.SWIPES;
     } else {
       return null;
     }

@@ -59,6 +59,11 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     return mBuildingLocation;
   }
 
+  public ArrayList<String> getSearchedItems() {
+    return mSearchedItems;
+  }
+
+
   public void setMatchesSearch(boolean b) {
     mMatchesSearch = b;
   }
@@ -70,7 +75,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   public void setMatchesFilter(boolean b) {
     matchesFilter = b;
   }
-
 
   public boolean matchesSearch() {
     return mMatchesSearch;

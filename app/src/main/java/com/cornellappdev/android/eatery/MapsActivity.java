@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
   private GoogleMap mMap;
-  ArrayList<CafeteriaModel> cafeData;
+  ArrayList<EateryBaseModel> cafeData;
   private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
   public BottomNavigationView bnv;
 
@@ -58,11 +59,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       TextView cafe_desc = ((TextView) myContentsView.findViewById(R.id.info_cafe_desc));
       String firstword = marker.getSnippet().split(" ")[0];
       if (firstword.equalsIgnoreCase("open")) {
-        cafe_open.setText("Open");
+        cafe_open.setText(R.string.open);
         cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         cafe_desc.setText(marker.getSnippet().substring(5));
       } else if (firstword.equalsIgnoreCase("closing")) {
-        cafe_open.setText("Closing Soon");
+        cafe_open.setText(R.string.closing_soon);
         cafe_open.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         cafe_desc.setText(marker.getSnippet().substring(13));
       } else {
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
     Intent intent = getIntent();
-    cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
+    cafeData = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("cafeData");
     bnv = findViewById(R.id.bottom_navigation);
     bnv.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -123,13 +124,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     // (42.4471,-76.4832) is the location for Day Hall
     LatLng cornell = new LatLng(42.451092, -76.482654);
     for (int i = 0; i < cafeData.size(); i++) {
-      CafeteriaModel cafe = cafeData.get(i);
-      Double lat = cafe.getLat();
-      Double lng = cafe.getLng();
+      EateryBaseModel cafe = cafeData.get(i);
+      Double lat = cafe.getLattitude();
+      Double lng = cafe.getLongitude();
       LatLng latLng = new LatLng(lat, lng);
       String name = cafe.getNickName();
       String isOpenedStr = cafe.isOpen();
-      String loc = cafe.getCloseTime();
+      String loc = cafe.getChangeTime().toString();
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
       cafeMarker.setSnippet(isOpenedStr + " " + loc);
 

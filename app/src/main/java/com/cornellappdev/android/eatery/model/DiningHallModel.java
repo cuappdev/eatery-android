@@ -114,7 +114,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
       return items;
     }
     MealModel current = getCurrentMeal();
-
+    items.addAll(current.getMenu().getAllItems());
     return items;
   }
 

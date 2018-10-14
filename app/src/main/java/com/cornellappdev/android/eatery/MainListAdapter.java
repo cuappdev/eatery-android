@@ -114,12 +114,23 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
 
-        SpannableString openString = new SpannableString(eateryModel.isOpen());
-//        openString.setSpan(
-//            new StyleSpan(Typeface.BOLD),
-//            0,
-//            eateryModel.isOpen().length(),
-//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        String openText;
+        if(eateryModel.getCurrentStatus()==CLOSED){
+          openText = mContext.getResources().getString(R.string.closed);
+        }
+        else if(eateryModel.getCurrentStatus()==CLOSINGSOON){
+          openText = mContext.getResources().getString(R.string.closing_soon);
+        }
+        else{
+          openText = mContext.getResources().getString(R.string.open);
+        }
+
+        SpannableString openString = new SpannableString(openText);
+        openString.setSpan(
+            new StyleSpan(Typeface.BOLD),
+            0,
+            openText.length(),
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         Collections.sort(cafeListFiltered);
         if (eateryModel.getCurrentStatus() == CLOSED) {
@@ -149,8 +160,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
         holder2.cafe_name.setText(eateryModel.getNickName());
-        holder2.cafe_time.setText(eateryModel.isOpen());
-        holder2.cafe_time_info.setText(eateryModel.getCloseTime());
+        if(eateryModel.getCurrentStatus()==CLOSED){
+          holder2.cafe_time.setText(R.string.closed);
+//          String text = String.format();
+          holder2.cafe_time_info.setText(eateryModel.getChangeTime().toString());
+
+        }
+        else if(eateryModel.getCurrentStatus()==CLOSINGSOON){
+          holder2.cafe_time.setText(R.string.closing_soon);
+        }
+        else{
+          holder2.cafe_time.setText(R.string.open);
+        }
 
         ArrayList<String> itemList = eateryModel.getSearchedItems();
         eateryModel.setSearchedItems(null);

@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 
@@ -38,8 +39,8 @@ public class MenuActivity extends AppCompatActivity {
   LinearLayout linLayout;
   private TabLayout tabLayout;
   private CustomPager customPager;
-  ArrayList<CafeteriaModel> cafeList;
-  CafeteriaModel cafeData;
+  ArrayList<EateryBaseModel> cafeList;
+  EateryBaseModel cafeData;
   Toolbar toolbar;
   AppBarLayout appbar;
   CollapsingToolbarLayout collapsingToolbar;
@@ -84,12 +85,9 @@ public class MenuActivity extends AppCompatActivity {
           }
         });
 
-    cafeList = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("testData");
-    cafeData = (CafeteriaModel) intent.getSerializableExtra("cafeInfo");
+    cafeList = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("testData");
+    cafeData = (EateryBaseModel) intent.getSerializableExtra("cafeInfo");
 
-    // TODO(lesley): do this removal on the JSON side, also I'm certain that the logic to remove
-    // Becker is broken
-    // Remove Lite Lunch for North Star and Becker
     if (cafeData.getNickName().equals("North Star")
         || cafeData.getNickName().equals("Becker House Dining")) {
       if (cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size() > 2) {
