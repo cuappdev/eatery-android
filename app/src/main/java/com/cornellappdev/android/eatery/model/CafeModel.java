@@ -2,9 +2,6 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.model.Interval;
-import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import org.json.JSONArray;
@@ -21,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,10 +44,12 @@ public class CafeModel extends EateryBaseModel implements Serializable {
       "Baked Goods"));
   private List<String> mCafeMenu;
   private Map<LocalDate, List<Interval>> mHours;
+  private List<LocalDate> mSortedDates;
 
   public CafeModel() {
-    this.mCafeMenu = mCafeMenu;
-    this.mHours = mHours;
+    this.mCafeMenu = new ArrayList<>();
+    this.mHours = new HashMap<>();
+    this.mSortedDates = new ArrayList<>();
   }
 
   public static CafeModel fromJSONObject(Context context, boolean hardcoded, JSONObject cafe)
@@ -59,14 +59,59 @@ public class CafeModel extends EateryBaseModel implements Serializable {
     return model;
   }
 
-  @Override
-  public LocalDateTime getChangeTime() {
+  private List<Interval> getCurrentIntervalList(){
+    LocalDate today = LocalDate.now();
+    if(mOpenPastMidnight && LocalDateTime.now().getHour()<=3){
+      today = today.minusDays(1);
+    }
+    return mHours.get(today);
+  }
+
+  private void sortDates(){
+    mSortedDates.clear();
+    mSortedDates.addAll(mHours.keySet());
+    Collections.sort(mSortedDates);
+  }
+
+  private LocalDateTime findNextOpen(){
+    sortDates();
+    for(LocalDate date: mSortedDates){
+      if(date.isAfter(LocalDate.now())|| date.isEqual(LocalDate.now())){
+        List<Interval> intervalList = mHours.get(date);
+        for(Interval interval: intervalList){
+          if(interval.afterTime(LocalDateTime.now())){
+            return interval.getStart();
+          }
+        }
+      }
+    }
     return null;
   }
 
   @Override
-  public MealModel getMenu() {
+  public LocalDateTime getChangeTime() {
+    if (getCurrentStatus() == Status.OPEN) {
+      List<Interval> intervalList = mHours.get(LocalDate.now());
+      if (intervalList != null) {
+        for (Interval interval : intervalList) {
+          if (interval.containsTime(LocalDateTime.now())) {
+            return interval.getEnd();
+          }
+        }
+      }
+    }
+    else {
+      return findNextOpen();
+    }
     return null;
+  }
+
+  @Override
+  public HashSet<String> getMealItems(){
+    if(getCurrentStatus() == Status.OPEN)
+      return new HashSet<>(mCafeMenu);
+    else
+      return new HashSet<>();
   }
 
   public List<String> getCafeMenu(){
@@ -75,6 +120,17 @@ public class CafeModel extends EateryBaseModel implements Serializable {
 
   @Override
   public Status getCurrentStatus() {
+    List<Interval> intervalList = getCurrentIntervalList();
+    if(intervalList != null){
+      for(Interval interval : intervalList){
+        if(interval.containsTime(LocalDateTime.now())){
+          return Status.OPEN;
+        }
+        else {
+          return Status.CLOSED;
+        }
+      }
+    }
     return null;
   }
 
@@ -140,9 +196,7 @@ public class CafeModel extends EateryBaseModel implements Serializable {
           JSONObject obj = events.getJSONObject(e);
           LocalDateTime start = null, end = null;
           dailyHours = new ArrayList<>();
-          // TODO Don't read start again for everydate (not a huge performance impact)
           if (obj.has("start")) {
-            // TODO: Java only parses AM/PM (not am/pm), so add a case insensitive parser
             String rawStart = obj.getString("start").toUpperCase();
             LocalTime localTime = LocalTime.parse(rawStart, DateTimeFormatter
                 .ofPattern("h:mma", context.getResources().getConfiguration().locale));
