@@ -23,7 +23,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
@@ -158,9 +157,10 @@ public class MainActivity extends AppCompatActivity
     for (EateryBaseModel model : currentList) {
       final boolean areaFuzzyMatches =
           getCurrentArea() == null || model.getArea() == getCurrentArea();
-      final boolean paymentFuzzyMatches =
-          getCurrentPaymentType() == null
-              || model.getPayMethods().contains(getCurrentPaymentType());
+//      final boolean paymentFuzzyMatches =
+//          getCurrentPaymentType() == null || model.getPayMethods().contains(getCurrentPaymentType());
+      final boolean paymentFuzzyMatches = false
+//          getCurrentPaymentType() == null || model.getPayMethods().contains(getCurrentPaymentType());
       if (areaFuzzyMatches && paymentFuzzyMatches) {
         model.setMatchesFilter(true);
       } else {
@@ -237,10 +237,10 @@ public class MainActivity extends AppCompatActivity
         handlePaymentButtonPress(brbButton, PAYMENT_CARD);
         break;
     }
-    ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
-    for (CafeteriaModel cm : currentList) {
-      if (cm.matchesFilter()) {
-        cafesToDisplay.add(cm);
+    ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
+    for (EateryBaseModel em : currentList) {
+      if (em.matchesFilter()) {
+        cafesToDisplay.add(em);
       }
     }
     searchList = cafesToDisplay;
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onClick(int position, ArrayList<CafeteriaModel> list) {
+  public void onClick(int position, ArrayList<EateryBaseModel> list) {
     Intent intent = new Intent(this, MenuActivity.class);
     intent.putExtra("testData", list);
     intent.putExtra("cafeInfo", list.get(position));
@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity
 
     private void searchList(String query) {
       final String lowercaseQuery = query.toLowerCase();
-      for (CafeteriaModel model : searchList) {
+      for (EateryBaseModel model : searchList) {
         final HashSet<String> mealSet = model.getMealItems();
 
         boolean foundNickName = false;
@@ -339,11 +339,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
       this.query = query;
-      ArrayList<CafeteriaModel> cafesToDisplay = new ArrayList<>();
+      ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
       if (query.length() == 0) {
         searchList = currentList;
         searchPressed = false;
-        for (CafeteriaModel cm : searchList) {
+        for (EateryBaseModel cm : searchList) {
           if (cm.matchesFilter()) {
             cafesToDisplay.add(cm);
           }
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity
       } else {
         searchPressed = true;
         searchList(query);
-        for (CafeteriaModel cm : searchList) {
+        for (EateryBaseModel cm : searchList) {
           if (cm.matchesFilter() && cm.matchesSearch()) {
             cafesToDisplay.add(cm);
           }
@@ -378,10 +378,10 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  public class ProcessJson extends AsyncTask<String, Void, ArrayList<CafeteriaModel>> {
+  public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
 
     @Override
-    protected ArrayList<CafeteriaModel> doInBackground(String... params) {
+    protected ArrayList<EateryBaseModel> doInBackground(String... params) {
       String json = NetworkUtilities.getJSON();
       dbHelper.addData(json);
 
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPostExecute(ArrayList<CafeteriaModel> result) {
+    protected void onPostExecute(ArrayList<EateryBaseModel> result) {
       super.onPostExecute(result);
 
       splash.setVisibility(View.GONE);

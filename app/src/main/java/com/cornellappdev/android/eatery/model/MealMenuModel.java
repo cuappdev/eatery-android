@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 
 public class MealMenuModel implements Serializable {
-  private Map<String, List<String>> menu = new HashMap<>();
+  private Map<String, List<String>> menu = new LinkedHashMap<>();
 
   public void addItem(String category, String item) {
     if (menu.get(category) == null) {

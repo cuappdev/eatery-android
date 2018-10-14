@@ -2,4 +2,9 @@
     <string name="app_name">eatery-android</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">Eateries</string>
+    <string name="closing_soon">Closing Soon</string>
+    <string name="closed">Closed</string>
+    <string name="open">Open</string>
+
+
 </resources>

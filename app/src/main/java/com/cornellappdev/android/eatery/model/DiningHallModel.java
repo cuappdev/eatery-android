@@ -14,6 +14,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +100,24 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
   public MealModel getMenu(){
     return getCurrentMeal();
   }
+
+  public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)
+      throws JSONException {
+    DiningHallModel model = new DiningHallModel();
+    model.parseJSONObject(context, hardcoded, eatery);
+    return model;
+  }
+
+  public  HashSet<String> getMealItems(){
+    HashSet<String> items = new HashSet<String>();
+    if(getCurrentStatus()==Status.CLOSED){
+      return items;
+    }
+    MealModel current = getCurrentMeal();
+
+    return items;
+  }
+
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)

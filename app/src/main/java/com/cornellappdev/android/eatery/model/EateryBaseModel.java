@@ -14,6 +14,7 @@ import org.threeten.bp.LocalDateTime;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
@@ -23,9 +24,9 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     CLOSINGSOON,
     CLOSED;
   }
-
+  private ArrayList<String> mSearchedItems;
   private boolean matchesFilter = true;
-  private boolean matchesSearch = true;
+  private boolean mMatchesSearch = true;
   protected boolean mOpenPastMidnight = false;
   private CampusArea mArea;
   private Double mLatitude, mLongitude;
@@ -58,10 +59,31 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     return mBuildingLocation;
   }
 
-  // Abstract Getters
-  abstract Status getCurrentStatus();
+  public void setMatchesSearch(boolean b) {
+    mMatchesSearch = b;
+  }
 
-  abstract com.cornellappdev.android.eatery.model.MealModel getMenu();
+  public void setSearchedItems(ArrayList<String> searchedItems) {
+    this.mSearchedItems = searchedItems;
+  }
+
+  public void setMatchesFilter(boolean b) {
+    matchesFilter = b;
+  }
+
+
+  public boolean matchesSearch() {
+    return mMatchesSearch;
+  }
+
+  public boolean matchesFilter() {
+    return matchesFilter;
+  }
+
+  // Abstract Getters
+  public abstract Status getCurrentStatus();
+//  public abstract MealModel getMenu();
+  public abstract HashSet<String> getMealItems();
 
   /**
    * This method returns a LocalDateTime. If the eatery has a current status of open or closing soon

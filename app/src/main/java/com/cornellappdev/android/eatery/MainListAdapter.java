@@ -15,18 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
+
+import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.OPEN;
+
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   private final Context mContext;
@@ -38,14 +46,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final int IMAGE = 0;
 
   public interface ListAdapterOnClickHandler {
-    void onClick(int position, ArrayList<CafeteriaModel> list);
+    void onClick(int position, ArrayList<EateryBaseModel> list);
   }
 
   MainListAdapter(
       Context context,
       ListAdapterOnClickHandler clickHandler,
       int count,
-      ArrayList<CafeteriaModel> list) {
+      ArrayList<EateryBaseModel> list) {
     mContext = context;
     mListAdapterOnClickHandler = clickHandler;
     mCount = count;
@@ -60,14 +68,16 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     FLog.setMinimumLoggingLevel(FLog.VERBOSE);
   }
 
-  void setList(ArrayList<CafeteriaModel> list, int count, String query) {
+  void setList(ArrayList<EateryBaseModel> list, int count, String query) {
     mQuery = query;
     mCount = count;
     cafeListFiltered = list;
     notifyDataSetChanged();
   }
 
-  /** Set view to layout of CardView */
+  /**
+   * Set view to layout of CardView
+   */
   @Override
   public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     final View view;
@@ -91,64 +101,59 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public void onBindViewHolder(RecyclerView.ViewHolder input_holder, int position) {
-    final EateryBaseModel cafeteriaModel = cafeListFiltered.get(position);
+    final EateryBaseModel eateryModel = cafeListFiltered.get(position);
     switch (input_holder.getItemViewType()) {
       case IMAGE:
         ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
-        holder.cafeName.setText(cafeteriaModel.getNickName());
+        holder.cafeName.setText(eateryModel.getNickName());
 
         String imageLocation =
             "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-                + convertName(cafeteriaModel.getNickName() + ".jpg");
+                + convertName(eateryModel.getNickName() + ".jpg");
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
 
-        SpannableString openString = new SpannableString(cafeteriaModel.isOpen());
-        openString.setSpan(
-            new StyleSpan(Typeface.BOLD),
-            0,
-            cafeteriaModel.isOpen().length(),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString openString = new SpannableString(eateryModel.isOpen());
+//        openString.setSpan(
+//            new StyleSpan(Typeface.BOLD),
+//            0,
+//            eateryModel.isOpen().length(),
+//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         Collections.sort(cafeListFiltered);
-        if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSED) {
-          holder.cafeOpen.setText("Closed");
+        if (eateryModel.getCurrentStatus() == CLOSED) {
+          holder.cafeOpen.setText(R.string.closed);
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
           holder.rlayout.setAlpha(.6f);
-
-        } else if (cafeteriaModel.getCurrentStatus() == CafeteriaModel.Status.CLOSINGSOON) {
-          holder.cafeOpen.setText("Closing Soon");
+        } else if (eateryModel.getCurrentStatus() == CLOSINGSOON) {
+          holder.cafeOpen.setText(R.string.closing_soon);
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
           holder.rlayout.setAlpha(1f);
         } else {
-          holder.cafeOpen.setText("Open");
+          holder.cafeOpen.setText(R.string.open);
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
           holder.rlayout.setAlpha(1f);
         }
-
         holder.brb_icon.setVisibility(View.GONE);
         holder.swipe_icon.setVisibility(View.GONE);
-        for (String pay : cafeteriaModel.getPayMethods()) {
-          if (pay.equalsIgnoreCase("Meal Plan - Debit")) {
-            holder.brb_icon.setVisibility(View.VISIBLE);
-          }
+        if (eateryModel.hasPaymentMethod(PaymentMethod.BRB)) {
+          holder.brb_icon.setVisibility(View.VISIBLE);
         }
-
-        if (cafeteriaModel.getIsDiningHall()) {
+        if (eateryModel instanceof DiningHallModel) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
-
-        holder.cafeTime.setText(cafeteriaModel.getCloseTime());
+        // Need to change to format time
+        holder.cafeTime.setText(eateryModel.getChangeTime().toString());
         break;
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
-        holder2.cafe_name.setText(cafeteriaModel.getNickName());
-        holder2.cafe_time.setText(cafeteriaModel.isOpen());
-        holder2.cafe_time_info.setText(cafeteriaModel.getCloseTime());
+        holder2.cafe_name.setText(eateryModel.getNickName());
+        holder2.cafe_time.setText(eateryModel.isOpen());
+        holder2.cafe_time_info.setText(eateryModel.getCloseTime());
 
-        ArrayList<String> itemList = cafeteriaModel.getSearchedItems();
-        cafeteriaModel.setSearchedItems(null);
+        ArrayList<String> itemList = eateryModel.getSearchedItems();
+        eateryModel.setSearchedItems(null);
         if (itemList == null) {
           holder2.cafe_items.setText("");
           break;
