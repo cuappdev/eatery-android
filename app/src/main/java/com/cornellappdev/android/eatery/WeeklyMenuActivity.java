@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
   public BottomNavigationView bnv;
@@ -37,8 +43,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   TextView westText;
   TextView northText;
   TextView centralText;
-  ArrayList<CafeteriaModel> cafeData;
-  ArrayList<CafeteriaModel> diningHall = new ArrayList<>();
+  ArrayList<EateryBaseModel> cafeData;
+  ArrayList<EateryBaseModel> diningHall = new ArrayList<>();
   String mealType = "breakfast";
   int selectedDate;
   TextView breakfastText;
@@ -67,7 +73,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     centralText = findViewById(R.id.central_header);
 
     Intent intent = getIntent();
-    cafeData = (ArrayList<CafeteriaModel>) intent.getSerializableExtra("cafeData");
+    cafeData = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("cafeData");
 
     // Layout for menu list
     setTitle("Upcoming Menus");
@@ -167,8 +173,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     bnv.setSelectedItemId(R.id.action_week);
 
     // Get list of dining halls
-    for (CafeteriaModel m : cafeData) {
-      if (m.getIsDiningHall()) {
+    for (EateryBaseModel m : cafeData) {
+      if (m instanceof DiningHallModel) {
         diningHall.add(m);
       }
     }
@@ -382,7 +388,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     TreeMap<String, MealModel> breakfastList = new TreeMap<>();
     TreeMap<String, MealModel> lunchList = new TreeMap<>();
     TreeMap<String, MealModel> dinnerList = new TreeMap<>();
-    for (CafeteriaModel m : diningHall) {
+    for (EateryBaseModel m : diningHall) {
       // Checks that dining hall is opened
       if (m.indexOfCurrentDay() != -1) {
         // Get MealModel for the day and split into three hashmaps
