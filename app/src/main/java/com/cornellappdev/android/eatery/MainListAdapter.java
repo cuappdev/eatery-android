@@ -154,8 +154,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (eateryModel instanceof DiningHallModel) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
-        // Need to change to format time
-        holder.cafeTime.setText(eateryModel.getChangeTime().toString());
+        // TODO:Need to change to format time
+//        holder.cafeTime.setText(eateryModel.getChangeTime().toString());
         break;
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;

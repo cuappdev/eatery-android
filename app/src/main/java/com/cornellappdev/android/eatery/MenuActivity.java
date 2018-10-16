@@ -114,7 +114,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     cafeText = findViewById(R.id.ind_time);
-    cafeText.setText(cafeData.getChangeTime().toString());
+//    cafeText.setText(cafeData.getChangeTime().toString());
 
     cafeLoc = findViewById(R.id.ind_loc);
     cafeLoc.setText(cafeData.getBuildingLocation());

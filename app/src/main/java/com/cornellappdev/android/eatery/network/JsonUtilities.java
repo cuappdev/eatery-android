@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery.network;
 
 import android.content.Context;
 
+import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
@@ -24,7 +25,7 @@ import org.json.JSONObject;
 public final class JsonUtilities {
   public final static int MILLISECONDS_PER_DAY = 86400000;
 
-  public final static HashSet<Integer> DINGING_HALL_IDS =
+  public final static HashSet<Integer> DINING_HALL_IDS =
       new HashSet<>(Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30));
 
   /**
@@ -49,18 +50,32 @@ public final class JsonUtilities {
     ArrayList<EateryBaseModel> eateryList = new ArrayList<EateryBaseModel>();
     JSONObject hardCodedData = null;
     try {
+      hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
+      JSONArray hardCodedEateries = hardCodedData.getJSONArray("eateries");
+      for (int i = 0; i < hardCodedEateries.length(); i++) {
+        JSONObject obj = hardCodedEateries.getJSONObject(i);
+        EateryBaseModel model;
+        if (obj.has("id") && DINING_HALL_IDS.contains(obj.getInt("id"))) {
+          model = DiningHallModel.fromJSON(mainContext, true, obj);
+        } else {
+          model = CafeModel.fromJSONObject(mainContext, true, obj);
+        }
+        if (model != null) {
+          eateryList.add(model);
+        }
+      }
       JSONObject parentObject = new JSONObject(json);
       JSONObject data = parentObject.getJSONObject("data");
       JSONArray eateries = data.getJSONArray("eateries");
       for (int i = 0; i < eateries.length(); i++) {
         JSONObject obj = eateries.getJSONObject(i);
         EateryBaseModel model = null;
-        if (DINGING_HALL_IDS.contains(obj.getInt("id"))) {
+        if (DINING_HALL_IDS.contains(obj.getInt("id"))) {
           model = DiningHallModel.fromJSON(mainContext, false, obj);
         }
-//        else {
-//          model = CafeModel.fromJSONObject(mainContext, false, obj);
-//        }
+        else {
+          model = CafeModel.fromJSONObject(mainContext, false, obj);
+        }
         if (model != null) {
           eateryList.add(model);
         }
