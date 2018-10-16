@@ -1,8 +1,6 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import org.json.JSONArray;
@@ -75,7 +73,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     return null;
 
   }
-
 
   // Methods required to be implemented by parent class
   public Status getCurrentStatus() {
@@ -153,8 +150,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
         JSONObject meal = meals.getJSONObject(l);
         LocalDateTime start = null, end = null;
 
-        Log.d("DiningHallModel-json", meal.toString());
-
         // Start Time
         if (meal.has("start")) {
           String rawStart = meal.getString("start").toUpperCase();
@@ -171,8 +166,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
         // Setting which meal of the day this meal is (ie. LUNCH)
         MealType type = MealType.fromDescription(meal.getString("descr"));
 
-        Log.d("dininghallmodel-type", meal.getString("descr"));
-
         if (start != null && end != null) {
           MealModel mealModel = new MealModel(start, end);
           mealModel.setType(type);
@@ -188,7 +181,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
           }
         }
       }
-      Log.d("dininghallmodel-daily", dailyMenuModel.getAllMeals().toString());
       mWeeklyMenu.put(localDate, dailyMenuModel);
     }
   }

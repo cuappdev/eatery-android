@@ -29,6 +29,7 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -394,7 +395,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPostExecute(ArrayList<EateryBaseModel> result) {
       super.onPostExecute(result);
-
       splash.setVisibility(View.GONE);
       bnv.setVisibility(View.VISIBLE);
       getSupportActionBar().show();

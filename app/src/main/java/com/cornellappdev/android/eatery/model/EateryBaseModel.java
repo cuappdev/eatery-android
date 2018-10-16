@@ -126,18 +126,18 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     mArea = CampusArea.fromShortDescription(area);
   }
 
-//  public static Comparator<EateryBaseModel> cafeNameComparator = (s1, s2) -> {
-//    String str1 = s1.getNickName();
-//    String str2 = s2.getNickName();
-//    if (str1.startsWith("1")) {
-//      return -1;
-//    }
-//    if (str2.startsWith("1")) {
-//      return 1;
-//    }
-//    // ascending order
-//    return str1.compareToIgnoreCase(str2);
-//  };
+  public static Comparator<EateryBaseModel> cafeNameComparator = (s1, s2) -> {
+    String str1 = s1.getNickName();
+    String str2 = s2.getNickName();
+    if (str1.startsWith("1")) {
+      return -1;
+    }
+    if (str2.startsWith("1")) {
+      return 1;
+    }
+    // ascending order
+    return str1.compareToIgnoreCase(str2);
+  };
 
   /**
    * Compared the time of two EateryModel
