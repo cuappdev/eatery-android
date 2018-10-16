@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.TreeMap;
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
   private Context context;
-  private ArrayList<CafeteriaModel> cafeData = new ArrayList<>();
+  private ArrayList<EateryBaseModel> cafeData = new ArrayList<>();
   private ArrayList<String> cafeKeys = new ArrayList<>();
 
   private TreeMap<String, ArrayList<String>> mealMap = new TreeMap<>();
@@ -35,7 +35,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       TreeMap<String, ArrayList<String>> mealMap,
       int dateOffset,
       int mealIndex,
-      ArrayList<CafeteriaModel> cafeData) {
+      ArrayList<EateryBaseModel> cafeData) {
     this.context = context;
     this.mealMap = mealMap;
     this.mealIndex = mealIndex;
@@ -108,61 +108,61 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     TextView timetext1 = view.findViewById(R.id.time1);
 
-    try {
-      CafeteriaModel myCafe = null;
-      int count = 0;
-      while (count < cafeData.size()) {
-        if (m.equals(cafeData.get(count).getNickName())) {
-          myCafe = cafeData.get(count);
-        }
-        count++;
-      }
-
-      ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset + 1);
-      int length = day.size() - 1;
-
-      // finding correct idx to get desired meal model from day array
-      MealModel meal;
-      if (length == 1) {
-        meal = day.get(mealIndex / 2);
-      } else if (length == 2) {
-        meal = day.get(mealIndex);
-      } else if (length == 3) {
-        meal = day.get(mealIndex - 2 + length);
-      } else {
-        meal = day.get(0);
-      }
-
-      SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-      Date date = new Date();
-
-      String endTime = localDateFormat.format(meal.getEnd());
-      String startTime = localDateFormat.format(meal.getStart());
-
-      // meal date seems to be off by one day
-      if ((date.getTime() > meal.getStart().getTime() && date.getTime() < meal.getEnd().getTime())
-          || date.getDay() != meal.getStart().getDay()
-          || date.getTime() < meal.getStart().getTime()) {
-        timetext1.setText("Open from " + startTime + " to " + endTime);
-        timetext1.setTextColor(Color.parseColor("#1a84db"));
-      } else {
-        String mealString = "";
-        if (mealIndex == 0) {
-          mealString = "Breakfast";
-        } else if (meal.getType().equals("Brunch")) {
-          mealString = "Brunch";
-        } else if (mealIndex == 1) {
-          mealString = "Lunch";
-        } else {
-          mealString = "Dinner";
-        }
-        timetext1.setText("Closed for " + mealString);
-        timetext1.setTextColor(Color.parseColor("#989898"));
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+//    try {
+//      CafeteriaModel myCafe = null;
+//      int count = 0;
+//      while (count < cafeData.size()) {
+//        if (m.equals(cafeData.get(count).getNickName())) {
+//          myCafe = cafeData.get(count);
+//        }
+//        count++;
+//      }
+//
+//      ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset + 1);
+//      int length = day.size() - 1;
+//
+//      // finding correct idx to get desired meal model from day array
+//      MealModel meal;
+//      if (length == 1) {
+//        meal = day.get(mealIndex / 2);
+//      } else if (length == 2) {
+//        meal = day.get(mealIndex);
+//      } else if (length == 3) {
+//        meal = day.get(mealIndex - 2 + length);
+//      } else {
+//        meal = day.get(0);
+//      }
+//
+//      SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
+//      Date date = new Date();
+//
+//      String endTime = localDateFormat.format(meal.getEnd());
+//      String startTime = localDateFormat.format(meal.getStart());
+//
+//      // meal date seems to be off by one day
+//      if ((date.getTime() > meal.getStart().getTime() && date.getTime() < meal.getEnd().getTime())
+//          || date.getDay() != meal.getStart().getDay()
+//          || date.getTime() < meal.getStart().getTime()) {
+//        timetext1.setText("Open from " + startTime + " to " + endTime);
+//        timetext1.setTextColor(Color.parseColor("#1a84db"));
+//      } else {
+//        String mealString = "";
+//        if (mealIndex == 0) {
+//          mealString = "Breakfast";
+//        } else if (meal.getType().equals("Brunch")) {
+//          mealString = "Brunch";
+//        } else if (mealIndex == 1) {
+//          mealString = "Lunch";
+//        } else {
+//          mealString = "Dinner";
+//        }
+//        timetext1.setText("Closed for " + mealString);
+//        timetext1.setTextColor(Color.parseColor("#989898"));
+//      }
+//
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
     return view;
   }
 

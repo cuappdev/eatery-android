@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity
   public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
   public static final String PAYMENT_CARD = "Cornell Card";
 
-
   public static boolean searchPressed = false;
 
   public ArrayList<EateryBaseModel> cafeList = new ArrayList<>(); // holds all cafes

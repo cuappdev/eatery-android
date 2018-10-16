@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.cornellappdev.android.eatery.model.CafeteriaModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -129,17 +128,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       Double lng = cafe.getLongitude();
       LatLng latLng = new LatLng(lat, lng);
       String name = cafe.getNickName();
-      String isOpenedStr = cafe.isOpen();
+//      String isOpenedStr = cafe.isOpen();
       String loc = cafe.getChangeTime().toString();
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-      cafeMarker.setSnippet(isOpenedStr + " " + loc);
+//      cafeMarker.setSnippet(isOpenedStr + " " + loc);
 
-      if (cafe.getCurrentStatus() == CafeteriaModel.Status.CLOSED) {
+      if (cafe.getCurrentStatus() == EateryBaseModel.Status.CLOSED) {
         cafeMarker.setIcon(
             BitmapDescriptorFactory.fromBitmap(
                 Bitmap.createScaledBitmap(
                     bitmapDescriptorFromVector(this, R.drawable.gray_pin), 72, 96, false)));
-      } else if (cafe.getCurrentStatus() == CafeteriaModel.Status.OPEN) {
+      } else if (cafe.getCurrentStatus() == EateryBaseModel.Status.OPEN) {
         cafeMarker.setIcon(
             BitmapDescriptorFactory.fromBitmap(
                 Bitmap.createScaledBitmap(
