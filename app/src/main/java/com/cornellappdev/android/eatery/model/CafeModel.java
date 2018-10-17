@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cornellappdev.android.eatery.util.TimeUtil;
 

@@ -132,7 +132,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             openText.length(),
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        Collections.sort(cafeListFiltered);
+//        Collections.sort(cafeListFiltered);
         if (eateryModel.getCurrentStatus() == CLOSED) {
           holder.cafeOpen.setText(R.string.closed);
           holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));

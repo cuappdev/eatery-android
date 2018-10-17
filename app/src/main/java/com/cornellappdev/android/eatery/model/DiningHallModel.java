@@ -1,6 +1,8 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import org.json.JSONArray;
@@ -23,7 +25,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
   private Map<LocalDate, DailyMenuModel> mWeeklyMenu;
   private List<LocalDate> mSortedDates;
 
-  private DailyMenuModel getCurrentDayMenu(){
+  public DailyMenuModel getCurrentDayMenu(){
     LocalDate today = LocalDate.now();
     if(mOpenPastMidnight && LocalDateTime.now().getHour()<=3){
       today = today.minusDays(1);
@@ -107,6 +109,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     return model;
   }
 
+  //this method seems useless
   public  HashSet<String> getMealItems(){
     HashSet<String> items = new HashSet<String>();
     if(getCurrentStatus()==Status.CLOSED){

@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
@@ -192,6 +194,7 @@ public class MenuActivity extends AppCompatActivity {
     //TODO(lesley): check for "!cafeData.getWeeklyMenu().get(0).toString().equals("[]")"
     // Formatting for when eatery is a dining hall and has a menu
     else if (cafeData instanceof DiningHallModel) {
+      Log.d("log-menu", "DINING!");
       menuText = findViewById(R.id.ind_menu);
       menuText.setVisibility(View.GONE);
       customPager.setVisibility(View.VISIBLE);
@@ -212,6 +215,7 @@ public class MenuActivity extends AppCompatActivity {
   class ViewPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     private int mCurrentPosition = -1;
+    DiningHallModel dhm = (DiningHallModel) cafeData;
 
     public ViewPagerAdapter(Context context, FragmentManager manager) {
       super(manager);
@@ -233,12 +237,13 @@ public class MenuActivity extends AppCompatActivity {
       }
     }
 
-    //TODO(lesley): implement!
     @Override
     public Fragment getItem(int position) {
+      Log.d("log-menu", "8");
       Bundle b = new Bundle();
       b.putInt("position", position);
-      b.putSerializable("cafeData", cafeData.getMealItems());
+      ArrayList<MealModel> todayMeals = dhm.getCurrentDayMenu().getAllMeals();
+      b.putSerializable("cafeData", todayMeals.get(position));
       MenuFragment f = new MenuFragment();
       f.setArguments(b);
       return f;
@@ -246,9 +251,9 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public int getCount() {
-      int n;
+      int n = 0;
       try {
-        n = cafeData.getMealItems().size();
+        n = dhm.getCurrentDayMenu().getAllMealTypes().size();
       } catch (Exception e) {
         n = 0;
       }
@@ -256,10 +261,9 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    //TODO(lesley): implement page title
     @Override
     public CharSequence getPageTitle(int position) {
-      return "mealtype";
+      return dhm.getCurrentDayMenu().getAllMealTypes().get(position).toString();
     }
   }
 

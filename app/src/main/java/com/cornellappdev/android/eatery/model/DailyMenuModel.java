@@ -20,6 +20,12 @@ public class DailyMenuModel implements Iterable<MealType>, Serializable {
     return mMenu.get(type);
   }
 
+  public ArrayList<MealType> getAllMealTypes () {
+    ArrayList<MealType> mealTypes = new ArrayList<>(mMenu.keySet());
+    Collections.sort(mealTypes);
+    return mealTypes;
+  }
+
   public ArrayList<MealModel> getAllMeals(){
     ArrayList<MealType> mealTypes = new ArrayList<>(mMenu.keySet());
     Collections.sort(mealTypes);
