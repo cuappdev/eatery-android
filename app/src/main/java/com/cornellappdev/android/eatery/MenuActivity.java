@@ -18,11 +18,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.CafeModel;
@@ -43,6 +46,7 @@ public class MenuActivity extends AppCompatActivity {
   ImageView swipe_icon;
   ImageView brb_icon;
   LinearLayout linLayout;
+  ScrollView sLinout;
   private TabLayout tabLayout;
   private CustomPager customPager;
   ArrayList<EateryBaseModel> cafeList;
@@ -93,13 +97,6 @@ public class MenuActivity extends AppCompatActivity {
 
     cafeList = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("testData");
     cafeData = (EateryBaseModel) intent.getSerializableExtra("cafeInfo");
-
-//    if (cafeData.getNickName().equals("North Star")
-//        || cafeData.getNickName().equals("Becker House Dining")) {
-//      if (cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).size() > 2) {
-//        cafeData.getWeeklyMenu().get(cafeData.indexOfCurrentDay()).remove(2);
-//      }
-//    }
 
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
@@ -154,6 +151,8 @@ public class MenuActivity extends AppCompatActivity {
     tabLayout = findViewById(R.id.tabs);
     linLayout = findViewById(R.id.linear);
 
+    float scale = getResources().getDisplayMetrics().density;
+
     // Formatting for when eatery is a cafe
     if (cafeData instanceof CafeModel) {
       customPager.setVisibility(View.GONE);
@@ -167,7 +166,6 @@ public class MenuActivity extends AppCompatActivity {
       blank.setElevation(-1);
       linLayout.addView(blank);
 
-      float scale = getResources().getDisplayMetrics().density;
       List<String> menu = ((CafeModel) cafeData).getCafeMenu();
       for (int i = 0; i < menu.size(); i++) {
         TextView mealItemText = new TextView(this);
@@ -194,15 +192,25 @@ public class MenuActivity extends AppCompatActivity {
     //TODO(lesley): check for "!cafeData.getWeeklyMenu().get(0).toString().equals("[]")"
     // Formatting for when eatery is a dining hall and has a menu
     else if (cafeData instanceof DiningHallModel) {
-      Log.d("log-menu", "DINING!");
       menuText = findViewById(R.id.ind_menu);
-      menuText.setVisibility(View.GONE);
-      customPager.setVisibility(View.VISIBLE);
-      tabLayout.setVisibility(View.VISIBLE);
-      linLayout.setVisibility(View.GONE);
-      setupViewPager(customPager);
-      tabLayout.setupWithViewPager(customPager);
-      tabLayout.setTabTextColors(Color.parseColor("#57000000"), Color.parseColor("#4e80bd"));
+      customPager.setVisibility(View.GONE);
+      tabLayout.setVisibility(View.GONE);
+
+      if (((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals().isEmpty()) {
+        linLayout.setVisibility(View.VISIBLE);
+        menuText.setText("Nothing on the menu 😮");
+        menuText.setTextSize(16);
+        menuText.setPadding(0, 96, 0, 0);
+        menuText.setGravity(Gravity.CENTER_HORIZONTAL);
+      } else {
+        menuText.setVisibility(View.GONE);
+        customPager.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.VISIBLE);
+        linLayout.setVisibility(View.GONE);
+        setupViewPager(customPager);
+        tabLayout.setupWithViewPager(customPager);
+        tabLayout.setTabTextColors(Color.parseColor("#57000000"), Color.parseColor("#4e80bd"));
+      }
     }
   }
 
@@ -243,6 +251,7 @@ public class MenuActivity extends AppCompatActivity {
       Bundle b = new Bundle();
       b.putInt("position", position);
       ArrayList<MealModel> todayMeals = dhm.getCurrentDayMenu().getAllMeals();
+      Log.d("log-menu", todayMeals.get(position).toString());
       b.putSerializable("cafeData", todayMeals.get(position));
       MenuFragment f = new MenuFragment();
       f.setArguments(b);
@@ -251,7 +260,7 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public int getCount() {
-      int n = 0;
+      int n;
       try {
         n = dhm.getCurrentDayMenu().getAllMealTypes().size();
       } catch (Exception e) {

@@ -30,7 +30,7 @@ public class MenuFragment extends Fragment {
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     menu = ((MealModel) getArguments().getSerializable("cafeData")).getMenu();
-    Log.d("log-frag", menu.toString());
+    Log.d("log-frag", "Fragment!");
     View view = inflater.inflate(R.layout.fragment_menu, container, false);
     linear = view.findViewById(R.id.linearFragment);
 
@@ -43,14 +43,16 @@ public class MenuFragment extends Fragment {
 
     float scale = getResources().getDisplayMetrics().density;
     // Checks for unavailable or missing menus
-//    if (menus.get(position).getMenu().entrySet().isEmpty()) {
-//      TextView missingMenuText = new TextView(getContext());
-//      missingMenuText.setText("No menu available");
-//      missingMenuText.setTextColor(Color.parseColor("#de000000"));
-//      missingMenuText.setPadding((int) (16 * scale + 0.5f), 0, 0, (int) (12 * scale + 0.5f));
-//      missingMenuText.setTextSize(14);
-//      linear.addView(missingMenuText);
-//    }
+
+    if (menu.getNumberOfCategories() == 0) {
+      TextView missingMenuText = new TextView(getContext());
+      missingMenuText.setText("Nothing on the menu 😮");
+      missingMenuText.setTextColor(Color.parseColor("#222222"));
+      missingMenuText.setPadding(0, (int) (96 * scale + 0.5f), 0, 0);
+
+      missingMenuText.setTextSize(32);
+      linear.addView(missingMenuText);
+    }
 
     int counter = 0;
     ArrayList<String> categories = (ArrayList<String>) menu.getCategories();
@@ -63,14 +65,8 @@ public class MenuFragment extends Fragment {
       categoryText.setTextColor(Color.parseColor("#de000000"));
       linear.addView(categoryText);
 
-      // Note(lesley): there's extra padding added to the first category somewhere and I
-      // don't know how to fix it
-      if (counter == 0) {
-        categoryText.setPadding((int) (16 * scale + 0.5f), 0, 0, (int) (12 * scale + 0.5f));
-      } else {
-        categoryText.setPadding(
-            (int) (16 * scale + 0.5f), (int) (12 * scale + 0.5f), 0, (int) (12 * scale + 0.5f));
-      }
+      categoryText.setPadding(
+          (int) (16 * scale + 0.5f), (int) (12 * scale + 0.5f), 0, (int) (12 * scale + 0.5f));
 
       View blank = new View(getContext());
       blank.setLayoutParams(
@@ -102,7 +98,7 @@ public class MenuFragment extends Fragment {
       }
 
       // Add horizontal line that separates each category
-      if (i < categories.size() - 2) {
+      if (i < categories.size() - 1) {
         View divider = new View(getContext());
         divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
         divider.setLayoutParams(
