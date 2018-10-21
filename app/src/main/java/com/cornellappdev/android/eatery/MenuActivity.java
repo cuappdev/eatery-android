@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -197,10 +198,10 @@ public class MenuActivity extends AppCompatActivity {
       tabLayout.setVisibility(View.GONE);
 
       if (((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals().isEmpty()) {
-        linLayout.setVisibility(View.VISIBLE);
         menuText.setText("Nothing on the menu 😮");
         menuText.setTextSize(16);
         menuText.setPadding(0, 96, 0, 0);
+        menuText.setBackgroundColor(Color.parseColor("#f5f5f5"));
         menuText.setGravity(Gravity.CENTER_HORIZONTAL);
       } else {
         menuText.setVisibility(View.GONE);
