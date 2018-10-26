@@ -48,7 +48,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cornellappdev.android.eatery.MainActivity" />
         </activity>
-        <activity android:name=".InfoActivity"></activity>
+        <activity android:name=".InfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            ></activity>
     </application>
 
 </manifest>
