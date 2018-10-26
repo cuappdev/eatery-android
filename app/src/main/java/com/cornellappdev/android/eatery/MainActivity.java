@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity
     if (searchPressed) {
       queryListener.onQueryTextChange(queryListener.query);
     } else {
-      //Collections.sort(cafesToDisplay);
+      Collections.sort(cafesToDisplay);
       listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
     }
   }
@@ -387,7 +387,7 @@ public class MainActivity extends AppCompatActivity
       dbHelper.addData(json);
 
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());
-//      Collections.sort(cafeList);
+      Collections.sort(cafeList);
       Log.d("log-main", cafeList.toString() );
       currentList = cafeList;
       searchList = cafeList;
