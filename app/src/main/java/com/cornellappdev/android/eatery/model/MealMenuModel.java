@@ -32,6 +32,13 @@ public class MealMenuModel implements Serializable {
     return new ArrayList<>(menu.get(category));
   }
 
+  public String getCategory(int i) {
+    if (menu.isEmpty() || getNumberOfCategories()<i) {
+      return "";
+    }
+    return getCategories().get(i);
+  }
+
   public List<String> getCategories() {
     if (menu.isEmpty()) {
       return new ArrayList<>();

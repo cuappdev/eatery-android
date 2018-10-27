@@ -67,13 +67,17 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     return null;
   }
 
-  public MealModel getMealByDateAndType(LocalDate date, MealType mealType){
+  public MealMenuModel getMealByDateAndType(LocalDate date, MealType mealType){
     if(mWeeklyMenu.keySet().contains(date)){
       DailyMenuModel daysMeals = mWeeklyMenu.get(date);
-      return daysMeals.getMeal(mealType);
+      try {
+        MealMenuModel mmm = daysMeals.getMeal(mealType).getMenu();
+        return mmm;
+      } catch (Exception e) {
+        return null;
+      }
     }
     return null;
-
   }
 
   // Methods required to be implemented by parent class
@@ -109,7 +113,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     return model;
   }
 
-  //this method seems useless
+
   public  HashSet<String> getMealItems(){
     HashSet<String> items = new HashSet<String>();
     if(getCurrentStatus()==Status.CLOSED){
@@ -138,7 +142,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     for (int k = 0; k < operatingHours.length(); k++) {
       DailyMenuModel dailyMenuModel = new DailyMenuModel();
       JSONObject mealPeriods = operatingHours.getJSONObject(k);
-      // Each meal in meals is breakfast,lunch, dinner, etc.
+      // Each meal in meals is breakfast, lunch, dinner, etc.
       JSONArray meals = mealPeriods.getJSONArray("events");
       LocalDate localDate;
       if (mealPeriods.has("date")) {

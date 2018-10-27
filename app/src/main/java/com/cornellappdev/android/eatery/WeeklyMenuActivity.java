@@ -11,14 +11,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.OffsetDateTime;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
+import com.cornellappdev.android.eatery.model.enums.MealType;
+
+import org.threeten.bp.OffsetDateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,10 +51,10 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   TextView westText;
   TextView northText;
   TextView centralText;
-  ArrayList<EateryBaseModel> cafeData;
-  ArrayList<EateryBaseModel> diningHall = new ArrayList<>();
-  String mealType = "breakfast";
-  int selectedDate;
+  ArrayList<DiningHallModel> cafeData;
+  ArrayList<DiningHallModel> diningHallList = new ArrayList<>();
+  MealType mealType = MealType.BREAKFAST;
+  LocalDate selectedDate;
   TextView breakfastText;
   TextView lunchText;
   TextView dinnerText;
@@ -72,7 +81,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     centralText = findViewById(R.id.central_header);
 
     Intent intent = getIntent();
-    cafeData = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("cafeData");
+    cafeData = (ArrayList<DiningHallModel>) intent.getSerializableExtra("cafeData");
 
     // Layout for menu list
     setTitle("Upcoming Menus");
@@ -174,12 +183,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     // Get list of dining halls
     for (EateryBaseModel m : cafeData) {
       if (m instanceof DiningHallModel) {
-        diningHall.add(m);
+        diningHallList.add((DiningHallModel) m);
       }
     }
-
-    // Parse the weekly menu when the user starts this activity
-    weeklyMenu = parseWeeklyMenu(dateList);
 
     breakfastText.setOnClickListener(
         new View.OnClickListener() {
@@ -189,7 +195,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             lunchText.setTextColor(Color.parseColor("#cdcdcd"));
             dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
-            mealType = "breakfast";
+            mealType = MealType.BREAKFAST;
             changeListAdapter(mealType, selectedDate);
           }
         });
@@ -202,7 +208,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             lunchText.setTextColor(Color.parseColor("#000000"));
             dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
 
-            mealType = "lunch";
+            mealType = MealType.LUNCH;
             changeListAdapter(mealType, selectedDate);
           }
         });
@@ -215,33 +221,34 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             lunchText.setTextColor(Color.parseColor("#cdcdcd"));
             dinnerText.setTextColor(Color.parseColor("#000000"));
 
-            mealType = "dinner";
+            mealType = MealType.DINNER;
             changeListAdapter(mealType, selectedDate);
           }
         });
-
-    Date date = new Date();
-    if (date.getHours() < 11) {
-      changeListAdapter("breakfast", 0);
-      mealType = "breakfast";
+    LocalDateTime currentTime = LocalDateTime.now();
+    selectedDate = LocalDate.now();
+    if (currentTime.getHour() < 11) {
+      changeListAdapter(MealType.BREAKFAST, selectedDate);
+      mealType = MealType.BREAKFAST;
       breakfastText.setTextColor(Color.parseColor("#000000"));
       lunchText.setTextColor(Color.parseColor("#cdcdcd"));
       dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
-    } else if (date.getHours() < 16) {
-      changeListAdapter("lunch", 0);
-      mealType = "lunch";
+    } else if (currentTime.getHour()  < 16) {
+      changeListAdapter(MealType.LUNCH, selectedDate);
+      mealType = MealType.LUNCH;
       breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
       lunchText.setTextColor(Color.parseColor("#000000"));
       dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
-    } else if (date.getHours() < 22) {
-      changeListAdapter("dinner", 0);
-      mealType = "dinner";
+    } else if (currentTime.getHour() < 22) {
+      changeListAdapter(MealType.DINNER, selectedDate);
+      mealType = MealType.DINNER;
       breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
       lunchText.setTextColor(Color.parseColor("#cdcdcd"));
       dinnerText.setTextColor(Color.parseColor("#000000"));
     } else {
-      changeListAdapter("breakfast", 1);
-      mealType = "breakfast";
+      selectedDate = selectedDate.plusDays(1);
+      changeListAdapter(MealType.BREAKFAST, selectedDate);
+      mealType = MealType.BREAKFAST;
       breakfastText.setTextColor(Color.parseColor("#000000"));
       lunchText.setTextColor(Color.parseColor("#cdcdcd"));
       dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
@@ -288,25 +295,25 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
     switch (id) {
       case R.id.date0:
-        selectedDate = 0;
+        selectedDate = LocalDate.now().plusDays(0);
         break;
       case R.id.date1:
-        selectedDate = 1;
+        selectedDate = LocalDate.now().plusDays(1);
         break;
       case R.id.date2:
-        selectedDate = 2;
+        selectedDate = LocalDate.now().plusDays(2);
         break;
       case R.id.date3:
-        selectedDate = 3;
+        selectedDate = LocalDate.now().plusDays(3);
         break;
       case R.id.date4:
-        selectedDate = 4;
+        selectedDate = LocalDate.now().plusDays(4);
         break;
       case R.id.date5:
-        selectedDate = 5;
+        selectedDate = LocalDate.now().plusDays(5);
         break;
       case R.id.date6:
-        selectedDate = 6;
+        selectedDate = LocalDate.now().plusDays(6);
         break;
     }
     changeListAdapter(mealType, selectedDate);
@@ -322,179 +329,77 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   }
 
   /** Updates the list of dining halls and menus that is displayed */
-  public void changeListAdapter(String mealType, int dateOffset) {
-    int mealIndex = 0;
-    switch (mealType) {
-      case "breakfast":
-        mealIndex = 0;
-        break;
-      case "lunch":
-        mealIndex = 1;
-        break;
-      case "dinner":
-        mealIndex = 2;
-        break;
-    }
-    //TODO(lesley): refactor
-    listAdapterWest =
-        new ExpandableListAdapter(
-            getApplicationContext(), new TreeMap<>(), dateOffset, mealIndex, cafeData);
-    expListViewWest.setAdapter(listAdapterWest);
-//    HashMap<String, TreeMap<String, ArrayList<String>>> finalList =
-//        generateFinalList(weeklyMenu.get(dateOffset).get(mealIndex));
+  public void changeListAdapter(MealType mealType, LocalDate date) {
+    HashMap<String, ArrayList<DiningHallModel>> finalList = generateAreaLists(mealType, date);
+    ArrayList<DiningHallModel> westList = finalList.get("West");
+    ArrayList<DiningHallModel> northList = finalList.get("North");
+    ArrayList<DiningHallModel> centralList = finalList.get("Central");
+    Log.d("log-weekly", "HIHIIHIHIHI");
 
     // Hides layout elements if there is nothing in the list corresponding to a certain
     // CafeteriaArea
-//    if (finalList.get("West") != null && finalList.get("West").size() == 0) {
-//      westText.setVisibility(View.GONE);
-//      expListViewWest.setVisibility(View.GONE);
-//    } else {
-//      westText.setVisibility(View.VISIBLE);
-//      expListViewWest.setVisibility(View.VISIBLE);
-//
-//      listAdapterWest =
-//          new ExpandableListAdapter(
-//              getApplicationContext(), finalList.get("West"), dateOffset, mealIndex, cafeData);
-//      expListViewWest.setAdapter(listAdapterWest);
-//    }
-//    if (finalList.get("North") != null && finalList.get("North").size() == 0) {
-//      northText.setVisibility(View.GONE);
-//      expListViewNorth.setVisibility(View.GONE);
-//    } else {
-//      northText.setVisibility(View.VISIBLE);
-//      expListViewNorth.setVisibility(View.VISIBLE);
-//
-//      listAdapterNorth =
-//          new ExpandableListAdapter(
-//              getApplicationContext(), finalList.get("North"), dateOffset, mealIndex, cafeData);
-//      expListViewNorth.setAdapter(listAdapterNorth);
-//    }
-//    if (finalList.get("Central") != null && finalList.get("Central").size() == 0) {
-//      centralText.setVisibility(View.GONE);
-//      expListViewCentral.setVisibility(View.GONE);
-//    } else {
-//      centralText.setVisibility(View.VISIBLE);
-//      expListViewCentral.setVisibility(View.VISIBLE);
-//
-//      listAdapterCentral =
-//          new ExpandableListAdapter(
-//              getApplicationContext(), finalList.get("Central"), dateOffset, mealIndex, cafeData);
-//      expListViewCentral.setAdapter(listAdapterCentral);
-//    }
+    if (westList != null && westList.size() == 0) {
+      westText.setVisibility(View.GONE);
+      expListViewWest.setVisibility(View.GONE);
+    } else {
+      westText.setVisibility(View.VISIBLE);
+      expListViewWest.setVisibility(View.VISIBLE);
+
+      listAdapterWest =
+          new ExpandableListAdapter(
+              getApplicationContext(), date, mealType, westList);
+      expListViewWest.setAdapter(listAdapterWest);
+    }
+    if (northList != null && northList.size() == 0) {
+      northText.setVisibility(View.GONE);
+      expListViewNorth.setVisibility(View.GONE);
+    } else {
+      northText.setVisibility(View.VISIBLE);
+      expListViewNorth.setVisibility(View.VISIBLE);
+
+      listAdapterNorth =
+          new ExpandableListAdapter(
+              getApplicationContext(), date, mealType, northList);
+      expListViewNorth.setAdapter(listAdapterNorth);
+    }
+    if (centralList != null && centralList.size() == 0) {
+      centralText.setVisibility(View.GONE);
+      expListViewCentral.setVisibility(View.GONE);
+    } else {
+      centralText.setVisibility(View.VISIBLE);
+      expListViewCentral.setVisibility(View.VISIBLE);
+
+      listAdapterCentral =
+          new ExpandableListAdapter(
+              getApplicationContext(), date, mealType, centralList);
+      expListViewCentral.setAdapter(listAdapterCentral);
+    }
   }
 
-//  /**
-//   * Generates a list of for breakfast, lunch, and dinner for a particular day. Day is determined by
-//   * the dateOffset from the current time.
-//   */
-//  public ArrayList<TreeMap<String, MealModel>> generateMealLists(int dateOffset) {
-//    ArrayList<TreeMap<String, MealModel>> finalList = new ArrayList<>();
-//    TreeMap<String, MealModel> breakfastList = new TreeMap<>();
-//    TreeMap<String, MealModel> lunchList = new TreeMap<>();
-//    TreeMap<String, MealModel> dinnerList = new TreeMap<>();
-//    for (EateryBaseModel m : diningHall) {
-//      DiningHallModel diningHall = (DiningHallModel) m;
-//      // Checks that dining hall is opened
-//      if (DiningHallModel m != -1) {
-//        // Get MealModel for the day and split into three hashmaps
-//        ArrayList<MealModel> meals = m.getWeeklyMenu().get(m.indexOfCurrentDay() + dateOffset);
-//        for (MealModel n : meals) {
-//          if (n.getMenu().size() > 0) {
-//            if ((n.getType().equals("Breakfast") || n.getType().equals("Brunch"))) {
-//              breakfastList.put(m.getNickName(), n);
-//            }
-//            if (n.getType().equals("Lunch")
-//                || n.getType().equals("Brunch")
-//                || n.getType().equals("Lite Lunch")) {
-//              lunchList.put(m.getNickName(), n);
-//            }
-//            if (n.getType().equals("Dinner")) {
-//              dinnerList.put(m.getNickName(), n);
-//            }
-//          }
-//        }
-//      }
-//    }
-//    finalList.add(breakfastList);
-//    finalList.add(lunchList);
-//    finalList.add(dinnerList);
-//
-//    return finalList;
-//  }
-
-  //TODO(lesley): refactor
-//  /** Converts the MealModel object of the map into an Arraylist */
-//  private HashMap<String, TreeMap<String, ArrayList<String>>> generateFinalList(
-//      TreeMap<String, MealModel> listToParse) {
-//    HashMap<String, TreeMap<String, ArrayList<String>>> listFinal = new HashMap<>();
-//    TreeMap<String, ArrayList<String>> finalWest = new TreeMap<>();
-//    TreeMap<String, ArrayList<String>> finalNorth = new TreeMap<>();
-//    TreeMap<String, ArrayList<String>> finalCentral = new TreeMap<>();
-//
-//    for (Map.Entry<String, MealModel> cafe : listToParse.entrySet()) {
-//      ArrayList<String> mealToList = new ArrayList<String>();
-//
-//      // Get menu of dining hall
-//      MealModel m = cafe.getValue();
-//      HashMap<String, ArrayList<String>> entrySet = m.getMenu();
-//
-//      // Add both category + meal items into an ArrayList
-//      for (Map.Entry<String, ArrayList<String>> entry : entrySet.entrySet()) {
-//        // Add '3' in front to denote category
-//        String key = "3" + entry.getKey();
-//        ArrayList<String> values = entry.getValue();
-//
-//        mealToList.add(key);
-//        for (String items : values) {
-//          mealToList.add(items);
-//        }
-//      }
-//      mealToList.add(" ");
-//
-//      CafeteriaModel myCafe = null;
-//      int count = 0;
-//
-//      while (count < cafeData.size()) {
-//        if (cafeData.get(count).getNickName().equals(cafe.getKey())) {
-//          myCafe = cafeData.get(count);
-//        }
-//        count++;
-//      }
-//
-//      switch (myCafe.getArea()) {
-//        case WEST:
-//          finalWest.put(cafe.getKey(), mealToList);
-//          break;
-//        case NORTH:
-//          finalNorth.put(cafe.getKey(), mealToList);
-//          break;
-//        case CENTRAL:
-//          finalCentral.put(cafe.getKey(), mealToList);
-//          break;
-//      }
-//      listFinal.put("West", finalWest);
-//      listFinal.put("North", finalNorth);
-//      listFinal.put("Central", finalCentral);
-//    }
-//    return listFinal;
-//  }
-
-  /**
-   * Assume that dateList is not null. Returns an Arraylist of the set(breakfastlist, lunchlist,
-   * dinnerlist) for each day in the dateList. Each of the meal lists is a hashmap of
-   * CafeteriaModels that have that specific meal and the menu
-   */
-  public ArrayList<ArrayList<TreeMap<String, MealModel>>> parseWeeklyMenu(
-      ArrayList<TextView> dateList) {
-    ArrayList<ArrayList<TreeMap<String, MealModel>>> mainList = new ArrayList<>();
-
-    for (int i = 0; i < dateList.size(); i++) {
-      // List contains set(breakfastlist, lunchlist, dinnerlist) for the day
-      ArrayList<TreeMap<String, MealModel>> dailyList = new ArrayList<>();
-//      dailyList = generateMealLists(i);
-      mainList.add(dailyList);
+  public HashMap<String, ArrayList<DiningHallModel>> generateAreaLists(MealType mealType, LocalDate date) {
+    ArrayList<DiningHallModel> westList = new ArrayList<>();
+    ArrayList<DiningHallModel> northList = new ArrayList<>();
+    ArrayList<DiningHallModel> centralList = new ArrayList<>();
+    for (DiningHallModel dhm : diningHallList) {
+      if (dhm.getMealByDateAndType(date, mealType) != null) {
+        switch (dhm.getArea()) {
+          case NORTH:
+            northList.add(dhm);
+            break;
+          case WEST:
+            westList.add(dhm);
+            break;
+          case CENTRAL:
+            centralList.add(dhm);
+            break;
+        }
+      }
     }
-    return mainList;
+    HashMap<String, ArrayList<DiningHallModel>> finalList = new HashMap<>();
+    finalList.put("West", westList);
+    finalList.put("North", northList);
+    finalList.put("Central", centralList);
+    return finalList;
   }
 
   public class SnackBarListener implements View.OnClickListener {

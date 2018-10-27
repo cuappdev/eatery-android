@@ -4,16 +4,24 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import org.threeten.bp.LocalDate;
+
+import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
+import com.cornellappdev.android.eatery.model.enums.MealType;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -22,59 +30,47 @@ import java.util.TreeMap;
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
   private Context context;
-  private ArrayList<EateryBaseModel> cafeData = new ArrayList<>();
-  private ArrayList<String> cafeKeys = new ArrayList<>();
-
-  private TreeMap<String, ArrayList<String>> mealMap = new TreeMap<>();
+  private ArrayList<DiningHallModel> diningList;
   View line;
-  private int mealIndex;
-  private int dateOffset;
+  private LocalDate date;
+  private MealType mealType;
 
   public ExpandableListAdapter(
       Context context,
-      TreeMap<String, ArrayList<String>> mealMap,
-      int dateOffset,
-      int mealIndex,
-      ArrayList<EateryBaseModel> cafeData) {
+      LocalDate date,
+      MealType mealType,
+      ArrayList<DiningHallModel> diningList) {
     this.context = context;
-    this.mealMap = mealMap;
-    this.mealIndex = mealIndex;
-    this.dateOffset = dateOffset;
-    this.cafeData = cafeData;
-
-    if (mealMap != null) {
-      for (String str : mealMap.keySet()) {
-        cafeKeys.add(str);
-      }
-    }
+    this.mealType = mealType;
+    this.date = date;
+    this.diningList = diningList;
   }
 
   @Override
   public int getGroupCount() {
-    if (mealMap == null) {
-      return 0;
-    }
-    return mealMap.size();
+    return diningList.size();
   }
 
   @Override
   public int getChildrenCount(int i) {
-    if (mealMap == null) {
+    if (getGroupCount() == 0) {
       return 0;
     }
-    String m = cafeKeys.get(i);
-    return mealMap.get(m).size();
+    return ((DiningHallModel) getGroup(i))
+        .getMealByDateAndType(date, mealType).getNumberOfCategories();
   }
 
   @Override
   public Object getGroup(int i) {
-    return cafeKeys.get(i);
+
+    return diningList.get(i);
   }
 
   @Override
   public Object getChild(int i, int i1) {
-    String m = (String) getGroup(i);
-    return mealMap.get(m).get(i1);
+    Log.d("log-explistview", ((DiningHallModel) getGroup(i)).getNickName());
+    return ((DiningHallModel) getGroup(i))
+        .getMealByDateAndType(date, mealType).getCategory(i1);
   }
 
   @Override
@@ -93,6 +89,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
+  /** Displays header for explistview**/
   public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
     // Inflate layout if it does not exist already
     if (view == null) {
@@ -101,7 +98,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       view = infalInflater.inflate(R.layout.list_view_header, viewGroup, false);
     }
 
-    String m = (String) getGroup(i);
+    String m = ((DiningHallModel) getGroup(i)).getNickName();
     TextView headerText = view.findViewById(R.id.header);
     headerText.setText(m);
     headerText.setTypeface(null, Typeface.NORMAL);
@@ -182,36 +179,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     TextView tv = view.findViewById(R.id.menu_title);
 
-    if (str == null) {
-      System.out.println("dingdongditch");
+    if (str == "") {
       tv.setText("No menu available");
     }
-    // If str == 3, then string is a category
-    if (str.charAt(0) == '3') {
-      str = str.substring(1);
+    else {
+      // Formatting for category
       SpannableString sstr = new SpannableString(str);
       tv.setText(sstr);
       tv.setTextColor(Color.parseColor("#000000"));
       tv.setTextSize(18);
       tv.setPadding(0, 70, 0, 0);
-    }
-    // If str != 3, then string is a meal item
-    else {
-      SpannableString sstr = new SpannableString(str);
-      tv.setText(sstr);
-      tv.setTypeface(null, Typeface.NORMAL);
-      tv.setTextColor(Color.parseColor("#808080"));
-      tv.setTextSize(14);
-      tv.setPadding(0, 0, 0, 0);
+
+      for (String item : ((DiningHallModel) getGroup(i))
+          .getMealByDateAndType(date, mealType).getItems(str)) {
+
+        SpannableString itemStr = new SpannableString(item);
+        tv.append("\n" + itemStr);
+//        tvItem.setText(itemStr);
+//        tvItem.setTypeface(null, Typeface.NORMAL);
+//        tvItem.setTextColor(Color.parseColor("#808080"));
+//        tvItem.setTextSize(14);
+//        tvItem.setPadding(0, 0, 0, 0);
+//        ((LinearLayout) view).addView(tvItem);
+      }
     }
     return view;
   }
 
   @Override
   public boolean isChildSelectable(int i, int i1) {
-    if (getChildrenCount(i) == 1) {
-      return true;
-    }
     return false;
   }
 }
