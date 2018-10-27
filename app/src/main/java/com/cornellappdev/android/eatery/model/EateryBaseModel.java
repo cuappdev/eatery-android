@@ -2,7 +2,6 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
@@ -140,25 +139,17 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     return str1.compareToIgnoreCase(str2);
   };
 
-
-  //TODO: FIX!
   /**
-   * Compared the time of two EateryModel
+   * Compare the time of two EateryModel
    **/
   public int compareTo(@NonNull EateryBaseModel cm) {
-    Log.d("log-base", cm.getNickName());
-    if (cm.getCurrentStatus() == getCurrentStatus()) {
-      Log.d("log-base", "3");
-//      return this.getNickName().compareTo(cm.getNickName());
-      return 0;
+    if (isOpen() && cm.isOpen()) {
+      return this.getNickName().compareTo(cm.getNickName());
     } else if (isOpen() && !cm.isOpen()) {
-      Log.d("log-base", "4");
       return -1;
-    } else {
-      Log.d("log-base", "5");
+    } else if (!isOpen() && cm.isOpen()){
       return 1;
     }
-
-
+    return 0;
   }
 }

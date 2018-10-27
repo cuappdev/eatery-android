@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -150,9 +151,9 @@ public class MainActivity extends AppCompatActivity
   }
 
   public void changeButtonColor(int textColor, int backgroundColor, Button button) {
-    button.setTextColor(textColor);
+    button.setTextColor(ContextCompat.getColor(getApplicationContext(),textColor));
     GradientDrawable bgShape = (GradientDrawable) button.getBackground();
-    bgShape.setColor(backgroundColor);
+    bgShape.setColor(ContextCompat.getColor(getApplicationContext(),backgroundColor));
   }
 
   private void filterCurrentList() {
@@ -193,13 +194,13 @@ public class MainActivity extends AppCompatActivity
 
   private void handleAreaButtonPress(Button button, CampusArea area) {
     if (!button.equals(areaButtonPressed)) {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
       if (areaButtonPressed != null) {
-        changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, areaButtonPressed);
+        changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, areaButtonPressed);
       }
       areaButtonPressed = button;
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
       areaButtonPressed = null;
     }
     filterCurrentList();
@@ -207,13 +208,13 @@ public class MainActivity extends AppCompatActivity
 
   private void handlePaymentButtonPress(Button button, String payment) {
     if (!button.equals(paymentButtonPressed)) {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
       if (paymentButtonPressed != null) {
-        changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, paymentButtonPressed);
+        changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, paymentButtonPressed);
       }
       paymentButtonPressed = button;
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
       paymentButtonPressed = null;
     }
     filterCurrentList();
@@ -386,7 +387,7 @@ public class MainActivity extends AppCompatActivity
       dbHelper.addData(json);
 
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());
-//      Collections.sort(cafeList);
+      Collections.sort(cafeList);
       Log.d("log-main", cafeList.toString() );
       currentList = cafeList;
       searchList = cafeList;
