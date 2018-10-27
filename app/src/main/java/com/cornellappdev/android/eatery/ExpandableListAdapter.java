@@ -1,9 +1,17 @@
 package com.cornellappdev.android.eatery;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +26,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -178,31 +187,33 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     String str = (String) getChild(i, i1);
 
     TextView tv = view.findViewById(R.id.menu_title);
-
+    SpannableStringBuilder finalStr = new SpannableStringBuilder();
     if (str == "") {
       tv.setText("No menu available");
     }
     else {
       // Formatting for category
-      SpannableString sstr = new SpannableString(str);
-      tv.setText(sstr);
-      tv.setTextColor(Color.parseColor("#000000"));
-      tv.setTextSize(18);
-      tv.setPadding(0, 70, 0, 0);
+      DisplayMetrics dm = new DisplayMetrics();
+      ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+      float logicalDensity = dm.density;
 
+      SpannableString sstr = new SpannableString(str);
+      sstr.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, sstr.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+      sstr.setSpan(new ForegroundColorSpan(Color.parseColor("#000000")), 0, sstr.length(), 0);
+      sstr.setSpan(new AbsoluteSizeSpan((int) (20*logicalDensity)), 0, sstr.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+      finalStr.append(sstr);
       for (String item : ((DiningHallModel) getGroup(i))
           .getMealByDateAndType(date, mealType).getItems(str)) {
-
         SpannableString itemStr = new SpannableString(item);
-        tv.append("\n" + itemStr);
-//        tvItem.setText(itemStr);
-//        tvItem.setTypeface(null, Typeface.NORMAL);
-//        tvItem.setTextColor(Color.parseColor("#808080"));
-//        tvItem.setTextSize(14);
-//        tvItem.setPadding(0, 0, 0, 0);
-//        ((LinearLayout) view).addView(tvItem);
+        itemStr.setSpan(new ForegroundColorSpan(Color.parseColor("#7d8288")), 0, itemStr.length(), 0);
+        itemStr.setSpan(new StyleSpan(Typeface.NORMAL), 0, itemStr.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        itemStr.setSpan(new AbsoluteSizeSpan((int) (14*logicalDensity)), 0, itemStr.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        finalStr.append("\n");
+        finalStr.append(itemStr);
       }
     }
+    tv.setText(finalStr, TextView.BufferType.SPANNABLE);
+    tv.setPadding(15, 24, 0, 0);
     return view;
   }
 

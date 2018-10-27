@@ -35,7 +35,7 @@
             android:text="02"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -46,7 +46,7 @@
             android:text="03"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -57,7 +57,7 @@
             android:text="04"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -68,7 +68,7 @@
             android:text="05"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -78,7 +78,7 @@
             android:id="@+id/date5"
             android:text="06"
             android:textStyle="bold"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:padding="5dp"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -90,7 +90,7 @@
             android:text="07"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#cdcdcd"
+            android:textColor="#7d8288"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
     </LinearLayout>
@@ -108,10 +108,10 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
                 android:padding="10dp"
                 android:id="@+id/breakfast"
                 android:text="Breakfast"/>
@@ -125,10 +125,10 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/lunch"
                 android:text="Lunch"/>
@@ -142,10 +142,10 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.3"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#cdcdcd"
                 android:padding="10dp"
                 android:id="@+id/dinner"
                 android:text="Dinner"/>

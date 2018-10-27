@@ -24,20 +24,13 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
-
-import org.threeten.bp.OffsetDateTime;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class WeeklyMenuActivity extends AppCompatActivity {
   public BottomNavigationView bnv;
@@ -149,9 +142,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#000000"));
-            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+            breakfastText.setTextColor(Color.parseColor("#4a90e2"));
+            lunchText.setTextColor(Color.parseColor("#7d8288"));
+            dinnerText.setTextColor(Color.parseColor("#7d8288"));
           }
         });
 
@@ -190,9 +183,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#000000"));
-            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+            breakfastText.setTextColor(Color.parseColor("#4a90e2"));
+            lunchText.setTextColor(Color.parseColor("#7d8288"));
+            dinnerText.setTextColor(Color.parseColor("#7d8288"));
 
             mealType = MealType.BREAKFAST;
             changeListAdapter(mealType, selectedDate);
@@ -203,9 +196,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
-            lunchText.setTextColor(Color.parseColor("#000000"));
-            dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+            breakfastText.setTextColor(Color.parseColor("#7d8288"));
+            lunchText.setTextColor(Color.parseColor("#4a90e2"));
+            dinnerText.setTextColor(Color.parseColor("#7d8288"));
 
             mealType = MealType.LUNCH;
             changeListAdapter(mealType, selectedDate);
@@ -216,9 +209,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
-            lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-            dinnerText.setTextColor(Color.parseColor("#000000"));
+            breakfastText.setTextColor(Color.parseColor("#7d8288"));
+            lunchText.setTextColor(Color.parseColor("#7d8288"));
+            dinnerText.setTextColor(Color.parseColor("#4a90e2"));
 
             mealType = MealType.DINNER;
             changeListAdapter(mealType, selectedDate);
@@ -229,28 +222,28 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     if (currentTime.getHour() < 11) {
       changeListAdapter(MealType.BREAKFAST, selectedDate);
       mealType = MealType.BREAKFAST;
-      breakfastText.setTextColor(Color.parseColor("#000000"));
-      lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-      dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+      breakfastText.setTextColor(Color.parseColor("#4a90e2"));
+      lunchText.setTextColor(Color.parseColor("#7d8288"));
+      dinnerText.setTextColor(Color.parseColor("#7d8288"));
     } else if (currentTime.getHour()  < 16) {
       changeListAdapter(MealType.LUNCH, selectedDate);
       mealType = MealType.LUNCH;
-      breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
-      lunchText.setTextColor(Color.parseColor("#000000"));
-      dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+      breakfastText.setTextColor(Color.parseColor("#7d8288"));
+      lunchText.setTextColor(Color.parseColor("#4a90e2"));
+      dinnerText.setTextColor(Color.parseColor("#7d8288"));
     } else if (currentTime.getHour() < 22) {
       changeListAdapter(MealType.DINNER, selectedDate);
       mealType = MealType.DINNER;
-      breakfastText.setTextColor(Color.parseColor("#cdcdcd"));
-      lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-      dinnerText.setTextColor(Color.parseColor("#000000"));
+      breakfastText.setTextColor(Color.parseColor("#7d8288"));
+      lunchText.setTextColor(Color.parseColor("#7d8288"));
+      dinnerText.setTextColor(Color.parseColor("#4a90e2"));
     } else {
       selectedDate = selectedDate.plusDays(1);
       changeListAdapter(MealType.BREAKFAST, selectedDate);
       mealType = MealType.BREAKFAST;
-      breakfastText.setTextColor(Color.parseColor("#000000"));
-      lunchText.setTextColor(Color.parseColor("#cdcdcd"));
-      dinnerText.setTextColor(Color.parseColor("#cdcdcd"));
+      breakfastText.setTextColor(Color.parseColor("#4a90e2"));
+      lunchText.setTextColor(Color.parseColor("#7d8288"));
+      dinnerText.setTextColor(Color.parseColor("#7d8288"));
     }
 
     // Adds functionality to bottom nav bar
@@ -322,7 +315,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   public void changeDateColor(TextView v) {
     for (int i = 0; i < 7; i++) {
       if (!dateList.get(i).equals(v)) {
-        dateList.get(i).setTextColor(Color.parseColor("#cdcdcd"));
+        dateList.get(i).setTextColor(Color.parseColor("#7d8288"));
       }
     }
   }
@@ -346,7 +339,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
       listAdapterWest =
           new ExpandableListAdapter(
-              getApplicationContext(), date, mealType, westList);
+              this, date, mealType, westList);
       expListViewWest.setAdapter(listAdapterWest);
     }
     if (northList != null && northList.size() == 0) {
@@ -358,7 +351,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
       listAdapterNorth =
           new ExpandableListAdapter(
-              getApplicationContext(), date, mealType, northList);
+              this, date, mealType, northList);
       expListViewNorth.setAdapter(listAdapterNorth);
     }
     if (centralList != null && centralList.size() == 0) {
@@ -370,7 +363,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
 
       listAdapterCentral =
           new ExpandableListAdapter(
-              getApplicationContext(), date, mealType, centralList);
+              this, date, mealType, centralList);
       expListViewCentral.setAdapter(listAdapterCentral);
     }
   }
