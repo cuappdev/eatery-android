@@ -5,6 +5,6 @@
     <string name="closing_soon">Closing Soon</string>
     <string name="closed">Closed</string>
     <string name="open">Open</string>
-
-
+    <string name="open_at">Opening at</string>
+    <string name="close_at">Closes at</string>
 </resources>

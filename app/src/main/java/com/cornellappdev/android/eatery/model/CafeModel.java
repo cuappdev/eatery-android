@@ -127,12 +127,9 @@ public class CafeModel extends EateryBaseModel implements Serializable {
         if(interval.containsTime(LocalDateTime.now())){
           return Status.OPEN;
         }
-        else {
-          return Status.CLOSED;
-        }
       }
     }
-    return null;
+    return Status.CLOSED;
   }
 
   public void setHours(LocalDate date, List<Interval> hours) {

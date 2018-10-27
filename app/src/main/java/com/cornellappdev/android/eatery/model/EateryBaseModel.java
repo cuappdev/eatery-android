@@ -21,9 +21,18 @@ import java.util.List;
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
   public enum Status {
-    OPEN,
-    CLOSINGSOON,
-    CLOSED;
+    OPEN("Open"),
+    CLOSINGSOON("Closing Soon"),
+    CLOSED("Closed");
+    private String display_name;
+    private Status(String display_name) {
+      this.display_name = display_name;
+    }
+
+    @Override
+    public String toString(){
+      return display_name;
+    }
   }
   private ArrayList<String> mSearchedItems;
   private boolean matchesFilter = true;
@@ -141,21 +150,15 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   };
 
 
-  //TODO: FIX!
   /**
    * Compared the time of two EateryModel
    **/
   public int compareTo(@NonNull EateryBaseModel cm) {
-    Log.d("log-base", cm.getNickName());
     if (cm.getCurrentStatus() == getCurrentStatus()) {
-      Log.d("log-base", "3");
-//      return this.getNickName().compareTo(cm.getNickName());
-      return 0;
+      return this.getNickName().compareTo(cm.getNickName());
     } else if (isOpen() && !cm.isOpen()) {
-      Log.d("log-base", "4");
       return -1;
     } else {
-      Log.d("log-base", "5");
       return 1;
     }
 

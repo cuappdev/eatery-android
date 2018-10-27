@@ -34,6 +34,7 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,20 +102,18 @@ public class MenuActivity extends AppCompatActivity {
 
     // Format string for opening/closing time
     cafeIsOpen = findViewById(R.id.ind_open);
-
-    if (cafeData.getCurrentStatus() == EateryBaseModel.Status.OPEN) {
-      cafeIsOpen.setText("Open");
+    EateryBaseModel.Status currentStatus = cafeData.getCurrentStatus();
+    cafeIsOpen.setText(currentStatus.toString());
+    if (currentStatus == EateryBaseModel.Status.OPEN) {
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-    } else if (cafeData.getCurrentStatus() == EateryBaseModel.Status.CLOSINGSOON) {
-      cafeIsOpen.setText("Closing Soon");
+    } else if ( currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
     } else {
-      cafeIsOpen.setText("Closed");
       cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
     }
 
     cafeText = findViewById(R.id.ind_time);
-//    cafeText.setText(cafeData.getChangeTime().toString());
+    cafeText.setText(TimeUtil.format(cafeData.getCurrentStatus(), cafeData.getChangeTime()));
 
     cafeLoc = findViewById(R.id.ind_loc);
     cafeLoc.setText(cafeData.getBuildingLocation());
