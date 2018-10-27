@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
@@ -128,15 +128,8 @@ public class MainActivity extends AppCompatActivity
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
               case R.id.action_brb:
-                Snackbar snackbar =
-                    Snackbar.make(
-                        findViewById(R.id.main_activity),
-                        "If you would like"
-                            + " to see this feature, consider joining our Android dev team!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Apply", new SnackBarListener());
-                snackbar.show();
-
+                intent = new Intent(getApplicationContext(), InfoActivity.class);
+                startActivity(intent);
                 break;
             }
             return true;
