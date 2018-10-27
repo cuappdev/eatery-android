@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.OffsetDateTime;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;

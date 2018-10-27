@@ -30,8 +30,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.CafeModel;
+import com.cornellappdev.android.eatery.model.DailyMenuModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -197,8 +199,9 @@ public class MenuActivity extends AppCompatActivity {
       customPager.setVisibility(View.GONE);
       tabLayout.setVisibility(View.GONE);
 
-      if (((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals().isEmpty()) {
-        menuText.setText("Nothing on the menu 😮");
+      ArrayList<MealModel> mm = ((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals();
+      if (mm.isEmpty() || mm.get(0).getMenu().getNumberOfCategories() == 0) {
+        menuText.setText("Nothing the menu 😮");
         menuText.setTextSize(16);
         menuText.setPadding(0, 96, 0, 0);
         menuText.setBackgroundColor(Color.parseColor("#f5f5f5"));
