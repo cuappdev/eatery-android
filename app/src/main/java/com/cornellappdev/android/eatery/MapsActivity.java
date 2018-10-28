@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -88,7 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Toast toast;
             Intent intent;
             switch (item.getItemId()) {
               case R.id.action_home:
@@ -101,15 +101,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
                 break;
               case R.id.action_brb:
-                Snackbar snackbar =
-                    Snackbar.make(
-                        findViewById(R.id.maps_activity),
-                        "If you would like"
-                            + " to see this feature, consider joining our Android dev team!",
-                        Snackbar.LENGTH_LONG);
-                snackbar.setAction("Apply", new SnackBarListener());
-                snackbar.show();
-
+                finish();
+                intent = new Intent(getApplicationContext(), InfoActivity.class);
+                intent.putExtra("cafeData", cafeData);
+                startActivity(intent);
                 break;
             }
             return true;

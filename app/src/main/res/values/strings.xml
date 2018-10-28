@@ -7,5 +7,6 @@
     <string name="open">Open</string>
     <string name="appdev_website"><a href="https://www.cornellappdev.com/">Visit Our Website</a></string>
     <string name="google_form"><a href="https://goo.gl/forms/g8v6CbN2lrQtY4tH2">Send Feedback</a></string>
+    <string name="info_page_description">Eatery is made by Cornell App Development, an engineering project team at Cornell University.</string>
 
 </resources>
