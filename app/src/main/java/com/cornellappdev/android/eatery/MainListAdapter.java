@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -114,17 +115,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
 
-        String openText;
-        if(eateryModel.getCurrentStatus()==CLOSED){
-          openText = mContext.getResources().getString(R.string.closed);
-        }
-        else if(eateryModel.getCurrentStatus()==CLOSINGSOON){
-          openText = mContext.getResources().getString(R.string.closing_soon);
-        }
-        else{
-          openText = mContext.getResources().getString(R.string.open);
-        }
-
+        String openText = eateryModel.getCurrentStatus().toString();
         SpannableString openString = new SpannableString(openText);
         openString.setSpan(
             new StyleSpan(Typeface.BOLD),
@@ -154,8 +145,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (eateryModel instanceof DiningHallModel) {
           holder.swipe_icon.setVisibility(View.VISIBLE);
         }
-        // TODO:Need to change to format time
-//        holder.cafeTime.setText(eateryModel.getChangeTime().toString());
+        holder.cafeTime.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
         break;
       case TEXT:
         TextAdapterViewHolder holder2 = (TextAdapterViewHolder) input_holder;
