@@ -17,7 +17,7 @@
         android:background="#f5f5f5"
         android:textSize="18sp"
         android:paddingLeft="15dp"
-        android:paddingTop="24dp"
+        android:paddingTop="8dp"
         android:id="@+id/menu_title"/>
 
 </LinearLayout>

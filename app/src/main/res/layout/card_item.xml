@@ -15,7 +15,7 @@
         android:id="@+id/cv"
         app:cardElevation="4dp"
         app:cardPreventCornerOverlap="true"
-        app:cardCornerRadius="6dp"
+        app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true">
 
         <RelativeLayout

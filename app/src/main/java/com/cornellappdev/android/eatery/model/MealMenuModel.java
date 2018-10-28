@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +40,27 @@ public class MealMenuModel implements Serializable {
     return getCategories().get(i);
   }
 
+  public boolean containsCategory(String category) {
+    HashSet<String> categories = new HashSet<>(getCategories());
+    return categories.contains(category);
+  }
+
   public List<String> getCategories() {
     if (menu.isEmpty()) {
       return new ArrayList<>();
     }
     return new ArrayList<>(menu.keySet());
+  }
+
+  public List<String> getMenuAsList() {
+    List<String> flatMenu = new ArrayList<>();
+    for (String c : getCategories()) {
+      flatMenu.add(c);
+      for (String item : getItems(c)) {
+        flatMenu.add(item);
+      }
+    }
+    return flatMenu;
   }
 
   public int getNumberOfCategories() {

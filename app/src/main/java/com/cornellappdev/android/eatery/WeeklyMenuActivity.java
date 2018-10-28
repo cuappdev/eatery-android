@@ -326,7 +326,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     ArrayList<DiningHallModel> westList = finalList.get("West");
     ArrayList<DiningHallModel> northList = finalList.get("North");
     ArrayList<DiningHallModel> centralList = finalList.get("Central");
-    Log.d("log-weekly", "HIHIIHIHIHI");
 
     // Hides layout elements if there is nothing in the list corresponding to a certain
     // CafeteriaArea
@@ -373,7 +372,8 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     ArrayList<DiningHallModel> northList = new ArrayList<>();
     ArrayList<DiningHallModel> centralList = new ArrayList<>();
     for (DiningHallModel dhm : diningHallList) {
-      if (dhm.getMealByDateAndType(date, mealType) != null) {
+      if (dhm.getMealByDateAndType(date, mealType) != null ||
+          (mealType == MealType.LUNCH && dhm.getMealByDateAndType(date, MealType.BRUNCH) != null)) {
         switch (dhm.getArea()) {
           case NORTH:
             northList.add(dhm);

@@ -1,37 +1,22 @@
 package com.cornellappdev.android.eatery;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import org.threeten.bp.LocalDate;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
@@ -65,21 +50,31 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     if (getGroupCount() == 0) {
       return 0;
     }
-    return ((DiningHallModel) getGroup(i))
-        .getMealByDateAndType(date, mealType).getNumberOfCategories();
+    try {
+      return ((DiningHallModel) getGroup(i))
+          .getMealByDateAndType(date, mealType).getMenuAsList().size();
+    } catch (Exception e){
+      this.mealType = MealType.BRUNCH;
+      return ((DiningHallModel) getGroup(i))
+          .getMealByDateAndType(date, MealType.BRUNCH).getMenuAsList().size();
+    }
   }
 
   @Override
   public Object getGroup(int i) {
-
     return diningList.get(i);
   }
 
   @Override
   public Object getChild(int i, int i1) {
-    Log.d("log-explistview", ((DiningHallModel) getGroup(i)).getNickName());
-    return ((DiningHallModel) getGroup(i))
-        .getMealByDateAndType(date, mealType).getCategory(i1);
+    try {
+      return ((DiningHallModel) getGroup(i))
+          .getMealByDateAndType(date, mealType).getMenuAsList().get(i1);
+    } catch (Exception e){
+      this.mealType = MealType.BRUNCH;
+      return ((DiningHallModel) getGroup(i))
+          .getMealByDateAndType(date, MealType.BRUNCH).getMenuAsList().get(i1);
+    }
   }
 
   @Override
@@ -110,65 +105,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     String m = ((DiningHallModel) getGroup(i)).getNickName();
     TextView headerText = view.findViewById(R.id.header);
     headerText.setText(m);
-    headerText.setTypeface(null, Typeface.NORMAL);
+    headerText.setTypeface(null, Typeface.BOLD);
 
-    TextView timetext1 = view.findViewById(R.id.time1);
-
-//    try {
-//      CafeteriaModel myCafe = null;
-//      int count = 0;
-//      while (count < cafeData.size()) {
-//        if (m.equals(cafeData.get(count).getNickName())) {
-//          myCafe = cafeData.get(count);
-//        }
-//        count++;
-//      }
-//
-//      ArrayList<MealModel> day = myCafe.getWeeklyMenu().get(dateOffset + 1);
-//      int length = day.size() - 1;
-//
-//      // finding correct idx to get desired meal model from day array
-//      MealModel meal;
-//      if (length == 1) {
-//        meal = day.get(mealIndex / 2);
-//      } else if (length == 2) {
-//        meal = day.get(mealIndex);
-//      } else if (length == 3) {
-//        meal = day.get(mealIndex - 2 + length);
-//      } else {
-//        meal = day.get(0);
-//      }
-//
-//      SimpleDateFormat localDateFormat = new SimpleDateFormat("h:mm a");
-//      Date date = new Date();
-//
-//      String endTime = localDateFormat.format(meal.getEnd());
-//      String startTime = localDateFormat.format(meal.getStart());
-//
-//      // meal date seems to be off by one day
-//      if ((date.getTime() > meal.getStart().getTime() && date.getTime() < meal.getEnd().getTime())
-//          || date.getDay() != meal.getStart().getDay()
-//          || date.getTime() < meal.getStart().getTime()) {
-//        timetext1.setText("Open from " + startTime + " to " + endTime);
-//        timetext1.setTextColor(Color.parseColor("#1a84db"));
-//      } else {
-//        String mealString = "";
-//        if (mealIndex == 0) {
-//          mealString = "Breakfast";
-//        } else if (meal.getType().equals("Brunch")) {
-//          mealString = "Brunch";
-//        } else if (mealIndex == 1) {
-//          mealString = "Lunch";
-//        } else {
-//          mealString = "Dinner";
-//        }
-//        timetext1.setText("Closed for " + mealString);
-//        timetext1.setTextColor(Color.parseColor("#989898"));
-//      }
-//
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
+    TextView timetext1 = view.findViewById(R.id.weekly_open);
     return view;
   }
 
@@ -187,33 +126,36 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     String str = (String) getChild(i, i1);
 
     TextView tv = view.findViewById(R.id.menu_title);
-    SpannableStringBuilder finalStr = new SpannableStringBuilder();
-    if (str == "") {
-      tv.setText("No menu available");
+
+    if (str == null) {
+      tv.setText("No menu information");
+      tv.setTextColor(Color.parseColor("#000000"));
+      tv.setTextSize(18);
+      tv.setGravity(Gravity.CENTER_HORIZONTAL);
+      tv.setPadding(0, 96, 0, 0);
+    }
+    else if (((DiningHallModel) getGroup(i))
+        .getMealByDateAndType(date, mealType).containsCategory(str)) {
+      SpannableString sstr = new SpannableString(str);
+      tv.setText(sstr);
+      tv.setTypeface(null, Typeface.BOLD);
+      tv.setTextColor(Color.parseColor("#000000"));
+      tv.setTextSize(18);
+      tv.setPadding(32, 24, 0, 0);
     }
     else {
-      // Formatting for category
-      DisplayMetrics dm = new DisplayMetrics();
-      ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(dm);
-      float logicalDensity = dm.density;
-
       SpannableString sstr = new SpannableString(str);
-      sstr.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, sstr.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-      sstr.setSpan(new ForegroundColorSpan(Color.parseColor("#000000")), 0, sstr.length(), 0);
-      sstr.setSpan(new AbsoluteSizeSpan((int) (20*logicalDensity)), 0, sstr.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-      finalStr.append(sstr);
-      for (String item : ((DiningHallModel) getGroup(i))
-          .getMealByDateAndType(date, mealType).getItems(str)) {
-        SpannableString itemStr = new SpannableString(item);
-        itemStr.setSpan(new ForegroundColorSpan(Color.parseColor("#7d8288")), 0, itemStr.length(), 0);
-        itemStr.setSpan(new StyleSpan(Typeface.NORMAL), 0, itemStr.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        itemStr.setSpan(new AbsoluteSizeSpan((int) (14*logicalDensity)), 0, itemStr.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        finalStr.append("\n");
-        finalStr.append(itemStr);
-      }
+      tv.setText(sstr);
+      tv.setTextColor(Color.parseColor("#7d8288"));
+      tv.setTextSize(14);
+      tv.setTypeface(null, Typeface.NORMAL);
+      tv.setPadding(32, 0, 0, 0);
     }
-    tv.setText(finalStr, TextView.BufferType.SPANNABLE);
-    tv.setPadding(15, 24, 0, 0);
+
+    if (i1 == ((DiningHallModel) getGroup(i))
+        .getMealByDateAndType(date, mealType).getMenuAsList().size() - 1) {
+      tv.setPadding(32, 0, 0, 24);
+    }
     return view;
   }
 

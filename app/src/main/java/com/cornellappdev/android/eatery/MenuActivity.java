@@ -201,7 +201,7 @@ public class MenuActivity extends AppCompatActivity {
 
       ArrayList<MealModel> mm = ((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals();
       if (mm.isEmpty() || mm.get(0).getMenu().getNumberOfCategories() == 0) {
-        menuText.setText("Nothing the menu 😮");
+        menuText.setText("No menu information 😮");
         menuText.setTextSize(16);
         menuText.setPadding(0, 96, 0, 0);
         menuText.setBackgroundColor(Color.parseColor("#f5f5f5"));

@@ -114,7 +114,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
   }
 
 
-  public  HashSet<String> getMealItems(){
+  public HashSet<String> getMealItems(){
     HashSet<String> items = new HashSet<String>();
     if(getCurrentStatus()==Status.CLOSED){
       return items;
@@ -123,7 +123,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     items.addAll(current.getMenu().getAllItems());
     return items;
   }
-
 
   @Override
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
