@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -128,10 +129,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       Double lng = cafe.getLongitude();
       LatLng latLng = new LatLng(lat, lng);
       String name = cafe.getNickName();
-//      String isOpenedStr = cafe.isOpen();
-      String loc = cafe.getChangeTime().toString();
+      System.out.println(name);
+      String isOpenedStr = cafe.getCurrentStatus().toString();
+      String loc = TimeUtil.format(cafe.getCurrentStatus(), cafe.getChangeTime());
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
-//      cafeMarker.setSnippet(isOpenedStr + " " + loc);
+      cafeMarker.setSnippet(isOpenedStr + " " + loc);
 
       if (cafe.getCurrentStatus() == EateryBaseModel.Status.CLOSED) {
         cafeMarker.setIcon(
@@ -164,7 +166,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 position = i;
               }
             }
-            // TODO(lesley): is testData necessary??? Might have to be removed
             intent.putExtra("testData", cafeData);
             intent.putExtra("cafeInfo", cafeData.get(position));
             intent.putExtra("locName", cafeData.get(position).getNickName());

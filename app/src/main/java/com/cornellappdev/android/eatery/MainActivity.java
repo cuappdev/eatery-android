@@ -381,7 +381,6 @@ public class MainActivity extends AppCompatActivity
 
       cafeList = JsonUtilities.parseJson(json, getApplicationContext());
       Collections.sort(cafeList);
-      Log.d("log-main", cafeList.toString() );
       currentList = cafeList;
       searchList = cafeList;
 

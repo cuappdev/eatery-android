@@ -20,9 +20,18 @@ import java.util.List;
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
   public enum Status {
-    OPEN,
-    CLOSINGSOON,
-    CLOSED;
+    OPEN("Open"),
+    CLOSINGSOON("Closing Soon"),
+    CLOSED("Closed");
+    private String display_name;
+    private Status(String display_name) {
+      this.display_name = display_name;
+    }
+
+    @Override
+    public String toString(){
+      return display_name;
+    }
   }
   private ArrayList<String> mSearchedItems;
   private boolean matchesFilter = true;
