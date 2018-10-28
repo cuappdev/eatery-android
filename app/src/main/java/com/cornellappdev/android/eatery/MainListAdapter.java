@@ -153,14 +153,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(eateryModel.getCurrentStatus()==CLOSED){
           holder2.cafe_time.setText(R.string.closed);
 //          String text = String.format();
-          holder2.cafe_time_info.setText(eateryModel.getChangeTime().toString());
+          holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
 
         }
         else if(eateryModel.getCurrentStatus()==CLOSINGSOON){
           holder2.cafe_time.setText(R.string.closing_soon);
+          holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
+
         }
         else{
           holder2.cafe_time.setText(R.string.open);
+          holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
+
         }
 
         ArrayList<String> itemList = eateryModel.getSearchedItems();

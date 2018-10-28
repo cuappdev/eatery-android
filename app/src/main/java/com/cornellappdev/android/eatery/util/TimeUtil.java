@@ -39,9 +39,9 @@ public class TimeUtil {
   public static String format(Status status, LocalDateTime time){
     DateTimeFormatter ONLY_TIME_FORMAT =  DateTimeFormatter.ofPattern("h:mm a");
     DateTimeFormatter DATE_AND_TIME_FORMAT =  DateTimeFormatter.ofPattern("M/d 'at' h:mm a");
-    String closeStr = "Closes at";
-    String openAt = "Opens at";
-    String openOn = "Opens on";
+    String closeStr = "Closes";
+    String openAt = "Opens";
+    String openOn = "Opens";
     if(time == null){
       return "";
     }
