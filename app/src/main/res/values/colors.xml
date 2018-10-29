@@ -7,13 +7,13 @@
     <color name="green">#7dd600</color>
     <color name="sec">#57000000</color>
     <color name="blue">#4a90e2</color>
-    <color name="colorPrimary">#5482BA</color>
+    <color name="colorPrimary">#4a90e2</color>
     <color name="colorPrimaryDark">#476693</color>
     <color name="colorAccent">#FF4081</color>
     <color name="eateryblue">#4B7FBE</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="FILTER_BG_COLOR_ON">#4B7FBE</color>
+    <color name="FILTER_BG_COLOR_ON">#4a90e2</color>
     <color name="FILTER_BG_COLOR_OFF">#F2F2F2</color>
-    <color name="FILTER_TXT_COLOR_ON">#4B7FBE</color>
+    <color name="FILTER_TXT_COLOR_ON">#4a90e2</color>
     <color name="FILTER_TXT_COLOR_OFF">#FFFFFF</color>
 </resources>

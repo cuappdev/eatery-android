@@ -9,4 +9,5 @@
     <string name="google_form"><a href="https://goo.gl/forms/g8v6CbN2lrQtY4tH2">Send Feedback</a></string>
     <string name="open_at">Opening at</string>
     <string name="close_at">Closes at</string>
+    <string name="info_page_description">Eatery is made by Cornell App Development, an engineering project team at Cornell University.</string>
 </resources>
