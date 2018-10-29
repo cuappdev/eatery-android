@@ -18,7 +18,6 @@ public class InfoActivity extends AppCompatActivity {
 
   private TextView mFeedbackText;
   private TextView mWebsiteText;
-  private TextView mInfoText;
   private BottomNavigationView mBottomNavigationBar;
   public  ArrayList<EateryBaseModel> cafeList;
 
@@ -32,7 +31,6 @@ public class InfoActivity extends AppCompatActivity {
     cafeList = (ArrayList<EateryBaseModel>) getIntent().getSerializableExtra("cafeData");
 
 
-    mInfoText = findViewById(R.id.infoText);
     mFeedbackText = findViewById(R.id.feedbackText);
     mWebsiteText = findViewById(R.id.websiteText);
     mBottomNavigationBar = findViewById(R.id.bottom_navigation);
