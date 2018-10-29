@@ -43,7 +43,6 @@ public class InfoActivity extends AppCompatActivity {
             switch (item.getItemId()) {
               case R.id.action_home:
                 finish();
-                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 break;
               case R.id.action_week:
                 finish();
