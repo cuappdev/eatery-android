@@ -152,17 +152,20 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holder2.cafe_name.setText(eateryModel.getNickName());
         if(eateryModel.getCurrentStatus()==CLOSED){
           holder2.cafe_time.setText(R.string.closed);
+          holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.red));
 //          String text = String.format();
           holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
 
         }
         else if(eateryModel.getCurrentStatus()==CLOSINGSOON){
           holder2.cafe_time.setText(R.string.closing_soon);
+          holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.red));
           holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
 
         }
         else{
           holder2.cafe_time.setText(R.string.open);
+          holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.green));
           holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),eateryModel.getChangeTime())));
 
         }

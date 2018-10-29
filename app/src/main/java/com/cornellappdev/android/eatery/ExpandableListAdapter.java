@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -120,24 +121,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     if (date.getDayOfMonth() != currentTime.getDayOfMonth() ||
         TimeUtil.getMealType(currentTime) != mealType) {
       openText.setText(R.string.closed);
-      openText.setTextColor(Color.parseColor("#f2655d"));
+      openText.setTextColor(ContextCompat.getColor(context, R.color.red));
       timeText.setText("");
     } else {
       switch (dm.getCurrentStatus()) {
       case OPEN:
         openText.setText(R.string.open);
         timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
-        openText.setTextColor(Color.parseColor("#63c774"));
+        openText.setTextColor(ContextCompat.getColor(context, R.color.green));
         break;
       case CLOSED:
         openText.setText(R.string.closed);
         timeText.setText("");
-        openText.setTextColor(Color.parseColor("#f2655d"));
+        openText.setTextColor(ContextCompat.getColor(context, R.color.red));
         break;
       case CLOSINGSOON:
         openText.setText(R.string.closing_soon);
         timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
-        openText.setTextColor(Color.parseColor("#f2655d"));
+        openText.setTextColor(ContextCompat.getColor(context, R.color.red));
         break;
       }
     }
@@ -162,7 +163,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     if (str == null) {
       tv.setText("No menu information");
-      tv.setTextColor(Color.parseColor("#000000"));
+      tv.setTextColor(ContextCompat.getColor(context, R.color.primary));
       tv.setTextSize(18);
       tv.setGravity(Gravity.CENTER_HORIZONTAL);
       tv.setPadding(0, 96, 0, 0);
@@ -172,7 +173,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       SpannableString sstr = new SpannableString(str);
       tv.setText(sstr);
       tv.setTypeface(null, Typeface.NORMAL);
-      tv.setTextColor(Color.parseColor("#000000"));
+      tv.setTextColor(ContextCompat.getColor(context, R.color.primary));
       tv.setTextSize(18);
       tv.setPadding(32, 24, 0, 0);
     }
