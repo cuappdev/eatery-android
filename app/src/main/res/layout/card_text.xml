@@ -84,6 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchview_divider"
                 android:text="Items"
+                android:lineSpacingExtra="4dp"
                 android:id="@+id/searchview_items"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
