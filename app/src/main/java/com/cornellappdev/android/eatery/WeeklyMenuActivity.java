@@ -257,7 +257,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
             switch (item.getItemId()) {
               case R.id.action_home:
                 finish();
-                overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
                 break;
               case R.id.action_week:
                 ScrollView sv = findViewById(R.id.weekly_scroll);
@@ -268,7 +267,6 @@ public class WeeklyMenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
                 intent.putExtra("cafeData", cafeData);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
             }
             return true;
