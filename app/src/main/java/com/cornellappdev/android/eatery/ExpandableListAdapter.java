@@ -12,11 +12,16 @@ import android.widget.BaseExpandableListAdapter;
 
 import android.widget.TextView;
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalDateTime;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
+import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.util.ArrayList;
+
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.OPEN;
 
 /**
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
@@ -102,12 +107,40 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       view = infalInflater.inflate(R.layout.list_view_header, viewGroup, false);
     }
 
-    String m = ((DiningHallModel) getGroup(i)).getNickName();
+    DiningHallModel dm = (DiningHallModel) getGroup(i);
+    String diningName = (dm).getNickName();
     TextView headerText = view.findViewById(R.id.header);
-    headerText.setText(m);
+    headerText.setText(diningName);
     headerText.setTypeface(null, Typeface.BOLD);
 
-    TextView timetext1 = view.findViewById(R.id.weekly_open);
+    TextView openText = view.findViewById(R.id.weekly_open);
+    TextView timeText = view.findViewById(R.id.weekly_time);
+
+    LocalDateTime currentTime = LocalDateTime.now();
+    if (date.getDayOfMonth() != currentTime.getDayOfMonth() ||
+        TimeUtil.getMealType(currentTime) != mealType) {
+      openText.setText(R.string.closed);
+      openText.setTextColor(Color.parseColor("#f2655d"));
+      timeText.setText("");
+    } else {
+      switch (dm.getCurrentStatus()) {
+      case OPEN:
+        openText.setText(R.string.open);
+        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
+        openText.setTextColor(Color.parseColor("#63c774"));
+        break;
+      case CLOSED:
+        openText.setText(R.string.closed);
+        timeText.setText("");
+        openText.setTextColor(Color.parseColor("#f2655d"));
+        break;
+      case CLOSINGSOON:
+        openText.setText(R.string.closing_soon);
+        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
+        openText.setTextColor(Color.parseColor("#f2655d"));
+        break;
+      }
+    }
     return view;
   }
 
@@ -138,7 +171,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         .getMealByDateAndType(date, mealType).containsCategory(str)) {
       SpannableString sstr = new SpannableString(str);
       tv.setText(sstr);
-      tv.setTypeface(null, Typeface.BOLD);
+      tv.setTypeface(null, Typeface.NORMAL);
       tv.setTextColor(Color.parseColor("#000000"));
       tv.setTextSize(18);
       tv.setPadding(32, 24, 0, 0);

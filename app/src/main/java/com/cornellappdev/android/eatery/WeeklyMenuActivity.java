@@ -228,7 +228,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
       breakfastText.setTextColor(Color.parseColor("#4a90e2"));
       lunchText.setTextColor(Color.parseColor("#7d8288"));
       dinnerText.setTextColor(Color.parseColor("#7d8288"));
-    } else if (currentTime.getHour()  < 16) {
+    } else if (currentTime.getHour() < 16) {
       changeListAdapter(MealType.LUNCH, selectedDate);
       mealType = MealType.LUNCH;
       breakfastText.setTextColor(Color.parseColor("#7d8288"));

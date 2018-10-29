@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery.util;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.EateryBaseModel.Status;
+import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -10,8 +11,6 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 public class TimeUtil {
   private static TimeUtil instance;
-
-
 
   public static TimeUtil getInstance() {
     if (instance == null) {
@@ -34,6 +33,19 @@ public class TimeUtil {
       cornellTimeZone = ZoneId.of("EDT");
     }
     return cornellTimeZone;
+  }
+
+  public static MealType getMealType(LocalDateTime time) {
+    int hour = time.getHour();
+    if (hour < 10) {
+      return MealType.BREAKFAST;
+    } else if (hour < 16) {
+      return MealType.LUNCH;
+    } else if (hour < 22) {
+      return MealType.DINNER;
+    } else {
+      return MealType.BREAKFAST;
+    }
   }
 
   public static String format(Status status, LocalDateTime time){
