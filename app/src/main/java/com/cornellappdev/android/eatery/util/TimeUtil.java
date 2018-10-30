@@ -51,14 +51,18 @@ public class TimeUtil {
 
   public static String format(Status status, LocalDateTime changeTime){
     DateTimeFormatter ONLY_TIME_FORMAT =  DateTimeFormatter.ofPattern("h:mm a");
-    DateTimeFormatter DATE_AND_TIME_FORMAT =  DateTimeFormatter.ofPattern("M/d 'at' h:mm a");
+    DateTimeFormatter DATE_AND_TIME_FORMAT =  DateTimeFormatter.ofPattern("EEE M/d h:mm a");
     if(changeTime == null){
       return "";
     }
     if(status == Status.CLOSED){
       if(changeTime.toLocalDate().equals(LocalDate.now())){
         String cTime = changeTime.format(ONLY_TIME_FORMAT);
-        return  String.format("Opens at %s",cTime);
+        return  String.format("Opens %s",cTime);
+      }
+      else if(changeTime.toLocalDate().equals(LocalDate.now().plusDays(1l))){
+        String cTime = changeTime.format(ONLY_TIME_FORMAT);
+        return  String.format("Opens Tomorrow %s",cTime);
       }
       else{
         String cTime = changeTime.format(DATE_AND_TIME_FORMAT);
@@ -66,7 +70,7 @@ public class TimeUtil {
 
       }
     }
-     return  String.format("Closes at %s", changeTime.format(ONLY_TIME_FORMAT));
+     return  String.format("Closes %s", changeTime.format(ONLY_TIME_FORMAT));
   }
 
   public static String format(Status status, Interval interval, LocalDateTime changeTime){
