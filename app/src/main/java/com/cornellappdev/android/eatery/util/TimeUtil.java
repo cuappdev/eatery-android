@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery.util;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.EateryBaseModel.Status;
+import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import org.threeten.bp.LocalDate;
@@ -48,27 +49,35 @@ public class TimeUtil {
     }
   }
 
-  public static String format(Status status, LocalDateTime time){
+  public static String format(Status status, LocalDateTime changeTime){
     DateTimeFormatter ONLY_TIME_FORMAT =  DateTimeFormatter.ofPattern("h:mm a");
     DateTimeFormatter DATE_AND_TIME_FORMAT =  DateTimeFormatter.ofPattern("M/d 'at' h:mm a");
-    String closeStr = "Closes";
-    String openAt = "Opens";
-    String openOn = "Opens";
-    if(time == null){
+    if(changeTime == null){
       return "";
     }
     if(status == Status.CLOSED){
-      if(time.toLocalDate().equals(LocalDate.now())){
-        String changeTime = time.format(ONLY_TIME_FORMAT);
-        return  openAt + " " + changeTime;
+      if(changeTime.toLocalDate().equals(LocalDate.now())){
+        String cTime = changeTime.format(ONLY_TIME_FORMAT);
+        return  String.format("Opens at %s",cTime);
       }
       else{
-        String changeTime = time.format(DATE_AND_TIME_FORMAT);
-        return  openOn + " " + changeTime;
+        String cTime = changeTime.format(DATE_AND_TIME_FORMAT);
+        return  String.format("Opens on %s",cTime);
 
       }
     }
-    return closeStr + " " + time.format(ONLY_TIME_FORMAT);
+     return  String.format("Closes at %s", changeTime.format(ONLY_TIME_FORMAT));
+  }
+
+  public static String format(Status status, Interval interval, LocalDateTime changeTime){
+    DateTimeFormatter ONLY_TIME_FORMAT =  DateTimeFormatter.ofPattern("h:mm a");
+    String openAt = "Opens";
+    LocalDateTime current = LocalDateTime.now();
+    if(interval.containsTime(current)){
+      return format(status,changeTime);
+    }
+    return String.format("Open from %s to %s",interval.getStart().format(ONLY_TIME_FORMAT),
+        interval.getEnd().format(ONLY_TIME_FORMAT));
   }
 
 

@@ -10,18 +10,17 @@
     <ImageView
         android:id="@+id/splash_image"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="175dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:paddingBottom="50dp"
-        app:srcCompat="@drawable/eateryicon" />
+        app:srcCompat="@drawable/eateryiconlauncher" />
 
     <ImageView
         android:id="@+id/appdev_image"
-        android:layout_width="65dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/splash_image"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
         app:srcCompat="@drawable/appdevlogo" />
 </android.widget.RelativeLayout>

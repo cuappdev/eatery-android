@@ -80,6 +80,19 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
     return null;
   }
 
+  public Interval getIntervalByDateAndType(LocalDate date, MealType mealType){
+    if(mWeeklyMenu.keySet().contains(date)){
+      DailyMenuModel daysMeals = mWeeklyMenu.get(date);
+      try {
+        Interval interval = daysMeals.getMeal(mealType).getInterval();
+        return interval;
+      } catch (Exception e) {
+        return null;
+      }
+    }
+    return null;
+  }
+
   // Methods required to be implemented by parent class
   public Status getCurrentStatus() {
     MealModel currentMeal = getCurrentMeal();

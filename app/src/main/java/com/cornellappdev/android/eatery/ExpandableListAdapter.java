@@ -15,6 +15,8 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
@@ -114,29 +116,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     TextView timeText = view.findViewById(R.id.weekly_time);
 
     LocalDateTime currentTime = LocalDateTime.now();
-    if (date.getDayOfMonth() != currentTime.getDayOfMonth() ||
-        TimeUtil.getMealType(currentTime) != mealType) {
-      openText.setText(R.string.closed);
-      openText.setTextColor(ContextCompat.getColor(context, R.color.red));
-      timeText.setText("");
-    } else {
-      switch (dm.getCurrentStatus()) {
-      case OPEN:
-        openText.setText(R.string.open);
-        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
-        openText.setTextColor(ContextCompat.getColor(context, R.color.green));
-        break;
-      case CLOSED:
+    boolean set = false;
+    Interval interval = dm.getIntervalByDateAndType(date,mealType);
+    if(interval.getStart().toLocalDate().equals(LocalDate.now())){
+      if(interval.getEnd().isBefore(currentTime)){
         openText.setText(R.string.closed);
-        timeText.setText("");
         openText.setTextColor(ContextCompat.getColor(context, R.color.red));
-        break;
-      case CLOSINGSOON:
-        openText.setText(R.string.closing_soon);
-        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getChangeTime())));
-        openText.setTextColor(ContextCompat.getColor(context, R.color.red));
-        break;
+        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
+        set = true;
       }
+      else if(interval.containsTime(currentTime)){
+        openText.setText(R.string.open);
+        openText.setTextColor(ContextCompat.getColor(context, R.color.green));
+        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
+        set=true;
+      }
+    }
+    if(!set){
+      openText.setText("");
+      openText.setPadding(0,0,0,0);
+      timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
+
     }
     return view;
   }

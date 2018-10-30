@@ -34,6 +34,10 @@ public class MealModel extends Interval implements Serializable {
         return info.toString();
     }
 
+    public Interval getInterval(){
+        return new Interval(this.getStart(), this.getEnd());
+    }
+
     public MealMenuModel getMenu() {
         return menu;
     }
