@@ -21,7 +21,7 @@
             android:layout_weight="0.14"
             android:layout_height="wrap_content"
             android:id="@+id/date0"
-            android:textColor="#000000"
+            android:textColor="@color/primary"
             android:text="01"
             android:textStyle="bold"
             android:padding="5dp"
@@ -35,7 +35,7 @@
             android:text="02"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -46,7 +46,7 @@
             android:text="03"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -57,7 +57,7 @@
             android:text="04"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -68,7 +68,7 @@
             android:text="05"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
         <TextView
@@ -78,7 +78,7 @@
             android:id="@+id/date5"
             android:text="06"
             android:textStyle="bold"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:padding="5dp"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
@@ -90,7 +90,7 @@
             android:text="07"
             android:textStyle="bold"
             android:padding="5dp"
-            android:textColor="#7d8288"
+            android:textColor="@color/secondary"
             android:onClick="dateFilterClick"
             android:gravity="center"/>
     </LinearLayout>
@@ -157,8 +157,8 @@
                 android:id="@+id/west_header"
                 android:paddingLeft="16dp"
                 android:paddingBottom="12dp"
-                android:background="#f5f5f5"
-                android:textColor="#de000000"
+                android:background="@color/wash"
+                android:textColor="@color/primary"
                 android:textSize="30dp"
                 android:paddingTop="28dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
@@ -176,8 +176,8 @@
                 android:textStyle="bold"
                 android:paddingLeft="16dp"
                 android:paddingBottom="12dp"
-                android:background="#f5f5f5"
-                android:textColor="#de000000"
+                android:background="@color/wash"
+                android:textColor="@color/primary"
                 android:textSize="30dp"
                 android:paddingTop="28dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
@@ -195,8 +195,8 @@
                 android:id="@+id/central_header"
                 android:paddingLeft="16dp"
                 android:paddingBottom="12dp"
-                android:background="#f5f5f5"
-                android:textColor="#de000000"
+                android:background="@color/wash"
+                android:textColor="@color/primary"
                 android:textSize="30dp"
                 android:paddingTop="28dp"/>
             <com.cornellappdev.android.eatery.NonScrollExpandableListView
@@ -215,7 +215,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="50dp"
-        app:itemBackground="@color/colorWhite"
+        app:itemBackground="@color/white"
         app:menu="@menu/bottom_nav_main" />
 
 </android.widget.RelativeLayout>

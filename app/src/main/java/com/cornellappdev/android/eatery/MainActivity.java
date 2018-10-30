@@ -187,13 +187,13 @@ public class MainActivity extends AppCompatActivity
 
   private void handleAreaButtonPress(Button button, CampusArea area) {
     if (!button.equals(areaButtonPressed)) {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.white, R.color.blue, button);
       if (areaButtonPressed != null) {
-        changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, areaButtonPressed);
+        changeButtonColor(R.color.blue, R.color.wash, areaButtonPressed);
       }
       areaButtonPressed = button;
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.blue, R.color.wash, button);
       areaButtonPressed = null;
     }
     filterCurrentList();
@@ -201,13 +201,13 @@ public class MainActivity extends AppCompatActivity
 
   private void handlePaymentButtonPress(Button button, String payment) {
     if (!button.equals(paymentButtonPressed)) {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.white, R.color.blue, button);
       if (paymentButtonPressed != null) {
-        changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, paymentButtonPressed);
+        changeButtonColor(R.color.blue, R.color.wash, paymentButtonPressed);
       }
       paymentButtonPressed = button;
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.blue, R.color.wash, button);
       paymentButtonPressed = null;
     }
     filterCurrentList();

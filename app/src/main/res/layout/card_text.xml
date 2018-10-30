@@ -27,7 +27,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:textStyle="normal"
-                android:textColor="#de000000"/>
+                android:textColor="@color/primary"/>
 
             <TextView
                 android:id="@+id/searchview_open"
@@ -37,7 +37,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="16dp"
                 android:text="Closed"
-                android:textColor="#5482BA"
+                android:textColor="@color/blue"
                 android:textSize="12sp"
                 android:textStyle="normal" />
 
@@ -53,7 +53,7 @@
                 android:paddingBottom="4dp"
                 android:textSize="12sp"
                 android:textStyle="normal"
-                android:textColor="#61000000"
+                android:textColor="@color/primary"
                 />
 
             <!--<TextView-->

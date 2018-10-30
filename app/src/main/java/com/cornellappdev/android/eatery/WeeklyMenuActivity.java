@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
@@ -145,9 +146,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#4a90e2"));
-            lunchText.setTextColor(Color.parseColor("#7d8288"));
-            dinnerText.setTextColor(Color.parseColor("#7d8288"));
+            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+            lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+            dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
           }
         });
 
@@ -186,9 +187,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#4a90e2"));
-            lunchText.setTextColor(Color.parseColor("#7d8288"));
-            dinnerText.setTextColor(Color.parseColor("#7d8288"));
+            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+            lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+            dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
 
             mealType = MealType.BREAKFAST;
             changeListAdapter(mealType, selectedDate);
@@ -199,9 +200,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#7d8288"));
-            lunchText.setTextColor(Color.parseColor("#4a90e2"));
-            dinnerText.setTextColor(Color.parseColor("#7d8288"));
+            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+            lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+            dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
 
             mealType = MealType.LUNCH;
             changeListAdapter(mealType, selectedDate);
@@ -212,9 +213,9 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(Color.parseColor("#7d8288"));
-            lunchText.setTextColor(Color.parseColor("#7d8288"));
-            dinnerText.setTextColor(Color.parseColor("#4a90e2"));
+            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+            lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+            dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
 
             mealType = MealType.DINNER;
             changeListAdapter(mealType, selectedDate);
@@ -225,28 +226,28 @@ public class WeeklyMenuActivity extends AppCompatActivity {
     if (currentTime.getHour() < 11) {
       changeListAdapter(MealType.BREAKFAST, selectedDate);
       mealType = MealType.BREAKFAST;
-      breakfastText.setTextColor(Color.parseColor("#4a90e2"));
-      lunchText.setTextColor(Color.parseColor("#7d8288"));
-      dinnerText.setTextColor(Color.parseColor("#7d8288"));
+      breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+      lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+      dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
     } else if (currentTime.getHour() < 16) {
       changeListAdapter(MealType.LUNCH, selectedDate);
       mealType = MealType.LUNCH;
-      breakfastText.setTextColor(Color.parseColor("#7d8288"));
-      lunchText.setTextColor(Color.parseColor("#4a90e2"));
-      dinnerText.setTextColor(Color.parseColor("#7d8288"));
+      breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+      lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+      dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
     } else if (currentTime.getHour() < 22) {
       changeListAdapter(MealType.DINNER, selectedDate);
       mealType = MealType.DINNER;
-      breakfastText.setTextColor(Color.parseColor("#7d8288"));
-      lunchText.setTextColor(Color.parseColor("#7d8288"));
-      dinnerText.setTextColor(Color.parseColor("#4a90e2"));
+      breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+      lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+      dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
     } else {
       selectedDate = selectedDate.plusDays(1);
       changeListAdapter(MealType.BREAKFAST, selectedDate);
       mealType = MealType.BREAKFAST;
-      breakfastText.setTextColor(Color.parseColor("#4a90e2"));
-      lunchText.setTextColor(Color.parseColor("#7d8288"));
-      dinnerText.setTextColor(Color.parseColor("#7d8288"));
+      breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+      lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+      dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
     }
 
     // Adds functionality to bottom nav bar
@@ -278,7 +279,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   public void dateFilterClick(View v) {
     TextView tv = (TextView) v;
 
-    tv.setTextColor(Color.parseColor("#000000"));
+    tv.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary));
     changeDateColor(tv);
 
     int id = tv.getId();
@@ -313,7 +314,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
   public void changeDateColor(TextView v) {
     for (int i = 0; i < 7; i++) {
       if (!dateList.get(i).equals(v)) {
-        dateList.get(i).setTextColor(Color.parseColor("#7d8288"));
+        dateList.get(i).setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
       }
     }
   }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class MenuFragment extends Fragment {
     if (menu.getNumberOfCategories() == 0) {
       TextView missingMenuText = new TextView(getContext());
       missingMenuText.setText("Nothing on the menu 😮");
-      missingMenuText.setTextColor(Color.parseColor("#222222"));
+      missingMenuText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
       missingMenuText.setPadding(0, (int) (96 * scale + 0.5f), 0, 0);
 
       missingMenuText.setTextSize(32);
@@ -62,7 +63,7 @@ public class MenuFragment extends Fragment {
       categoryText.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
       categoryText.setText(categories.get(i));
       categoryText.setTextSize(16);
-      categoryText.setTextColor(Color.parseColor("#de000000"));
+      categoryText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
       linear.addView(categoryText);
 
       categoryText.setPadding(
@@ -71,7 +72,7 @@ public class MenuFragment extends Fragment {
       View blank = new View(getContext());
       blank.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-      blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
+      blank.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.inactive));
       blank.setElevation(-1);
       linear.addView(blank);
 
@@ -80,14 +81,14 @@ public class MenuFragment extends Fragment {
         TextView mealItemText = new TextView(getContext());
         mealItemText.setText(items.get(j));
         mealItemText.setTextSize(14);
-        mealItemText.setTextColor(Color.parseColor("#de000000"));
+        mealItemText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
         mealItemText.setPadding(
             (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0, (int) (8 * scale + 0.5f));
         linear.addView(mealItemText);
 
         if (j != items.size() - 1) {
           View divider = new View(getContext());
-          divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
+          divider.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.inactive));
           LinearLayout.LayoutParams dividerParams =
               new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
           dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
@@ -100,14 +101,14 @@ public class MenuFragment extends Fragment {
       // Add horizontal line that separates each category
       if (i < categories.size() - 1) {
         View divider = new View(getContext());
-        divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
+        divider.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.inactive));
         divider.setLayoutParams(
             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
         divider.setElevation(-1);
         linear.addView(divider);
 
         View grey = new View(getContext());
-        grey.setBackgroundColor(Color.parseColor("#f2f2f2"));
+        grey.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wash));
         grey.setLayoutParams(
             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 16));
         linear.addView(grey);

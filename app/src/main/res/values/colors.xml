@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="brand">#4e80bd</color>
-    <color name="secondary">#a8a8a8</color>
-    <color name="primary">#000000</color>
-    <color name="red">#d82e41</color>
-    <color name="green">#7dd600</color>
-    <color name="sec">#57000000</color>
-    <color name="blue">#4a90e2</color>
-    <color name="colorPrimary">#4a90e2</color>
     <color name="colorPrimaryDark">#476693</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="eateryblue">#4B7FBE</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="FILTER_BG_COLOR_ON">#4a90e2</color>
-    <color name="FILTER_BG_COLOR_OFF">#F2F2F2</color>
-    <color name="FILTER_TXT_COLOR_ON">#4a90e2</color>
-    <color name="FILTER_TXT_COLOR_OFF">#FFFFFF</color>
+    <color name="blue">#4a90e2</color>
+    <color name="red">#f2655d</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#63c774</color>
+    <color name="inactive">#e1e1e1</color>
+    <color name="primary">#222222</color>
+    <color name="wash">#f5f5f5</color>
+    <color name="secondary">#7d8288</color>
 </resources>

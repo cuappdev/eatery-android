@@ -60,7 +60,7 @@
                         android:text="North"
                         android:stateListAnimator="@null"
                         android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -80,7 +80,7 @@
                         android:text="West"
                         android:stateListAnimator="@null"
                         android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -99,7 +99,7 @@
                         android:text="Central"
                         android:stateListAnimator="@null"
                         android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -118,7 +118,7 @@
                         android:text="Swipes"
                         android:stateListAnimator="@null"
                         android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -137,7 +137,7 @@
                         android:text="BRB"
                         android:stateListAnimator="@null"
                         android:textAllCaps="false"
-                        android:textColor="#4B7FBE"
+                        android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="normal" />
                 </LinearLayout>
@@ -159,7 +159,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorWhite"
+        app:itemBackground="@color/white"
         app:menu="@menu/bottom_nav_main" />
 
     <RelativeLayout

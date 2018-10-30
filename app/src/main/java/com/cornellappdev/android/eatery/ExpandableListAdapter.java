@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
@@ -20,9 +19,6 @@ import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.util.ArrayList;
-
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.OPEN;
 
 /**
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
@@ -180,7 +176,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     else {
       SpannableString sstr = new SpannableString(str);
       tv.setText(sstr);
-      tv.setTextColor(Color.parseColor("#7d8288"));
+      tv.setTextColor(ContextCompat.getColor(context, R.color.secondary));
       tv.setTextSize(14);
       tv.setTypeface(null, Typeface.NORMAL);
       tv.setPadding(32, 0, 0, 0);

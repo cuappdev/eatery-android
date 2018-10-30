@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5"
+    android:background="@color/wash"
     android:fitsSystemWindows="true"
     tools:context="com.cornellappdev.android.eatery.MenuActivity">
     <android.support.design.widget.AppBarLayout
@@ -14,7 +14,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="#4e80bd"
+            app:contentScrim="@color/blue"
             android:id="@+id/collapsing_toolbar"
             app:expandedTitleGravity="top"
             app:expandedTitleMarginStart="48dp"
@@ -43,14 +43,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#f5f5f5">
+            android:background="@color/wash">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/infobox"
             android:elevation="1dp"
             android:layout_below="@id/ind_image"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:paddingLeft="16dp">
@@ -60,7 +60,7 @@
                 android:textSize="18dp"
                 android:paddingBottom="2dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="#DE000000"
+                android:textColor="@color/primary"
                 android:id="@+id/ind_cafe_name"
                 android:text="Name"/>
             <TextView
@@ -70,7 +70,7 @@
                 android:textSize="14dp"
                 android:paddingBottom="9dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="#000000"
+                android:textColor="@color/primary"
                 android:id="@+id/ind_open"
                 android:text="Open?"/>
             <TextView
@@ -82,7 +82,7 @@
                 android:paddingBottom="9dp"
                 android:layout_toRightOf="@id/ind_open"
                 android:fontFamily="sans-serif-regular"
-                android:textColor="#61000000"
+                android:textColor="@color/secondary"
                 android:id="@+id/ind_time"
                 android:text="Time"/>
             <TextView
@@ -92,7 +92,7 @@
                 android:layout_below="@id/ind_open"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="#DE000000"
+                android:textColor="@color/primary"
                 android:text="Location" />
             <ImageView
                 android:layout_width="20dp"
@@ -124,8 +124,8 @@
             android:layout_height="wrap_content"
             android:text="Menu"
             android:layout_below="@id/infobox"
-            android:textColor="#de000000"
-            android:background="#ffffff"
+            android:textColor="@color/primary"
+            android:background="@color/white"
             android:layout_marginTop="12dp"
             android:paddingLeft="16dp"
             android:paddingTop="12dp"
@@ -138,7 +138,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/linear"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:layout_below="@id/ind_menu"
             android:orientation="vertical" />
         <android.support.design.widget.TabLayout
@@ -146,14 +146,14 @@
             android:layout_marginTop="12dp"
             android:layout_below="@id/ind_menu"
             android:layout_width="match_parent"
-            android:background="#ffffff"
+            android:background="@color/white"
             app:tabTextAppearance="@style/tabLayoutText"
-            app:tabIndicatorColor="#4e80bd"
+            app:tabIndicatorColor="@color/blue"
             android:layout_height="wrap_content"/>
         <com.cornellappdev.android.eatery.CustomPager
             android:id="@+id/pager"
             android:layout_below="@id/tabs"
-            android:background="#ffffff"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         </LinearLayout>

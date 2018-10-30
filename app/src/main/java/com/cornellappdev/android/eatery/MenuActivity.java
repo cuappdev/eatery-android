@@ -164,7 +164,7 @@ public class MenuActivity extends AppCompatActivity {
       View blank = new View(this);
       blank.setLayoutParams(
           new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-      blank.setBackgroundColor(Color.parseColor("#ccd0d5"));
+      blank.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.inactive));
       blank.setElevation(-1);
       linLayout.addView(blank);
 
@@ -173,7 +173,7 @@ public class MenuActivity extends AppCompatActivity {
         TextView mealItemText = new TextView(this);
         mealItemText.setText(menu.get(i));
         mealItemText.setTextSize(14);
-        mealItemText.setTextColor(Color.parseColor("#de000000"));
+        mealItemText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary));
         mealItemText.setPadding(
             (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0, (int) (8 * scale + 0.5f));
         linLayout.addView(mealItemText);
@@ -181,7 +181,7 @@ public class MenuActivity extends AppCompatActivity {
         // Add divider if text is not the last item in list
         if (i != menu.size() - 1) {
           View divider = new View(this);
-          divider.setBackgroundColor(Color.parseColor("#ccd0d5"));
+          divider.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.wash));
           LinearLayout.LayoutParams dividerParams =
               new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
           dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
@@ -203,7 +203,7 @@ public class MenuActivity extends AppCompatActivity {
         menuText.setText("No menu information 😮");
         menuText.setTextSize(16);
         menuText.setPadding(0, 96, 0, 0);
-        menuText.setBackgroundColor(Color.parseColor("#f5f5f5"));
+        menuText.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.wash));
         menuText.setGravity(Gravity.CENTER_HORIZONTAL);
       } else {
         menuText.setVisibility(View.GONE);
@@ -212,7 +212,8 @@ public class MenuActivity extends AppCompatActivity {
         linLayout.setVisibility(View.GONE);
         setupViewPager(customPager);
         tabLayout.setupWithViewPager(customPager);
-        tabLayout.setTabTextColors(Color.parseColor("#57000000"), Color.parseColor("#4e80bd"));
+        tabLayout.setTabTextColors(ContextCompat.getColor(getApplicationContext(), R.color.primary),
+            ContextCompat.getColor(getApplicationContext(), R.color.blue));
       }
     }
   }

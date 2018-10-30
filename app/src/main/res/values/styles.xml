@@ -2,14 +2,14 @@
     <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="actionMenuTextColor">#cdcdcd</item>
-        <item name="colorPrimary">#4B7FBE</item>
-        <item name="colorControlNormal">#ffffff</item>
+        <item name="actionMenuTextColor">@color/inactive</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorControlNormal">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/red</item>
     </style>
     <style name="collapsingToolbarLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -17,7 +17,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#57000000</item>
+        <item name="android:textColor">@color/primary</item>
     </style>
 
     <style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
@@ -25,7 +25,7 @@
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/brand</item>
+        <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 

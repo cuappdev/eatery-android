@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/splash_layout"
     android:layout_width="match_parent"
-    android:background="@color/brand"
+    android:background="@color/blue"
     android:layout_height="match_parent">
 
     <ImageView
