@@ -34,6 +34,7 @@ public class InfoActivity extends AppCompatActivity {
     mFeedbackText = findViewById(R.id.feedbackText);
     mWebsiteText = findViewById(R.id.websiteText);
     mBottomNavigationBar = findViewById(R.id.bottom_navigation);
+    mBottomNavigationBar.setSelectedItemId(R.id.action_brb);
 
     mBottomNavigationBar.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
