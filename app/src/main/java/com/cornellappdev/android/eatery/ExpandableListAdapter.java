@@ -118,25 +118,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     LocalDateTime currentTime = LocalDateTime.now();
     boolean set = false;
     Interval interval = dm.getIntervalByDateAndType(date,mealType);
-    if(interval.getStart().toLocalDate().equals(LocalDate.now())){
-      if(interval.getEnd().isBefore(currentTime)){
-        openText.setText(R.string.closed);
-        openText.setTextColor(ContextCompat.getColor(context, R.color.red));
-        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
-        set = true;
+    if(interval!=null) {
+      if (interval.getStart().toLocalDate().equals(LocalDate.now())) {
+        if (interval.getEnd().isBefore(currentTime)) {
+          openText.setText(R.string.closed);
+          openText.setTextColor(ContextCompat.getColor(context, R.color.red));
+          timeText.setText((TimeUtil.format(dm.getCurrentStatus(), dm.getIntervalByDateAndType(date, mealType), dm.getChangeTime())));
+          set = true;
+        } else if (interval.containsTime(currentTime)) {
+          openText.setText(R.string.open);
+          openText.setTextColor(ContextCompat.getColor(context, R.color.green));
+          timeText.setText((TimeUtil.format(dm.getCurrentStatus(), dm.getIntervalByDateAndType(date, mealType), dm.getChangeTime())));
+          set = true;
+        }
       }
-      else if(interval.containsTime(currentTime)){
-        openText.setText(R.string.open);
-        openText.setTextColor(ContextCompat.getColor(context, R.color.green));
-        timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
-        set=true;
-      }
-    }
-    if(!set){
-      openText.setText("");
-      openText.setPadding(0,0,0,0);
-      timeText.setText((TimeUtil.format(dm.getCurrentStatus(),dm.getIntervalByDateAndType(date,mealType),dm.getChangeTime())));
+      if (!set) {
+        openText.setText("");
+        openText.setPadding(0, 0, 0, 0);
+        timeText.setText((TimeUtil.format(dm.getCurrentStatus(), dm.getIntervalByDateAndType(date, mealType), dm.getChangeTime())));
 
+      }
     }
     return view;
   }

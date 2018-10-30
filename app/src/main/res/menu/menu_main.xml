@@ -5,13 +5,13 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/ic_search"
         android:iconifiedByDefault="false"
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item android:id="@+id/action_map"
         app:showAsAction="ifRoom|collapseActionView"
-        android:icon="@drawable/map"
+        android:icon="@drawable/ic_map"
         android:title="Map" />
 </menu>

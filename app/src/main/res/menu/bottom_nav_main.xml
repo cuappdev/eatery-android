@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/ic_eateries_copy"
+        android:icon="@drawable/ic_eatery"
         android:title="Eateries"
         app:showAsAction="ifRoom" />
     <item
@@ -17,7 +17,7 @@
     <item
         android:id="@+id/action_brb"
         android:enabled="true"
-        android:icon="@drawable/ic_balance"
-        android:title="BRB"
+        android:icon="@drawable/ic_about"
+        android:title="About"
         app:showAsAction="ifRoom" />
 </menu>
