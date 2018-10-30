@@ -7,6 +7,8 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/red</item>
+        <item name="android:windowAnimationStyle">@null</item>
+
     </style>
     <style name="collapsingToolbarLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textColor">@color/white</item>
@@ -27,6 +29,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
