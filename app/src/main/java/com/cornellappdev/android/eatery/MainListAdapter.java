@@ -109,9 +109,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         holder.cafeName.setText(eateryModel.getNickName());
 
-        String imageLocation =
-            "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-                + convertName(eateryModel.getNickName() + ".jpg");
+        String imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());
         Uri uri = Uri.parse(imageLocation);
         holder.cafeDrawee.setImageURI(uri);
 
@@ -263,19 +261,4 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
   }
 
-  private static String convertName(String str) {
-    if (str.equals("104West!.jpg")) return "104-West.jpg";
-    if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
-    if (str.equals("Franny's.jpg")) return "frannys.jpg";
-    if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
-    if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
-    if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
-    if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
-
-    str = str.replaceAll("!", "");
-    str = str.replaceAll("[&\']", "");
-    str = str.replaceAll(" ", "-");
-    str = str.replaceAll("é", "e");
-    return str;
-  }
 }

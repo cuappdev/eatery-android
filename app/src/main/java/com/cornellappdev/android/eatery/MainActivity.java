@@ -31,6 +31,8 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.network.ConnectionUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+    Fabric.with(this, new Crashlytics());
     setTitle("Eatery");
     setContentView(R.layout.activity_main);
     dbHelper = new CafeteriaDbHelper(this);

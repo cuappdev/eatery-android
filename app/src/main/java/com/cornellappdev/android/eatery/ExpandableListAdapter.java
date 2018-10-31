@@ -120,6 +120,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     Interval interval = dm.getIntervalByDateAndType(date,mealType);
     if(interval!=null) {
       if (interval.getStart().toLocalDate().equals(LocalDate.now())) {
+        openText.setPadding(0, 0, 8, 0);
         if (interval.getEnd().isBefore(currentTime)) {
           openText.setText(R.string.closed);
           openText.setTextColor(ContextCompat.getColor(context, R.color.red));

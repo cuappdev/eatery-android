@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 
@@ -160,5 +161,26 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
       return 1;
     }
     return 0;
+  }
+
+  public static String getImageURL(String cafeName){
+    String GITHUB_URL = "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
+    return GITHUB_URL + EateryBaseModel.convertName(cafeName);
+  }
+
+  private static String convertName(String str) {
+    if (str.equals("104West!")) return "104-West.jpg";
+    if (str.equals("McCormick's")) return "mccormicks.jpg";
+    if (str.equals("Franny's")) return "frannys.jpg";
+    if (str.equals("Ice Cream Cart")) return "icecreamcart.jpg";
+    if (str.equals("Risley Dining Room")) return "Risley-Dining.jpg";
+    if (str.equals("Martha's Express")) return "Marthas-Cafe.jpg";
+    if (str.equals("Bus Stop Bagels")) return "Bug-Stop-Bagels.jpg";
+    if (str.equals("Straight from the Market")) return "StraightMarket.jpg";
+    str = str.replaceAll("!", "");
+    str = str.replaceAll("[&\']", "");
+    str = str.replaceAll(" ", "-");
+    str = str.replaceAll("é", "e");
+    return String.format("%s.jpg",str);
   }
 }

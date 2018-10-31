@@ -123,9 +123,7 @@ public class MenuActivity extends AppCompatActivity {
     cafeImage = findViewById(R.id.ind_image);
     cafeImage.setBackgroundColor(0xFFff0000);
 
-    String imageLocation =
-        "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/"
-            + convertName(cafeName + ".jpg");
+    String imageLocation = EateryBaseModel.getImageURL(cafeName);
     Uri uri = Uri.parse(imageLocation);
     cafeImage.setImageURI(uri);
 
@@ -318,22 +316,6 @@ public class MenuActivity extends AppCompatActivity {
     return BitmapFactory.decodeResource(res, resId, options);
   }
 
-  /** Gets name of corresponding picture to cafe* */
-  public static String convertName(String str) {
-    if (str.equals("104West!.jpg")) return "104-West.jpg";
-    if (str.equals("McCormick's.jpg")) return "mccormicks.jpg";
-    if (str.equals("Franny's.jpg")) return "frannys.jpg";
-    if (str.equals("Ice Cream Cart.jpg")) return "icecreamcart.jpg";
-    if (str.equals("Risley Dining Room.jpg")) return "Risley-Dining.jpg";
-    if (str.equals("Martha's Express.jpg")) return "Marthas-Cafe.jpg";
-    if (str.equals("Bus Stop Bagels.jpg")) return "Bug-Stop-Bagels.jpg";
-
-    str = str.replaceAll("!", "");
-    str = str.replaceAll("[&\']", "");
-    str = str.replaceAll(" ", "-");
-    str = str.replaceAll("é", "e");
-    return str;
-  }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
