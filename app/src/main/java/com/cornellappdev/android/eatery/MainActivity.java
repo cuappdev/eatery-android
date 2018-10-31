@@ -1,7 +1,10 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Fabric.with(this, new Crashlytics());
+//    Fabric.with(this, new Crashlytics());
     setTitle("Eatery");
     setContentView(R.layout.activity_main);
     dbHelper = new CafeteriaDbHelper(this);
@@ -89,29 +92,7 @@ public class MainActivity extends AppCompatActivity
     if (getSupportActionBar() != null) {
       getSupportActionBar().hide();
     }
-
-    ConnectionUtilities con = new ConnectionUtilities(this);
-    if (!con.isNetworkAvailable()) {
-      cafeList = new ArrayList<>();
-      if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-        cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
-      }
-      Collections.sort(cafeList);
-      currentList = cafeList;
-      searchList = cafeList;
-
-      mRecyclerView.setHasFixedSize(true);
-      LinearLayoutManager layoutManager =
-          new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
-      mRecyclerView.setLayoutManager(layoutManager);
-
-      listAdapter =
-          new MainListAdapter(
-              getApplicationContext(), MainActivity.this, cafeList.size(), cafeList);
-      mRecyclerView.setAdapter(listAdapter);
-    } else {
-      new ProcessJson().execute("");
-    }
+    new ProcessJson().execute("");
 
     // Add functionality to bottom nav bar
     bnv.setOnNavigationItemSelectedListener(
@@ -374,20 +355,38 @@ public class MainActivity extends AppCompatActivity
       startActivity(browser);
     }
   }
-
-  public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
+  public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>>{
 
     @Override
     protected ArrayList<EateryBaseModel> doInBackground(String... params) {
-      String json = NetworkUtilities.getJSON();
-      dbHelper.addData(json);
+      cafeList = new ArrayList<>();
+      ConnectivityManager cm =
+          (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-      cafeList = JsonUtilities.parseJson(json, getApplicationContext());
-      Collections.sort(cafeList);
-      currentList = cafeList;
-      searchList = cafeList;
+      NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
+      boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+      if (!isConnected) {
+        if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
+          cafeList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
+        }
+        currentList = cafeList;
+        searchList = cafeList;
+        Collections.sort(cafeList);
+
+      }
+      else{
+        String json = NetworkUtilities.getJSON();
+        dbHelper.addData(json);
+        cafeList = JsonUtilities.parseJson(json, getApplicationContext());
+        currentList = cafeList;
+        searchList = cafeList;
+        Collections.sort(cafeList);
+      }
+//            swipeContainer.setRefreshing(false);
       return cafeList;
+
+
     }
 
     @Override
@@ -407,6 +406,7 @@ public class MainActivity extends AppCompatActivity
       mRecyclerView.setAdapter(listAdapter);
       mRecyclerView.setVisibility(View.VISIBLE);
       progressBar.setVisibility(View.GONE);
+
     }
   }
 }
