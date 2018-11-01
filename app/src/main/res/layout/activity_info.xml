@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 android:text="@string/description_header"
                 android:textColor="@color/primary"
@@ -40,6 +41,7 @@
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 android:text="@string/description_text_1"
                 android:textColor="@color/primary"
@@ -52,6 +54,7 @@
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 android:text="@string/description_text_2"
                 android:textColor="@color/primary"
@@ -64,8 +67,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 android:text="@string/appdev_website"
+                android:textColorLink="@color/blue"
                 android:textColor="@color/blue"
                 android:textSize="26sp"
                 android:textStyle="normal" />
@@ -76,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="30dp"
                 android:text="@string/feedback_header"
                 android:textColor="@color/primary"
@@ -92,6 +98,7 @@
                 android:textStyle="normal"
                 android:text="@string/feedback_text"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 />
 
@@ -101,10 +108,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:text="@string/google_form"
+                android:textColorLink="@color/blue"
                 android:textColor="@color/blue"
                 android:textSize="26sp"
                 android:textStyle="normal"
                 android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 />
 
