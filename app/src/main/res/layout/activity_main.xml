@@ -36,6 +36,8 @@
                 android:id="@+id/scroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft ="3dp"
+                android:paddingRight ="3dp"
                 android:scrollbars="none">
 
                 <LinearLayout
