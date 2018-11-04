@@ -70,7 +70,6 @@
                 android:paddingRight="15dp"
                 android:paddingTop="20dp"
                 android:text="@string/appdev_website"
-                android:textColorLink="@color/blue"
                 android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="normal" />
@@ -108,7 +107,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:text="@string/google_form"
-                android:textColorLink="@color/blue"
                 android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="normal"

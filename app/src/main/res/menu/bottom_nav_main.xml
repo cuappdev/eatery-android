@@ -6,18 +6,18 @@
         android:enabled="true"
         android:icon="@drawable/ic_eatery"
         android:title="Eateries"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/action_week"
         android:enabled="true"
         android:icon="@drawable/ic_menu"
         android:title="Weekly Menu"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_brb"
         android:enabled="true"
         android:icon="@drawable/ic_about"
         android:title="About"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|withText" />
 </menu>
