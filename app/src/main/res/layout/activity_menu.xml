@@ -10,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="275dp"
-        android:fitsSystemWindows="true"
+
         android:id="@+id/appbar">
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -31,6 +31,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             app:layout_collapseMode="pin"
+            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:minHeight="?attr/actionBarSize"/>
