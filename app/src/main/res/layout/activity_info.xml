@@ -72,7 +72,8 @@
                 android:text="@string/appdev_website"
                 android:textColor="@color/blue"
                 android:textSize="20sp"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                />
 
             <TextView
                 android:id="@+id/feedbackHeader"
