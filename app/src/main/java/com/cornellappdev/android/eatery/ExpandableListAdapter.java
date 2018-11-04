@@ -22,6 +22,10 @@ import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.util.ArrayList;
 
+import static com.cornellappdev.android.eatery.model.enums.MealType.BREAKFAST;
+import static com.cornellappdev.android.eatery.model.enums.MealType.BRUNCH;
+import static com.cornellappdev.android.eatery.model.enums.MealType.LUNCH;
+
 /**
  * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
@@ -58,9 +62,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       return ((DiningHallModel) getGroup(i))
           .getMealByDateAndType(date, mealType).getMenuAsList().size();
     } catch (Exception e){
-      this.mealType = MealType.BRUNCH;
+      this.mealType = BRUNCH;
       return ((DiningHallModel) getGroup(i))
-          .getMealByDateAndType(date, MealType.BRUNCH).getMenuAsList().size();
+          .getMealByDateAndType(date, BRUNCH).getMenuAsList().size();
     }
   }
 
@@ -75,9 +79,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       return ((DiningHallModel) getGroup(i))
           .getMealByDateAndType(date, mealType).getMenuAsList().get(i1);
     } catch (Exception e){
-      this.mealType = MealType.BRUNCH;
+      this.mealType = BRUNCH;
       return ((DiningHallModel) getGroup(i))
-          .getMealByDateAndType(date, MealType.BRUNCH).getMenuAsList().get(i1);
+          .getMealByDateAndType(date, BRUNCH).getMenuAsList().get(i1);
     }
   }
 
@@ -118,6 +122,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     LocalDateTime currentTime = LocalDateTime.now();
     boolean set = false;
     Interval interval = dm.getIntervalByDateAndType(date,mealType);
+    if(interval == null)
+    {
+      interval = dm.getIntervalByDateAndType(date,BRUNCH);
+      mealType = BRUNCH;
+    }
     if(interval!=null) {
       if (interval.getStart().toLocalDate().equals(LocalDate.now())) {
         openText.setPadding(0, 0, 8, 0);
@@ -137,7 +146,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         openText.setText("");
         openText.setPadding(0, 0, 0, 0);
         timeText.setText((TimeUtil.format(dm.getCurrentStatus(), dm.getIntervalByDateAndType(date, mealType), dm.getChangeTime())));
-
       }
     }
     return view;

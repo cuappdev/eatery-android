@@ -124,7 +124,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
       Double lng = cafe.getLongitude();
       LatLng latLng = new LatLng(lat, lng);
       String name = cafe.getNickName();
-      System.out.println(name);
       String isOpenedStr = cafe.getCurrentStatus().toString();
       String loc = TimeUtil.format(cafe.getCurrentStatus(), cafe.getChangeTime());
       Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
