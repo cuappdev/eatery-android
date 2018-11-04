@@ -104,8 +104,6 @@
                 android:visibility="gone"
                 android:src="@drawable/swipe_icon"
                 />
-
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
 </LinearLayout>

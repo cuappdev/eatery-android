@@ -41,6 +41,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity
   public Button centralButton;
   public Button swipesButton;
   public Button brbButton;
-  public Button areaButtonPressed;
-  public Button paymentButtonPressed;
+  public Set<Button> areaButtonsPressed;
+  public Set<Button> paymentButtonsPressed;
   public CafeteriaDbHelper dbHelper;
   public MainListAdapter listAdapter;
   public ProgressBar progressBar;
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity
     bnv = findViewById(R.id.bottom_navigation);
     splash = findViewById(R.id.relative_layout_splash);
     bnv.setVisibility(View.GONE);
+    areaButtonsPressed = new HashSet<>();
+    paymentButtonsPressed = new HashSet<>();
     if (getSupportActionBar() != null) {
       getSupportActionBar().hide();
     }
@@ -133,13 +136,22 @@ public class MainActivity extends AppCompatActivity
     bgShape.setColor(ContextCompat.getColor(getApplicationContext(),backgroundColor));
   }
 
+  private boolean hasPaymentMethod(EateryBaseModel model){
+    for(PaymentMethod method : getCurrentPaymentTypes()){
+      if(model.hasPaymentMethod(method)){
+        return true;
+      }
+    }
+    return false;
+  }
+
   private void filterCurrentList() {
-    for (EateryBaseModel model : currentList) {
+    for(EateryBaseModel model: currentList){
       final boolean areaFuzzyMatches =
-          getCurrentArea() == null || model.getArea() == getCurrentArea();
+          getCurrentAreas().isEmpty() || getCurrentAreas().contains(model.getArea());
       final boolean paymentFuzzyMatches =
-          getCurrentPaymentType() == null || model.hasPaymentMethod(getCurrentPaymentType());
-      if (areaFuzzyMatches && paymentFuzzyMatches) {
+          getCurrentPaymentTypes().isEmpty() || hasPaymentMethod(model);
+      if( areaFuzzyMatches && paymentFuzzyMatches){
         model.setMatchesFilter(true);
       } else {
         model.setMatchesFilter(false);
@@ -147,52 +159,50 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private CampusArea getCurrentArea() {
-    if (northButton.equals(areaButtonPressed)) {
-      return NORTH;
-    } else if (westButton.equals(areaButtonPressed)) {
-      return WEST;
-    } else if (centralButton.equals(areaButtonPressed)) {
-      return CENTRAL;
-    } else {
-      return null;
+  private HashSet<CampusArea> getCurrentAreas() {
+    HashSet<CampusArea> areaSet = new HashSet<>();
+    for(Button button : areaButtonsPressed) {
+      if (northButton.equals(button)) {
+        areaSet.add(NORTH);
+      } else if (westButton.equals(button)) {
+        areaSet.add(WEST);
+      } else if (centralButton.equals(button)) {
+        areaSet.add(CENTRAL);
+      }
     }
+    return areaSet;
   }
 
-  private PaymentMethod getCurrentPaymentType() {
-    if (brbButton.equals(paymentButtonPressed)) {
-      return PaymentMethod.BRB;
-    } else if (swipesButton.equals(paymentButtonPressed)) {
-      return PaymentMethod.SWIPES;
-    } else {
-      return null;
+  private HashSet<PaymentMethod> getCurrentPaymentTypes() {
+    HashSet<PaymentMethod> paymentSet = new HashSet<>();
+    for(Button button: paymentButtonsPressed) {
+      if (brbButton.equals(button)) {
+        paymentSet.add(PaymentMethod.BRB);
+      } else if (swipesButton.equals(button)) {
+        paymentSet.add(PaymentMethod.SWIPES);
+      }
     }
+    return paymentSet;
   }
 
   private void handleAreaButtonPress(Button button, CampusArea area) {
-    if (!button.equals(areaButtonPressed)) {
-      changeButtonColor(R.color.white, R.color.blue, button);
-      if (areaButtonPressed != null) {
-        changeButtonColor(R.color.blue, R.color.wash, areaButtonPressed);
-      }
-      areaButtonPressed = button;
-    } else {
+    if(areaButtonsPressed.contains(button)){
       changeButtonColor(R.color.blue, R.color.wash, button);
-      areaButtonPressed = null;
+      areaButtonsPressed.remove(button);
+    } else {
+      changeButtonColor(R.color.white, R.color.blue, button);
+      areaButtonsPressed.add(button);
     }
     filterCurrentList();
   }
 
   private void handlePaymentButtonPress(Button button, String payment) {
-    if (!button.equals(paymentButtonPressed)) {
-      changeButtonColor(R.color.white, R.color.blue, button);
-      if (paymentButtonPressed != null) {
-        changeButtonColor(R.color.blue, R.color.wash, paymentButtonPressed);
-      }
-      paymentButtonPressed = button;
-    } else {
+    if(paymentButtonsPressed.contains(button)){
       changeButtonColor(R.color.blue, R.color.wash, button);
-      paymentButtonPressed = null;
+      paymentButtonsPressed.remove(button);
+    } else {
+      changeButtonColor(R.color.white, R.color.blue, button);
+      paymentButtonsPressed.add(button);
     }
     filterCurrentList();
   }
