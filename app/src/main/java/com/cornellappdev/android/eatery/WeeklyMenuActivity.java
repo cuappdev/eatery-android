@@ -146,7 +146,7 @@ public class WeeklyMenuActivity extends AppCompatActivity {
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+            breakfastText.setTextColor(ContextCompat.getColor(getApplicationContext (), R.color.blue));
             lunchText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
             dinnerText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
           }
