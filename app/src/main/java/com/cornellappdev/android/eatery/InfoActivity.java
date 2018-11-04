@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.util.StringUtil;
 
 import java.util.ArrayList;
 
@@ -30,11 +32,20 @@ public class InfoActivity extends AppCompatActivity {
 
     cafeList = (ArrayList<EateryBaseModel>) getIntent().getSerializableExtra("cafeData");
 
-
     mFeedbackText = findViewById(R.id.feedbackText);
     mWebsiteText = findViewById(R.id.websiteText);
     mBottomNavigationBar = findViewById(R.id.bottom_navigation);
     mBottomNavigationBar.setSelectedItemId(R.id.action_brb);
+
+    Spannable mWebsiteSpannable = Spannable.Factory.getInstance().newSpannable(mWebsiteText.getText());
+    if (mWebsiteSpannable != null) {
+      StringUtil.removeUnderlines(mWebsiteSpannable);
+    }
+
+    Spannable mFeedbackSpannable = Spannable.Factory.getInstance().newSpannable(mFeedbackText.getText());
+    if (mFeedbackSpannable != null) {
+      StringUtil.removeUnderlines(mFeedbackSpannable);
+    }
 
     mBottomNavigationBar.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -187,10 +187,10 @@ public class MainActivity extends AppCompatActivity
 
   private void handleAreaButtonPress(Button button, CampusArea area) {
     if(areaButtonsPressed.contains(button)){
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.blue, R.color.wash, button);
       areaButtonsPressed.remove(button);
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.white, R.color.blue, button);
       areaButtonsPressed.add(button);
     }
     filterCurrentList();
@@ -198,10 +198,10 @@ public class MainActivity extends AppCompatActivity
 
   private void handlePaymentButtonPress(Button button, String payment) {
     if(paymentButtonsPressed.contains(button)){
-      changeButtonColor(R.color.FILTER_TXT_COLOR_ON, R.color.FILTER_BG_COLOR_OFF, button);
+      changeButtonColor(R.color.blue, R.color.wash, button);
       paymentButtonsPressed.remove(button);
     } else {
-      changeButtonColor(R.color.FILTER_TXT_COLOR_OFF, R.color.FILTER_BG_COLOR_ON, button);
+      changeButtonColor(R.color.white, R.color.blue, button);
       paymentButtonsPressed.add(button);
     }
     filterCurrentList();
