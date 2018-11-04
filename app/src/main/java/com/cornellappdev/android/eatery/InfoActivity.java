@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -71,9 +73,25 @@ public class InfoActivity extends AppCompatActivity {
           }
         });
 
-
     mFeedbackText.setMovementMethod(LinkMovementMethod.getInstance());
     mWebsiteText.setMovementMethod(LinkMovementMethod.getInstance());
 
+    mWebsiteText.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Uri uri = Uri.parse("https://www.cornellappdev.com/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+      }
+    });
+
+    mFeedbackText.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Uri uri = Uri.parse("https://goo.gl/forms/g8v6CbN2lrQtY4tH2");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+      }
+    });
   }
 }
