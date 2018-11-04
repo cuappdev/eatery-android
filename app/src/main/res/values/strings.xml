@@ -15,4 +15,5 @@
     <string name="description_text_2">See what\'s open on campus, browse menus of dining locations, search for your favorite foods, and so much more!</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for new features.</string>
+    <string name="google_maps_key">AIzaSyBDjzqiK5_DVoZ-6nCSZNFwEYM9dr1q7MI</string>
 </resources>
