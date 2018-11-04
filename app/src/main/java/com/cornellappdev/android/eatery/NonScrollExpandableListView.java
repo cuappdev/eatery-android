@@ -10,7 +10,6 @@ import android.widget.ExpandableListView;
  * android-nestedscrollview-which-contains-expandablelistview-doesnt-scroll-when*
  */
 public class NonScrollExpandableListView extends ExpandableListView {
-  int lastExpandedPosition = -1;
 
   public NonScrollExpandableListView(Context context) {
     super(context);

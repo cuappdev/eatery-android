@@ -1,13 +1,11 @@
 package com.cornellappdev.android.eatery.model;
 
-
 import android.support.annotation.NonNull;
 
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;

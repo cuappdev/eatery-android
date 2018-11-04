@@ -1,12 +1,10 @@
 package com.cornellappdev.android.eatery;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -18,8 +16,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,10 +26,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.CafeModel;
-import com.cornellappdev.android.eatery.model.DailyMenuModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
@@ -50,7 +44,6 @@ public class MenuActivity extends AppCompatActivity {
   ImageView swipe_icon;
   ImageView brb_icon;
   LinearLayout linLayout;
-  ScrollView sLinout;
   private TabLayout tabLayout;
   private CustomPager customPager;
   ArrayList<EateryBaseModel> cafeList;
@@ -249,11 +242,9 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public Fragment getItem(int position) {
-      Log.d("log-menu", "8");
       Bundle b = new Bundle();
       b.putInt("position", position);
       ArrayList<MealModel> todayMeals = dhm.getCurrentDayMenu().getAllMeals();
-      Log.d("log-menu", todayMeals.get(position).toString());
       b.putSerializable("cafeData", todayMeals.get(position));
       MenuFragment f = new MenuFragment();
       f.setArguments(b);

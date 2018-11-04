@@ -1,7 +1,5 @@
 package com.cornellappdev.android.eatery.model.enums;
 
-import java.util.Comparator;
-
 /**
  * Enum class to represent 4 different types of meal
  */

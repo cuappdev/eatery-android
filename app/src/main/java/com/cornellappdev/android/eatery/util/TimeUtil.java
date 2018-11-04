@@ -1,6 +1,5 @@
 package com.cornellappdev.android.eatery.util;
 
-import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.EateryBaseModel.Status;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;

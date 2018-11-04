@@ -15,19 +15,16 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.util.ArrayList;
 
-import static com.cornellappdev.android.eatery.model.enums.MealType.BREAKFAST;
 import static com.cornellappdev.android.eatery.model.enums.MealType.BRUNCH;
-import static com.cornellappdev.android.eatery.model.enums.MealType.LUNCH;
 
 /**
- * Created by Lesley on 4/20/2018. This class is used in WeeklyMenuActivity, where it displays the
+ * This class is used in WeeklyMenuActivity, where it displays the
  * corresponding dining halls for each meal period and the menu for that particular day
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {

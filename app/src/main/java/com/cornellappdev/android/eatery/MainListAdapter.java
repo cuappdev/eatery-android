@@ -34,8 +34,6 @@ import java.util.Set;
 
 import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
 import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.OPEN;
-
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
   private final Context mContext;

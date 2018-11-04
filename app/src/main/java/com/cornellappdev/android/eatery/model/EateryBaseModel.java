@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 

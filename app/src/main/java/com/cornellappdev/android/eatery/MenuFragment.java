@@ -1,11 +1,9 @@
 package com.cornellappdev.android.eatery;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +12,9 @@ import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
-import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-/** A simple {@link Fragment} subclass. */
 public class MenuFragment extends Fragment {
   int position;
   MealMenuModel menu;
@@ -31,13 +24,11 @@ public class MenuFragment extends Fragment {
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     menu = ((MealModel) getArguments().getSerializable("cafeData")).getMenu();
-    Log.d("log-frag", "Fragment!");
     View view = inflater.inflate(R.layout.fragment_menu, container, false);
     linear = view.findViewById(R.id.linearFragment);
 
     try {
       position = getArguments().getInt("position");
-      Log.d("log-frag", Integer.toString(position));
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-/** Created by Ningning on 3/14/2018. */
+
 public class CustomPager extends ViewPager {
   private View mCurrentView;
 

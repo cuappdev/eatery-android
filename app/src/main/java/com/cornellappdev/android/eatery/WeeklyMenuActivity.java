@@ -23,9 +23,6 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
-import com.cornellappdev.android.eatery.model.DiningHallModel;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.model.MealModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +31,6 @@ import java.util.Date;
 
 import java.util.HashMap;
 import java.util.TreeMap;
-
 
 public class WeeklyMenuActivity extends AppCompatActivity {
   public BottomNavigationView bnv;

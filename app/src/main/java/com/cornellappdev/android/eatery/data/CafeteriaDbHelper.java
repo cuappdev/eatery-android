@@ -7,7 +7,6 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/** Created by JC on 3/2/18. */
 public class CafeteriaDbHelper extends SQLiteOpenHelper {
   public static final String DATABASE_NAME = "cafeteria.db";
   private static final int DATABASE_VERSION = 2;

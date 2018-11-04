@@ -1,9 +1,5 @@
 package com.cornellappdev.android.eatery.model.enums;
 
-/**
- * Created by abdullahislam on 10/7/18.
- */
-
 public enum PaymentMethod {
   BRB,
   CREDIT,
