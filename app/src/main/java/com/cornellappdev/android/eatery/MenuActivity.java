@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -31,7 +30,6 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
-
 import java.util.ArrayList;
 import java.util.List;
 

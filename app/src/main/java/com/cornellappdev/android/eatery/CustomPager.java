@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 public class CustomPager extends ViewPager {
 	private View mCurrentView;
 
@@ -17,9 +16,9 @@ public class CustomPager extends ViewPager {
 		super(context, attrs);
 	}
 
-	// Note(lesley): Code is either from StackOverflow or official docs, allows for ViewPager to be
-	// visible inside of MenuActivity. TBH not sure how it works, but it has something to do with
-	// resizing the Viewpager window
+	/** Note(lesley): Code is either from StackOverflow or official docs, allows for ViewPager to be
+	 	* visible inside of MenuActivity. TBH not sure how it works, but it has something to do with
+		* resizing the Viewpager window */
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		if (mCurrentView == null) {

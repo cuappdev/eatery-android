@@ -11,9 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-
 import java.util.ArrayList;
 
 public class InfoActivity extends AppCompatActivity {

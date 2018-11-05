@@ -2,15 +2,12 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.LocalDateTime;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,7 +32,8 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 		}
 	}
 
-	static String GITHUB_URL = "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
+	private final static String GITHUB_URL =
+			"https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
 	private ArrayList<String> mSearchedItems;
 	private boolean matchesFilter = true;
 	private boolean mMatchesSearch = true;
@@ -75,7 +73,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 		return mSearchedItems;
 	}
 
-
 	public void setMatchesSearch(boolean b) {
 		mMatchesSearch = b;
 	}
@@ -99,7 +96,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 	// Abstract Getters
 	public abstract Status getCurrentStatus();
 
-	//  public abstract MealModel getMenu();
 	public abstract HashSet<String> getMealItems();
 
 	/**

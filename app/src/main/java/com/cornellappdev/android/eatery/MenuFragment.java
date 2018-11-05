@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
-
 import java.util.ArrayList;
 
 public class MenuFragment extends Fragment {

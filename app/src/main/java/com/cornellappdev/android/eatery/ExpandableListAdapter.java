@@ -9,17 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-
 import android.widget.TextView;
-
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
-
 import java.util.ArrayList;
 
 import static com.cornellappdev.android.eatery.model.enums.MealType.BRUNCH;

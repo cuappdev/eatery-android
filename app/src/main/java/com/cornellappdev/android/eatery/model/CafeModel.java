@@ -1,9 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-
 import com.cornellappdev.android.eatery.util.TimeUtil;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +11,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.temporal.TemporalAdjusters;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;

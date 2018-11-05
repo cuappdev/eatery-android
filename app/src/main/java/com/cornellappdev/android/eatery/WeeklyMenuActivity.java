@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,20 +15,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
-
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import java.util.HashMap;
 import java.util.TreeMap;
 

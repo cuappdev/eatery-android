@@ -1,17 +1,14 @@
 package com.cornellappdev.android.eatery.network;
 
 import android.content.Context;
-
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

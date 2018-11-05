@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery.util;
 import com.cornellappdev.android.eatery.model.EateryBaseModel.Status;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
-
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -11,6 +10,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 public class TimeUtil {
 	private static TimeUtil instance;
+	private final static DateTimeFormatter ONLY_TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");
+	private final static DateTimeFormatter DATE_AND_TIME_FORMAT = DateTimeFormatter.ofPattern("EEE M/d h:mm a");
 
 	public static TimeUtil getInstance() {
 		if (instance == null) {
@@ -49,8 +50,6 @@ public class TimeUtil {
 	}
 
 	public static String format(Status status, LocalDateTime changeTime) {
-		DateTimeFormatter ONLY_TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");
-		DateTimeFormatter DATE_AND_TIME_FORMAT = DateTimeFormatter.ofPattern("EEE M/d h:mm a");
 		if (changeTime == null) {
 			return "";
 		}
@@ -71,8 +70,6 @@ public class TimeUtil {
 	}
 
 	public static String format(Status status, Interval interval, LocalDateTime changeTime) {
-		DateTimeFormatter ONLY_TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");
-		String openAt = "Opens";
 		LocalDateTime current = LocalDateTime.now();
 		if (interval.containsTime(current)) {
 			return format(status, changeTime);
@@ -80,6 +77,4 @@ public class TimeUtil {
 		return String.format("Open from %s to %s", interval.getStart().format(ONLY_TIME_FORMAT),
 				interval.getEnd().format(ONLY_TIME_FORMAT));
 	}
-
-
 }

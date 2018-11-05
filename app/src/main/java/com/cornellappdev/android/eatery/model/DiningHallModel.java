@@ -1,9 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-
 import com.cornellappdev.android.eatery.model.enums.MealType;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +9,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -123,7 +120,6 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 		model.parseJSONObject(context, hardcoded, eatery);
 		return model;
 	}
-
 
 	public HashSet<String> getMealItems() {
 		HashSet<String> items = new HashSet<String>();

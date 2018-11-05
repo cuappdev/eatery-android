@@ -1,9 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.support.annotation.NonNull;
-
 import org.threeten.bp.LocalDateTime;
-
 import java.io.Serializable;
 
 /**
@@ -44,7 +42,6 @@ public class Interval implements Serializable, Comparable<Interval> {
 		}
 		return false;
 	}
-
 
 	@Override
 	public int compareTo(@NonNull Interval interval) {
