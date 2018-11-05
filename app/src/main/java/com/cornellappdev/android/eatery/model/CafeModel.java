@@ -10,6 +10,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatterBuilder;
 import org.threeten.bp.temporal.TemporalAdjusters;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -157,8 +158,10 @@ public class CafeModel extends EateryBaseModel implements Serializable {
 			List<LocalDate> localDates = new ArrayList<>();
 			if (operatingPeriod.has("date")) {
 				String rawDate = operatingPeriod.getString("date");
-				LocalDate localDate = LocalDate.parse(rawDate, DateTimeFormatter
-						.ofPattern("yyyy-MM-dd", context.getResources().getConfiguration().locale));
+				LocalDate localDate = LocalDate.parse(rawDate, new DateTimeFormatterBuilder()
+						.parseCaseInsensitive()
+						.appendPattern("yyyy-MM-dd")
+						.toFormatter());
 				localDates.add(localDate);
 			}
 			if (operatingPeriod.has("weekday")) {
@@ -191,14 +194,18 @@ public class CafeModel extends EateryBaseModel implements Serializable {
 					dailyHours = new ArrayList<>();
 					if (obj.has("start")) {
 						String rawStart = obj.getString("start").toUpperCase();
-						LocalTime localTime = LocalTime.parse(rawStart, DateTimeFormatter
-								.ofPattern("h:mma", context.getResources().getConfiguration().locale));
+						LocalTime localTime = LocalTime.parse(rawStart, new DateTimeFormatterBuilder()
+								.parseCaseInsensitive()
+								.appendPattern("h:mma")
+								.toFormatter());
 						start = localTime.atDate(localDate);
 					}
 					if (obj.has("end")) {
 						String rawEnd = obj.getString("end").toUpperCase();
-						LocalTime localTime = LocalTime.parse(rawEnd, DateTimeFormatter
-								.ofPattern("h:mma", context.getResources().getConfiguration().locale));
+						LocalTime localTime = LocalTime.parse(rawEnd, new DateTimeFormatterBuilder()
+								.parseCaseInsensitive()
+								.appendPattern("h:mma")
+								.toFormatter());
 						end = localTime.atDate(localDate);
 					}
 					LocalDateTime midnightTomorrow = localDate.atTime(LocalTime.MIDNIGHT);
