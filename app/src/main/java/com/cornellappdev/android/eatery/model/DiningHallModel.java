@@ -9,6 +9,8 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeFormatterBuilder;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -137,10 +139,14 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 		super.parseJSONObject(context, hardcoded, eatery);
 		mWeeklyMenu = new HashMap<>();
 		mSortedDates = new ArrayList<>();
-		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mma",
-				context.getResources().getConfiguration().locale);
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd",
-				context.getResources().getConfiguration().locale);
+		DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
+				.parseCaseInsensitive()
+				.appendPattern("h:mma")
+				.toFormatter();
+		DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+				.parseCaseInsensitive()
+				.appendPattern("yyyy-MM-dd")
+				.toFormatter();
 
 		// Each Operating Hour is a single day for dining halls
 		JSONArray operatingHours = eatery.getJSONArray("operatingHours");
