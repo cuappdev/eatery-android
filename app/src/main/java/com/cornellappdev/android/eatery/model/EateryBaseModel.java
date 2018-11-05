@@ -35,6 +35,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 		}
 	}
 
+	static String GITHUB_URL = "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
 	private ArrayList<String> mSearchedItems;
 	private boolean matchesFilter = true;
 	private boolean mMatchesSearch = true;
@@ -166,7 +167,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 	}
 
 	public static String getImageURL(String cafeName) {
-		String GITHUB_URL = "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
 		return GITHUB_URL + EateryBaseModel.convertName(cafeName);
 	}
 

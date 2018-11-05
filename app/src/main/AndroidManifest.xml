@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		package="com.cornellappdev.android.eatery">
+	package="com.cornellappdev.android.eatery">
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,51 +10,51 @@
 	<uses-feature android:name="android.hardware.location.gps" />
 
 	<application
-			android:name=".EateryApplication"
-			android:allowBackup="true"
-			android:icon="@drawable/eateryicon"
-			android:label="Eatery"
-			android:supportsRtl="true">
+		android:name=".EateryApplication"
+		android:allowBackup="true"
+		android:icon="@drawable/eateryicon"
+		android:label="Eatery"
+		android:supportsRtl="true">
 		<activity
-				android:name=".MainActivity"
-				android:screenOrientation="portrait"
-				android:theme="@style/AppTheme"
-				android:windowSoftInputMode="adjustPan">
+			android:name=".MainActivity"
+			android:screenOrientation="portrait"
+			android:theme="@style/AppTheme"
+			android:windowSoftInputMode="adjustPan">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
 		<activity
-				android:name=".MenuActivity"
-				android:screenOrientation="portrait"
-				android:theme="@style/NoActionBar" />
+			android:name=".MenuActivity"
+			android:screenOrientation="portrait"
+			android:theme="@style/NoActionBar" />
 		<activity
-				android:name=".WeeklyMenuActivity"
-				android:screenOrientation="portrait"
-				android:theme="@style/AppTheme" />
+			android:name=".WeeklyMenuActivity"
+			android:screenOrientation="portrait"
+			android:theme="@style/AppTheme" />
 
 		<meta-data
-				android:name="com.google.android.geo.API_KEY"
-				android:value="@string/google_maps_key" />
+			android:name="com.google.android.geo.API_KEY"
+			android:value="@string/google_maps_key" />
 
 		<activity
-				android:name=".MapsActivity"
-				android:label="@string/title_activity_maps"
-				android:screenOrientation="portrait"
-				android:theme="@style/AppTheme">
+			android:name=".MapsActivity"
+			android:label="@string/title_activity_maps"
+			android:screenOrientation="portrait"
+			android:theme="@style/AppTheme">
 			<meta-data
-					android:name="android.support.PARENT_ACTIVITY"
-					android:value="com.cornellappdev.android.eatery.MainActivity" />
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.cornellappdev.android.eatery.MainActivity" />
 		</activity>
 		<activity
-				android:name=".InfoActivity"
-				android:screenOrientation="portrait"
-				android:theme="@style/AppTheme"></activity>
+			android:name=".InfoActivity"
+			android:screenOrientation="portrait"
+			android:theme="@style/AppTheme"></activity>
 
 		<meta-data
-				android:name="io.fabric.ApiKey"
-				android:value="" />
+			android:name="io.fabric.ApiKey"
+			android:value="" />
 	</application>
 
 </manifest>
