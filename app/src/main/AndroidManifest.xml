@@ -12,7 +12,7 @@
 	<application
 		android:name=".EateryApplication"
 		android:allowBackup="true"
-		android:icon="@drawable/eateryicon"
+		android:icon="@mipmap/ic_launcher"
 		android:label="Eatery"
 		android:supportsRtl="true">
 		<activity
