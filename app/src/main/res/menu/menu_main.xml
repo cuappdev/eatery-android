@@ -1,17 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.cornellappdev.android.eatery.MainActivity">
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		tools:context="com.cornellappdev.android.eatery.MainActivity">
 
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/search"
-        android:iconifiedByDefault="false"
-        android:title="Search"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
-    <item android:id="@+id/action_map"
-        app:showAsAction="ifRoom|collapseActionView"
-        android:icon="@drawable/map"
-        android:title="Map" />
+	<item
+			android:id="@+id/action_search"
+			android:icon="@drawable/ic_search"
+			android:iconifiedByDefault="false"
+			android:title="Search"
+			app:actionViewClass="android.support.v7.widget.SearchView"
+			app:showAsAction="always" />
+	<item
+			android:id="@+id/action_map"
+			android:icon="@drawable/ic_map"
+			android:title="Map"
+			app:showAsAction="ifRoom|collapseActionView" />
 </menu>
