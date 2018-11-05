@@ -18,68 +18,68 @@ import java.util.ArrayList;
 
 public class InfoActivity extends AppCompatActivity {
 
-  private TextView mFeedbackText;
-  private TextView mWebsiteText;
-  private BottomNavigationView mBottomNavigationBar;
-  public  ArrayList<EateryBaseModel> cafeList;
+	private TextView mFeedbackText;
+	private TextView mWebsiteText;
+	private BottomNavigationView mBottomNavigationBar;
+	public ArrayList<EateryBaseModel> cafeList;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
 
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_info);
-    setTitle("About");
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_info);
+		setTitle("About");
 
-    cafeList = (ArrayList<EateryBaseModel>) getIntent().getSerializableExtra("cafeData");
+		cafeList = (ArrayList<EateryBaseModel>) getIntent().getSerializableExtra("cafeData");
 
-    mFeedbackText = findViewById(R.id.feedbackText);
-    mWebsiteText = findViewById(R.id.websiteText);
-    mBottomNavigationBar = findViewById(R.id.bottom_navigation);
-    mBottomNavigationBar.setSelectedItemId(R.id.action_brb);
+		mFeedbackText = findViewById(R.id.feedbackText);
+		mWebsiteText = findViewById(R.id.websiteText);
+		mBottomNavigationBar = findViewById(R.id.bottom_navigation);
+		mBottomNavigationBar.setSelectedItemId(R.id.action_brb);
 
-    mBottomNavigationBar.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Intent intent;
-            switch (item.getItemId()) {
-              case R.id.action_home:
-                finish();
-                break;
-              case R.id.action_week:
-                finish();
-                intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-                intent.putExtra("cafeData", cafeList);
-                startActivity(intent);
-                break;
-              case R.id.action_brb:
-                ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
-                sv.smoothScrollTo(0, 0);
-                break;
-            }
-            return true;
-          }
-        });
+		mBottomNavigationBar.setOnNavigationItemSelectedListener(
+				new BottomNavigationView.OnNavigationItemSelectedListener() {
+					@Override
+					public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+						Intent intent;
+						switch (item.getItemId()) {
+							case R.id.action_home:
+								finish();
+								break;
+							case R.id.action_week:
+								finish();
+								intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
+								intent.putExtra("cafeData", cafeList);
+								startActivity(intent);
+								break;
+							case R.id.action_brb:
+								ScrollView sv = (ScrollView) findViewById(R.id.scrollView);
+								sv.smoothScrollTo(0, 0);
+								break;
+						}
+						return true;
+					}
+				});
 
-    mFeedbackText.setMovementMethod(LinkMovementMethod.getInstance());
-    mWebsiteText.setMovementMethod(LinkMovementMethod.getInstance());
+		mFeedbackText.setMovementMethod(LinkMovementMethod.getInstance());
+		mWebsiteText.setMovementMethod(LinkMovementMethod.getInstance());
 
-    mWebsiteText.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Uri uri = Uri.parse("https://www.cornellappdev.com/");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-      }
-    });
+		mWebsiteText.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Uri uri = Uri.parse(getResources().getString(R.string.cornell_website_url));
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+			}
+		});
 
-    mFeedbackText.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Uri uri = Uri.parse("https://goo.gl/forms/g8v6CbN2lrQtY4tH2");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-      }
-    });
-  }
+		mFeedbackText.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Uri uri = Uri.parse(getResources().getString(R.string.feedback_form_url));
+				Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				startActivity(intent);
+			}
+		});
+	}
 }

@@ -1,23 +1,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:id="@+id/list_view_body"
-    android:background="@color/wash"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+		android:id="@+id/list_view_body"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/wash"
+		android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:id="@+id/horiline"
-        android:layout_height="1dp"
-        android:background="@color/inactive"/>
+	<View
+			android:id="@+id/horiline"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/inactive" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/wash"
-        android:textSize="18sp"
-        android:paddingLeft="15dp"
-        android:paddingTop="8dp"
-        android:id="@+id/menu_title"/>
+	<TextView
+			android:id="@+id/menu_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/wash"
+			android:paddingLeft="15dp"
+			android:paddingTop="8dp"
+			android:textSize="18sp" />
 
 </LinearLayout>

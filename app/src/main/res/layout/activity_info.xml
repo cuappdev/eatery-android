@@ -1,129 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/info_activity"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.cornellappdev.android.eatery.InfoActivity">
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/info_activity"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="com.cornellappdev.android.eatery.InfoActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="60dp">
+	<ScrollView
+			android:id="@+id/scrollView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingBottom="60dp">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".InfoActivity">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:app="http://schemas.android.com/apk/res-auto"
+				xmlns:tools="http://schemas.android.com/tools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				tools:context=".InfoActivity">
 
-            <TextView
-                android:id="@+id/descriptionHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                android:text="@string/description_header"
-                android:textColor="@color/primary"
-                android:textSize="20sp"
-                android:textStyle="normal" />
+			<TextView
+					android:id="@+id/descriptionHeader"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif-medium"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/description_header"
+					android:textColor="@color/primary"
+					android:textSize="20sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/descriptionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingExtra="10sp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                android:text="@string/description_text_1"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="normal" />
+			<TextView
+					android:id="@+id/descriptionText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif"
+					android:lineSpacingExtra="10sp"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/description_text_1"
+					android:textColor="@color/primary"
+					android:textSize="18sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingExtra="10sp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                android:text="@string/description_text_2"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="normal" />
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif"
+					android:lineSpacingExtra="10sp"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/description_text_2"
+					android:textColor="@color/primary"
+					android:textSize="18sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/websiteText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                android:text="@string/appdev_website"
-                android:textColor="@color/blue"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                />
+			<TextView
+					android:id="@+id/websiteText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/appdev_website"
+					android:textColor="@color/blue"
+					android:textSize="20sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/feedbackHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="30dp"
-                android:text="@string/feedback_header"
-                android:textColor="@color/primary"
-                android:textSize="20sp"
-                android:textStyle="normal" />
+			<TextView
+					android:id="@+id/feedbackHeader"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif-medium"
+					android:paddingLeft="15dp"
+					android:paddingTop="30dp"
+					android:paddingRight="15dp"
+					android:text="@string/feedback_header"
+					android:textColor="@color/primary"
+					android:textSize="20sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingExtra="10sp"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                android:text="@string/feedback_text"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                />
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif"
+					android:lineSpacingExtra="10sp"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/feedback_text"
+					android:textColor="@color/primary"
+					android:textSize="18sp"
+					android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/feedbackText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/google_form"
-                android:textColor="@color/blue"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="20dp"
-                />
+			<TextView
+					android:id="@+id/feedbackText"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:fontFamily="sans-serif"
+					android:paddingLeft="15dp"
+					android:paddingTop="20dp"
+					android:paddingRight="15dp"
+					android:text="@string/google_form"
+					android:textColor="@color/blue"
+					android:textSize="20sp"
+					android:textStyle="normal" />
 
-        </LinearLayout>
-    </ScrollView>
+		</LinearLayout>
+	</ScrollView>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="@color/white"
-        app:menu="@menu/bottom_nav_main" />
+	<android.support.design.widget.BottomNavigationView
+			android:id="@+id/bottom_navigation"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			app:itemBackground="@color/white"
+			app:menu="@menu/bottom_nav_main" />
 </RelativeLayout>
