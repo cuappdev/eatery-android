@@ -5,7 +5,6 @@
 		android:id="@+id/info_activity"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-
 		tools:context="com.cornellappdev.android.eatery.InfoActivity">
 
 	<ScrollView
@@ -115,7 +114,6 @@
 				android:textColor="@color/blue"
 				android:textSize="20sp"
 				android:textStyle="normal" />
-
 		</LinearLayout>
 	</ScrollView>
 
