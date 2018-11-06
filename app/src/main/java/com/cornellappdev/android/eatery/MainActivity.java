@@ -388,11 +388,11 @@ public class MainActivity extends AppCompatActivity
 
 			mRecyclerView.setHasFixedSize(true);
 			LinearLayoutManager layoutManager =
-					new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false);
+				new LinearLayoutManager(MainActivity.this, LinearLayout.VERTICAL, false);
 			mRecyclerView.setLayoutManager(layoutManager);
 
 			listAdapter =
-					new MainListAdapter(getApplicationContext(), MainActivity.this, result.size(), cafeList);
+					new MainListAdapter(MainActivity.this, MainActivity.this, result.size(), cafeList);
 			mRecyclerView.setAdapter(listAdapter);
 			mRecyclerView.setVisibility(View.VISIBLE);
 			progressBar.setVisibility(View.GONE);
