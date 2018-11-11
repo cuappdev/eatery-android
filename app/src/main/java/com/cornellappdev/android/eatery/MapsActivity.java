@@ -174,6 +174,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 		mMap.moveCamera(CameraUpdateFactory.newLatLng(cornell));
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item){
+		finish();
+		return true;
+
+	}
+
 	// Gets user permission to use location
 	private void enableMyLocationIfPermitted() {
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -228,15 +234,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 		Canvas canvas = new Canvas(bitmap);
 		vectorDrawable.draw(canvas);
 		return bitmap;
-	}
-
-	public class SnackBarListener implements View.OnClickListener {
-		@Override
-		public void onClick(View v) {
-			Intent browser =
-					new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cornellappdev.com/apply/"));
-			startActivity(browser);
-		}
 	}
 
 	private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener =

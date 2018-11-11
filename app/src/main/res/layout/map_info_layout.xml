@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			android:layout_width="220dp"
+		android:layout_width="220dp"
+		android:layout_height="wrap_content"
+		android:background="@drawable/relative_layout_background">
+
+		<TextView
+			android:id="@+id/info_cafe_name"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="@drawable/relative_layout_background">
+			android:paddingLeft="12dp"
+			android:paddingTop="12dp"
+			android:paddingRight="12dp"
+			android:paddingBottom="2dp"
+			android:text="Cafe Name"
+			android:textColor="@color/primary"
+			android:textSize="16sp"
+			android:textStyle="bold" />
 
 		<TextView
-				android:id="@+id/info_cafe_name"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:paddingLeft="12dp"
-				android:paddingTop="12dp"
-				android:paddingBottom="2dp"
-				android:text="Cafe Name"
-				android:textColor="@color/primary"
-				android:textSize="16sp"
-				android:textStyle="bold"
-
-				/>
+			android:id="@+id/info_cafe_open"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/info_cafe_name"
+			android:paddingLeft="12dp"
+			android:paddingBottom="12dp"
+			android:text="Open"
+			android:textSize="12sp"
+			android:textStyle="bold" />
 
 		<TextView
-				android:id="@+id/info_cafe_open"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/info_cafe_name"
-				android:paddingLeft="12dp"
-				android:paddingBottom="12dp"
-				android:text="Open"
-				android:textSize="12sp"
-				android:textStyle="bold"
-
-				/>
-
-		<TextView
-				android:id="@+id/info_cafe_desc"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/info_cafe_name"
-				android:layout_toRightOf="@id/info_cafe_open"
-				android:paddingLeft="4dp"
-				android:paddingBottom="12dp"
-				android:text="Closing Time"
-				android:textSize="12sp"
-
-				/>
+			android:id="@+id/info_cafe_desc"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/info_cafe_name"
+			android:layout_toRightOf="@id/info_cafe_open"
+			android:paddingLeft="4dp"
+			android:paddingRight="12dp"
+			android:paddingBottom="12dp"
+			android:text="Closing Time"
+			android:textSize="12sp" />
 
 		<ImageView
-				android:id="@+id/map_arrow"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/cafe_image"
-				android:layout_centerVertical="true"
-				android:layout_marginLeft="200dp"
-				android:layout_marginTop="20dp"
-				android:layout_marginRight="8dp"
-				android:layout_marginBottom="20dp"
-				android:src="@drawable/map_arrow" />
-
-
+			android:id="@+id/map_arrow"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/cafe_image"
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="200dp"
+			android:layout_marginTop="20dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginBottom="20dp"
+			android:src="@drawable/map_arrow" />
 	</RelativeLayout>
 
 	<ImageView
-			android:id="@+id/carrot"
-			android:layout_width="35dp"
-			android:layout_height="25dp"
-			android:layout_below="@id/info_cafe_desc"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="-5dp"
-			android:src="@drawable/carrot" />
+		android:id="@+id/carrot"
+		android:layout_width="35dp"
+		android:layout_height="25dp"
+		android:layout_below="@id/info_cafe_desc"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="-5dp"
+		android:src="@drawable/carrot" />
 </LinearLayout>
 
