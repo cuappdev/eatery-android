@@ -51,10 +51,6 @@
 			android:name=".InfoActivity"
 			android:screenOrientation="portrait"
 			android:theme="@style/AppTheme"></activity>
-
-		<meta-data
-			android:name="io.fabric.ApiKey"
-			android:value="" />
 	</application>
 
 </manifest>
