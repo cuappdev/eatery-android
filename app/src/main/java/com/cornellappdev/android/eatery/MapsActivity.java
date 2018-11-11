@@ -177,7 +177,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 	public boolean onOptionsItemSelected(MenuItem item){
 		finish();
 		return true;
-
 	}
 
 	// Gets user permission to use location
