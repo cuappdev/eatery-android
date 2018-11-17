@@ -5,10 +5,14 @@
 	android:orientation="vertical">
 
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="220dp"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:background="@drawable/relative_layout_background">
 
+		<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/info_text_container">
 		<TextView
 			android:id="@+id/info_cafe_name"
 			android:layout_width="wrap_content"
@@ -44,17 +48,16 @@
 			android:paddingBottom="12dp"
 			android:text="Closing Time"
 			android:textSize="12sp" />
+		</RelativeLayout>
 
 		<ImageView
 			android:id="@+id/map_arrow"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/cafe_image"
+			android:layout_marginRight="12dp"
+			android:layout_toEndOf="@id/info_text_container"
 			android:layout_centerVertical="true"
-			android:layout_marginLeft="200dp"
-			android:layout_marginTop="20dp"
-			android:layout_marginRight="8dp"
-			android:layout_marginBottom="20dp"
 			android:src="@drawable/map_arrow" />
 	</RelativeLayout>
 
