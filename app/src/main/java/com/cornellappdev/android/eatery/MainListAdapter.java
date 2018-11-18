@@ -20,9 +20,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.common.logging.FLog;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import java.util.ArrayList;
@@ -59,9 +57,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 		// Logcat for Fresco
 		Set<RequestListener> requestListeners = new HashSet<>();
 		requestListeners.add(new RequestLoggingListener());
-		ImagePipelineConfig config =
-				ImagePipelineConfig.newBuilder(context).setRequestListeners(requestListeners).build();
-		Fresco.initialize(context, config);
 		FLog.setMinimumLoggingLevel(FLog.VERBOSE);
 	}
 
