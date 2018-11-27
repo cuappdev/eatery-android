@@ -96,13 +96,13 @@ public class MenuFragment extends Fragment {
 						new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
 				divider.setElevation(-1);
 				linear.addView(divider);
-
-				View grey = new View(getContext());
-				grey.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wash));
-				grey.setLayoutParams(
-						new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 16));
-				linear.addView(grey);
 			}
+
+			View grey = new View(getContext());
+			grey.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.wash));
+			grey.setLayoutParams(
+					new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 16));
+			linear.addView(grey);
 		}
 		// Inflate the layout for this fragment
 		return view;
