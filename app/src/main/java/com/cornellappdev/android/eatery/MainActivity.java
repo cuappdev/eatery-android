@@ -86,18 +86,15 @@ public class MainActivity extends AppCompatActivity {
       NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
       boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-      if (!isConnected) {
-        if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-          eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
-        }
-        Collections.sort(eateryList);
-
+      if (!isConnected
+          && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
+        eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
       } else {
         String json = NetworkUtilities.getJSON();
         dbHelper.addData(json);
         eateryList = JsonUtilities.parseJson(json, getApplicationContext());
-        Collections.sort(eateryList);
       }
+      Collections.sort(eateryList);
       return eateryList;
     }
 
