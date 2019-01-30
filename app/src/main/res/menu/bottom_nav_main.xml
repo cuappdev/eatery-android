@@ -13,7 +13,6 @@
 			android:icon="@drawable/ic_menu"
 			android:title="Weekly Menu"
 			app:showAsAction="ifRoom|withText" />
-
 	<item
 			android:id="@+id/action_brb"
 			android:enabled="true"
