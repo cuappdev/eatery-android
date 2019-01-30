@@ -5,9 +5,14 @@
 	android:layout_height="match_parent"
 	tools:context=".MainListFragment">
 
-	<TextView
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/cafe_list"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:text="main list" />
+		android:layout_below="@+id/scroll"
+		android:clipToPadding="false"
+		android:nestedScrollingEnabled="false"
+		android:onClick="filterClick"
+		/>
 
 </FrameLayout>

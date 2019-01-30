@@ -1,11 +1,14 @@
 package com.cornellappdev.android.eatery.presenter;
 
 import android.view.View;
+import android.widget.Button;
 
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainListPresenter {
 
@@ -20,5 +23,10 @@ public class MainListPresenter {
 
 	public ArrayList<EateryBaseModel> getEateryList(){
 		return eateryList;
+	}
+
+	public interface MainListView {
+		void changeButtonColor(int textColor, int backgroundColor, Button button);
+		void filterClick(View view);
 	}
 }
