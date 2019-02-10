@@ -5,14 +5,131 @@
 	android:layout_height="match_parent"
 	tools:context=".MainListFragment">
 
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	<HorizontalScrollView
+		android:id="@+id/scroll"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="3dp"
+		android:paddingRight="3dp"
+		android:scrollbars="none">
+
+		<LinearLayout
+			android:id="@+id/linear"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="10dp"
+			android:paddingRight="10dp"
+			android:layout_gravity="center_horizontal"
+			android:orientation="horizontal">
+
+			<Button
+				android:id="@+id/northButton"
+				android:layout_width="65dp"
+				android:layout_height="35dp"
+				android:layout_marginLeft="8dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginRight="6dp"
+				android:background="@drawable/button"
+				android:fontFamily="sans-serif-medium"
+				android:gravity="center_horizontal"
+				android:onClick="filterClick"
+				android:padding="8dp"
+				android:stateListAnimator="@null"
+				android:text="North"
+				android:textAllCaps="false"
+				android:textColor="@color/blue"
+				android:textSize="14sp"
+				android:textStyle="normal" />
+
+			<Button
+				android:id="@+id/westButton"
+				android:layout_width="65dp"
+				android:layout_height="35dp"
+				android:layout_marginLeft="6dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginRight="6dp"
+				android:layout_marginBottom="10dp"
+				android:background="@drawable/button"
+				android:fontFamily="sans-serif-medium"
+				android:gravity="center_horizontal"
+				android:onClick="filterClick"
+				android:padding="8dp"
+				android:stateListAnimator="@null"
+				android:text="West"
+				android:textAllCaps="false"
+				android:textColor="@color/blue"
+				android:textSize="14sp"
+				android:textStyle="normal" />
+
+			<Button
+				android:id="@+id/centralButton"
+				android:layout_width="65dp"
+				android:layout_height="35dp"
+				android:layout_marginLeft="6dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginRight="6dp"
+				android:background="@drawable/button"
+				android:fontFamily="sans-serif-medium"
+				android:gravity="center_horizontal"
+				android:onClick="filterClick"
+				android:padding="8dp"
+				android:stateListAnimator="@null"
+				android:text="Central"
+				android:textAllCaps="false"
+				android:textColor="@color/blue"
+				android:textSize="14sp"
+				android:textStyle="normal" />
+
+			<Button
+				android:id="@+id/swipes"
+				android:layout_width="65dp"
+				android:layout_height="35dp"
+				android:layout_marginLeft="6dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginRight="6dp"
+				android:background="@drawable/button"
+				android:fontFamily="sans-serif-medium"
+				android:gravity="center_horizontal"
+				android:onClick="filterClick"
+				android:padding="8dp"
+				android:stateListAnimator="@null"
+				android:text="Swipes"
+				android:textAllCaps="false"
+				android:textColor="@color/blue"
+				android:textSize="14sp"
+				android:textStyle="normal" />
+
+			<Button
+				android:id="@+id/brb"
+				android:layout_width="65dp"
+				android:layout_height="35dp"
+				android:layout_marginLeft="6dp"
+				android:layout_marginTop="15dp"
+				android:layout_marginRight="6dp"
+				android:background="@drawable/button"
+				android:fontFamily="sans-serif-medium"
+				android:gravity="center_horizontal"
+				android:onClick="filterClick"
+				android:padding="8dp"
+				android:stateListAnimator="@null"
+				android:text="BRB"
+				android:textAllCaps="false"
+				android:textColor="@color/blue"
+				android:textSize="14sp"
+				android:textStyle="normal" />
+		</LinearLayout>
+	</HorizontalScrollView>
+
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/cafe_list"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_below="@+id/scroll"
 		android:clipToPadding="false"
 		android:nestedScrollingEnabled="false"
-		android:onClick="filterClick"
-		/>
-
+		android:onClick="filterClick" />
+	</RelativeLayout>
 </FrameLayout>

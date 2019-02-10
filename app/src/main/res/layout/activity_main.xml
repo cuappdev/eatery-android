@@ -9,10 +9,6 @@
 	android:focusableInTouchMode="true"
 	tools:context="com.cornellappdev.android.eatery.MainActivity">
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"></RelativeLayout>
-
 	<ProgressBar
 		android:id="@+id/progress_bar"
 		style="?android:progressBarStyle"

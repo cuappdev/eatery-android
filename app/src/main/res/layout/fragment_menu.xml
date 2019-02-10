@@ -5,4 +5,5 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:paddingTop="16dp"
-		tools:context="com.cornellappdev.android.eatery.MenuFragment"></LinearLayout>
+		tools:context="com.cornellappdev.android.eatery.MenuFragment">
+</LinearLayout>

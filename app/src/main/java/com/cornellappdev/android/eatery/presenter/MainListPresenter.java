@@ -25,8 +25,4 @@ public class MainListPresenter {
 		return eateryList;
 	}
 
-	public interface MainListView {
-		void changeButtonColor(int textColor, int backgroundColor, Button button);
-		void filterClick(View view);
-	}
 }

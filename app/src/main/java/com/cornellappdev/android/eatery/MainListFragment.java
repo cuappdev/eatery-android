@@ -21,7 +21,7 @@ import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 import java.util.ArrayList;
 
 public class MainListFragment extends Fragment
-		implements MainListPresenter.MainListView, MainListAdapter.ListAdapterOnClickHandler {
+		implements MainListAdapter.ListAdapterOnClickHandler {
 	private MainListPresenter presenter;
 	private RecyclerView mRecyclerView;
 	private MainListAdapter listAdapter;
@@ -39,8 +39,13 @@ public class MainListFragment extends Fragment
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
+
+		getActivity().setTitle("Eateries");
+
 		mRecyclerView = rootView.findViewById(R.id.cafe_list);
 		presenter = new MainListPresenter(rootView);
+
+		// Set up recyclerview and corresponding listadapter
 		mRecyclerView.setHasFixedSize(true);
 		LinearLayoutManager layoutManager =
 				new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
@@ -50,23 +55,18 @@ public class MainListFragment extends Fragment
 				new MainListAdapter(getContext(), this, presenter.getEateryList().size(), presenter.getEateryList());
 		mRecyclerView.setAdapter(listAdapter);
 		mRecyclerView.setVisibility(View.VISIBLE);
-//		Log.d("TAG-mainlist", presenter.getEateryList().toString());
 		return rootView;
 	}
 
-	@Override
 	public void changeButtonColor(int textColor, int backgroundColor, Button button){}
 
-	@Override
 	public void filterClick(View view){}
 
 	@Override
 	public void onClick(int position, ArrayList<EateryBaseModel> list) {
-		Toast.makeText(getContext(), "CLICK", Toast.LENGTH_SHORT).show();
-//		Intent intent = new Intent(this, MenuActivity.class);
-//		intent.putExtra("testData", list);
-//		intent.putExtra("cafeInfo", list.get(position));
-//		intent.putExtra("locName", list.get(position).getNickName());
-//		startActivity(intent);
+		Intent intent = new Intent(getActivity(), MenuActivity.class);
+		intent.putExtra("cafeInfo", list.get(position));
+		intent.putExtra("locName", list.get(position).getNickName());
+		startActivity(intent);
 	}
 }

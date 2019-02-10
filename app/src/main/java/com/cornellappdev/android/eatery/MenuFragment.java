@@ -33,8 +33,8 @@ public class MenuFragment extends Fragment {
 		}
 
 		float scale = getResources().getDisplayMetrics().density;
-		// Checks for unavailable or missing menus
 
+		// Checks for unavailable or missing menus
 		if (menu.getNumberOfCategories() == 0) {
 			TextView missingMenuText = new TextView(getContext());
 			missingMenuText.setText("Nothing on the menu 😮");
@@ -45,7 +45,6 @@ public class MenuFragment extends Fragment {
 			linear.addView(missingMenuText);
 		}
 
-		int counter = 0;
 		ArrayList<String> categories = (ArrayList<String>) menu.getCategories();
 		for (int i = 0; i < categories.size(); i++) {
 			// Add subheading for category of food
