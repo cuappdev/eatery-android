@@ -36,31 +36,31 @@ import java.util.TreeMap;
  * A simple {@link Fragment} subclass.
  */
 public class WeeklyMenuFragment extends Fragment implements View.OnClickListener{
-	TextView date0;
-	TextView date1;
-	TextView date2;
-	TextView date3;
-	TextView date4;
-	TextView date5;
-	TextView date6;
-	ExpandableListAdapter listAdapterWest;
-	ExpandableListAdapter listAdapterNorth;
-	ExpandableListAdapter listAdapterCentral;
-	NonScrollExpandableListView expListViewWest;
-	NonScrollExpandableListView expListViewNorth;
-	NonScrollExpandableListView expListViewCentral;
-	TextView westText;
-	TextView northText;
-	TextView centralText;
-	MealType mealType = MealType.BREAKFAST;
-	TextView breakfastText;
-	TextView lunchText;
-	TextView dinnerText;
-	LinearLayout linDate;
-	ArrayList<TextView> dateList = new ArrayList<>();
+	private TextView date0;
+	private TextView date1;
+	private TextView date2;
+	private TextView date3;
+	private TextView date4;
+	private TextView date5;
+	private TextView date6;
+	private ExpandableListAdapter listAdapterWest;
+	private ExpandableListAdapter listAdapterNorth;
+	private ExpandableListAdapter listAdapterCentral;
+	private NonScrollExpandableListView expListViewWest;
+	private NonScrollExpandableListView expListViewNorth;
+	private NonScrollExpandableListView expListViewCentral;
+	private TextView westText;
+	private TextView northText;
+	private TextView centralText;
+	private MealType mealType = MealType.BREAKFAST;
+	private TextView breakfastText;
+	private TextView lunchText;
+	private TextView dinnerText;
+	private LinearLayout linDate;
+	private ArrayList<TextView> dateList = new ArrayList<>();
 	private WeeklyPresenter presenter;
-	int lastExpandedPosition;
-	NonScrollExpandableListView lastClickedListView;
+	private int lastExpandedPosition;
+	private NonScrollExpandableListView lastClickedListView;
 
 	public WeeklyMenuFragment() {
 		// Required empty public constructor
