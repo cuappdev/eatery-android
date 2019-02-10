@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -10,7 +11,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -18,6 +23,7 @@ import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -62,6 +68,43 @@ public class Main2Activity extends AppCompatActivity implements MainPresenter.Vi
 				});
 
 		new ProcessJson().execute("");
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_map:
+				Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+				startActivity(intent);
+				return true;
+			default:
+				// The user's action was not recognized, and invoke the superclass to handle it.
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_main, menu);
+		final MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		setTitle("Eateries");
+		AutoCompleteTextView searchTextView =
+				searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+		searchView.setMaxWidth(2000);
+		try {
+			Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+			mCursorDrawableRes.setAccessible(true);
+			mCursorDrawableRes.set(
+					searchTextView,
+					R.drawable
+							.cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
+			// on white background
+		} catch (Exception e) {
+			// Don't do anything
+		}
+//		searchView.setOnQueryTextListener(queryListener);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override

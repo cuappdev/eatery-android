@@ -5,7 +5,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import java.util.ArrayList;
 
 public class Repository {
-	public ArrayList<EateryBaseModel> eateryList;
+	private ArrayList<EateryBaseModel> eateryList;
 	static final Repository repoInstance = new Repository();
 
 	public static Repository getInstance() {

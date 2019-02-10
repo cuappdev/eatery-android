@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 	private GoogleMap mMap;
 	ArrayList<EateryBaseModel> cafeData;
+	public Repository rInstance = Repository.getInstance();
 	private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 	public BottomNavigationView bnv;
 
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 				(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 		Intent intent = getIntent();
-		cafeData = (ArrayList<EateryBaseModel>) intent.getSerializableExtra("cafeData");
+		cafeData = rInstance.getEateryList();
 		bnv = findViewById(R.id.bottom_navigation);
 		bnv.setOnNavigationItemSelectedListener(
 				new BottomNavigationView.OnNavigationItemSelectedListener() {
