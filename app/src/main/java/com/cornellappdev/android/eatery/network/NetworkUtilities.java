@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery.network;
 
+import android.util.Log;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
@@ -67,6 +69,7 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
+                Log.d("network-util", "apollo failed");
                 MainActivity.JSON_FALLBACK = true;
             }
         });

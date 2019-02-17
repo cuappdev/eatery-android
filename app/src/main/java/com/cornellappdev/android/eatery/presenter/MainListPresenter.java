@@ -16,7 +16,6 @@ import java.util.Set;
 
 public class MainListPresenter {
 
-	private View view;
 	private ArrayList<EateryBaseModel> eateryList;
 	private ArrayList<EateryBaseModel> currentList;
 	private Set<Button> areaButtonsPressed;
@@ -24,11 +23,9 @@ public class MainListPresenter {
 	private HashSet<PaymentMethod> paymentSet;
 	private HashSet<CampusArea> areaSet;
 
-
 	public Repository rInstance = Repository.getInstance();
 
-	public MainListPresenter(View view) {
-		this.view = view;
+	public MainListPresenter() {
 		eateryList = rInstance.getEateryList();
 		currentList = eateryList;
 		areaButtonsPressed = new HashSet<>();

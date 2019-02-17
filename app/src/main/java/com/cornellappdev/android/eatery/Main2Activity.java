@@ -71,43 +71,6 @@ public class Main2Activity extends AppCompatActivity implements MainPresenter.Vi
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.action_map:
-				Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-				startActivity(intent);
-				return true;
-			default:
-				// The user's action was not recognized, and invoke the superclass to handle it.
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_main, menu);
-		final MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		setTitle("Eateries");
-		AutoCompleteTextView searchTextView =
-				searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-		searchView.setMaxWidth(2000);
-		try {
-			Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-			mCursorDrawableRes.setAccessible(true);
-			mCursorDrawableRes.set(
-					searchTextView,
-					R.drawable
-							.cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
-			// on white background
-		} catch (Exception e) {
-			// Don't do anything
-		}
-//		searchView.setOnQueryTextListener(queryListener);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	public void showProgressBar() {
 		//TODO: Show progress bar
 	}

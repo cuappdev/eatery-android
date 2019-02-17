@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
+import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 public class MainListFragment extends Fragment
 		implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
 	private MainListPresenter presenter;
+	private MainPresenter mPresenter;
 	private RecyclerView mRecyclerView;
 	private MainListAdapter listAdapter;
 	private Button northButton;
@@ -67,9 +70,11 @@ public class MainListFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
 
 		getActivity().setTitle("Eateries");
+		setHasOptionsMenu(true);
 
 		mRecyclerView = rootView.findViewById(R.id.cafe_list);
-		presenter = new MainListPresenter(rootView);
+		presenter = new MainListPresenter();
+		mPresenter = new MainPresenter(rootView);
 		areaButtonsPressed = new HashSet<>();
 		paymentButtonsPressed = new HashSet<>();
 
@@ -195,6 +200,42 @@ public class MainListFragment extends Fragment
 		intent.putExtra("cafeInfo", list.get(position));
 		intent.putExtra("locName", list.get(position).getNickName());
 		startActivity(intent);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.action_map:
+				Intent intent = new Intent(getActivity().getApplicationContext(), MapsActivity.class);
+				startActivity(intent);
+				return true;
+			default:
+				// The user's action was not recognized, and invoke the superclass to handle it.
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+		final MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		getActivity().setTitle("Eateries");
+		AutoCompleteTextView searchTextView =
+				searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+		searchView.setMaxWidth(2000);
+		try {
+			Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+			mCursorDrawableRes.setAccessible(true);
+			mCursorDrawableRes.set(
+					searchTextView,
+					R.drawable
+							.cursor); // This sets the cursor resource ID to 0 or @null which will make it visible
+			// on white background
+		} catch (Exception e) {
+			// Don't do anything
+		}
+		searchView.setOnQueryTextListener(presenter);
 	}
 
 
