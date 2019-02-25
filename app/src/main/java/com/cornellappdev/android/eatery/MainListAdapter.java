@@ -60,7 +60,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 		FLog.setMinimumLoggingLevel(FLog.VERBOSE);
 	}
 
-	void setList(ArrayList<EateryBaseModel> list, int count, String query) {
+	public void setList(ArrayList<EateryBaseModel> list, int count, String query) {
 		mQuery = query;
 		mCount = count;
 		cafeListFiltered = list;

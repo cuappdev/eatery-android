@@ -61,6 +61,13 @@ public class MenuActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 		Intent intent = getIntent();
 		final String cafeName = (String) intent.getSerializableExtra("locName");
 		cafeText = findViewById(R.id.ind_cafe_name);

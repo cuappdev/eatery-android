@@ -1,9 +1,11 @@
 package com.cornellappdev.android.eatery.presenter;
 
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 
 import com.cornellappdev.android.eatery.MainActivity;
+import com.cornellappdev.android.eatery.MainListAdapter;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
@@ -11,22 +13,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class MainPresenter implements SearchView.OnQueryTextListener {
+public class MainPresenter{
 
-	private View view;
 	public Repository rInstance = Repository.getInstance();
-
-	public MainPresenter(View view) {
-		this.view = view;
-	}
 
 	public void setEateryList(ArrayList<EateryBaseModel> eateryList) {
 		rInstance.setEateryList(eateryList);
-	}
-
-	public interface View{
-		void showProgressBar();
-		void hideProgressBar();
+		rInstance.setSearchList(rInstance.getEateryList());
 	}
 
 	public String query = "";
@@ -63,37 +56,22 @@ public class MainPresenter implements SearchView.OnQueryTextListener {
 		}
 	}
 
-	@Override
-	public boolean onQueryTextSubmit(String query) {
-		this.query = query;
-		ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
-		if (query.length() == 0) {
-			rInstance.setSearchList(rInstance.getEateryList());
-			rInstance.setIsSearchPressed(false);
-			for (EateryBaseModel cm : rInstance.getSearchList()) {
-				if (cm.matchesFilter()) {
-					cafesToDisplay.add(cm);
-				}
-			}
-		} else {
-			rInstance.setIsSearchPressed(true);
-			searchList(query);
-			for (EateryBaseModel cm : rInstance.getSearchList()) {
-				if (cm.matchesFilter() && cm.matchesSearch()) {
-					cafesToDisplay.add(cm);
-				}
-			}
-		}
-		Collections.sort(cafesToDisplay);
-//		listAdapter.setList(
-//				cafesToDisplay, cafesToDisplay.size(), query.length() == 0 ? null : query);
-		return false;
-	}
+    public void setQuery(String query){
+	    this.query = query;
+    }
 
-	@Override
-	public boolean onQueryTextChange(String newText) {
-		return onQueryTextSubmit(newText);
-	}
+    public void filterCurrentList() {
+        searchList(query);
+    }
+	public ArrayList<EateryBaseModel> getCurrentList(){
+        ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
+        for (EateryBaseModel em : rInstance.getEateryList()) {
+            if (em.matchesFilter() && em.matchesSearch()) {
+                cafesToDisplay.add(em);
+            }
+        }
+        return cafesToDisplay;
+    }
 }
 
 

@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Main2Activity extends AppCompatActivity implements MainPresenter.View{
+public class Main2Activity extends AppCompatActivity{
 	private MainPresenter presenter;
 	public BottomNavigationView bnv;
 	public CafeteriaDbHelper dbHelper;
@@ -36,8 +36,8 @@ public class Main2Activity extends AppCompatActivity implements MainPresenter.Vi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main2);
-		
-		presenter = new MainPresenter(this);
+
+		presenter = new MainPresenter();
 		dbHelper = new CafeteriaDbHelper(this);
 		bnv = findViewById(R.id.bottom_navigation);
 		// Add functionality to bottom nav bar
@@ -69,23 +69,11 @@ public class Main2Activity extends AppCompatActivity implements MainPresenter.Vi
 
 		new ProcessJson().execute("");
 	}
-
-	@Override
-	public void showProgressBar() {
-		//TODO: Show progress bar
-	}
-
-	@Override
-	public void hideProgressBar() {
-		//TODO: Hide progress bar
-	}
-
 	public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			showProgressBar();
 			// Note(lesley): This method runs on the UI thread -- maybe use for displaying progress bar
 			// or splash screen
 		}
@@ -108,14 +96,13 @@ public class Main2Activity extends AppCompatActivity implements MainPresenter.Vi
 				String json = NetworkUtilities.getJSON();
 				dbHelper.addData(json);
 				eateryList = JsonUtilities.parseJson(json, getApplicationContext());
-				Collections.sort(eateryList);
+		 		Collections.sort(eateryList);
 			}
 			return eateryList;
 		}
 
 		@Override
 		protected void onPostExecute(ArrayList<EateryBaseModel> result) {
-			hideProgressBar();
 			presenter.setEateryList(result);
 
 			try {

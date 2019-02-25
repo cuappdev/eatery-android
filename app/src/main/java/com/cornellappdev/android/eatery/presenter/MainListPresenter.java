@@ -70,7 +70,7 @@ public class MainListPresenter {
 	public ArrayList<EateryBaseModel> getCafesToDisplay() {
 		ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
 		for (EateryBaseModel em : currentList) {
-			if (em.matchesFilter()) {
+			if (em.matchesFilter() && em.matchesSearch()) {
 				cafesToDisplay.add(em);
 			}
 		}

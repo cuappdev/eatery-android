@@ -66,6 +66,7 @@ public class MainListFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
+
 		// Inflate the layout for this fragment
 		View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
 
@@ -74,7 +75,7 @@ public class MainListFragment extends Fragment
 
 		mRecyclerView = rootView.findViewById(R.id.cafe_list);
 		presenter = new MainListPresenter();
-		mPresenter = new MainPresenter(rootView);
+		mPresenter = new MainPresenter();
 		areaButtonsPressed = new HashSet<>();
 		paymentButtonsPressed = new HashSet<>();
 
@@ -103,6 +104,7 @@ public class MainListFragment extends Fragment
 
 		return rootView;
 	}
+
 
 	public void changeButtonColor(int textColor, int backgroundColor, Button button) {
 		button.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
@@ -235,7 +237,23 @@ public class MainListFragment extends Fragment
 		} catch (Exception e) {
 			// Don't do anything
 		}
-		searchView.setOnQueryTextListener(presenter);
+
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+                searchView.clearFocus();
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+                mPresenter.setQuery(newText);
+                mPresenter.filterCurrentList();
+                ArrayList<EateryBaseModel> cafesToDisplay = mPresenter.getCurrentList();
+                listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+                return true;
+			}
+		});
 	}
 
 

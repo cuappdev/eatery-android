@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +47,7 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
-public class MainActivity extends AppCompatActivity
-        implements MainListAdapter.ListAdapterOnClickHandler {
+public class MainActivity {
 
     public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
     public static final String PAYMENT_CARD = "Cornell Card";
@@ -68,13 +68,13 @@ public class MainActivity extends AppCompatActivity
     public CafeteriaDbHelper dbHelper;
     public MainListAdapter listAdapter;
     public ProgressBar progressBar;
-    final QueryListener queryListener = new QueryListener();
+    //final QueryListener queryListener = new QueryListener();
     public RecyclerView mRecyclerView;
     public RelativeLayout splash;
 
     public static ApolloClient apolloClient;
     public static boolean JSON_FALLBACK = false;
-
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +101,6 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().hide();
         }
         new ProcessJson().execute("");
-
         // Add functionality to bottom nav bar
         bnv.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -424,4 +423,5 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
+     */
 }
