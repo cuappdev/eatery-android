@@ -5,36 +5,28 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import java.util.ArrayList;
 
 public class Repository {
-	private ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-	private ArrayList<EateryBaseModel> searchList = new ArrayList<>();
-	private boolean isSearchPressed = false;
-	static final Repository repoInstance = new Repository();
+	private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
+	private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
+	private static final Repository sRepoInstance = new Repository();
 
 	public static Repository getInstance() {
-		return repoInstance;
+		return sRepoInstance;
 	}
 
 	public void setEateryList(ArrayList<EateryBaseModel> eateryList) {
-		this.eateryList = eateryList;
+		this.mEateryList = eateryList;
 	}
 
 	public ArrayList<EateryBaseModel> getEateryList() {
-		return eateryList;
+		return mEateryList;
 	}
 
 	public void setSearchList(ArrayList<EateryBaseModel> searchList) {
-		this.searchList = searchList;
+		this.mSearchList = searchList;
 	}
 
 	public ArrayList<EateryBaseModel> getSearchList() {
-		return searchList;
+		return mSearchList;
 	}
-
-	public void setIsSearchPressed(boolean bool) {isSearchPressed = bool; }
-
-	public boolean isSearchPressed() {
-		return isSearchPressed;
-	}
-
 
 }

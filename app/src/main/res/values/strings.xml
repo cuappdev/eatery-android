@@ -18,4 +18,5 @@
 	<string name="no_menu_text">No menu information 😮</string>
 	<string name="cornell_website_url">https://www.cornellappdev.com/</string>
 	<string name="feedback_form_url">https://goo.gl/forms/g8v6CbN2lrQtY4tH2</string>
+	<string name ="google_maps_key">https://www.google.com</string>
 </resources>

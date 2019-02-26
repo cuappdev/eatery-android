@@ -39,25 +39,17 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
 		implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
-	private MainListPresenter presenter;
+	private MainListPresenter mListPresenter;
 	private MainPresenter mPresenter;
 	private RecyclerView mRecyclerView;
-	private MainListAdapter listAdapter;
-	private Button northButton;
-	private Button westButton;
-	private Button centralButton;
-	private Button swipesButton;
-	private Button brbButton;
-	private Set<Button> areaButtonsPressed;
-	private Set<Button> paymentButtonsPressed;
-
-	public MainListFragment() {
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+	private MainListAdapter mListAdapter;
+	private Button mNorthButton;
+	private Button mWestButton;
+	private Button mCentralButton;
+	private Button mSwipesButton;
+	private Button mBrbButton;
+	private Set<Button> mAreaButtonsPressed;
+	private Set<Button> mPaymentButtonsPressed;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,10 +62,10 @@ public class MainListFragment extends Fragment
 		setHasOptionsMenu(true);
 
 		mRecyclerView = rootView.findViewById(R.id.cafe_list);
-		presenter = new MainListPresenter();
+		mListPresenter = new MainListPresenter();
 		mPresenter = new MainPresenter();
-		areaButtonsPressed = new HashSet<>();
-		paymentButtonsPressed = new HashSet<>();
+		mAreaButtonsPressed = new HashSet<>();
+		mPaymentButtonsPressed = new HashSet<>();
 
 		// Set up recyclerview and corresponding listadapter
 		mRecyclerView.setHasFixedSize(true);
@@ -81,22 +73,22 @@ public class MainListFragment extends Fragment
 				new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
 		mRecyclerView.setLayoutManager(layoutManager);
 
-		listAdapter =
-				new MainListAdapter(getContext(), this, presenter.getEateryList().size(), presenter.getEateryList());
-		mRecyclerView.setAdapter(listAdapter);
+		mListAdapter =
+				new MainListAdapter(getContext(), this, mListPresenter.getEateryList().size(), mListPresenter.getEateryList());
+		mRecyclerView.setAdapter(mListAdapter);
 		mRecyclerView.setVisibility(View.VISIBLE);
 
 		// Set onCLick listeners
-		northButton = rootView.findViewById(R.id.northButton);
-		westButton = rootView.findViewById(R.id.westButton);
-		centralButton = rootView.findViewById(R.id.centralButton);
-		swipesButton = rootView.findViewById(R.id.swipes);
-		brbButton = rootView.findViewById(R.id.brb);
-		northButton.setOnClickListener(this);
-		westButton.setOnClickListener(this);
-		centralButton.setOnClickListener(this);
-		swipesButton.setOnClickListener(this);
-		brbButton.setOnClickListener(this);
+		mNorthButton = rootView.findViewById(R.id.northButton);
+		mWestButton = rootView.findViewById(R.id.westButton);
+		mCentralButton = rootView.findViewById(R.id.centralButton);
+		mSwipesButton = rootView.findViewById(R.id.swipes);
+		mBrbButton = rootView.findViewById(R.id.brb);
+		mNorthButton.setOnClickListener(this);
+		mWestButton.setOnClickListener(this);
+		mCentralButton.setOnClickListener(this);
+		mSwipesButton.setOnClickListener(this);
+		mBrbButton.setOnClickListener(this);
 
 		return rootView;
 	}
@@ -110,79 +102,79 @@ public class MainListFragment extends Fragment
 
 	public void getCurrentAreas() {
 		HashSet<CampusArea> areaSet = new HashSet<>();
-		for (Button button : areaButtonsPressed) {
-			if (northButton.equals(button)) {
+		for (Button button : mAreaButtonsPressed) {
+			if (mNorthButton.equals(button)) {
 				areaSet.add(NORTH);
-			} else if (westButton.equals(button)) {
+			} else if (mWestButton.equals(button)) {
 				areaSet.add(WEST);
-			} else if (centralButton.equals(button)) {
+			} else if (mCentralButton.equals(button)) {
 				areaSet.add(CENTRAL);
 			}
 		}
-		presenter.setAreaSet(areaSet);
+		mListPresenter.setAreaSet(areaSet);
 	}
 
 	public void getCurrentPaymentTypes() {
 		HashSet<PaymentMethod> paymentSet = new HashSet<>();
-		for (Button button : paymentButtonsPressed) {
-			if (brbButton.equals(button)) {
+		for (Button button : mPaymentButtonsPressed) {
+			if (mBrbButton.equals(button)) {
 				paymentSet.add(PaymentMethod.BRB);
-			} else if (swipesButton.equals(button)) {
+			} else if (mSwipesButton.equals(button)) {
 				paymentSet.add(PaymentMethod.SWIPES);
 			}
 		}
-		presenter.setPaymentSet(paymentSet);
+		mListPresenter.setPaymentSet(paymentSet);
 	}
 
 	private void handleAreaButtonPress(Button button, CampusArea area) {
-		if (areaButtonsPressed.contains(button)) {
+		if (mAreaButtonsPressed.contains(button)) {
 			changeButtonColor(R.color.blue, R.color.wash, button);
-			areaButtonsPressed.remove(button);
+			mAreaButtonsPressed.remove(button);
 		} else {
 			changeButtonColor(R.color.white, R.color.blue, button);
-			areaButtonsPressed.add(button);
+			mAreaButtonsPressed.add(button);
 		}
-		presenter.setAreaButtonPressed(areaButtonsPressed);
+		mListPresenter.setAreaButtonPressed(mAreaButtonsPressed);
 		getCurrentAreas();
-		presenter.filterCurrentList();
+		mListPresenter.filterCurrentList();
 	}
 
 	private void handlePaymentButtonPress(Button button, String payment) {
-		if (paymentButtonsPressed.contains(button)) {
+		if (mPaymentButtonsPressed.contains(button)) {
 			changeButtonColor(R.color.blue, R.color.wash, button);
-			paymentButtonsPressed.remove(button);
+			mPaymentButtonsPressed.remove(button);
 		} else {
 			changeButtonColor(R.color.white, R.color.blue, button);
-			paymentButtonsPressed.add(button);
+			mPaymentButtonsPressed.add(button);
 		}
-		presenter.setPaymentButtonPressed(paymentButtonsPressed);
+		mListPresenter.setPaymentButtonPressed(mPaymentButtonsPressed);
 		getCurrentPaymentTypes();
-		presenter.filterCurrentList();
+		mListPresenter.filterCurrentList();
 	}
 
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
 			case R.id.northButton:
-				handleAreaButtonPress(northButton, NORTH);
+				handleAreaButtonPress(mNorthButton, NORTH);
 				break;
 			case R.id.centralButton:
-				handleAreaButtonPress(centralButton, CENTRAL);
+				handleAreaButtonPress(mCentralButton, CENTRAL);
 				break;
 			case R.id.westButton:
-				handleAreaButtonPress(westButton, WEST);
+				handleAreaButtonPress(mWestButton, WEST);
 				break;
 			case R.id.swipes:
-				handlePaymentButtonPress(swipesButton, PAYMENT_SWIPE);
+				handlePaymentButtonPress(mSwipesButton, PAYMENT_SWIPE);
 				break;
 			case R.id.brb:
-				handlePaymentButtonPress(brbButton, PAYMENT_CARD);
+				handlePaymentButtonPress(mBrbButton, PAYMENT_CARD);
 				break;
 		}
 
-		ArrayList<EateryBaseModel> cafesToDisplay = presenter.getCafesToDisplay();
+		ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
 		Collections.sort(cafesToDisplay);
-		listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+		mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
 	}
 
 	@Override
@@ -239,7 +231,7 @@ public class MainListFragment extends Fragment
                 mPresenter.setQuery(newText);
                 mPresenter.filterCurrentList();
                 ArrayList<EateryBaseModel> cafesToDisplay = mPresenter.getCurrentList();
-                listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+                mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
                 return true;
 			}
 		});
