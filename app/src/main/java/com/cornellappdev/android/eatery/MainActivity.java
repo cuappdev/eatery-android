@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity{
 	public BottomNavigationView bnv;
 	public CafeteriaDbHelper dbHelper;
 
-    public static boolean JSON_FALLBACK = false;
+	public static boolean JSON_FALLBACK = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

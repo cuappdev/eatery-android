@@ -28,10 +28,6 @@ public class AboutFragment extends Fragment {
 	private TextView mFeedbackText;
 	private TextView mWebsiteText;
 
-	public AboutFragment() {
-		// Required empty public constructor
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
