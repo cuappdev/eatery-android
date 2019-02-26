@@ -16,7 +16,7 @@
 		android:label="Eatery"
 		android:supportsRtl="true">
 		<activity
-			android:name=".Main2Activity"
+			android:name=".MainActivity"
 			android:screenOrientation="portrait"
 			android:theme="@style/AppTheme"
 			android:windowSoftInputMode="adjustPan"
@@ -26,11 +26,6 @@
 
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
-		</activity>
-		<activity
-			android:name=".MainActivity"
-			android:screenOrientation="portrait"
-			android:theme="@style/AppTheme">
 		</activity>
 		<activity
 			android:name=".MenuActivity"

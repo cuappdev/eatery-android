@@ -1,16 +1,13 @@
 package com.cornellappdev.android.eatery;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +18,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
@@ -187,13 +183,6 @@ public class MainListFragment extends Fragment
 		ArrayList<EateryBaseModel> cafesToDisplay = presenter.getCafesToDisplay();
 		Collections.sort(cafesToDisplay);
 		listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
-//		searchList = cafesToDisplay;
-//		if (searchPressed) {
-//			queryListener.onQueryTextChange(queryListener.query);
-//		} else {
-//			Collections.sort(cafesToDisplay);
-//			listAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
-//		}
 	}
 
 	@Override

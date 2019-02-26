@@ -1,11 +1,7 @@
 package com.cornellappdev.android.eatery.presenter;
 
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.View;
 
-import com.cornellappdev.android.eatery.MainActivity;
-import com.cornellappdev.android.eatery.MainListAdapter;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
@@ -60,9 +56,11 @@ public class MainPresenter{
 	    this.query = query;
     }
 
+    //Updates the eatery models to matchSearch for this specific query
     public void filterCurrentList() {
         searchList(query);
     }
+    //Returns all eateries that matchsearch and filter
 	public ArrayList<EateryBaseModel> getCurrentList(){
         ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
         for (EateryBaseModel em : rInstance.getEateryList()) {
