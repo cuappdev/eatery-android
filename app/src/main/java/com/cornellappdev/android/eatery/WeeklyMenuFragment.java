@@ -36,13 +36,6 @@ import java.util.TreeMap;
  * A simple {@link Fragment} subclass.
  */
 public class WeeklyMenuFragment extends Fragment implements View.OnClickListener{
-	private TextView date0;
-	private TextView date1;
-	private TextView date2;
-	private TextView date3;
-	private TextView date4;
-	private TextView date5;
-	private TextView date6;
 	private ExpandableListAdapter listAdapterWest;
 	private ExpandableListAdapter listAdapterNorth;
 	private ExpandableListAdapter listAdapterCentral;
@@ -57,7 +50,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 	private TextView lunchText;
 	private TextView dinnerText;
 	private LinearLayout linDate;
-	private ArrayList<TextView> dateList = new ArrayList<>();
+	private ArrayList<TextView> dateTvList = new ArrayList<>();
 	private WeeklyPresenter presenter;
 	private int lastExpandedPosition;
 	private NonScrollExpandableListView lastClickedListView;
@@ -65,7 +58,6 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 	public WeeklyMenuFragment() {
 		// Required empty public constructor
 	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,31 +76,22 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 		northText = rootView.findViewById(R.id.north_header);
 		centralText = rootView.findViewById(R.id.central_header);
 
-		// Set OnClickListener for dates
-		date0 = rootView.findViewById(R.id.date0);
-		date1 = rootView.findViewById(R.id.date1);
-		date2 = rootView.findViewById(R.id.date2);
-		date3 = rootView.findViewById(R.id.date3);
-		date4 = rootView.findViewById(R.id.date4);
-		date5 = rootView.findViewById(R.id.date5);
-		date6 = rootView.findViewById(R.id.date6);
+		//Set onClickListeners for date text
+		int dateArr[] = {R.id.date0, R.id.date1, R.id.date2, R.id.date3, R.id.date4, R.id.date5, R.id.date6};
 
-		date0.setOnClickListener(this);
-		date1.setOnClickListener(this);
-		date2.setOnClickListener(this);
-		date3.setOnClickListener(this);
-		date4.setOnClickListener(this);
-		date5.setOnClickListener(this);
-		date6.setOnClickListener(this);
+		for (int dateId : dateArr) {
+			rootView.findViewById(dateId).setOnClickListener(this);
+			dateTvList.add((TextView) rootView.findViewById(dateId));
+		}
 
-		// Layout for menu list
+		// Layout for expandable menu list
 		getActivity().setTitle("Upcoming Menus");
 		DisplayMetrics dm = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-		int width = dm.widthPixels;
-		expListViewWest.setIndicatorBounds(width - 250, width);
-		expListViewNorth.setIndicatorBounds(width - 250, width);
-		expListViewCentral.setIndicatorBounds(width - 250, width);
+		int offsetPx = 64 * (dm.densityDpi / DisplayMetrics.DENSITY_DEFAULT); // 64 is an arbitrary dp offset
+		expListViewWest.setIndicatorBounds(dm.widthPixels - offsetPx, dm.widthPixels);
+		expListViewNorth.setIndicatorBounds(dm.widthPixels - offsetPx, dm.widthPixels);
+		expListViewCentral.setIndicatorBounds(dm.widthPixels - offsetPx, dm.widthPixels);
 
 		lastExpandedPosition = -1;
 		lastClickedListView = null;
@@ -116,53 +99,42 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 		expListViewCentral.setOnGroupExpandListener(
 				new NonScrollExpandableListView.OnGroupExpandListener() {
 					@Override
-					public void onGroupExpand(int i) {
+					public void onGroupExpand(int index) {
 						if (lastClickedListView != null
 								&& lastExpandedPosition != -1
-								&& i != lastExpandedPosition) {
+								&& index != lastExpandedPosition) {
 							lastClickedListView.collapseGroup(lastExpandedPosition);
 						}
-						lastExpandedPosition = i;
+						lastExpandedPosition = index;
 						lastClickedListView = expListViewCentral;
 					}
 				});
-
 		expListViewWest.setOnGroupExpandListener(
 				new NonScrollExpandableListView.OnGroupExpandListener() {
 					@Override
-					public void onGroupExpand(int i) {
+					public void onGroupExpand(int index) {
 						if (lastClickedListView != null
 								&& lastExpandedPosition != -1
-								&& i != lastExpandedPosition) {
+								&& index != lastExpandedPosition) {
 							lastClickedListView.collapseGroup(lastExpandedPosition);
 						}
-						lastExpandedPosition = i;
+						lastExpandedPosition = index;
 						lastClickedListView = expListViewWest;
 					}
 				});
 		expListViewNorth.setOnGroupExpandListener(
 				new NonScrollExpandableListView.OnGroupExpandListener() {
 					@Override
-					public void onGroupExpand(int i) {
+					public void onGroupExpand(int index) {
 						if (lastClickedListView != null
 								&& lastExpandedPosition != -1
-								&& i != lastExpandedPosition) {
+								&& index != lastExpandedPosition) {
 							lastClickedListView.collapseGroup(lastExpandedPosition);
 						}
-						lastExpandedPosition = i;
+						lastExpandedPosition = index;
 						lastClickedListView = expListViewNorth;
 					}
 				});
-
-		// Populate list of date TextViews on header
-		dateList.add((TextView) rootView.findViewById(R.id.date0));
-		dateList.add((TextView) rootView.findViewById(R.id.date1));
-		dateList.add((TextView) rootView.findViewById(R.id.date2));
-		dateList.add((TextView) rootView.findViewById(R.id.date3));
-		dateList.add((TextView) rootView.findViewById(R.id.date4));
-		dateList.add((TextView) rootView.findViewById(R.id.date5));
-		dateList.add((TextView) rootView.findViewById(R.id.date6));
-
 
 		// When changing date, highlight Breakfast textview
 		linDate.setOnClickListener(
@@ -178,7 +150,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 		Date now = new Date();
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(now);
-		for (int i = 0; i < 7; i++) {
+		for (TextView textView : dateTvList) {
 			// Formatting for each day
 			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
 			dateFormat.setCalendar(cal);
@@ -190,7 +162,8 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 			SpannableString ssDate = new SpannableString(sDay + '\n' + sDate);
 			ssDate.setSpan(new RelativeSizeSpan(0.8f), 0, 3, 0);
 			ssDate.setSpan(new RelativeSizeSpan(2f), 4, ssDate.length(), 0);
-			TextView tv = dateList.get(i);
+
+			TextView tv = textView;
 			tv.setText(ssDate);
 
 			cal.add(Calendar.DAY_OF_YEAR, 1);
@@ -234,6 +207,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 						changeListAdapter(mealType, presenter.getSelectedDate());
 					}
 				});
+
 		LocalDateTime currentTime = LocalDateTime.now();
 
 		if (currentTime.getHour() < 11) {
@@ -269,13 +243,13 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 	 * Changes the text color to black when selected
 	 */
 	@Override
-	public void onClick(View v) {
-		TextView tv = (TextView) v;
+	public void onClick(View view) {
+		TextView textView = (TextView) view;
 
-		tv.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.primary));
-		changeDateColor(tv);
+		textView.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.primary));
+		changeDateColor(textView);
 
-		int id = tv.getId();
+		int id = textView.getId();
 		LocalDate currentDate = presenter.getSelectedDate();
 
 		switch (id) {
@@ -307,10 +281,10 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 	/**
 	 * Changes the text color to grey if the date is not selected
 	 */
-	public void changeDateColor(TextView v) {
-		for (int i = 0; i < 7; i++) {
-			if (!dateList.get(i).equals(v)) {
-				dateList.get(i).setTextColor(ContextCompat.getColor(
+	public void changeDateColor(TextView selectedDate) {
+		for (TextView textView : dateTvList) {
+			if (!textView.equals(selectedDate)) {
+				textView.setTextColor(ContextCompat.getColor(
 						getActivity().getApplicationContext(), R.color.secondary));
 			}
 		}
