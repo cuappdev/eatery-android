@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -91,19 +92,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+												if(mapFragment.getView() != null) {
+													mapFragment.getView().setVisibility(View.GONE);
+												}
                         switch (item.getItemId()) {
                             case R.id.action_home:
                                 transaction
                                         .replace(R.id.frame_fragment_holder, new MainListFragment())
                                         .commit();
+															finish();
                                 break;
                             case R.id.action_week:
-                                transaction
+                            	transaction
                                         .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
                                         .commit();
                                 break;
                             case R.id.action_brb:
-                                transaction
+                            	transaction
                                         .replace(R.id.frame_fragment_holder, new AboutFragment())
                                         .commit();
                                 break;
