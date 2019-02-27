@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -49,6 +50,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
   private WeeklyPresenter mPresenter;
   private int mLastExpandedPosition;
   private NonScrollExpandableListView mLastClickedListView;
+  private Context mAppContext;
 
   public WeeklyMenuFragment() {
     // Required empty public constructor
@@ -60,6 +62,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     // Inflate the layout for this fragment
     View rootView = inflater.inflate(R.layout.fragment_weekly_menu, container, false);
     mPresenter = new WeeklyPresenter(rootView);
+    mAppContext = getActivity().getApplicationContext();
     mBreakfastText = rootView.findViewById(R.id.breakfast);
     mLunchText = rootView.findViewById(R.id.lunch);
     mDinnerText = rootView.findViewById(R.id.dinner);
@@ -136,9 +139,9 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-            mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-            mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
+            mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+            mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
           }
         });
 
@@ -168,9 +171,9 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-            mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-            mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
+            mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+            mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
 
             mMealType = MealType.BREAKFAST;
             changeListAdapter(mMealType, mPresenter.getSelectedDate());
@@ -181,9 +184,9 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-            mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-            mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
+            mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+            mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+            mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
 
             mMealType = MealType.LUNCH;
             changeListAdapter(mMealType, mPresenter.getSelectedDate());
@@ -194,9 +197,9 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         new View.OnClickListener() {
           @Override
           public void onClick(View view) {
-            mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-            mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-            mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
+            mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+            mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
 
             mMealType = MealType.DINNER;
             changeListAdapter(mMealType, mPresenter.getSelectedDate());
@@ -205,38 +208,32 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 
     LocalDateTime currentTime = LocalDateTime.now();
 
-    // Display breakfast menu if current time is before 11am
-    if (currentTime.getHour() < 11) {
-      changeListAdapter(MealType.BREAKFAST, mPresenter.getSelectedDate());
-      mMealType = MealType.BREAKFAST;
-      mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-      mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-      mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-    }
-    // Display lunch menu if current time is before 4pm
-    else if (currentTime.getHour() < 16) {
+    // Display lunch menu if current time is between 11:00am - 4:00pm
+    if (currentTime.getHour() >= 11 && currentTime.getHour() < 16) {
       changeListAdapter(MealType.LUNCH, mPresenter.getSelectedDate());
       mMealType = MealType.LUNCH;
-      mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-      mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-      mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
+      mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+      mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+      mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
     }
-    // Display dinner menu if current time is before 10pm
-    else if (currentTime.getHour() < 22) {
+    // Display dinner menu if current time is between 4:00pm - 10:00pm
+    else if (currentTime.getHour() >= 16  && currentTime.getHour() < 22) {
       changeListAdapter(MealType.DINNER, mPresenter.getSelectedDate());
       mMealType = MealType.DINNER;
-      mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-      mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-      mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
+      mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+      mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+      mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
     }
-    // Display tomorrow's breakfast menu if current time is after 10pm
+    // Display today's or tomorrow's breakfast menu
     else {
-      mPresenter.getDayInWeek(1);
+      if (currentTime.getHour() >= 22) {
+        mPresenter.getDayInWeek(1);
+      }
       changeListAdapter(MealType.BREAKFAST, mPresenter.getSelectedDate());
       mMealType = MealType.BREAKFAST;
-      mBreakfastText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.blue));
-      mLunchText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
-      mDinnerText.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.secondary));
+      mBreakfastText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+      mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
+      mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
     }
     return rootView;
   }
@@ -248,7 +245,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
   public void onClick(View view) {
     TextView textView = (TextView) view;
 
-    textView.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.primary));
+    textView.setTextColor(ContextCompat.getColor(mAppContext, R.color.primary));
     changeDateColor(textView);
 
     LocalDate currentDate = mPresenter.getDayInWeek(dateTvList.indexOf(textView));
@@ -261,8 +258,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
   public void changeDateColor(TextView selectedDate) {
     for (TextView textView : dateTvList) {
       if (!textView.equals(selectedDate)) {
-        textView.setTextColor(ContextCompat.getColor(
-            getActivity().getApplicationContext(), R.color.secondary));
+        textView.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
       }
     }
   }
@@ -276,8 +272,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     ArrayList<DiningHallModel> northList = finalList.get("North");
     ArrayList<DiningHallModel> centralList = finalList.get("Central");
 
-    // Hides layout elements if there is nothing in the list corresponding to a certain
-    // CafeteriaArea
+    // Hides layout elements if nothing in list for a given CafeteriaArea
     if (westList != null && westList.size() == 0) {
       mWestText.setVisibility(View.GONE);
       mExpListViewWest.setVisibility(View.GONE);

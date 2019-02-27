@@ -1,217 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context=".WeeklyMenuFragment">
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".WeeklyMenuFragment">
 
-	<LinearLayout
-		android:id="@+id/lin_date"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:orientation="horizontal"
-		android:paddingLeft="5dp"
-		android:paddingTop="5dp"
-		android:paddingRight="5dp">
+  <LinearLayout
+    android:id="@+id/lin_date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:paddingLeft="5dp"
+    android:paddingTop="5dp"
+    android:paddingRight="5dp">
 
-		<TextView
-			android:id="@+id/date0"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="01"
-			android:textColor="@color/primary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date0"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="01"
+      android:textColor="@color/primary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date1"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="02"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date1"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="02"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date2"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="03"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date2"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="03"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date3"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="04"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date3"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="04"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date4"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="05"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date4"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="05"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date5"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="06"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
+    <TextView
+      android:id="@+id/date5"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="06"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/date6"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.14"
-			android:gravity="center"
-			android:padding="5dp"
-			android:text="07"
-			android:textColor="@color/secondary"
-			android:textStyle="bold" />
-	</LinearLayout>
+    <TextView
+      android:id="@+id/date6"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.14"
+      android:gravity="center"
+      android:padding="5dp"
+      android:text="07"
+      android:textColor="@color/secondary"
+      android:textStyle="bold" />
+  </LinearLayout>
 
-	<LinearLayout
-		android:id="@+id/lin"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/lin_date"
-		android:layout_weight="1"
-		android:orientation="horizontal"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp">
+  <LinearLayout
+    android:id="@+id/lin"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/lin_date"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
-		<TextView
-			android:id="@+id/breakfast"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.33"
-			android:fontFamily="sans-serif-medium"
-			android:gravity="center"
-			android:padding="10dp"
-			android:text="Breakfast"
-			android:textAllCaps="true"
-			android:textSize="16sp" />
+    <TextView
+      android:id="@+id/breakfast"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.33"
+      android:fontFamily="sans-serif-medium"
+      android:gravity="center"
+      android:padding="10dp"
+      android:text="Breakfast"
+      android:textAllCaps="true"
+      android:textSize="16sp" />
 
-		<TextView
-			android:id="@+id/lunch"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.33"
-			android:fontFamily="sans-serif-medium"
-			android:gravity="center"
-			android:padding="10dp"
-			android:text="Lunch"
-			android:textAllCaps="true"
-			android:textSize="16sp" />
+    <TextView
+      android:id="@+id/lunch"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.33"
+      android:fontFamily="sans-serif-medium"
+      android:gravity="center"
+      android:padding="10dp"
+      android:text="Lunch"
+      android:textAllCaps="true"
+      android:textSize="16sp" />
 
-		<TextView
-			android:id="@+id/dinner"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.33"
-			android:fontFamily="sans-serif-medium"
-			android:gravity="center"
-			android:padding="10dp"
-			android:text="Dinner"
-			android:textAllCaps="true"
-			android:textSize="16sp" />
-	</LinearLayout>
+    <TextView
+      android:id="@+id/dinner"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="0.33"
+      android:fontFamily="sans-serif-medium"
+      android:gravity="center"
+      android:padding="10dp"
+      android:text="Dinner"
+      android:textAllCaps="true"
+      android:textSize="16sp" />
+  </LinearLayout>
 
-	<ScrollView
-		android:id="@+id/weekly_scroll"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/lin"
-		android:scrollbars="none">
+  <ScrollView
+    android:id="@+id/weekly_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/lin"
+    android:scrollbars="none">
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:paddingBottom="60dp">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingBottom="60dp">
 
-			<TextView
-				android:id="@+id/west_header"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/wash"
-				android:paddingLeft="16dp"
-				android:paddingTop="28dp"
-				android:paddingBottom="12dp"
-				android:text="West Campus"
-				android:textColor="@color/primary"
-				android:textSize="30dp"
-				android:textStyle="bold" />
+      <TextView
+        android:id="@+id/west_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wash"
+        android:paddingLeft="16dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="12dp"
+        android:text="West Campus"
+        android:textColor="@color/primary"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
-			<com.cornellappdev.android.eatery.NonScrollExpandableListView
-				android:id="@+id/expandablelistview_west"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:divider="@null"
-				android:dividerHeight="0dp" />
+      <com.cornellappdev.android.eatery.NonScrollExpandableListView
+        android:id="@+id/expandablelistview_west"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
-			<TextView
-				android:id="@+id/north_header"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/wash"
-				android:paddingLeft="16dp"
-				android:paddingTop="28dp"
-				android:paddingBottom="12dp"
-				android:text="North Campus"
-				android:textColor="@color/primary"
-				android:textSize="30dp"
-				android:textStyle="bold" />
+      <TextView
+        android:id="@+id/north_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wash"
+        android:paddingLeft="16dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="12dp"
+        android:text="North Campus"
+        android:textColor="@color/primary"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
-			<com.cornellappdev.android.eatery.NonScrollExpandableListView
-				android:id="@+id/expandablelistview_north"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:divider="@null"
-				android:dividerHeight="0dp" />
+      <com.cornellappdev.android.eatery.NonScrollExpandableListView
+        android:id="@+id/expandablelistview_north"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
-			<TextView
-				android:id="@+id/central_header"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="@color/wash"
-				android:paddingLeft="16dp"
-				android:paddingTop="28dp"
-				android:paddingBottom="12dp"
-				android:text="Central Campus"
-				android:textColor="@color/primary"
-				android:textSize="30dp"
-				android:textStyle="bold" />
+      <TextView
+        android:id="@+id/central_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wash"
+        android:paddingLeft="16dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="12dp"
+        android:text="Central Campus"
+        android:textColor="@color/primary"
+        android:textSize="30dp"
+        android:textStyle="bold" />
 
-			<com.cornellappdev.android.eatery.NonScrollExpandableListView
-				android:id="@+id/expandablelistview_central"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:divider="@null"
-				android:dividerHeight="0dp" />
-		</LinearLayout>
-	</ScrollView>
-</android.widget.RelativeLayout >
+      <com.cornellappdev.android.eatery.NonScrollExpandableListView
+        android:id="@+id/expandablelistview_central"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+    </LinearLayout>
+  </ScrollView>
+</android.widget.RelativeLayout>
