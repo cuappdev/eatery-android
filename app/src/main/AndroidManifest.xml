@@ -31,7 +31,10 @@
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
 			android:value="AIzaSyBDjzqiK5_DVoZ-6nCSZNFwEYM9dr1q7MI" />
-
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 		<activity
 			android:name=".MapsActivity"
 			android:label="@string/title_activity_maps"
