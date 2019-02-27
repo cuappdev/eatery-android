@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -85,31 +86,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 		Intent intent = getIntent();
 		cafeData = repositoryInstance.getEateryList();
 		bnv = findViewById(R.id.bottom_navigation);
-		bnv.setOnNavigationItemSelectedListener(
-				new BottomNavigationView.OnNavigationItemSelectedListener() {
-					@Override
-					public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-						Intent intent;
-						switch (item.getItemId()) {
-							case R.id.action_home:
-								finish();
-								break;
-							case R.id.action_week:
-								finish();
-								intent = new Intent(getApplicationContext(), WeeklyMenuActivity.class);
-								intent.putExtra("cafeData", cafeData);
-								startActivity(intent);
-								break;
-							case R.id.action_brb:
-								finish();
-								intent = new Intent(getApplicationContext(), InfoActivity.class);
-								intent.putExtra("cafeData", cafeData);
-								startActivity(intent);
-								break;
-						}
-						return true;
-					}
-				});
+        bnv.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        switch (item.getItemId()) {
+                            case R.id.action_home:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, new MainListFragment())
+                                        .commit();
+                                break;
+                            case R.id.action_week:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
+                                        .commit();
+                                break;
+                            case R.id.action_brb:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, new AboutFragment())
+                                        .commit();
+                                break;
+                        }
+                        return true;
+                    }
+                });
 	}
 
 	@Override
