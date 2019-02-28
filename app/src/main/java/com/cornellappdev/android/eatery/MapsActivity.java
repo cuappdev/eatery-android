@@ -55,10 +55,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 		@Override
 		public View getInfoWindow(Marker marker) {
 			myContentsView = getLayoutInflater().inflate(R.layout.map_info_layout, null);
-			TextView cafe_name = ((TextView) myContentsView.findViewById(R.id.info_cafe_name));
+			TextView cafe_name = myContentsView.findViewById(R.id.info_cafe_name);
 			cafe_name.setText(marker.getTitle());
-			TextView cafe_open = ((TextView) myContentsView.findViewById(R.id.info_cafe_open));
-			TextView cafe_desc = ((TextView) myContentsView.findViewById(R.id.info_cafe_desc));
+			TextView cafe_open = myContentsView.findViewById(R.id.info_cafe_open);
+			TextView cafe_desc = myContentsView.findViewById(R.id.info_cafe_desc);
 			String firstword = marker.getSnippet().split(" ")[0];
 			if (firstword.equalsIgnoreCase("open")) {
 				cafe_open.setText(R.string.open);
@@ -84,7 +84,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 		SupportMapFragment mapFragment =
 				(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
-		Intent intent = getIntent();
 		cafeData = repositoryInstance.getEateryList();
 		bnv = findViewById(R.id.bottom_navigation);
         bnv.setOnNavigationItemSelectedListener(
