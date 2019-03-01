@@ -19,38 +19,28 @@
 			android:name=".MainActivity"
 			android:screenOrientation="portrait"
 			android:theme="@style/AppTheme"
-			android:windowSoftInputMode="adjustPan">
+			android:windowSoftInputMode="adjustPan"
+			>
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity
-			android:name=".MenuActivity"
-			android:screenOrientation="portrait"
-			android:theme="@style/NoActionBar" />
-		<activity
-			android:name=".WeeklyMenuActivity"
-			android:screenOrientation="portrait"
-			android:theme="@style/AppTheme" />
 
 		<meta-data
 			android:name="com.google.android.geo.API_KEY"
-			android:value="@string/google_maps_key" />
-
+			android:value="www.google.com" />
+        <activity
+            android:name=".MenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar" />
 		<activity
 			android:name=".MapsActivity"
 			android:label="@string/title_activity_maps"
 			android:screenOrientation="portrait"
 			android:theme="@style/AppTheme">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.cornellappdev.android.eatery.MainActivity" />
 		</activity>
-		<activity
-			android:name=".InfoActivity"
-			android:screenOrientation="portrait"
-			android:theme="@style/AppTheme"></activity>
 	</application>
 
 </manifest>

@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
-		android:id="@+id/splash_layout"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@color/blue">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/splash_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/blue">
 
-	<View
-			android:id="@+id/anchor"
-			android:layout_width="0dp"
-			android:layout_height="0dp"
-			android:layout_centerInParent="true" />
+  <View
+    android:id="@+id/anchor"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_centerInParent="true" />
 
-	<ImageView
-			android:id="@+id/splash_image"
-			android:layout_width="match_parent"
-			android:layout_height="193dp"
-			android:layout_above="@id/anchor"
-			android:layout_alignParentStart="true"
-			android:layout_marginBottom="-49dp"
-			app:srcCompat="@drawable/eateryiconlauncher" />
+  <ImageView
+    android:id="@+id/splash_image"
+    android:layout_width="match_parent"
+    android:layout_height="193dp"
+    android:layout_above="@id/anchor"
+    android:layout_alignParentStart="true"
+    android:layout_marginBottom="-49dp"
+    app:srcCompat="@drawable/eateryiconlauncher" />
 
-	<ImageView
-			android:id="@+id/appdev_image"
-			android:layout_width="47dp"
-			android:layout_height="62dp"
-			android:layout_alignParentBottom="true"
-			android:layout_centerHorizontal="true"
-			android:layout_marginBottom="27dp"
-			app:srcCompat="@drawable/appdevlogo" />
+  <ImageView
+    android:id="@+id/appdev_image"
+    android:layout_width="47dp"
+    android:layout_height="62dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="27dp"
+    app:srcCompat="@drawable/appdevlogo" />
 </android.widget.RelativeLayout>
