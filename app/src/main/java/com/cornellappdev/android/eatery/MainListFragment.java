@@ -39,8 +39,7 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
     implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
-  private MainListPresenter mListPresenter;
-  private MainPresenter mPresenter;
+  public MainListPresenter mListPresenter;
   private RecyclerView mRecyclerView;
   private MainListAdapter mListAdapter;
   private Button mNorthButton;
@@ -63,7 +62,6 @@ public class MainListFragment extends Fragment
 
     mRecyclerView = rootView.findViewById(R.id.cafe_list);
     mListPresenter = new MainListPresenter();
-    mPresenter = new MainPresenter();
     mAreaButtonsPressed = new HashSet<>();
     mPaymentButtonsPressed = new HashSet<>();
 
@@ -135,7 +133,7 @@ public class MainListFragment extends Fragment
       mAreaButtonsPressed.add(button);
     }
     getCurrentAreas();
-    mListPresenter.filterCurrentList();
+    mListPresenter.filterImageList();
   }
 
   private void handlePaymentButtonPress(Button button, String payment) {
@@ -147,7 +145,7 @@ public class MainListFragment extends Fragment
       mPaymentButtonsPressed.add(button);
     }
     getCurrentPaymentTypes();
-    mListPresenter.filterCurrentList();
+    mListPresenter.filterImageList();
   }
 
   @Override
@@ -172,7 +170,7 @@ public class MainListFragment extends Fragment
 
     ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
     Collections.sort(cafesToDisplay);
-    mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+    mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
   }
 
   @Override
@@ -219,21 +217,26 @@ public class MainListFragment extends Fragment
 
     searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
       @Override
-      public boolean onQueryTextSubmit(String s) {
+      public boolean onQueryTextSubmit(String query) {
         searchView.clearFocus();
         return true;
       }
 
       @Override
-      public boolean onQueryTextChange(String newText) {
-        mPresenter.setQuery(newText);
-        mPresenter.filterCurrentList();
-        ArrayList<EateryBaseModel> cafesToDisplay = mPresenter.getCurrentList();
-        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), null);
+      public boolean onQueryTextChange(String query) {
+        mListPresenter.setIsSearchPressed(query.length() > 0);
+        mListPresenter.setQuery(query);
+        mListPresenter.filterSearchList();
+        ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCurrentList();
+        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
         return true;
       }
     });
   }
 
-
+  @Override
+  public void onDestroyView() {
+    mListPresenter.setIsSearchPressed(false);
+    super.onDestroyView();
+  }
 }

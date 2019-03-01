@@ -20,99 +20,99 @@ import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity{
-    public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
-    public static final String PAYMENT_CARD = "Cornell Card";
+public class MainActivity extends AppCompatActivity {
+  public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
+  public static final String PAYMENT_CARD = "Cornell Card";
 
-    public static boolean searchPressed = false;
+  private MainPresenter presenter;
+  public BottomNavigationView bnv;
+  public CafeteriaDbHelper dbHelper;
 
-	private MainPresenter presenter;
-	public BottomNavigationView bnv;
-	public CafeteriaDbHelper dbHelper;
+  public static boolean JSON_FALLBACK = false;
 
-	public static boolean JSON_FALLBACK = false;
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    presenter = new MainPresenter();
+    dbHelper = new CafeteriaDbHelper(this);
+    bnv = findViewById(R.id.bottom_navigation);
+    // Add functionality to bottom nav bar
+    bnv.setOnNavigationItemSelectedListener(
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+          @Override
+          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            switch (item.getItemId()) {
+              case R.id.action_home:
+                transaction
+                    .replace(R.id.frame_fragment_holder, new MainListFragment())
+                    .commit();
+                break;
+              case R.id.action_week:
+                transaction
+                    .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
+                    .commit();
+                break;
+              case R.id.action_brb:
+                transaction
+                    .replace(R.id.frame_fragment_holder, new AboutFragment())
+                    .commit();
+                break;
+            }
+            return true;
+          }
+        });
 
-		presenter = new MainPresenter();
-		dbHelper = new CafeteriaDbHelper(this);
-		bnv = findViewById(R.id.bottom_navigation);
-		// Add functionality to bottom nav bar
-		bnv.setOnNavigationItemSelectedListener(
-				new BottomNavigationView.OnNavigationItemSelectedListener() {
-					@Override
-					public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-						FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-						switch (item.getItemId()) {
-							case R.id.action_home:
-								transaction
-										.replace(R.id.frame_fragment_holder, new MainListFragment())
-										.commit();
-								break;
-							case R.id.action_week:
-								transaction
-										.replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
-										.commit();
-								break;
-							case R.id.action_brb:
-								transaction
-										.replace(R.id.frame_fragment_holder, new AboutFragment())
-										.commit();
-								break;
-						}
-						return true;
-					}
-				});
+    new ProcessJson().execute("");
+  }
 
-		new ProcessJson().execute("");
-	}
-	public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
+  public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			// Note(lesley): This method runs on the UI thread -- maybe use for displaying progress bar
-			// or splash screen
-		}
-		@Override
-		protected ArrayList<EateryBaseModel> doInBackground(String... params) {
-			ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-			ConnectivityManager cm =
-					(ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    @Override
+    protected void onPreExecute() {
+      super.onPreExecute();
+      // Note(lesley): This method runs on the UI thread -- maybe use for displaying progress bar
+      // or splash screen
+    }
 
-			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+    @Override
+    protected ArrayList<EateryBaseModel> doInBackground(String... params) {
+      ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
+      ConnectivityManager cm =
+          (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-			boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-			if (!isConnected) {
-				if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-					eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
-				}
-				Collections.sort(eateryList);
+      NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-			} else {
-				String json = NetworkUtilities.getJSON();
-				dbHelper.addData(json);
-				eateryList = JsonUtilities.parseJson(json, getApplicationContext());
-		 		Collections.sort(eateryList);
-			}
-			return eateryList;
-		}
+      boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+      if (!isConnected) {
+        if (JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
+          eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
+        }
+        Collections.sort(eateryList);
 
-		@Override
-		protected void onPostExecute(ArrayList<EateryBaseModel> result) {
-			presenter.setEateryList(result);
+      } else {
+        String json = NetworkUtilities.getJSON();
+        dbHelper.addData(json);
+        eateryList = JsonUtilities.parseJson(json, getApplicationContext());
+        Collections.sort(eateryList);
+      }
+      return eateryList;
+    }
 
-			try {
-				getSupportFragmentManager()
-						.beginTransaction()
-						.replace(R.id.frame_fragment_holder, new MainListFragment())
-						.commit();
-			} catch (Exception e) {
-				super.onPostExecute(result);
-			}
-		}
-	}
+    @Override
+    protected void onPostExecute(ArrayList<EateryBaseModel> result) {
+      presenter.setEateryList(result);
+
+      try {
+        getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.frame_fragment_holder, new MainListFragment())
+            .commit();
+      } catch (Exception e) {
+        super.onPostExecute(result);
+      }
+    }
+  }
 }

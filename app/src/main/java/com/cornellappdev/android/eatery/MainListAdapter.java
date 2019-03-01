@@ -41,6 +41,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private ArrayList<EateryBaseModel> cafeListFiltered;
   private final int TEXT = 1;
   private final int IMAGE = 0;
+  private Repository rInstance = Repository.getInstance();
 
   public interface ListAdapterOnClickHandler {
     void onClick(int position, ArrayList<EateryBaseModel> list);
@@ -185,10 +186,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public int getItemViewType(int position) {
-    if (!MainActivity.searchPressed) {
-      return IMAGE;
-    } else {
+    if (rInstance.getIsSearchPressed()) {
       return TEXT;
+    } else {
+      return IMAGE;
     }
   }
 
