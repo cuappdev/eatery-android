@@ -27,7 +27,12 @@ public class BrbInfoModel implements Serializable {
         float cityBucks = Float.parseFloat(brbInfo.cityBucks());
         float laundry = Float.parseFloat(brbInfo.laundry());
         float brbs = Float.parseFloat(brbInfo.brbs());
-        int mealSwipes = Integer.parseInt(brbInfo.swipes());
+        int mealSwipes = 0;
+        try {
+            mealSwipes = Integer.parseInt(brbInfo.swipes());
+        }catch(NumberFormatException ex){
+
+        }
         ArrayList<HistoryObjectModel> history = new ArrayList<HistoryObjectModel>();
         for(BrbInfoQuery.History hist : brbInfo.history()) {
             HistoryObjectModel to_add = HistoryObjectModel.parseHistoryObject(hist);

@@ -66,7 +66,8 @@ public class LoginFragment extends Fragment {
                 CookieManager.getInstance().flush();
                 mGetLoginWebView.loadUrl("https://get.cbord.com/cornell/full/login.php?mobileapp=1");
                 mGetLoginWebView.getSettings().setJavaScriptEnabled(true);
-
+                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().flush();
                 mGetLoginWebView.setWebViewClient(new WebViewClient(){
                     public void onPageFinished(WebView view, String url){
                         if(num_logins==0) {
@@ -83,14 +84,15 @@ public class LoginFragment extends Fragment {
                                 // Then I get the updated url containing the session_id after this submission]
                                 String getUrl = mGetLoginWebView.getUrl();
                                 Log.i("LOGIN_INFO", "SUCCESS "+num_logins);
+
                                 MainActivity.sSessionId = getUrl.substring(getUrl.indexOf("sessionId=") + 10);
+                                Log.i("ERRORS IN THIS", MainActivity.sSessionId);
                                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                CookieManager.getInstance().removeAllCookies(null);
+                                CookieManager.getInstance().flush();
                                 transaction
                                         .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
                                         .commit();
-                                CookieManager.getInstance().removeAllCookies(null);
-                                CookieManager.getInstance().flush();
-                                num_logins = 0;
 
 
                             }else{

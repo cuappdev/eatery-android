@@ -17,4 +17,11 @@ public class HistoryObjectModel{
         String timestamp = historyInfo.timestamp();
         return new HistoryObjectModel(name, timestamp);
     }
+
+    public String getName(){
+        return mName;
+    }
+    public String getTimestamp(){
+        return mTimestamp;
+    }
 }

@@ -12,7 +12,16 @@
         android:background="@color/inactive" />
 
     <TextView
-        android:id="@+id/menu_title"
+        android:id="@+id/eatery_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wash"
+        android:paddingLeft="15dp"
+        android:paddingTop="8dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/eatery_timestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/wash"

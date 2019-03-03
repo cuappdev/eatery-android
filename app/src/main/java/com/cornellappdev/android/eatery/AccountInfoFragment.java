@@ -2,8 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,7 @@ public class AccountInfoFragment extends Fragment {
     private TextView laundryText;
     private TextView swipesText;
     private String mSessionId;
-    private ArrayAdapter mListAdapter;
+    private HistoryInfoAdapter mListAdapter;
     private ListView mHistoryView;
 
     @Override
@@ -42,7 +40,7 @@ public class AccountInfoFragment extends Fragment {
         swipesText.setText("Laundry: "+model.getLaundry());
 
         Log.i("MODEL LENGTH", model.getHistory().size()+"");
-        mListAdapter = new ArrayAdapter(getContext(), R.layout.history_item, R.id.menu_title, model.getHistory());
+        mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
         mHistoryView.setAdapter(mListAdapter);
         return rootView;
     }

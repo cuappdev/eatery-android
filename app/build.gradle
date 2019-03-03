@@ -8,8 +8,8 @@ android {
         applicationId "com.cornellappdev.android.eatery"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 15
-        versionName "1.0.3"
+        versionCode 19
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
