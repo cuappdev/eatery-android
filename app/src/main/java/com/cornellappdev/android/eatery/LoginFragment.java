@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
@@ -29,11 +32,11 @@ import java.util.ArrayList;
 public class LoginFragment extends Fragment {
     private TextView mDescriptionText;
     private Button mLoginButton;
-    private int num_logins = 0;
+    private int num_redirects;
     private EditText mNetID;
     private EditText mPassword;
     private WebView mGetLoginWebView; // Should never be displayed, methods just used to auto-submit form for session_id
-
+    private FrameLayout mFrameLayout;
     @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
@@ -45,12 +48,22 @@ public class LoginFragment extends Fragment {
     mLoginButton = rootView.findViewById(R.id.login);
     mNetID = rootView.findViewById(R.id.net_id_input);
     mPassword = rootView.findViewById(R.id.password_input);
+    mFrameLayout = rootView.findViewById(R.id.frameLayout);
 
         mLoginButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v) {
-                mGetLoginWebView = rootView.findViewById(R.id.invisWebView);
-                num_logins = 0;
+
+                mGetLoginWebView = new WebView(getContext());
+                mGetLoginWebView.setWebViewClient(new WebViewClient());
+                mGetLoginWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                CookieManager.getInstance().removeAllCookies(null);
+                CookieManager.getInstance().flush();
+                mGetLoginWebView.clearHistory();
+                mGetLoginWebView.clearCache(true);
+
+                mFrameLayout.addView(mGetLoginWebView);
+                num_redirects = 0;
 
                 // Because the session_id will exist sometimes (lasts 30 min right?),
                 // this js code will try and set the value of fields that won't exist as the WebView
@@ -61,40 +74,43 @@ public class LoginFragment extends Fragment {
                 final String loginJS = "document.getElementById('netid').value = '"+netid+"';" +
                         "document.getElementById('password').value = '"+password+"';" +
                         "document.getElementsByName('login')[0].submit();";
-
-                CookieManager.getInstance().removeAllCookies(null);
-                CookieManager.getInstance().flush();
                 mGetLoginWebView.loadUrl("https://get.cbord.com/cornell/full/login.php?mobileapp=1");
                 mGetLoginWebView.getSettings().setJavaScriptEnabled(true);
-                CookieManager.getInstance().removeAllCookies(null);
-                CookieManager.getInstance().flush();
                 mGetLoginWebView.setWebViewClient(new WebViewClient(){
-                    public void onPageFinished(WebView view, String url){
-                        if(num_logins==0) {
-                            num_logins += 1;
-                            view.evaluateJavascript(loginJS, (String nothing_returned) ->
-                            {
+                    @Override
+                    public void doUpdateVisitedHistory(WebView view, String url, boolean isReload){
+                        super.doUpdateVisitedHistory(view, url, isReload);
+                        view.clearHistory();
+                    }
 
-                            });
+                    @Override
+                    public void onPageFinished(WebView view, String url){
+                        if(num_redirects==0) {
+                            num_redirects += 1;
+                            view.evaluateJavascript(loginJS, (String nothing_returned) ->{});
+                            //evaluates javascript
 
                         }
-                        else if(num_logins >= 1) {
-                            num_logins +=1;
+                        else if(num_redirects >= 1) {
+                            num_redirects +=1;
                             if (url.contains("sessionId=")) {
+
                                 // Then I get the updated url containing the session_id after this submission]
                                 String getUrl = mGetLoginWebView.getUrl();
-                                Log.i("LOGIN_INFO", "SUCCESS "+num_logins);
+                                Log.i("LOGIN_INFO", "SUCCESS "+num_redirects);
 
+                                //parses session_id from url
                                 MainActivity.sSessionId = getUrl.substring(getUrl.indexOf("sessionId=") + 10);
-                                Log.i("ERRORS IN THIS", MainActivity.sSessionId);
+                                Log.i("Session_id", MainActivity.sSessionId);
                                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                                //tried clearing cookies again
                                 CookieManager.getInstance().removeAllCookies(null);
                                 CookieManager.getInstance().flush();
+
                                 transaction
                                         .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
                                         .commit();
-
-
 
                             }else{
                                 String checkJS = "(function() { var element = document.getElementById('netid'); " +
