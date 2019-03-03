@@ -49,20 +49,23 @@ public class LoginFragment extends Fragment {
     mNetID = rootView.findViewById(R.id.net_id_input);
     mPassword = rootView.findViewById(R.id.password_input);
     mFrameLayout = rootView.findViewById(R.id.frameLayout);
+    mGetLoginWebView = rootView.findViewById(R.id.invisWebView);
+    mGetLoginWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         mLoginButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v) {
 
-                mGetLoginWebView = new WebView(getContext());
-                mGetLoginWebView.setWebViewClient(new WebViewClient());
-                mGetLoginWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+                if (mGetLoginWebView != null) {
+                    mGetLoginWebView.clearHistory();
+                    mGetLoginWebView.clearCache(true);
+                }
+
                 CookieManager.getInstance().removeAllCookies(null);
                 CookieManager.getInstance().flush();
                 mGetLoginWebView.clearHistory();
                 mGetLoginWebView.clearCache(true);
 
-                mFrameLayout.addView(mGetLoginWebView);
                 num_redirects = 0;
 
                 // Because the session_id will exist sometimes (lasts 30 min right?),
@@ -74,6 +77,7 @@ public class LoginFragment extends Fragment {
                 final String loginJS = "document.getElementById('netid').value = '"+netid+"';" +
                         "document.getElementById('password').value = '"+password+"';" +
                         "document.getElementsByName('login')[0].submit();";
+                mGetLoginWebView.loadUrl("about:blank");
                 mGetLoginWebView.loadUrl("https://get.cbord.com/cornell/full/login.php?mobileapp=1");
                 mGetLoginWebView.getSettings().setJavaScriptEnabled(true);
                 mGetLoginWebView.setWebViewClient(new WebViewClient(){
@@ -100,16 +104,21 @@ public class LoginFragment extends Fragment {
                                 Log.i("LOGIN_INFO", "SUCCESS "+num_redirects);
 
                                 //parses session_id from url
-                                MainActivity.sSessionId = getUrl.substring(getUrl.indexOf("sessionId=") + 10);
-                                Log.i("Session_id", MainActivity.sSessionId);
+                                String sessionId = getUrl.substring(getUrl.indexOf("sessionId=") + 10);
+                                Log.i("Session_id", sessionId);
                                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                                 //tried clearing cookies again
                                 CookieManager.getInstance().removeAllCookies(null);
                                 CookieManager.getInstance().flush();
 
+                                AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
+                                Bundle args = new Bundle();
+                                args.putString("sessionId", sessionId);
+                                accountInfoFragment.setArguments(args);
+
                                 transaction
-                                        .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
+                                        .replace(R.id.frame_fragment_holder, accountInfoFragment)
                                         .commit();
 
                             }else{

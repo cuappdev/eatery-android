@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,7 +16,9 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 
-public class AccountInfoFragment extends Fragment {
+public class AccountInfoFragment extends Fragment implements NetworkUtilities.BRBAccountCallback {
+
+
 
     private TextView brbText;
     private TextView laundryText;
@@ -36,15 +39,25 @@ public class AccountInfoFragment extends Fragment {
         laundryText = infoHeader.findViewById(R.id.laundryText);
         swipesText = infoHeader.findViewById(R.id.swipesText);
 
-        BrbInfoQuery.AccountInfo brbInfo = NetworkUtilities.getBrbInfo(MainActivity.sSessionId);
-        BrbInfoModel model = JsonUtilities.parseBrbInfo(brbInfo);
-        brbText.setText("BRBS: "+model.getBRBs());
-        laundryText.setText("Meal swipes: "+model.getSwipes());
-        swipesText.setText("Laundry: "+model.getLaundry());
+        String sessionId = getArguments().getString("sessionId");
+        NetworkUtilities.getBrbInfo(sessionId, this);
 
-        mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
-        mHistoryView.setAdapter(mListAdapter);
-        mHistoryView.addHeaderView(infoHeader, null, false);
         return rootView;
+    }
+
+    @Override
+    public void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo) {
+
+        getActivity().runOnUiThread(() -> {
+            BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
+            brbText.setText("BRBS: " + model.getBRBs());
+            laundryText.setText("Meal swipes: " + model.getSwipes());
+            swipesText.setText("Laundry: " + model.getLaundry());
+
+            mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
+            mHistoryView.setAdapter(mListAdapter);
+            mHistoryView.addHeaderView(infoHeader, null, false);
+
+        });
     }
 }

@@ -24,9 +24,7 @@ public final class NetworkUtilities {
   private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
   private final static String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
   private static List<AllEateriesQuery.Eatery> eateries;
-    private static BrbInfoQuery.AccountInfo sBrbInfo;
     public static boolean EATERIES_LOADED = false;
-    public static boolean BRB_INFO_LOADED = false;
 
   public static String getJSON() {
     try {
@@ -76,7 +74,14 @@ public final class NetworkUtilities {
     });
     return eateries;
   }
-  public static BrbInfoQuery.AccountInfo getBrbInfo(String session_id) {
+
+  //BRB callback
+  public interface BRBAccountCallback {
+    //parameters can be of any types, depending on the event defined
+    void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo);
+  }
+
+  public static void getBrbInfo(String session_id, BRBAccountCallback callback) {
     OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .build();
 
@@ -89,17 +94,12 @@ public final class NetworkUtilities {
     brbCall.enqueue(new ApolloCall.Callback<BrbInfoQuery.Data>() {
       @Override
       public void onResponse(@NotNull Response<BrbInfoQuery.Data> response) {
-        sBrbInfo = response.data().accountInfo();
-        BRB_INFO_LOADED = true;
+        callback.retrievedAccountInfo(response.data().accountInfo());
       }
       @Override
       public void onFailure(@NotNull ApolloException e) {
         MainActivity.JSON_FALLBACK = true;
       }
     });
-    // TODO: GET RID OF THIS AT SOME POINT *********************************
-    // Use synchronization/threading?? Why wasn't this necessary above in getEateries()
-    while(!BRB_INFO_LOADED){}
-    return sBrbInfo;
   }
 }
