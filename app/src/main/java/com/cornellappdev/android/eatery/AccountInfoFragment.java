@@ -23,25 +23,28 @@ public class AccountInfoFragment extends Fragment {
     private String mSessionId;
     private HistoryInfoAdapter mListAdapter;
     private ListView mHistoryView;
-
+    private View infoHeader;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
-        getActivity().setTitle("Account Info");
-        brbText = rootView.findViewById(R.id.brbText);
-        laundryText = rootView.findViewById(R.id.laundryText);
-        swipesText = rootView.findViewById(R.id.swipesText);
         mHistoryView = rootView.findViewById(R.id.historylistview);
+
+        infoHeader = inflater.inflate(R.layout.account_info_header, null);
+        getActivity().setTitle("Account Info");
+        brbText = infoHeader.findViewById(R.id.brbText);
+        laundryText = infoHeader.findViewById(R.id.laundryText);
+        swipesText = infoHeader.findViewById(R.id.swipesText);
+
         BrbInfoQuery.AccountInfo brbInfo = NetworkUtilities.getBrbInfo(MainActivity.sSessionId);
         BrbInfoModel model = JsonUtilities.parseBrbInfo(brbInfo);
         brbText.setText("BRBS: "+model.getBRBs());
         laundryText.setText("Meal swipes: "+model.getSwipes());
         swipesText.setText("Laundry: "+model.getLaundry());
 
-        Log.i("MODEL LENGTH", model.getHistory().size()+"");
         mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
         mHistoryView.setAdapter(mListAdapter);
+        mHistoryView.addHeaderView(infoHeader, null, false);
         return rootView;
     }
 }

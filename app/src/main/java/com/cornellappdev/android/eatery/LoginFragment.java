@@ -41,7 +41,6 @@ public class LoginFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_login, container, false);
     getActivity().setTitle("Login");
 
-    mGetLoginWebView = rootView.findViewById(R.id.invisWebView);
     mDescriptionText = rootView.findViewById(R.id.descriptionText);
     mLoginButton = rootView.findViewById(R.id.login);
     mNetID = rootView.findViewById(R.id.net_id_input);
@@ -50,6 +49,7 @@ public class LoginFragment extends Fragment {
         mLoginButton.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v) {
+                mGetLoginWebView = rootView.findViewById(R.id.invisWebView);
                 num_logins = 0;
 
                 // Because the session_id will exist sometimes (lasts 30 min right?),
@@ -93,6 +93,7 @@ public class LoginFragment extends Fragment {
                                 transaction
                                         .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
                                         .commit();
+
 
 
                             }else{
