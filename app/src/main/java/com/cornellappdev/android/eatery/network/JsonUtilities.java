@@ -3,6 +3,8 @@ package com.cornellappdev.android.eatery.network;
 import android.content.Context;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
+import com.cornellappdev.android.eatery.BrbInfoQuery;
+import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.CafeModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -115,5 +117,9 @@ public final class JsonUtilities {
       e.printStackTrace();
     }
     return eateryList;
+  }
+  public static BrbInfoModel parseBrbInfo(BrbInfoQuery.AccountInfo brbInfo){
+    BrbInfoModel model = BrbInfoModel.loadFromInfo(brbInfo);
+    return model;
   }
 }

@@ -108,7 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 break;
                             case R.id.action_brb:
                             	transaction
-                                        .replace(R.id.frame_fragment_holder, new AboutFragment())
+                                        .replace(R.id.frame_fragment_holder, new LoginFragment())
                                         .commit();
                                 break;
                         }

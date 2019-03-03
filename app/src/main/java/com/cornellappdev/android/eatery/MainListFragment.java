@@ -93,7 +93,6 @@ public class MainListFragment extends Fragment
     return rootView;
   }
 
-
   public void changeButtonColor(int textColor, int backgroundColor, Button button) {
     button.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
     GradientDrawable bgShape = (GradientDrawable) button.getBackground();

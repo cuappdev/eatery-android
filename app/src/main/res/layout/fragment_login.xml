@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".LoginFragment">
+
+  <ScrollView
+      android:id="@+id/scrollView"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_marginBottom="70dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/descriptionText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:lineSpacingExtra="3sp"
+          android:paddingTop="30dp"
+          android:paddingStart="25dp"
+          android:paddingEnd="25dp"
+          android:gravity="center"
+          android:text="@string/description_text_1"
+          android:fontFamily="sans-serif"
+          android:textColor="@color/primary"
+          android:textSize="16sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/netIDLabel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingTop="30dp"
+          android:paddingStart="20dp"
+          android:text="NetID"
+          android:textColor="@color/primary"
+          android:fontFamily="sans-serif"
+          android:textSize="18sp"
+          android:textStyle="bold"
+          />
+
+      <EditText
+          android:id="@+id/net_id_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:paddingTop="15dp"
+          android:paddingBottom="20dp"
+          android:layout_marginStart="18dp"
+          android:layout_marginEnd="18dp"
+          android:fontFamily="sans-serif"
+          android:textSize="19sp"
+          android:hint="Type your NetID (e.g. abc123)"
+          android:inputType="textPersonName"
+          />
+      <TextView
+          android:id="@+id/passwordLabel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingTop="15dp"
+          android:paddingStart="20dp"
+          android:text="Password"
+          android:textColor="@color/primary"
+          android:fontFamily="sans-serif"
+          android:textSize="18sp"
+          android:textStyle="bold"
+          />
+
+      <EditText
+          android:id="@+id/password_input"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ems="10"
+          android:paddingTop="15dp"
+          android:paddingBottom="20dp"
+          android:layout_marginStart="18dp"
+          android:layout_marginEnd="18dp"
+          android:fontFamily="sans-serif"
+          android:textSize="19sp"
+          android:imeOptions="actionDone"
+          android:hint="Type your password"
+          android:inputType="textPassword"
+          />
+
+      <CheckBox
+          android:id="@+id/checkbox_saveInfo"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginTop="15dp"
+          android:fontFamily="sans-serif"
+          android:text=" Save my login info"
+          android:textSize="15sp" />
+
+      <Button
+          android:id="@+id/login"
+          android:layout_height="wrap_content"
+          android:layout_width="match_parent"
+          android:layout_marginTop="20dp"
+          android:layout_marginStart="18dp"
+          android:layout_marginEnd="18dp"
+          android:paddingTop="15dp"
+          android:paddingBottom="15dp"
+          android:layout_gravity="center"
+          android:textAllCaps="true"
+          android:background="@drawable/login_button"
+          android:fontFamily="sans-serif"
+          android:textSize="19sp"
+          android:textColor="@color/white"
+          android:text="Login"
+          />
+      <TextView
+          android:id="@+id/privacyStatement"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:paddingTop="25dp"
+          android:text="Privacy Statement"
+          android:textColor="@color/blue"
+          android:fontFamily="sans-serif"
+          android:textSize="16sp"
+          />
+    </LinearLayout>
+  </ScrollView>
+  <WebView
+      android:id="@+id/invisWebView"
+      android:layout_width="0dp"
+      android:layout_height="0dp">
+
+  </WebView>
+
+
+</FrameLayout>
