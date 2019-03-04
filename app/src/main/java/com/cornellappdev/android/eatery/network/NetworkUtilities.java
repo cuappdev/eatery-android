@@ -1,18 +1,11 @@
 package com.cornellappdev.android.eatery.network;
 
-import android.app.Activity;
-import android.util.Log;
-
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.MainActivity;
-import com.cornellappdev.android.eatery.MainListFragment;
-import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,17 +15,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
 
 public final class NetworkUtilities {
   private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
-  private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
-  private static final String TAG = "NetworkUtilities";
+  private final static String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
   private static List<AllEateriesQuery.Eatery> eateries;
+  public static boolean EATERIES_LOADED = false;
 
   public static String getJSON() {
     try {
@@ -58,7 +49,7 @@ public final class NetworkUtilities {
     }
   }
 
-  public static void getEateries(MainPresenter presenter, Activity activity) {
+  public static List<AllEateriesQuery.Eatery> getEateries() {
     OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
     ApolloClient apolloClient = ApolloClient.builder()
@@ -72,24 +63,7 @@ public final class NetworkUtilities {
       @Override
       public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
         eateries = response.data().eateries();
-        ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,activity);
-        Collections.sort(eateryList);
-        presenter.setEateryList(eateryList);
-
-        // Runs on MainActivity's UI Thread
-        activity.runOnUiThread(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              ((MainActivity)activity).getSupportFragmentManager()
-                  .beginTransaction()
-                  .replace(R.id.frame_fragment_holder, new MainListFragment())
-                  .commit();
-            } catch (Exception e) {
-              Log.e(TAG, e.getMessage());
-            }
-          }
-        });
+        EATERIES_LOADED = true;
       }
 
       @Override
@@ -97,5 +71,6 @@ public final class NetworkUtilities {
         MainActivity.JSON_FALLBACK = true;
       }
     });
+    return eateries;
   }
 }
