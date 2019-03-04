@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-  public static final String PAYMENT_SWIPE = "Meal Plan - Swipe";
-  public static final String PAYMENT_CARD = "Cornell Card";
 
   private MainPresenter presenter;
   public BottomNavigationView bnv;

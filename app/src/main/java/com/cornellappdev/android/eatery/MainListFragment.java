@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +24,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
-import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,8 +31,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.cornellappdev.android.eatery.MainActivity.PAYMENT_CARD;
-import static com.cornellappdev.android.eatery.MainActivity.PAYMENT_SWIPE;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
@@ -42,13 +40,9 @@ public class MainListFragment extends Fragment
   public MainListPresenter mListPresenter;
   private RecyclerView mRecyclerView;
   private MainListAdapter mListAdapter;
-  private Button mNorthButton;
-  private Button mWestButton;
-  private Button mCentralButton;
-  private Button mSwipesButton;
-  private Button mBrbButton;
   private Set<Button> mAreaButtonsPressed;
   private Set<Button> mPaymentButtonsPressed;
+  private SparseArray<Button> mButtons;
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,33 +58,32 @@ public class MainListFragment extends Fragment
     mListPresenter = new MainListPresenter();
     mAreaButtonsPressed = new HashSet<>();
     mPaymentButtonsPressed = new HashSet<>();
-
-    // Set up recyclerview and corresponding listadapter
+    // Set up recyclerView and corresponding listAdapter
     mRecyclerView.setHasFixedSize(true);
     LinearLayoutManager layoutManager =
         new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
     mRecyclerView.setLayoutManager(layoutManager);
-
     mListAdapter =
         new MainListAdapter(getContext(), this, mListPresenter.getEateryList().size(), mListPresenter.getEateryList());
     mRecyclerView.setAdapter(mListAdapter);
     mRecyclerView.setVisibility(View.VISIBLE);
 
-    // Set onCLick listeners
-    mNorthButton = rootView.findViewById(R.id.northButton);
-    mWestButton = rootView.findViewById(R.id.westButton);
-    mCentralButton = rootView.findViewById(R.id.centralButton);
-    mSwipesButton = rootView.findViewById(R.id.swipes);
-    mBrbButton = rootView.findViewById(R.id.brb);
-    mNorthButton.setOnClickListener(this);
-    mWestButton.setOnClickListener(this);
-    mCentralButton.setOnClickListener(this);
-    mSwipesButton.setOnClickListener(this);
-    mBrbButton.setOnClickListener(this);
+    mButtons = new SparseArray<>();
+    initializeButtons(rootView);
 
     return rootView;
   }
 
+  public void initializeButtons(View rootView){
+
+      int[] viewIds = {R.id.northButton, R.id.westButton, R.id.centralButton, R.id.swipes, R.id.brb};
+      for (int id : viewIds) {
+          Button tempButton =  rootView.findViewById(id);
+          mButtons.put(id, tempButton);
+          tempButton.setOnClickListener(this);
+          changeButtonColor(R.color.blue, R.color.wash, tempButton);
+      }
+  }
 
   public void changeButtonColor(int textColor, int backgroundColor, Button button) {
     button.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
@@ -101,11 +94,11 @@ public class MainListFragment extends Fragment
   public void getCurrentAreas() {
     HashSet<CampusArea> areaSet = new HashSet<>();
     for (Button button : mAreaButtonsPressed) {
-      if (mNorthButton.equals(button)) {
+        if (button.getId() == R.id.northButton) {
         areaSet.add(NORTH);
-      } else if (mWestButton.equals(button)) {
+      } else if (button.getId() == R.id.westButton) {
         areaSet.add(WEST);
-      } else if (mCentralButton.equals(button)) {
+      } else if (button.getId() == R.id.centralButton) {
         areaSet.add(CENTRAL);
       }
     }
@@ -115,16 +108,16 @@ public class MainListFragment extends Fragment
   public void getCurrentPaymentTypes() {
     HashSet<PaymentMethod> paymentSet = new HashSet<>();
     for (Button button : mPaymentButtonsPressed) {
-      if (mBrbButton.equals(button)) {
+      if (button.getId() == R.id.brb) {
         paymentSet.add(PaymentMethod.BRB);
-      } else if (mSwipesButton.equals(button)) {
+      } else if (button.getId() == R.id.swipes) {
         paymentSet.add(PaymentMethod.SWIPES);
       }
     }
     mListPresenter.setPaymentSet(paymentSet);
   }
 
-  private void handleAreaButtonPress(Button button, CampusArea area) {
+  private void handleAreaButtonPress(Button button) {
     if (mAreaButtonsPressed.contains(button)) {
       changeButtonColor(R.color.blue, R.color.wash, button);
       mAreaButtonsPressed.remove(button);
@@ -132,11 +125,12 @@ public class MainListFragment extends Fragment
       changeButtonColor(R.color.white, R.color.blue, button);
       mAreaButtonsPressed.add(button);
     }
+
     getCurrentAreas();
     mListPresenter.filterImageList();
   }
 
-  private void handlePaymentButtonPress(Button button, String payment) {
+  private void handlePaymentButtonPress(Button button) {
     if (mPaymentButtonsPressed.contains(button)) {
       changeButtonColor(R.color.blue, R.color.wash, button);
       mPaymentButtonsPressed.remove(button);
@@ -150,24 +144,12 @@ public class MainListFragment extends Fragment
 
   @Override
   public void onClick(View view) {
-    switch (view.getId()) {
-      case R.id.northButton:
-        handleAreaButtonPress(mNorthButton, NORTH);
-        break;
-      case R.id.centralButton:
-        handleAreaButtonPress(mCentralButton, CENTRAL);
-        break;
-      case R.id.westButton:
-        handleAreaButtonPress(mWestButton, WEST);
-        break;
-      case R.id.swipes:
-        handlePaymentButtonPress(mSwipesButton, PAYMENT_SWIPE);
-        break;
-      case R.id.brb:
-        handlePaymentButtonPress(mBrbButton, PAYMENT_CARD);
-        break;
+    if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton || view.getId()== R.id.westButton) {
+        handleAreaButtonPress(mButtons.get(view.getId()));
     }
-
+    else if (view.getId() == R.id.brb || view.getId() == R.id.swipes) {
+        handlePaymentButtonPress(mButtons.get(view.getId()));
+    }
     ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
     Collections.sort(cafesToDisplay);
     mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
@@ -228,7 +210,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setQuery(query);
         mListPresenter.filterSearchList();
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCurrentList();
-        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
+        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query);
         return true;
       }
     });

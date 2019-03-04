@@ -107,7 +107,7 @@ public class MenuActivity extends AppCompatActivity {
 		if (currentStatus == EateryBaseModel.Status.OPEN) {
 			cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
 		} else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
-			cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+			cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.yellow));
 		} else {
 			cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
 		}

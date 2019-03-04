@@ -14,7 +14,6 @@ public class MainListPresenter {
   private ArrayList<EateryBaseModel> mCurrentList;
   private HashSet<PaymentMethod> mPaymentSet;
   private HashSet<CampusArea> mAreaSet;
-  private boolean isSearchPressed;
   private String query;
 
   private Repository rInstance = Repository.getInstance();
@@ -24,7 +23,6 @@ public class MainListPresenter {
     mCurrentList = mEateryList;
     mPaymentSet = new HashSet<>();
     mAreaSet = new HashSet<>();
-    isSearchPressed = false;
     query = "";
   }
 
@@ -74,17 +72,13 @@ public class MainListPresenter {
     return mCurrentList;
   }
 
-  public boolean getIsSearchPressed() {
-    return rInstance.getIsSearchPressed();
-  }
-
   public void setIsSearchPressed(boolean isPressed) {
     rInstance.setIsSearchPressed(isPressed);
   }
 
   private void searchList(String query) {
     final String lowercaseQuery = query.toLowerCase();
-    for (EateryBaseModel model : rInstance.getSearchList()) {
+    for (EateryBaseModel model : mCurrentList) {
       final HashSet<String> mealSet = model.getMealItems();
 
       boolean foundNickName = false;
@@ -101,7 +95,7 @@ public class MainListPresenter {
         }
       }
 
-      if (model.matchesFilter() && (foundItem || foundNickName)) {
+      if (foundItem || foundNickName) {
         if (foundNickName) {
           model.setSearchedItems(new ArrayList<>(mealSet));
         } else {
@@ -130,7 +124,7 @@ public class MainListPresenter {
   // Returns all eateries that matchsearch and filter
   public ArrayList<EateryBaseModel> getCurrentList() {
     ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
-    for (EateryBaseModel em : rInstance.getEateryList()) {
+    for (EateryBaseModel em : mCurrentList) {
       if (em.matchesFilter() && em.matchesSearch()) {
         cafesToDisplay.add(em);
       }
