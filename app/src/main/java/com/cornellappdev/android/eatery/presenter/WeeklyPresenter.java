@@ -26,11 +26,15 @@ public class WeeklyPresenter {
   }
 
   public LocalDate getDayInWeek(int offset) {
-    return mSelectedDate.plusDays(offset);
+    return LocalDate.now().plusDays(offset);
   }
 
   public LocalDate getSelectedDate() {
     return mSelectedDate;
+  }
+
+  public void setSelectedDate(LocalDate selectedDate){
+    mSelectedDate = selectedDate;
   }
 
   public ArrayList<DiningHallModel> getDiningHallList() {

@@ -88,9 +88,15 @@ public class MainListFragment extends Fragment
     mSwipesButton.setOnClickListener(this);
     mBrbButton.setOnClickListener(this);
 
+    // Resetting the buttons on page reload
+    changeButtonColor(R.color.blue, R.color.wash, mNorthButton);
+    changeButtonColor(R.color.blue, R.color.wash, mWestButton);
+    changeButtonColor(R.color.blue, R.color.wash, mCentralButton);
+    changeButtonColor(R.color.blue, R.color.wash, mSwipesButton);
+    changeButtonColor(R.color.blue, R.color.wash, mBrbButton);
+
     return rootView;
   }
-
 
   public void changeButtonColor(int textColor, int backgroundColor, Button button) {
     button.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
@@ -124,7 +130,7 @@ public class MainListFragment extends Fragment
     mListPresenter.setPaymentSet(paymentSet);
   }
 
-  private void handleAreaButtonPress(Button button, CampusArea area) {
+  private void handleAreaButtonPress(Button button) {
     if (mAreaButtonsPressed.contains(button)) {
       changeButtonColor(R.color.blue, R.color.wash, button);
       mAreaButtonsPressed.remove(button);
@@ -132,6 +138,7 @@ public class MainListFragment extends Fragment
       changeButtonColor(R.color.white, R.color.blue, button);
       mAreaButtonsPressed.add(button);
     }
+
     getCurrentAreas();
     mListPresenter.filterImageList();
   }
@@ -152,13 +159,13 @@ public class MainListFragment extends Fragment
   public void onClick(View view) {
     switch (view.getId()) {
       case R.id.northButton:
-        handleAreaButtonPress(mNorthButton, NORTH);
+        handleAreaButtonPress(mNorthButton);
         break;
       case R.id.centralButton:
-        handleAreaButtonPress(mCentralButton, CENTRAL);
+        handleAreaButtonPress(mCentralButton);
         break;
       case R.id.westButton:
-        handleAreaButtonPress(mWestButton, WEST);
+        handleAreaButtonPress(mWestButton);
         break;
       case R.id.swipes:
         handlePaymentButtonPress(mSwipesButton, PAYMENT_SWIPE);
@@ -228,7 +235,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setQuery(query);
         mListPresenter.filterSearchList();
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCurrentList();
-        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
+        mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query);
         return true;
       }
     });

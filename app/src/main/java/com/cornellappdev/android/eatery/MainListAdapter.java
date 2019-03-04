@@ -156,7 +156,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         ArrayList<String> itemList = eateryModel.getSearchedItems();
-        eateryModel.setSearchedItems(null);
         if (itemList == null) {
           holder2.cafe_items.setText("");
           break;

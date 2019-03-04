@@ -36,7 +36,6 @@
           android:background="@drawable/button"
           android:fontFamily="sans-serif-medium"
           android:gravity="center_horizontal"
-          android:onClick="filterClick"
           android:padding="8dp"
           android:stateListAnimator="@null"
           android:text="North"
@@ -56,7 +55,6 @@
           android:background="@drawable/button"
           android:fontFamily="sans-serif-medium"
           android:gravity="center_horizontal"
-          android:onClick="filterClick"
           android:padding="8dp"
           android:stateListAnimator="@null"
           android:text="West"
@@ -75,7 +73,6 @@
           android:background="@drawable/button"
           android:fontFamily="sans-serif-medium"
           android:gravity="center_horizontal"
-          android:onClick="filterClick"
           android:padding="8dp"
           android:stateListAnimator="@null"
           android:text="Central"
@@ -94,7 +91,6 @@
           android:background="@drawable/button"
           android:fontFamily="sans-serif-medium"
           android:gravity="center_horizontal"
-          android:onClick="filterClick"
           android:padding="8dp"
           android:stateListAnimator="@null"
           android:text="Swipes"
@@ -113,7 +109,6 @@
           android:background="@drawable/button"
           android:fontFamily="sans-serif-medium"
           android:gravity="center_horizontal"
-          android:onClick="filterClick"
           android:padding="8dp"
           android:stateListAnimator="@null"
           android:text="BRB"
@@ -130,7 +125,6 @@
       android:layout_height="wrap_content"
       android:layout_below="@+id/scroll"
       android:clipToPadding="false"
-      android:nestedScrollingEnabled="false"
-      android:onClick="filterClick" />
+      android:nestedScrollingEnabled="false"/>
   </RelativeLayout>
 </FrameLayout>
