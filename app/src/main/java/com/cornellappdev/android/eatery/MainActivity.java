@@ -4,11 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
@@ -65,16 +65,18 @@ public class MainActivity extends AppCompatActivity {
           }
         });
 
-    new ProcessJson().execute("");
-  }
+      // Try pulling data from GraphQL, if not fallback to json from cornell dining
+      NetworkUtilities.getEateries(presenter,this);
+      if (JSON_FALLBACK) {
+        new ProcessJson().execute("");
+      }
+    }
 
   public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
 
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
-      // Note(lesley): This method runs on the UI thread -- maybe use for displaying progress bar
-      // or splash screen
     }
 
     @Override
