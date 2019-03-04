@@ -76,7 +76,7 @@ public final class NetworkUtilities {
         Collections.sort(eateryList);
         presenter.setEateryList(eateryList);
 
-        //Runs on MainActivity's UI Thread
+        // Runs on MainActivity's UI Thread
         activity.runOnUiThread(new Runnable() {
           @Override
           public void run() {
@@ -86,7 +86,7 @@ public final class NetworkUtilities {
                   .replace(R.id.frame_fragment_holder, new MainListFragment())
                   .commit();
             } catch (Exception e) {
-              Log.e(TAG,e.getMessage());
+              Log.e(TAG, e.getMessage());
             }
           }
         });

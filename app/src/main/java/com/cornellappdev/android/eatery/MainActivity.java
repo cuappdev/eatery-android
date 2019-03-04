@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
           }
         });
 
-      //try pulling data from GraphQL, if not fallback to json from cornell dining
+      // Try pulling data from GraphQL, if not fallback to json from cornell dining
       NetworkUtilities.getEateries(presenter,this);
-      if(JSON_FALLBACK){
+      if (JSON_FALLBACK) {
         new ProcessJson().execute("");
       }
     }
