@@ -81,11 +81,6 @@ public class LoginFragment extends Fragment {
                 mGetLoginWebView.loadUrl("https://get.cbord.com/cornell/full/login.php?mobileapp=1");
                 mGetLoginWebView.getSettings().setJavaScriptEnabled(true);
                 mGetLoginWebView.setWebViewClient(new WebViewClient(){
-                    @Override
-                    public void doUpdateVisitedHistory(WebView view, String url, boolean isReload){
-                        super.doUpdateVisitedHistory(view, url, isReload);
-                        view.clearHistory();
-                    }
 
                     @Override
                     public void onPageFinished(WebView view, String url){
