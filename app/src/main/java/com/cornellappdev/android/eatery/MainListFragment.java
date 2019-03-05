@@ -75,8 +75,12 @@ public class MainListFragment extends Fragment
   }
 
   public void initializeButtons(View rootView){
-
-      int[] viewIds = {R.id.northButton, R.id.westButton, R.id.centralButton, R.id.swipes, R.id.brb};
+      int[] viewIds = {
+              R.id.northButton,
+              R.id.westButton,
+              R.id.centralButton,
+              R.id.swipes,
+              R.id.brb};
       for (int id : viewIds) {
           Button tempButton =  rootView.findViewById(id);
           mButtons.put(id, tempButton);
@@ -144,11 +148,13 @@ public class MainListFragment extends Fragment
 
   @Override
   public void onClick(View view) {
+
     if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton || view.getId()== R.id.westButton) {
         handleAreaButtonPress(mButtons.get(view.getId()));
     }
     else if (view.getId() == R.id.brb || view.getId() == R.id.swipes) {
         handlePaymentButtonPress(mButtons.get(view.getId()));
+
     }
     ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
     Collections.sort(cafesToDisplay);
