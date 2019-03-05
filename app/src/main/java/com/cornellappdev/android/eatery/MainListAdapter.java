@@ -121,7 +121,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder.rlayout.setAlpha(.5f);
         } else if (eateryModel.getCurrentStatus() == CLOSINGSOON) {
           holder.cafeOpen.setText(R.string.closing_soon);
-          holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+          holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.yellow));
           holder.rlayout.setAlpha(1f);
         } else {
           holder.cafeOpen.setText(R.string.open);
@@ -156,7 +156,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         ArrayList<String> itemList = eateryModel.getSearchedItems();
-        eateryModel.setSearchedItems(null);
         if (itemList == null) {
           holder2.cafe_items.setText("");
           break;
