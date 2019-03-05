@@ -14,6 +14,7 @@ public class MainListPresenter {
   private ArrayList<EateryBaseModel> mCurrentList;
   private HashSet<PaymentMethod> mPaymentSet;
   private HashSet<CampusArea> mAreaSet;
+  private String query;
 
   private Repository rInstance = Repository.getInstance();
 
@@ -22,6 +23,7 @@ public class MainListPresenter {
     mCurrentList = mEateryList;
     mPaymentSet = new HashSet<>();
     mAreaSet = new HashSet<>();
+    query = "";
   }
 
   public ArrayList<EateryBaseModel> getEateryList() {
@@ -55,7 +57,7 @@ public class MainListPresenter {
     return cafesToDisplay;
   }
 
-  public ArrayList<EateryBaseModel> filterCurrentList() {
+  public ArrayList<EateryBaseModel> filterImageList() {
     for (EateryBaseModel model : mCurrentList) {
       boolean areaFuzzyMatches =
           mAreaSet.isEmpty() || mAreaSet.contains(model.getArea());
@@ -68,5 +70,65 @@ public class MainListPresenter {
       }
     }
     return mCurrentList;
+  }
+
+  public void setIsSearchPressed(boolean isPressed) {
+    rInstance.setIsSearchPressed(isPressed);
+  }
+
+  private void searchList(String query) {
+    final String lowercaseQuery = query.toLowerCase();
+    for (EateryBaseModel model : mCurrentList) {
+      final HashSet<String> mealSet = model.getMealItems();
+
+      boolean foundNickName = false;
+      if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
+        foundNickName = true;
+      }
+
+      ArrayList<String> matchedItems = new ArrayList<>();
+      boolean foundItem = false;
+      for (String item : mealSet) {
+        if (item.toLowerCase().contains(lowercaseQuery)) {
+          foundItem = true;
+          matchedItems.add(item);
+        }
+      }
+
+      if (foundItem || foundNickName) {
+        if (foundNickName) {
+          model.setSearchedItems(new ArrayList<>(mealSet));
+        } else {
+          model.setSearchedItems(matchedItems);
+        }
+        model.setMatchesSearch(true);
+      } else {
+        model.setMatchesSearch(false);
+      }
+    }
+  }
+
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
+  }
+
+  // Updates the eatery models to matchSearch for this specific query
+  public void filterSearchList() {
+    searchList(query);
+  }
+
+  // Returns all eateries that matchsearch and filter
+  public ArrayList<EateryBaseModel> getCurrentList() {
+    ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
+    for (EateryBaseModel em : mCurrentList) {
+      if (em.matchesFilter() && em.matchesSearch()) {
+        cafesToDisplay.add(em);
+      }
+    }
+    return cafesToDisplay;
   }
 }

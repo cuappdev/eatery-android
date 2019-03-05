@@ -248,8 +248,9 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     textView.setTextColor(ContextCompat.getColor(mAppContext, R.color.primary));
     changeDateColor(textView);
 
-    LocalDate currentDate = mPresenter.getDayInWeek(dateTvList.indexOf(textView));
-    changeListAdapter(mMealType, currentDate);
+    LocalDate selectedDate = mPresenter.getDayInWeek(dateTvList.indexOf(textView));
+    mPresenter.setSelectedDate(selectedDate);
+    changeListAdapter(mMealType, mPresenter.getSelectedDate());
   }
 
   /**

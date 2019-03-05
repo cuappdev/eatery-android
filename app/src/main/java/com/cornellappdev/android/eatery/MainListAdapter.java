@@ -41,6 +41,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private ArrayList<EateryBaseModel> cafeListFiltered;
   private final int TEXT = 1;
   private final int IMAGE = 0;
+  private Repository rInstance = Repository.getInstance();
 
   public interface ListAdapterOnClickHandler {
     void onClick(int position, ArrayList<EateryBaseModel> list);
@@ -120,7 +121,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
           holder.rlayout.setAlpha(.5f);
         } else if (eateryModel.getCurrentStatus() == CLOSINGSOON) {
           holder.cafeOpen.setText(R.string.closing_soon);
-          holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+          holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.yellow));
           holder.rlayout.setAlpha(1f);
         } else {
           holder.cafeOpen.setText(R.string.open);
@@ -155,7 +156,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         ArrayList<String> itemList = eateryModel.getSearchedItems();
-        eateryModel.setSearchedItems(null);
         if (itemList == null) {
           holder2.cafe_items.setText("");
           break;
@@ -185,10 +185,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override
   public int getItemViewType(int position) {
-    if (!MainActivity.searchPressed) {
-      return IMAGE;
-    } else {
+    if (rInstance.getIsSearchPressed()) {
       return TEXT;
+    } else {
+      return IMAGE;
     }
   }
 

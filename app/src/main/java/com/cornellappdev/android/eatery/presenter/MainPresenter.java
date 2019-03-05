@@ -18,58 +18,6 @@ public class MainPresenter {
     rInstance.setEateryList(eateryList);
     rInstance.setSearchList(rInstance.getEateryList());
   }
-
-  private void searchList(String query) {
-    final String lowercaseQuery = query.toLowerCase();
-    for (EateryBaseModel model : rInstance.getSearchList()) {
-      final HashSet<String> mealSet = model.getMealItems();
-
-      boolean foundNickName = false;
-      if (model.getNickName().toLowerCase().contains(lowercaseQuery)) {
-        foundNickName = true;
-      }
-
-      ArrayList<String> matchedItems = new ArrayList<>();
-      boolean foundItem = false;
-      for (String item : mealSet) {
-        if (item.toLowerCase().contains(lowercaseQuery)) {
-          foundItem = true;
-          matchedItems.add(item);
-        }
-      }
-
-      if (model.matchesFilter() && (foundItem || foundNickName)) {
-        if (foundNickName) {
-          model.setSearchedItems(new ArrayList<>(mealSet));
-        } else {
-          model.setSearchedItems(matchedItems);
-        }
-        model.setMatchesSearch(true);
-      } else {
-        model.setMatchesSearch(false);
-      }
-    }
-  }
-
-  public void setQuery(String query) {
-    this.query = query;
-  }
-
-  // Updates the eatery models to matchSearch for this specific query
-  public void filterCurrentList() {
-    searchList(query);
-  }
-
-  // Returns all eateries that matchsearch and filter
-  public ArrayList<EateryBaseModel> getCurrentList() {
-    ArrayList<EateryBaseModel> cafesToDisplay = new ArrayList<>();
-    for (EateryBaseModel em : rInstance.getEateryList()) {
-      if (em.matchesFilter() && em.matchesSearch()) {
-        cafesToDisplay.add(em);
-      }
-    }
-    return cafesToDisplay;
-  }
 }
 
 
