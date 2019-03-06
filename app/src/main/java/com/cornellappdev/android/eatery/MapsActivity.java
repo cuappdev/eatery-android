@@ -33,11 +33,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-  private GoogleMap mMap;
-  ArrayList<EateryBaseModel> cafeData;
   public Repository repositoryInstance = Repository.getInstance();
-  private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
   public BottomNavigationView bnv;
+
+  private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+  private GoogleMap mMap;
+  private MainListFragment mainListFragment;
+  private WeeklyMenuFragment weeklyMenuFragment;
+  private AboutFragment aboutFragment;
+  private ArrayList<EateryBaseModel> cafeData;
 
   class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
@@ -85,6 +89,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     mapFragment.getMapAsync(this);
     cafeData = repositoryInstance.getEateryList();
+    mainListFragment = new MainListFragment();
+    weeklyMenuFragment = new WeeklyMenuFragment();
+    aboutFragment = new AboutFragment();
     bnv = findViewById(R.id.bottom_navigation);
     bnv.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -97,18 +104,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
               case R.id.action_home:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new MainListFragment())
+                    .replace(R.id.frame_fragment_holder, mainListFragment)
                     .commit();
                 finish();
                 break;
               case R.id.action_week:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
+                    .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                     .commit();
                 break;
               case R.id.action_brb:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new AboutFragment())
+                    .replace(R.id.frame_fragment_holder, aboutFragment)
                     .commit();
                 break;
             }

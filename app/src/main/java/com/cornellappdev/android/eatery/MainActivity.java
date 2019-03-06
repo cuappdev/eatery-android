@@ -21,12 +21,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-
-  private MainPresenter presenter;
+  public static boolean JSON_FALLBACK = false;
   public BottomNavigationView bnv;
   public CafeteriaDbHelper dbHelper;
 
-  public static boolean JSON_FALLBACK = false;
+  private MainPresenter presenter;
+  private MainListFragment mainListFragment;
+  private WeeklyMenuFragment weeklyMenuFragment;
+  private AboutFragment aboutFragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     presenter = new MainPresenter();
     dbHelper = new CafeteriaDbHelper(this);
+    mainListFragment = new MainListFragment();
+    weeklyMenuFragment = new WeeklyMenuFragment();
+    aboutFragment = new AboutFragment();
     bnv = findViewById(R.id.bottom_navigation);
     // Add functionality to bottom nav bar
     bnv.setOnNavigationItemSelectedListener(
@@ -45,17 +50,17 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
               case R.id.action_home:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new MainListFragment())
+                    .replace(R.id.frame_fragment_holder, mainListFragment)
                     .commit();
                 break;
               case R.id.action_week:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
+                    .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                     .commit();
                 break;
               case R.id.action_brb:
                 transaction
-                    .replace(R.id.frame_fragment_holder, new AboutFragment())
+                    .replace(R.id.frame_fragment_holder, aboutFragment)
                     .commit();
                 break;
             }
