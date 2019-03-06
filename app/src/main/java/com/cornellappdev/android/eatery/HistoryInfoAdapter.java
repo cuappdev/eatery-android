@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.HistoryObjectModel;
+import com.cornellappdev.android.eatery.util.MoneyUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,9 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
     }
 
     public static class ViewHolder {
-        public TextView display_name;
-        public TextView display_timestamp;
+        private TextView display_name;
+        private TextView display_timestamp;
+        private TextView display_amount;
 
     }
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -38,20 +40,18 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
                 vi = sInflater.inflate(mLayout, null);
                 holder = new ViewHolder();
 
-                holder.display_name = (TextView) vi.findViewById(R.id.eatery_name);
-                holder.display_timestamp = (TextView) vi.findViewById(R.id.eatery_timestamp);
-
+                holder.display_name = (TextView) vi.findViewById(R.id.purchase_eatery);
+                holder.display_timestamp = (TextView) vi.findViewById(R.id.purchase_timestamp);
+                holder.display_amount = (TextView) vi.findViewById(R.id.purchase_amount);
 
                 vi.setTag(holder);
             } else {
                 holder = (ViewHolder) vi.getTag();
             }
 
-
-
             holder.display_name.setText(mHistory.get(position).getName());
             holder.display_timestamp.setText(mHistory.get(position).getTimestamp());
-
+            holder.display_amount.setText("- "+MoneyUtil.toMoneyString(mHistory.get(position).getAmount()));
 
         } catch (Exception e) {
 

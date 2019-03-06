@@ -1,141 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".LoginFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginFragment">
 
-  <ScrollView
-      android:id="@+id/scrollView"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentStart="true"
-      android:layout_marginBottom="70dp">
-
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="70dp">
 
-      <TextView
-          android:id="@+id/descriptionText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:lineSpacingExtra="3sp"
-          android:paddingTop="30dp"
-          android:paddingStart="25dp"
-          android:paddingEnd="25dp"
-          android:gravity="center"
-          android:text="@string/description_text_1"
-          android:fontFamily="sans-serif"
-          android:textColor="@color/primary"
-          android:textSize="16sp"
-          android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-      <TextView
-          android:id="@+id/netIDLabel"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="30dp"
-          android:paddingStart="20dp"
-          android:text="NetID"
-          android:textColor="@color/primary"
-          android:fontFamily="sans-serif"
-          android:textSize="18sp"
-          android:textStyle="bold"
-          />
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:paddingStart="25dp"
+                android:paddingTop="30dp"
+                android:paddingEnd="25dp"
+                android:text="@string/description_text_1"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-      <EditText
-          android:id="@+id/net_id_input"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ems="10"
-          android:paddingTop="15dp"
-          android:paddingBottom="20dp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:fontFamily="sans-serif"
-          android:textSize="19sp"
-          android:hint="Type your NetID (e.g. abc123)"
-          android:inputType="textPersonName"
-          />
-      <TextView
-          android:id="@+id/passwordLabel"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="15dp"
-          android:paddingStart="20dp"
-          android:text="Password"
-          android:textColor="@color/primary"
-          android:fontFamily="sans-serif"
-          android:textSize="18sp"
-          android:textStyle="bold"
-          />
+            <TextView
+                android:id="@+id/netIDLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingStart="20dp"
+                android:paddingTop="30dp"
+                android:text="NetID"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-      <EditText
-          android:id="@+id/password_input"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ems="10"
-          android:paddingTop="15dp"
-          android:paddingBottom="20dp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:fontFamily="sans-serif"
-          android:textSize="19sp"
-          android:imeOptions="actionDone"
-          android:hint="Type your password"
-          android:inputType="textPassword"
-          />
+            <EditText
+                android:id="@+id/net_id_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="Type your NetID (e.g. abc123)"
+                android:inputType="textPersonName"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp"
+                android:textSize="19sp" />
 
-      <CheckBox
-          android:id="@+id/checkbox_saveInfo"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:layout_marginTop="15dp"
-          android:fontFamily="sans-serif"
-          android:text=" Save my login info"
-          android:textSize="15sp" />
+            <TextView
+                android:id="@+id/passwordLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingStart="20dp"
+                android:paddingTop="15dp"
+                android:text="Password"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-      <Button
-          android:id="@+id/login"
-          android:layout_height="wrap_content"
-          android:layout_width="match_parent"
-          android:layout_marginTop="20dp"
-          android:layout_marginStart="18dp"
-          android:layout_marginEnd="18dp"
-          android:paddingTop="15dp"
-          android:paddingBottom="15dp"
-          android:layout_gravity="center"
-          android:textAllCaps="true"
-          android:background="@drawable/login_button"
-          android:fontFamily="sans-serif"
-          android:textSize="19sp"
-          android:textColor="@color/white"
-          android:text="Login"
-          />
-      <TextView
-          android:id="@+id/privacyStatement"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          android:paddingTop="25dp"
-          android:text="Privacy Statement"
-          android:textColor="@color/blue"
-          android:fontFamily="sans-serif"
-          android:textSize="16sp"
-          />
-    </LinearLayout>
-  </ScrollView>
-  <WebView
-      android:id="@+id/invisWebView"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:visibility="invisible">
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="Type your password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp"
+                android:textSize="19sp" />
 
-  </WebView>
+
+            <CheckBox
+                android:id="@+id/checkbox_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:fontFamily="sans-serif"
+                android:text=" Save my login info"
+                android:textSize="15sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+                <ProgressBar
+                    android:id="@+id/progress_loader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:translationZ="10dp"/>
+                <Button
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="18dp"
+                    android:background="@drawable/login_button"
+                    android:fontFamily="sans-serif"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="Login"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/privacyStatement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif"
+                android:paddingTop="25dp"
+                android:text="Privacy Statement"
+                android:textColor="@color/blue"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <WebView
+        android:id="@+id/invisWebView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible">
+
+    </WebView>
 
 
 </FrameLayout>

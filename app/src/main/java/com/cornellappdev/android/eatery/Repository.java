@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery;
 
+import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ public class Repository {
   private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
   private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
   private static final Repository sRepoInstance = new Repository();
+  private BrbInfoModel mCurrentModel;
   private boolean isSearchPressed = false;
 
   public static Repository getInstance() {
@@ -38,4 +40,11 @@ public class Repository {
     isSearchPressed = isPressed;
   }
 
+  public void setBrbInfoModel(BrbInfoModel m) {
+    this.mCurrentModel = m;
+  }
+
+  public BrbInfoModel getBrbInfoModel() {
+    return this.mCurrentModel;
+  }
 }

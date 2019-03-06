@@ -15,49 +15,47 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.util.MoneyUtil;
 
-public class AccountInfoFragment extends Fragment implements NetworkUtilities.BRBAccountCallback {
+public class AccountInfoFragment extends Fragment {
 
-
-
-    private TextView brbText;
-    private TextView laundryText;
-    private TextView swipesText;
+    private TextView mSwipesLabel;
+    private TextView mBrbLabel;
+    private TextView mCityBucksLabel;
+    private TextView mLaundryLabel;
     private String mSessionId;
     private HistoryInfoAdapter mListAdapter;
     private ListView mHistoryView;
-    private View infoHeader;
+    private View mInfoHeader;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
         mHistoryView = rootView.findViewById(R.id.historylistview);
 
-        infoHeader = inflater.inflate(R.layout.account_info_header, null);
+        mInfoHeader = inflater.inflate(R.layout.account_info_header, null);
         getActivity().setTitle("Account Info");
-        brbText = infoHeader.findViewById(R.id.brbText);
-        laundryText = infoHeader.findViewById(R.id.laundryText);
-        swipesText = infoHeader.findViewById(R.id.swipesText);
+        mSwipesLabel = mInfoHeader.findViewById(R.id.swipesValue);
+        mBrbLabel = mInfoHeader.findViewById(R.id.brbValue);
+        mCityBucksLabel = mInfoHeader.findViewById(R.id.cityBucksValue);
+        mLaundryLabel = mInfoHeader.findViewById(R.id.laundryValue);
 
-        String sessionId = getArguments().getString("sessionId");
-        NetworkUtilities.getBrbInfo(sessionId, this);
+        BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
+        if(model.getSwipes() == 1) {
+            mSwipesLabel.setText(model.getSwipes() + " meal left");
+        } else {
+            mSwipesLabel.setText(model.getSwipes() + " meals left");
+        }
+        mBrbLabel.setText(MoneyUtil.toMoneyString(model.getBRBs()));
+        mCityBucksLabel.setText(MoneyUtil.toMoneyString(model.getCityBucks()));
+        mLaundryLabel.setText(MoneyUtil.toMoneyString(model.getLaundry()));
+
+        mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
+        mHistoryView.setAdapter(mListAdapter);
+        mHistoryView.addHeaderView(mInfoHeader, null, false);
 
         return rootView;
     }
 
-    @Override
-    public void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo) {
-
-        getActivity().runOnUiThread(() -> {
-            BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
-            brbText.setText("BRBS: " + model.getBRBs());
-            laundryText.setText("Meal swipes: " + model.getSwipes());
-            swipesText.setText("Laundry: " + model.getLaundry());
-
-            mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
-            mHistoryView.setAdapter(mListAdapter);
-            mHistoryView.addHeaderView(infoHeader, null, false);
-
-        });
-    }
 }

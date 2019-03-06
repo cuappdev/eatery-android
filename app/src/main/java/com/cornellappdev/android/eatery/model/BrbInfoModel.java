@@ -51,6 +51,9 @@ public class BrbInfoModel implements Serializable {
     public int getSwipes(){
         return this.mMealSwipes;
     }
+    public float getCityBucks(){
+        return this.mCityBucks;
+    }
     public ArrayList<HistoryObjectModel> getHistory(){
         return this.mHistory;
     }
