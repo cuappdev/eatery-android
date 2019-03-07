@@ -1,0 +1,34 @@
+query AllCtEateries {
+    collegetownEateries {
+      	address        
+        categories
+        coordinates {
+            latitude
+            longitude
+        }
+        eateryType
+        id
+        imageUrl
+        name
+        paymentMethods {
+            brbs
+            cash
+            cornellCard
+            credit
+            mobile
+            swipes
+        }
+        phone
+        price
+        rating
+        url
+        operatingHours {
+          date
+          events {
+            startTime
+            endTime
+            description
+          }
+        }
+    }
+}
