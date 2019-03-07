@@ -64,10 +64,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
     // Try pulling data from GraphQL, if not fallback to json from cornell dining
-    NetworkUtilities.getEateries(presenter,this);
+    NetworkUtilities.getEateries(this);
     if (JSON_FALLBACK) {
       new ProcessJson().execute("");
     }
+    NetworkUtilities.getCtEateries(this);
   }
 
   public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
