@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
@@ -44,7 +45,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
   protected boolean mOpenPastMidnight = false;
   private CampusArea mArea;
   private Double mLatitude, mLongitude;
-  protected String mBuildingLocation, mName, mNickName;
+  protected String mBuildingLocation, mName, mNickName, mPhoneNumber, mEateryType;
   protected int mId;
   private List<PaymentMethod> mPayMethods;
 
@@ -55,6 +56,14 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 
   public String getNickName() {
     return mNickName;
+  }
+
+  public String getPhoneNumber() {
+    return mPhoneNumber;
+  }
+
+  public String getEateryType() {
+    return mEateryType;
   }
 
   public CampusArea getArea() {
@@ -125,6 +134,8 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     mNickName = eatery.nameShort();
     mLatitude = eatery.coordinates().latitude();
     mLongitude = eatery.coordinates().longitude();
+    mPhoneNumber = eatery.phone();
+    mEateryType = eatery.eateryType();
 
     List<PaymentMethod> paymentMethods = new ArrayList<>();
     if (eatery.paymentMethods().brbs())
@@ -142,6 +153,32 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     mPayMethods = paymentMethods;
 
     mArea = CampusArea.fromShortDescription(eatery.campusArea().descriptionShort());
+  }
+
+  public void parseCtEatery(Context context, AllCtEateriesQuery.CollegetownEatery ctEatery) {
+    mName = ctEatery.name();
+    mNickName = ctEatery.name();
+    mBuildingLocation = ctEatery.address();
+    mLatitude = ctEatery.coordinates().latitude();
+    mLongitude = ctEatery.coordinates().longitude();
+    mId = ctEatery.id();
+    mPhoneNumber = ctEatery.phone();
+    mEateryType = ctEatery.eateryType();
+
+    List<PaymentMethod> paymentMethods = new ArrayList<>();
+    if (ctEatery.paymentMethods().brbs())
+      paymentMethods.add(PaymentMethod.fromShortDescription("debit"));
+    if (ctEatery.paymentMethods().cash())
+      paymentMethods.add(PaymentMethod.fromShortDescription("cash"));
+    if (ctEatery.paymentMethods().cornellCard())
+      paymentMethods.add(PaymentMethod.fromShortDescription("cornellcard"));
+    if (ctEatery.paymentMethods().credit())
+      paymentMethods.add(PaymentMethod.fromShortDescription("credit"));
+    if (ctEatery.paymentMethods().mobile())
+      paymentMethods.add(PaymentMethod.fromShortDescription("mobile"));
+    if (ctEatery.paymentMethods().swipes())
+      paymentMethods.add(PaymentMethod.fromShortDescription("swipes"));
+    mPayMethods = paymentMethods;
   }
 
   public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)

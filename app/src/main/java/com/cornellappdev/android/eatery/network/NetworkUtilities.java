@@ -6,12 +6,13 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,8 +31,21 @@ import okhttp3.OkHttpClient;
 public final class NetworkUtilities {
   private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
   private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
-  private static final String TAG = "NetworkUtilities";
   private static List<AllEateriesQuery.Eatery> eateries;
+  private static List<AllCtEateriesQuery.CollegetownEatery> ctEateries;
+  private static ApolloClient apolloClient;
+  private static Repository rInstance = Repository.getInstance();
+
+  public static boolean ctEateriesLoaded = false;
+
+  private static void buildApolloClient() {
+    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
+
+    apolloClient = ApolloClient.builder()
+        .serverUrl(GRAPHQL_URL)
+        .okHttpClient(okHttpClient)
+        .build();
+  }
 
   public static String getJSON() {
     try {
@@ -57,13 +71,8 @@ public final class NetworkUtilities {
     }
   }
 
-  public static void getEateries(MainPresenter presenter, Activity activity) {
-    OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-
-    ApolloClient apolloClient = ApolloClient.builder()
-        .serverUrl(GRAPHQL_URL)
-        .okHttpClient(okHttpClient)
-        .build();
+  public static void getEateries(Activity activity) {
+    buildApolloClient();
 
     final AllEateriesQuery eateriesQuery = AllEateriesQuery.builder().build();
     ApolloCall<AllEateriesQuery.Data> eateryCall = apolloClient.query(eateriesQuery);
@@ -73,7 +82,7 @@ public final class NetworkUtilities {
         eateries = response.data().eateries();
         ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,activity);
         Collections.sort(eateryList);
-        presenter.setEateryList(eateryList);
+        rInstance.setEateryList(eateryList);
 
         // Runs on MainActivity's UI Thread
         activity.runOnUiThread(new Runnable() {
@@ -94,6 +103,28 @@ public final class NetworkUtilities {
       @Override
       public void onFailure(@NotNull ApolloException e) {
         MainActivity.JSON_FALLBACK = true;
+      }
+    });
+  }
+
+  public static void getCtEateries(Activity activity) {
+    buildApolloClient();
+
+    final AllCtEateriesQuery ctEateriesQuery = AllCtEateriesQuery.builder().build();
+    ApolloCall<AllCtEateriesQuery.Data> ctEateryCall = apolloClient.query(ctEateriesQuery);
+    ctEateryCall.enqueue(new ApolloCall.Callback<AllCtEateriesQuery.Data>() {
+      @Override
+      public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
+        ctEateriesLoaded = true;
+        ctEateries = response.data().collegetownEateries();
+        ArrayList<EateryBaseModel> ctEateryList = JsonUtilities.parseCtEateries(activity, ctEateries);
+        Collections.sort(ctEateryList);
+        rInstance.setCtEateryList(ctEateryList);
+      }
+
+      @Override
+      public void onFailure(@NotNull ApolloException e) {
+        ctEateriesLoaded = false;
       }
     });
   }
