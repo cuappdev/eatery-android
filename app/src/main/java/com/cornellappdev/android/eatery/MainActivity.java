@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     if (JSON_FALLBACK) {
       new ProcessJson().execute("");
     }
+    NetworkUtilities.getCtEateries(this);
   }
 
   public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
