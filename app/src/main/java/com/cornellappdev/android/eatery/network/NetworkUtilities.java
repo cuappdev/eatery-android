@@ -11,8 +11,8 @@ import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.presenter.MainPresenter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +33,9 @@ public final class NetworkUtilities {
   private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
   private static List<AllEateriesQuery.Eatery> eateries;
   private static List<AllCtEateriesQuery.CollegetownEatery> ctEateries;
+  private static ArrayList<EateryBaseModel> eateryList;
   private static ApolloClient apolloClient;
+  private static Repository rInstance = Repository.getInstance();
 
   public static boolean ctEateriesLoaded = false;
 
@@ -70,7 +72,7 @@ public final class NetworkUtilities {
     }
   }
 
-  public static void getEateries(MainPresenter presenter, Activity activity) {
+  public static void getEateries(Activity activity) {
     buildApolloClient();
 
     final AllEateriesQuery eateriesQuery = AllEateriesQuery.builder().build();
@@ -79,9 +81,10 @@ public final class NetworkUtilities {
       @Override
       public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
         eateries = response.data().eateries();
-        ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,activity);
+        eateryList = JsonUtilities.parseEateries(eateries,activity);
         Collections.sort(eateryList);
-        presenter.setEateryList(eateryList);
+        rInstance.setEateryList(eateryList);
+
 
         // Runs on MainActivity's UI Thread
         activity.runOnUiThread(new Runnable() {
@@ -106,7 +109,7 @@ public final class NetworkUtilities {
     });
   }
 
-  public static List<AllCtEateriesQuery.CollegetownEatery> getCtEateries(Activity activity) {
+  public static ArrayList<EateryBaseModel> getCtEateries(Activity activity) {
     buildApolloClient();
 
     final AllCtEateriesQuery ctEateriesQuery = AllCtEateriesQuery.builder().build();
@@ -116,7 +119,7 @@ public final class NetworkUtilities {
       public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
         ctEateriesLoaded = true;
         ctEateries = response.data().collegetownEateries();
-        ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseCtEateries(activity, ctEateries);
+        eateryList = JsonUtilities.parseCtEateries(activity, ctEateries);
         Collections.sort(eateryList);
       }
 
@@ -125,6 +128,6 @@ public final class NetworkUtilities {
         ctEateriesLoaded = false;
       }
     });
-    return ctEateries;
+    return eateryList;
   }
 }

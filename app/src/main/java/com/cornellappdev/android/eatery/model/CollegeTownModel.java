@@ -20,12 +20,14 @@ import java.util.Map;
 
 public class CollegeTownModel extends EateryBaseModel implements Serializable{
   private List<String> mCategories;
+  private List<String> mCtEateryMenu; // To be populated upon menu addition to backend
   private Map<LocalDate, List<Interval>> mHours;
   private List<LocalDate> mSortedDates;
   protected String mImageUrl, mPrice, mRating, mYelpUrl;
 
   public CollegeTownModel() {
     mCategories = new ArrayList<>();
+    mCtEateryMenu = new ArrayList<>();
     mHours = new HashMap<>();
     mSortedDates = new ArrayList<>();
   }
@@ -106,7 +108,7 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable{
 
   @Override
   public HashSet<String> getMealItems() {
-    return null;
+    return new HashSet<>(mCtEateryMenu);
   }
 
   @Override

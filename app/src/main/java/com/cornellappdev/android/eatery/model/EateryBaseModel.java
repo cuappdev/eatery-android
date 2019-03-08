@@ -157,6 +157,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 
   public void parseCtEatery(Context context, AllCtEateriesQuery.CollegetownEatery ctEatery) {
     mName = ctEatery.name();
+    mNickName = ctEatery.name();
     mBuildingLocation = ctEatery.address();
     mLatitude = ctEatery.coordinates().latitude();
     mLongitude = ctEatery.coordinates().longitude();
