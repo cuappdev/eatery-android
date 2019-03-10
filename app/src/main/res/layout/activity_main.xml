@@ -10,7 +10,18 @@
     android:id="@+id/frame_fragment_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="?attr/actionBarSize" />
+    android:layout_marginBottom="?attr/actionBarSize" >
+  </FrameLayout>
+
+  <Button
+    android:id="@+id/collegetown_switch_button"
+    android:layout_width="250dp"
+    android:layout_height="55dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="90dp"
+    android:background="@drawable/pill_bg"
+    android:text="Button" />
 
   <android.support.design.widget.BottomNavigationView
     android:id="@+id/bottom_navigation"

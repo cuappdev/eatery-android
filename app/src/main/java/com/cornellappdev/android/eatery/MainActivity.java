@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -22,95 +24,118 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-  private MainPresenter presenter;
-  public BottomNavigationView bnv;
-  public CafeteriaDbHelper dbHelper;
+    public static boolean JSON_FALLBACK = false;
+    public BottomNavigationView bnv;
+    public CafeteriaDbHelper dbHelper;
+    public Button mCollegetownSwitchButton;
+    private MainPresenter presenter;
+    private MainListFragment mainListFragment;
+    private WeeklyMenuFragment weeklyMenuFragment;
+    private AboutFragment aboutFragment;
 
-  public static boolean JSON_FALLBACK = false;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+        presenter = new MainPresenter();
+        dbHelper = new CafeteriaDbHelper(this);
+        mainListFragment = new MainListFragment();
+        weeklyMenuFragment = new WeeklyMenuFragment();
+        aboutFragment = new AboutFragment();
+        mCollegetownSwitchButton = findViewById(R.id.collegetown_switch_button);
+        bnv = findViewById(R.id.bottom_navigation);
+        // Add functionality to bottom nav bar
+        bnv.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        FragmentTransaction transaction =
+                                getSupportFragmentManager().beginTransaction();
+                        switch (item.getItemId()) {
+                            case R.id.action_home:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, mainListFragment)
+                                        .commit();
+                                break;
+                            case R.id.action_week:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
+                                        .commit();
+                                break;
+                            case R.id.action_brb:
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, aboutFragment)
+                                        .commit();
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
-    presenter = new MainPresenter();
-    dbHelper = new CafeteriaDbHelper(this);
-    bnv = findViewById(R.id.bottom_navigation);
-    // Add functionality to bottom nav bar
-    bnv.setOnNavigationItemSelectedListener(
-        new BottomNavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            switch (item.getItemId()) {
-              case R.id.action_home:
-                transaction
-                    .replace(R.id.frame_fragment_holder, new MainListFragment())
-                    .commit();
-                break;
-              case R.id.action_week:
-                transaction
-                    .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
-                    .commit();
-                break;
-              case R.id.action_brb:
-                transaction
-                    .replace(R.id.frame_fragment_holder, new AboutFragment())
-                    .commit();
-                break;
+        // Try pulling data from GraphQL, if not fallback to json from cornell dining
+        NetworkUtilities.getEateries(this);
+        if (JSON_FALLBACK) {
+            new ProcessJson().execute("");
+        }
+
+        // Disable switch button if failed to retrieve data for collegetown eateries
+        NetworkUtilities.getCtEateries(this);
+        if (NetworkUtilities.collegetownEateriesLoaded) {
+            mCollegetownSwitchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainListFragment.handleSwitchButtonPress();
+                }
+            });
+        } else {
+            mCollegetownSwitchButton.setEnabled(false);
+        }
+    }
+
+    public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected ArrayList<EateryBaseModel> doInBackground(String... params) {
+            ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
+            ConnectivityManager cm =
+                    (ConnectivityManager) getApplicationContext().getSystemService(
+                            Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            if (!isConnected
+                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
+                    != null) {
+                eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(),
+                        getApplicationContext());
+            } else {
+                String json = NetworkUtilities.getJSON();
+                dbHelper.addData(json);
+                eateryList = JsonUtilities.parseJson(json, getApplicationContext());
             }
-            return true;
-          }
-        });
+            Collections.sort(eateryList);
+            return eateryList;
+        }
 
-    // Try pulling data from GraphQL, if not fallback to json from cornell dining
-    NetworkUtilities.getEateries(this);
-    if (JSON_FALLBACK) {
-      new ProcessJson().execute("");
+        @Override
+        protected void onPostExecute(ArrayList<EateryBaseModel> result) {
+            presenter.setEateryList(result);
+
+            try {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_fragment_holder, new MainListFragment())
+                        .commit();
+            } catch (Exception e) {
+                super.onPostExecute(result);
+            }
+        }
     }
-    NetworkUtilities.getCtEateries(this);
-  }
-
-  public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
-
-    @Override
-    protected void onPreExecute() {
-      super.onPreExecute();
-    }
-
-    @Override
-    protected ArrayList<EateryBaseModel> doInBackground(String... params) {
-      ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-      ConnectivityManager cm =
-          (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-      NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-      boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-      if (!isConnected
-          && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-        eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
-      } else {
-        String json = NetworkUtilities.getJSON();
-        dbHelper.addData(json);
-        eateryList = JsonUtilities.parseJson(json, getApplicationContext());
-      }
-      Collections.sort(eateryList);
-      return eateryList;
-    }
-
-    @Override
-    protected void onPostExecute(ArrayList<EateryBaseModel> result) {
-      presenter.setEateryList(result);
-
-      try {
-        getSupportFragmentManager()
-            .beginTransaction()
-            .replace(R.id.frame_fragment_holder, new MainListFragment())
-            .commit();
-      } catch (Exception e) {
-        super.onPostExecute(result);
-      }
-    }
-  }
 }
