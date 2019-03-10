@@ -22,9 +22,9 @@ query AllCtEateries {
         price
         rating
         url
-        operatingHours{
+        operatingHours {
           date
-          events{
+          events {
             startTime
             endTime
             description
