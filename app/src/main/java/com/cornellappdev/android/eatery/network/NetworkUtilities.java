@@ -32,11 +32,11 @@ public final class NetworkUtilities {
   private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
   private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
   private static List<AllEateriesQuery.Eatery> eateries;
-  private static List<AllCtEateriesQuery.CollegetownEatery> ctEateries;
+  private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
   private static ApolloClient apolloClient;
   private static Repository rInstance = Repository.getInstance();
 
-  public static boolean ctEateriesLoaded = false;
+  public static boolean collegetownEateriesLoaded = false;
 
   private static void buildApolloClient() {
     OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
@@ -115,15 +115,16 @@ public final class NetworkUtilities {
     ctEateryCall.enqueue(new ApolloCall.Callback<AllCtEateriesQuery.Data>() {
       @Override
       public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
-        ctEateriesLoaded = true;
-        ArrayList<EateryBaseModel> ctEateryList = JsonUtilities.parseCtEateries(activity, ctEateries);
-        Collections.sort(ctEateryList);
-        rInstance.setCtEateryList(ctEateryList);
+        collegetownEateriesLoaded = true;
+        collegetownEateries = response.data().collegetownEateries();
+        ArrayList<EateryBaseModel> collegetownEateryList = JsonUtilities.parseCtEateries(activity, collegetownEateries);
+        Collections.sort(collegetownEateryList);
+        rInstance.setCtEateryList(collegetownEateryList);
       }
 
       @Override
       public void onFailure(@NotNull ApolloException e) {
-        ctEateriesLoaded = false;
+        collegetownEateriesLoaded = false;
       }
     });
   }

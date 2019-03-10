@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Repository {
   private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
-  private ArrayList<EateryBaseModel> mCtEateryList = new ArrayList<>();
+  private ArrayList<EateryBaseModel> mCollegetownEateryList = new ArrayList<>();
   private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
   private static final Repository sRepoInstance = new Repository();
   private boolean isSearchPressed = false;
@@ -24,11 +24,11 @@ public class Repository {
   }
 
   public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
-    this.mCtEateryList = ctEateryList;
+    this.mCollegetownEateryList = ctEateryList;
   }
 
   public ArrayList<EateryBaseModel> getCtEateryList() {
-    return mCtEateryList;
+    return mCollegetownEateryList;
   }
 
   public void setSearchList(ArrayList<EateryBaseModel> searchList) {

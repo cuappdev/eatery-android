@@ -119,14 +119,14 @@ public final class JsonUtilities {
     return eateryList;
   }
 
-  public static ArrayList<EateryBaseModel> parseCtEateries(Context context, List<AllCtEateriesQuery.CollegetownEatery> ctEateries) {
-    ArrayList<EateryBaseModel> ctEateryList = new ArrayList<>();
-    for (AllCtEateriesQuery.CollegetownEatery eatery : ctEateries) {
+  public static ArrayList<EateryBaseModel> parseCtEateries(Context context, List<AllCtEateriesQuery.CollegetownEatery> collegetowntEateries) {
+    ArrayList<EateryBaseModel> collegetownEateryList = new ArrayList<>();
+    for (AllCtEateriesQuery.CollegetownEatery eatery : collegetowntEateries) {
       EateryBaseModel model = CollegeTownModel.fromEatery(context, eatery);
       if (model != null) {
-        ctEateryList.add(model);
+        collegetownEateryList.add(model);
       }
     }
-    return ctEateryList;
+    return collegetownEateryList;
   }
 }
