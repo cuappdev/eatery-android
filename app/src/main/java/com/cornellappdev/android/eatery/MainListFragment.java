@@ -1,9 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
-
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -36,6 +32,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
@@ -255,10 +255,13 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list) {
-        Intent intent = new Intent(getActivity(), MenuActivity.class);
-        intent.putExtra("cafeInfo", list.get(position));
-        intent.putExtra("locName", list.get(position).getNickName());
-        startActivity(intent);
+        EateryBaseModel model = list.get(position);
+        if (!model.isCtEatery()) {
+            Intent intent = new Intent(getActivity(), MenuActivity.class);
+            intent.putExtra("cafeInfo", model);
+            intent.putExtra("locName", model.getNickName());
+            startActivity(intent);
+        }
     }
 
     @Override
