@@ -100,7 +100,25 @@
           android:textStyle="normal" />
 
         <Button
-          android:id="@+id/brb"
+            android:id="@+id/brb"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:stateListAnimator="@null"
+            android:text="BRB"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="normal" />
+
+        <Button
+          android:id="@+id/american"
           android:layout_width="65dp"
           android:layout_height="35dp"
           android:layout_marginLeft="6dp"
@@ -111,11 +129,88 @@
           android:gravity="center_horizontal"
           android:padding="8dp"
           android:stateListAnimator="@null"
-          android:text="BRB"
+          android:text="American"
           android:textAllCaps="false"
           android:textColor="@color/blue"
           android:textSize="14sp"
-          android:textStyle="normal" />
+          android:textStyle="normal"
+          android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/korean"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:stateListAnimator="@null"
+            android:text="Korean"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/chinese"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:stateListAnimator="@null"
+            android:text="Chinese"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/japanese"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:stateListAnimator="@null"
+            android:text="Japanese"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/indian"
+            android:layout_width="65dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="8dp"
+            android:stateListAnimator="@null"
+            android:text="Indian"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone"/>
       </LinearLayout>
     </HorizontalScrollView>
 

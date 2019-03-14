@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,20 +25,24 @@ import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
+import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
     private static MainListPresenter mListPresenter;
     private static MainListAdapter mListAdapter;
-    private static SparseArray<Button> mButtons;
+    private static Map<Integer, Button> mCampusButtons;
+    private static Map<Integer, Button> mCollegetownButtons;
     private RecyclerView mRecyclerView;
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
@@ -72,13 +75,15 @@ public class MainListFragment extends Fragment
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setVisibility(View.VISIBLE);
 
-        mButtons = new SparseArray<>();
-        initializeButtons(rootView);
+        mCampusButtons = new HashMap<>();
+        mCollegetownButtons = new HashMap<>();
+        initializeCampusEateryButtons(rootView);
+        initializeCollegeTownEateryButtons(rootView);
 
         return rootView;
     }
 
-    public void initializeButtons(View rootView) {
+    public void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
                 R.id.northButton,
                 R.id.westButton,
@@ -87,9 +92,42 @@ public class MainListFragment extends Fragment
                 R.id.brb};
         for (int id : viewIds) {
             Button tempButton = rootView.findViewById(id);
-            mButtons.put(id, tempButton);
+            mCampusButtons.put(id, tempButton);
             tempButton.setOnClickListener(this);
             changeButtonColor(R.color.blue, R.color.wash, tempButton);
+        }
+    }
+
+    public void initializeCollegeTownEateryButtons(View rootView) {
+        int[] viewIds = {
+                R.id.american,
+                R.id.korean,
+                R.id.chinese,
+                R.id.japanese,
+                R.id.indian};
+        for (int id : viewIds) {
+            Button tempButton = rootView.findViewById(id);
+            mCollegetownButtons.put(id, tempButton);
+            tempButton.setOnClickListener(this);
+            changeButtonColor(R.color.blue, R.color.wash, tempButton);
+        }
+    }
+
+    public void changeButtonVisbility(boolean setCampusbuttonVisible) {
+        if (setCampusbuttonVisible) {
+            for (Button button : mCampusButtons.values()) {
+                button.setVisibility(View.VISIBLE);
+            }
+            for (Button button : mCollegetownButtons.values()) {
+                button.setVisibility(View.GONE);
+            }
+        } else {
+            for (Button button : mCampusButtons.values()) {
+                button.setVisibility(View.GONE);
+            }
+            for (Button button : mCollegetownButtons.values()) {
+                button.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -127,11 +165,34 @@ public class MainListFragment extends Fragment
         mListPresenter.setPaymentSet(paymentSet);
     }
 
-    public void getCurrentEateryCategory() {
-
+    public void getCurrentCategory() {
+        HashSet<Category> categorySet = new HashSet<>();
+        for (Button button : mCategoryButtonsPressed) {
+            switch(button.getId()) {
+                case R.id.american:
+                    categorySet.add(Category.American);
+                    break;
+                case R.id.korean:
+                    categorySet.add(Category.Korean);
+                    break;
+                case R.id.chinese:
+                    categorySet.add(Category.Chinese);
+                    break;
+                case R.id.japanese:
+                    categorySet.add(Category.Japanese);
+                    break;
+                case R.id.indian:
+                    categorySet.add(Category.Indian);
+                    break;
+                default:
+                    break;
+            }
+        }
+        mListPresenter.setCategorySet(categorySet);
     }
 
-    public void handleSwitchButtonPress() {
+    public void handleCollegetownSwitchButtonPress() {
+        changeButtonVisbility(false);
         mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
         updateListAdapter();
     }
@@ -161,6 +222,18 @@ public class MainListFragment extends Fragment
         mListPresenter.filterImageList();
     }
 
+    private void handleCategoryButtonPress(Button button) {
+        if (mCategoryButtonsPressed.contains(button)) {
+            changeButtonColor(R.color.blue, R.color.wash, button);
+            mCategoryButtonsPressed.remove(button);
+        } else {
+            changeButtonColor(R.color.white, R.color.blue, button);
+            mCategoryButtonsPressed.add(button);
+        }
+        getCurrentCategory();
+        mListPresenter.filterImageList();
+    }
+
     private void updateListAdapter(){
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
         Collections.sort(cafesToDisplay);
@@ -169,12 +242,13 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        mListPresenter.setCurrentList(mListPresenter.getEateryList());
         if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
                 || view.getId() == R.id.westButton) {
-            handleAreaButtonPress(mButtons.get(view.getId()));
+            handleAreaButtonPress(mCampusButtons.get(view.getId()));
         } else if (view.getId() == R.id.brb || view.getId() == R.id.swipes) {
-            handlePaymentButtonPress(mButtons.get(view.getId()));
+            handlePaymentButtonPress(mCampusButtons.get(view.getId()));
+        } else {
+            handleCategoryButtonPress(mCollegetownButtons.get(view.getId()));
         }
         updateListAdapter();
     }

@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             mCollegetownSwitchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mainListFragment.handleSwitchButtonPress();
+                    mainListFragment.handleCollegetownSwitchButtonPress();
                 }
             });
         } else {
@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

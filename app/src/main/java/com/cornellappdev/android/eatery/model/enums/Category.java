@@ -4,7 +4,7 @@ public enum Category {
     Coffee,
     American,
     Chinese,
-    MiddleEastern,
+    Mediterranean,
     Japanese,
     Indian,
     Korean,
@@ -32,9 +32,9 @@ public enum Category {
                 case "dim sum":
                     return Chinese;
                 case "middle eastern":
-                    return MiddleEastern;
+                    return Mediterranean;
                 case "mediterranean":
-                    return MiddleEastern;
+                    return Mediterranean;
                 case "japanese":
                     return Japanese;
                 case "poke":
@@ -56,7 +56,7 @@ public enum Category {
                 case "desserts":
                     return Desserts;
                 default:
-                    return Coffee;
+                    return null;
             }
         }
 
