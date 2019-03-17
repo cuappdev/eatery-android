@@ -1,7 +1,5 @@
 package com.cornellappdev.android.eatery.model;
 
-import android.content.Context;
-
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 
 import java.io.Serializable;
@@ -15,7 +13,7 @@ public class BrbInfoModel implements Serializable {
     private ArrayList<HistoryObjectModel> mHistory;
 
     public BrbInfoModel(float cityBucks, float laundry, float brbs,
-                        int mealSwipes, ArrayList<HistoryObjectModel> history){
+                        int mealSwipes, ArrayList<HistoryObjectModel> history) {
         this.mCityBucks = cityBucks;
         this.mLaundry = laundry;
         this.mBRBs = brbs;
@@ -23,14 +21,15 @@ public class BrbInfoModel implements Serializable {
         this.mHistory = history;
     }
 
-    public static BrbInfoModel loadFromInfo(BrbInfoQuery.AccountInfo brbInfo){
+    public static BrbInfoModel loadFromInfo(BrbInfoQuery.AccountInfo brbInfo) {
         float cityBucks = Float.parseFloat(brbInfo.cityBucks());
         float laundry = Float.parseFloat(brbInfo.laundry());
         float brbs = Float.parseFloat(brbInfo.brbs());
         int mealSwipes = 0;
         try {
             mealSwipes = Integer.parseInt(brbInfo.swipes());
-        }catch(NumberFormatException ex){
+        }
+        catch(NumberFormatException ex) {
 
         }
         ArrayList<HistoryObjectModel> history = new ArrayList<HistoryObjectModel>();

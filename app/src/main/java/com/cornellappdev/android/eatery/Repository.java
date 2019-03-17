@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Context;
+
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
@@ -11,6 +13,7 @@ public class Repository {
   private static final Repository sRepoInstance = new Repository();
   private BrbInfoModel mCurrentModel;
   private boolean isSearchPressed = false;
+  private boolean isSaveInfoChecked = false;
 
   public static Repository getInstance() {
     return sRepoInstance;
@@ -46,5 +49,13 @@ public class Repository {
 
   public BrbInfoModel getBrbInfoModel() {
     return this.mCurrentModel;
+  }
+
+  public void setSaveCredentials(boolean isChecked) {
+    this.isSaveInfoChecked = isChecked;
+  }
+
+  public boolean getSaveCredentials() {
+      return this.isSaveInfoChecked;
   }
 }
