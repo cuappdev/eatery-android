@@ -27,6 +27,8 @@
     <string name="auto_login">Auto login on start</string>
     <string name="password">Password</string>
     <string name="netid">NetID</string>
+    <string name="password_hint">Type your password</string>
+    <string name="netid_hint">Type your netid (e.g. abc123)</string>
     <string name="about">About</string>
     <string name="accounts">Accounts</string>
     <string name="meal_swipes">Meal Swipes</string>
