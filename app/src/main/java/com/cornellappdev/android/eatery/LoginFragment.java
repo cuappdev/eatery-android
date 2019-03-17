@@ -85,6 +85,10 @@ public class LoginFragment extends Fragment {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
                 {
                     mAccountPresenter.setSaveCredentials(isChecked);
+                    if(!isChecked){
+                        mAccountPresenter.setContext(getContext());
+                        mAccountPresenter.eraseSavedCredentials();
+                    }
                 }
             });
             GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
@@ -146,7 +150,7 @@ public class LoginFragment extends Fragment {
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
         mSaveInfoCheck.setEnabled(false);
-        Log.i("Enabled", "NOP");
+        mPrivacy.setEnabled(false);
     }
 
     private void resumeGUI() {
@@ -155,6 +159,7 @@ public class LoginFragment extends Fragment {
         mLoginButton.setText(R.string.login_label);
         mNetID.setEnabled(true);
         mPassword.setEnabled(true);
+        mPrivacy.setEnabled(true);
         mSaveInfoCheck.setEnabled(true);
     }
 

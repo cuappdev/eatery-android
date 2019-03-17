@@ -10,7 +10,7 @@ public class GetLoginUtilities {
     private static boolean mEvaluatedJS = false;
     private static String loginJS;
 
-    public static void resetLoginAbility(String netid, String password){
+    public static void resetLoginAbility(String netid, String password) {
         mEvaluatedJS = false;
         loginJS = "document.getElementById('netid').value = '" + netid + "';" +
                 "document.getElementById('password').value = '" + password + "';" +
@@ -22,12 +22,12 @@ public class GetLoginUtilities {
     }
 
     public static void loginBrb (String url, WebView loadedPage, GetLoginUtilities.getLoginCallback callback) {
-        if (!mEvaluatedJS) {
+        if(!mEvaluatedJS) {
             loadedPage.evaluateJavascript(loginJS, (String s) -> {
                 mEvaluatedJS = true;
             });
-        } else {
-            if (url.contains("sessionId=")) {
+        }else {
+            if(url.contains("sessionId=")) {
                 String sessionId = url.substring(url.indexOf("sessionId=") + "sessionId=".length());
                 NetworkUtilities.getBrbInfo(sessionId, new NetworkUtilities.BRBAccountCallback() {
                     @Override
@@ -36,13 +36,13 @@ public class GetLoginUtilities {
                     }
                 });
 
-            } else {
+            }else {
                 String checkJS = "(function() { var element = document.getElementById('netid'); " +
                         "if(element) return 'LOGINFAIL'; else return 'LOGINSUCCESS'; })()";
                 // Checks if the page still has an element by the id 'netid'. If it does return 'LOGINFAIL'
                 loadedPage.evaluateJavascript(checkJS, (String returned) ->
                 {
-                    if (returned.equals("\"LOGINFAIL\"")) {
+                    if(returned.equals("\"LOGINFAIL\"")) {
                         callback.failedLogin();
                     }
                 });

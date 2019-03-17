@@ -51,11 +51,13 @@ public class AccountInfoFragment extends Fragment {
         mLaundryLabel = mInfoHeader.findViewById(R.id.laundryValue);
 
         BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
+        String outputText="";
         if(model.getSwipes() == 1) {
-            mSwipesLabel.setText(model.getSwipes() + " meal left");
+            outputText=model.getSwipes() + " meal left";
         } else {
-            mSwipesLabel.setText(model.getSwipes() + " meals left");
+            outputText=model.getSwipes() + " meals left";
         }
+        mSwipesLabel.setText(outputText);
         mBrbLabel.setText(MoneyUtil.toMoneyString(model.getBRBs()));
         mCityBucksLabel.setText(MoneyUtil.toMoneyString(model.getCityBucks()));
         mLaundryLabel.setText(MoneyUtil.toMoneyString(model.getLaundry()));
@@ -81,7 +83,7 @@ public class AccountInfoFragment extends Fragment {
                         .commit();
                 return true;
             default:
-                // The user's action was not recognized, and invoke the superclass to handle it.
+                // The user's action was not recognized, and invoke the superclass to handle it
                 return super.onOptionsItemSelected(item);
         }
     }

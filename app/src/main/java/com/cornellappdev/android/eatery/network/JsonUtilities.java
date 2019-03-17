@@ -118,7 +118,7 @@ public final class JsonUtilities {
     }
     return eateryList;
   }
-  public static BrbInfoModel parseBrbInfo(BrbInfoQuery.AccountInfo brbInfo){
+  public static BrbInfoModel parseBrbInfo(BrbInfoQuery.AccountInfo brbInfo) {
     BrbInfoModel model = BrbInfoModel.loadFromInfo(brbInfo);
     return model;
   }

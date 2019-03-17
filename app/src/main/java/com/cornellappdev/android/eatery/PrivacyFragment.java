@@ -1,18 +1,13 @@
 package com.cornellappdev.android.eatery;
 
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 public class PrivacyFragment extends Fragment {
 
@@ -35,7 +30,6 @@ public class PrivacyFragment extends Fragment {
                 getActivity().onBackPressed();
                 return true;
             default:
-                // The user's action was not recognized, and invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }

@@ -41,7 +41,6 @@
                 android:paddingEnd="20dp"
                 android:paddingTop="30dp"
                 android:text="@string/netid"
-                android:hint="@string/netid_hint"
                 android:textColor="@color/primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -54,6 +53,7 @@
                 android:layout_marginEnd="18dp"
                 android:ems="10"
                 android:fontFamily="sans-serif"
+                android:hint="@string/netid_hint"
                 android:inputType="textPersonName"
                 android:paddingTop="15dp"
                 android:paddingBottom="20dp"
@@ -67,7 +67,6 @@
                 android:paddingStart="20dp"
                 android:paddingTop="15dp"
                 android:text="@string/password"
-                android:hint="@string/password_hint"
                 android:textColor="@color/primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -81,6 +80,7 @@
                 android:ems="10"
                 android:fontFamily="sans-serif"
                 android:imeOptions="actionDone"
+                android:hint="@string/password_hint"
                 android:inputType="textPassword"
                 android:paddingTop="15dp"
                 android:paddingBottom="20dp"

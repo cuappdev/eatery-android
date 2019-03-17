@@ -3,18 +3,18 @@ package com.cornellappdev.android.eatery.model;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 
-public class HistoryObjectModel{
+public class HistoryObjectModel {
     private String mName;
     private String mTimestamp;
     private float mAmount;
 
-    public HistoryObjectModel(String name, String timestamp, float amount){
+    public HistoryObjectModel(String name, String timestamp, float amount) {
         this.mName = name;
         this.mTimestamp = timestamp;
         this.mAmount = amount;
     }
 
-    public static HistoryObjectModel parseHistoryObject(BrbInfoQuery.History historyInfo){
+    public static HistoryObjectModel parseHistoryObject(BrbInfoQuery.History historyInfo) {
         String name = historyInfo.name();
         String timestamp = historyInfo.timestamp();
         float amount = Float.parseFloat(historyInfo.amount());

@@ -36,5 +36,6 @@
     <string name="city_bucks">City Bucks</string>
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
+    <string name="google_maps_key"></string>
 
 </resources>
