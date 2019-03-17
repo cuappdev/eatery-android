@@ -9,11 +9,12 @@ import java.util.ArrayList;
 
 public class Repository {
   private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
+  private ArrayList<EateryBaseModel> mCollegetownEateryList = new ArrayList<>();
   private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
   private static final Repository sRepoInstance = new Repository();
   private BrbInfoModel mCurrentModel;
-  private boolean isSearchPressed = false;
-  private boolean isSaveInfoChecked = false;
+  private boolean mIsSearchPressed = false;
+  private boolean mIsSaveInfoChecked = false;
 
   public static Repository getInstance() {
     return sRepoInstance;
@@ -27,6 +28,14 @@ public class Repository {
     return mEateryList;
   }
 
+  public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
+    this.mCollegetownEateryList = ctEateryList;
+  }
+
+  public ArrayList<EateryBaseModel> getCtEateryList() {
+    return mCollegetownEateryList;
+  }
+
   public void setSearchList(ArrayList<EateryBaseModel> searchList) {
     this.mSearchList = searchList;
   }
@@ -36,11 +45,11 @@ public class Repository {
   }
 
   public boolean getIsSearchPressed() {
-    return isSearchPressed;
+    return mIsSearchPressed;
   }
 
   public void setIsSearchPressed(boolean isPressed) {
-    isSearchPressed = isPressed;
+    mIsSearchPressed = isPressed;
   }
 
   public void setBrbInfoModel(BrbInfoModel m) {
@@ -52,10 +61,11 @@ public class Repository {
   }
 
   public void setSaveCredentials(boolean isChecked) {
-    this.isSaveInfoChecked = isChecked;
+    this.mIsSaveInfoChecked = isChecked;
   }
 
   public boolean getSaveCredentials() {
-      return this.isSaveInfoChecked;
+      return this.mIsSaveInfoChecked;
   }
+
 }

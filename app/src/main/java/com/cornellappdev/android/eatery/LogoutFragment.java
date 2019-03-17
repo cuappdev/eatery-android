@@ -65,6 +65,7 @@ public class LogoutFragment extends Fragment {
                         .commit();
             }
         });
+
         mAboutButton=rootView.findViewById(R.id.about_segway);
         mAboutButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){

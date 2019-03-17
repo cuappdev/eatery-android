@@ -30,11 +30,11 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainPresenter presenter;
-    public BottomNavigationView bnv;
-    public CafeteriaDbHelper dbHelper;
+  private MainPresenter presenter;
+  public BottomNavigationView bnv;
+  public CafeteriaDbHelper dbHelper;
 
-    public static boolean JSON_FALLBACK = false;
+  public static boolean JSON_FALLBACK = false;
 
     LoginFragment loginFragment;
     public static WebView sLoginWebView; // Should never be displayed, methods just used to auto-submit form for session_id
@@ -116,10 +116,11 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Try pulling data from GraphQL, if not fallback to json from cornell dining
-        NetworkUtilities.getEateries(presenter, this);
+        NetworkUtilities.getEateries(this);
         if (JSON_FALLBACK) {
             new ProcessJson().execute("");
         }
+        NetworkUtilities.getCtEateries(this);
     }
 
     public void setLoginInstance(LoginFragment instance){
