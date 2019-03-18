@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:orientation="vertical"
-  android:padding="5dp">
-
-  <TextView
-    android:id="@+id/header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
-    android:paddingTop="8dp"
-    android:textColor="@color/primary"
-    android:textSize="20sp" />
-
-  <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingTop="2dp"
-    android:paddingBottom="14dp">
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="5dp">
 
     <TextView
-      android:id="@+id/weekly_open"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingRight="4dp"
-      android:text="Open"
-      android:textSize="12sp"
-      android:textStyle="bold" />
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="8dp"
+        android:textColor="@color/primary"
+        android:textSize="20sp"/>
 
-    <TextView
-      android:id="@+id/weekly_time"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Time"
-      android:textSize="12sp" />
-  </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="14dp">
+
+        <TextView
+            android:id="@+id/weekly_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="4dp"
+            android:text="Open"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/weekly_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:textSize="12sp"/>
+    </LinearLayout>
 </LinearLayout>

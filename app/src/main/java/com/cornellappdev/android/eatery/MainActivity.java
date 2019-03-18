@@ -4,12 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -30,14 +29,15 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-  private MainPresenter presenter;
-  public BottomNavigationView bnv;
-  public CafeteriaDbHelper dbHelper;
+    private MainPresenter presenter;
+    public BottomNavigationView bnv;
+    public CafeteriaDbHelper dbHelper;
 
-  public static boolean JSON_FALLBACK = false;
+    public static boolean JSON_FALLBACK = false;
 
     LoginFragment loginFragment;
-    public static WebView sLoginWebView; // Should never be displayed, methods just used to auto-submit form for session_id
+    public static WebView sLoginWebView;
+            // Should never be displayed, methods just used to auto-submit form for session_id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
                 BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
                 Repository.getInstance().setBrbInfoModel(model);
                 loginFragment.setLoading(false);
-                if (getSupportFragmentManager().findFragmentById(R.id.frame_fragment_holder) instanceof LoginFragment) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if (getSupportFragmentManager().findFragmentById(
+                        R.id.frame_fragment_holder) instanceof LoginFragment) {
+                    // If the user successfully logged in, if the curret
+                    FragmentTransaction transaction =
+                            getSupportFragmentManager().beginTransaction();
                     transaction
                             .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
                             .commit();
@@ -66,12 +69,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        // Removed saved data from webview with CookeManager
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
-        sLoginWebView=findViewById(R.id.login_webview);
+        sLoginWebView = findViewById(R.id.login_webview);
         sLoginWebView.getSettings().setJavaScriptEnabled(true);
         String[] fileData = AccountManagerUtil.readSavedCredentials(getApplicationContext());
-        if(fileData!=null) {
+        if (fileData != null) { // Automatically log into user's account if file exists
+            // A nonexistent file (fileData == null) means that the user has specified they do not
+            // want to save data
             loginFragment.setLoading(true);
             GetLoginUtilities.resetLoginAbility(fileData[0], fileData[1]);
             sLoginWebView.setWebViewClient(new WebViewClient() {
@@ -92,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction transaction =
+                                getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
                                 transaction
@@ -101,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case R.id.action_week:
                                 transaction
-                                        .replace(R.id.frame_fragment_holder, new WeeklyMenuFragment())
+                                        .replace(R.id.frame_fragment_holder,
+                                                new WeeklyMenuFragment())
                                         .commit();
                                 break;
                             case R.id.action_brb:
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         NetworkUtilities.getCtEateries(this);
     }
 
-    public void setLoginInstance(LoginFragment instance){
+    public void setLoginInstance(LoginFragment instance) {
         loginFragment = instance;
     }
 
@@ -138,14 +146,17 @@ public class MainActivity extends AppCompatActivity {
         protected ArrayList<EateryBaseModel> doInBackground(String... params) {
             ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
             ConnectivityManager cm =
-                    (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                    (ConnectivityManager) getApplicationContext().getSystemService(
+                            Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             if (!isConnected
-                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext()) != null) {
-                eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext());
+                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
+                    != null) {
+                eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(),
+                        getApplicationContext());
             } else {
                 String json = NetworkUtilities.getJSON();
                 dbHelper.addData(json);

@@ -37,5 +37,6 @@
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
     <string name="google_maps_key"></string>
+    <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
 
 </resources>

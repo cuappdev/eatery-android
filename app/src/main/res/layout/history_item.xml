@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/history_item"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:id="@+id/history_item"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <View
         android:id="@+id/horiline"
@@ -20,35 +20,35 @@
                 android:id="@+id/purchase_eatery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingTop="15dp"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="20sp"
-                android:textColor="#222222"/>
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="#222222"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/purchase_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="20dp"
                 android:fontFamily="sans-serif"
-                android:textSize="16sp"
-                android:textColor="#888888"/>
+                android:paddingStart="15dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="20dp"
+                android:textColor="#888888"
+                android:textSize="16sp"/>
         </LinearLayout>
         <TextView
             android:id="@+id/purchase_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:gravity="end"
             android:paddingStart="25dp"
-            android:paddingEnd="25dp"
             android:paddingTop="30dp"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="17sp"
-            android:textColor="#f2655d"/>
+            android:paddingEnd="25dp"
+            android:textColor="#f2655d"
+            android:textSize="17sp"/>
     </LinearLayout>
 </LinearLayout>

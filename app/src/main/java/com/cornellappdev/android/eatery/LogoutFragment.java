@@ -20,7 +20,7 @@ public class LogoutFragment extends Fragment {
 
     private Button mLogoutButton;
     private CheckBox mSaveInfoCheck;
-    private RelativeLayout mAboutButton;
+    private RelativeLayout mAboutArea;
     private AccountPresenter mAccountPresenter = new AccountPresenter();
     // re-using the same kind of presenter
 
@@ -33,19 +33,16 @@ public class LogoutFragment extends Fragment {
 
         mAccountPresenter.setContext(getContext());
         String[] loginInfo = mAccountPresenter.readSavedCredentials();
-        if(loginInfo!=null) {
+        if (loginInfo != null) {
             mAccountPresenter.setSaveCredentials(true);
-        }
-        else {
+        } else {
             mAccountPresenter.setSaveCredentials(false);
         }
         mSaveInfoCheck.setChecked(mAccountPresenter.getSaveCredentials());
 
-        mSaveInfoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
+        mSaveInfoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mAccountPresenter.setSaveCredentials(isChecked);
             }
         });
@@ -53,22 +50,26 @@ public class LogoutFragment extends Fragment {
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mAccountPresenter.setBrbModel(null);
-                if(!mAccountPresenter.getSaveCredentials()){
+                if (!mAccountPresenter.getSaveCredentials()) {
                     mAccountPresenter.setContext(getContext());
                     mAccountPresenter.eraseSavedCredentials();
                 }
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 LoginFragment loginFragment = new LoginFragment();
-                ((MainActivity)getActivity()).setLoginInstance(loginFragment);
+                ((MainActivity) getActivity()).setLoginInstance(loginFragment);
+                // Reset the current login instance of MainActivity so upon navigating back it
+                // doesn't
+                // have all the stored information from before (netid, password)
                 transaction
                         .replace(R.id.frame_fragment_holder, loginFragment)
                         .commit();
             }
         });
 
-        mAboutButton=rootView.findViewById(R.id.about_segway);
-        mAboutButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        mAboutArea = rootView.findViewById(R.id.about_segway);
+        mAboutArea.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // About area has been clicked, navigate to the AboutFragment page
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 AboutFragment aboutFragment = new AboutFragment();
                 transaction
@@ -86,7 +87,8 @@ public class LogoutFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.back:
-                if(!mAccountPresenter.getSaveCredentials()){
+                if (!mAccountPresenter.getSaveCredentials()) {
+                    // If the saveInfo checkbox is not checked, erase all data upon going back
                     mAccountPresenter.setContext(getContext());
                     mAccountPresenter.eraseSavedCredentials();
                 }

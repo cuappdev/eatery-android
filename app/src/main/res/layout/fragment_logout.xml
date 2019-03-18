@@ -25,29 +25,29 @@
                 android:lineSpacingExtra="3sp"
                 android:paddingStart="25dp"
                 android:paddingTop="30dp"
-                android:paddingBottom="20dp"
                 android:paddingEnd="25dp"
+                android:paddingBottom="20dp"
                 android:text="Settings"
                 android:textColor="@color/primary"
                 android:textSize="23sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
             <RelativeLayout
-                android:layout_height="wrap_content"
+                android:id="@+id/about_segway"
                 android:layout_width="match_parent"
-                android:paddingTop="15dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:id="@+id/about_segway">
+                android:paddingTop="15dp">
                 <TextView
                     android:id="@+id/about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="start"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="18dp"
                     android:fontFamily="sans-serif-medium"
+                    android:gravity="start"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
                     android:paddingBottom="15dp"
                     android:text="@string/about"
                     android:textAllCaps="false"
@@ -61,30 +61,30 @@
                     android:paddingEnd="30dp"
                 >
                     <View
-                        android:background="@drawable/ic_right_arrow"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
+                        android:background="@drawable/ic_right_arrow"
                     />
                 </LinearLayout>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:paddingTop="12dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingTop="12dp">
                 <TextView
                     android:id="@+id/save_login_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="3dp"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="18dp"
                     android:fontFamily="sans-serif-medium"
+                    android:paddingStart="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="8dp"
                     android:paddingBottom="15dp"
                     android:text="@string/auto_login"
                     android:textAllCaps="false"
@@ -93,35 +93,35 @@
                 />
                 <CheckBox
                     android:id="@+id/saveCheckInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                 />
             </RelativeLayout>
 
             <RelativeLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@color/white">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
                 <Button
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="18dp"
                     android:background="@null"
                     android:fontFamily="sans-serif"
+                    android:gravity="center"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
                     android:text="@string/logout_label"
                     android:textAllCaps="true"
-                    android:textStyle="bold"
                     android:textColor="@color/blue"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                 />
             </RelativeLayout>
         </LinearLayout>

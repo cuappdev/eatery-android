@@ -1,33 +1,19 @@
 package com.cornellappdev.android.eatery;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.network.JsonUtilities;
-import com.cornellappdev.android.eatery.network.NetworkUtilities;
-import com.cornellappdev.android.eatery.util.AccountManagerUtil;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 public class AccountInfoFragment extends Fragment {
 
@@ -41,7 +27,7 @@ public class AccountInfoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
         mHistoryView = rootView.findViewById(R.id.historylistview);
         mInfoHeader = inflater.inflate(R.layout.account_info_header, null);
@@ -51,18 +37,19 @@ public class AccountInfoFragment extends Fragment {
         mLaundryLabel = mInfoHeader.findViewById(R.id.laundryValue);
 
         BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
-        String outputText="";
-        if(model.getSwipes() == 1) {
-            outputText=model.getSwipes() + " meal left";
+        String outputText = "";
+        if (model.getSwipes() == 1) {
+            outputText = model.getSwipes() + " meal left";
         } else {
-            outputText=model.getSwipes() + " meals left";
+            outputText = model.getSwipes() + " meals left";
         }
         mSwipesLabel.setText(outputText);
         mBrbLabel.setText(MoneyUtil.toMoneyString(model.getBRBs()));
         mCityBucksLabel.setText(MoneyUtil.toMoneyString(model.getCityBucks()));
         mLaundryLabel.setText(MoneyUtil.toMoneyString(model.getLaundry()));
 
-        mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item, model.getHistory());
+        mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item,
+                model.getHistory());
         mHistoryView.setAdapter(mListAdapter);
         mHistoryView.addHeaderView(mInfoHeader, null, false);
 
@@ -77,6 +64,7 @@ public class AccountInfoFragment extends Fragment {
             case R.id.logout_button:
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 LogoutFragment logoutFragment = new LogoutFragment();
+                // Upon clicking the settings button, redirect the logout fragment page
                 transaction
                         .replace(R.id.frame_fragment_holder, logoutFragment)
                         .addToBackStack(null)

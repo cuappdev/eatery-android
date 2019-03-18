@@ -21,13 +21,15 @@ public class HistoryObjectModel {
         return new HistoryObjectModel(name, timestamp, amount);
     }
 
-    public String getName(){
+    public String getName() {
         return mName;
     }
-    public String getTimestamp(){
+
+    public String getTimestamp() {
         return mTimestamp;
     }
-    public float getAmount(){
+
+    public float getAmount() {
         return mAmount;
     }
 }

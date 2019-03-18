@@ -1,15 +1,11 @@
 package com.cornellappdev.android.eatery.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
-import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.util.AccountManagerUtil;
-
-import java.util.ArrayList;
 
 public class AccountPresenter {
 
@@ -32,7 +28,7 @@ public class AccountPresenter {
     }
 
     public boolean isLoggedIn() {
-        return rInstance.getBrbInfoModel()!=null;
+        return rInstance.getBrbInfoModel() != null;
     }
 
     public void setLoggingIn(boolean b) {
@@ -55,16 +51,17 @@ public class AccountPresenter {
         rInstance.setBrbInfoModel(model);
     }
 
-    public void resetLoginJson() {
+    public void resetLoginJS() {
         GetLoginUtilities.resetLoginAbility(netID, password);
     }
+
     public String[] readSavedCredentials() {
         return AccountManagerUtil.readSavedCredentials(currentContext);
     }
 
     public void outputCredentialsToFile() {
         AccountManagerUtil.outputCredentialsToFile(this.netID, this.password,
-               this.currentContext);
+                this.currentContext);
     }
 
     public void eraseSavedCredentials() {
