@@ -1,6 +1,5 @@
 package com.cornellappdev.android.eatery.network;
 
-import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 
@@ -15,19 +14,18 @@ public class GetLoginUtilities {
         loginJS = "document.getElementById('netid').value = '" + netid + "';" +
                 "document.getElementById('password').value = '" + password + "';" +
                 "document.getElementsByName('login')[0].submit();";
-
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
-
     }
 
-    public static void loginBrb (String url, WebView loadedPage, GetLoginUtilities.getLoginCallback callback) {
-        if(!mEvaluatedJS) {
+    public static void loginBrb(String url, WebView loadedPage,
+            GetLoginUtilities.getLoginCallback callback) {
+        if (!mEvaluatedJS) {
             loadedPage.evaluateJavascript(loginJS, (String s) -> {
                 mEvaluatedJS = true;
             });
-        }else {
-            if(url.contains("sessionId=")) {
+        } else {
+            if (url.contains("sessionId=")) {
                 String sessionId = url.substring(url.indexOf("sessionId=") + "sessionId=".length());
                 NetworkUtilities.getBrbInfo(sessionId, new NetworkUtilities.BRBAccountCallback() {
                     @Override
@@ -35,14 +33,14 @@ public class GetLoginUtilities {
                         callback.successLogin(accountInfo);
                     }
                 });
-
-            }else {
+            } else {
                 String checkJS = "(function() { var element = document.getElementById('netid'); " +
                         "if(element) return 'LOGINFAIL'; else return 'LOGINSUCCESS'; })()";
-                // Checks if the page still has an element by the id 'netid'. If it does return 'LOGINFAIL'
+                // Checks if the page still has an element by the id 'netid'. If it does return
+                // 'LOGINFAIL'
                 loadedPage.evaluateJavascript(checkJS, (String returned) ->
                 {
-                    if(returned.equals("\"LOGINFAIL\"")) {
+                    if (returned.equals("\"LOGINFAIL\"")) {
                         callback.failedLogin();
                     }
                 });
@@ -52,8 +50,7 @@ public class GetLoginUtilities {
 
     public interface getLoginCallback {
         void failedLogin();
+
         void successLogin(BrbInfoQuery.AccountInfo accountInfo);
     }
-
-
 }

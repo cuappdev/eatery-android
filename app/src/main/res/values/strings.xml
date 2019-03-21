@@ -9,19 +9,34 @@
     <string name="google_form">Send Feedback</string>
     <string name="open_at">Opening at</string>
     <string name="close_at">Closes at</string>
-    <string name="info_page_description">Eatery is made by Cornell App Development, an engineering project team at Cornell University.</string>
+    <string name="info_page_description">Eatery is made by Cornell App Development, an engineering
+        project team at Cornell University.
+    </string>
     <string name="description_header">Description</string>
-    <string name="description_text_1">Looking for somewhere to eat around Cornell University? Eatery has your back.</string>
-    <string name="description_text_2">See what\'s open on campus, browse menus of dining locations, search for your favorite foods, and so much more!</string>
+    <string name="description_text_1">Looking for somewhere to eat around Cornell University? Eatery
+        has your back.
+    </string>
+    <string name="description_text_2">See what\'s open on campus, browse menus of dining locations,
+        search for your favorite foods, and so much more!
+    </string>
     <string name="feedback_header">Feedback</string>
-    <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for new features.</string>
+    <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for
+        new features.
+    </string>
     <string name="no_menu_text">No menu information 😮</string>
     <string name="cornell_website_url">https://www.cornellappdev.com/</string>
     <string name="feedback_form_url">https://goo.gl/forms/g8v6CbN2lrQtY4tH2</string>
     <string name="privacy_statement">Privacy Statement</string>
-    <string name="privacy_description_1">When you log in using our system, we will use your credentials solely to fetch your account information on your behalf. Your credentials will be stored safely on this device.</string>
-    <string name="privacy_description_2">Your netid and password will never leave your device, and will never be stored on our servers or viewed by anyone on our team</string>
-    <string name="privacy_description_3">You may uncheck auto login on start to erase all of your account information from this device </string>
+    <string name="privacy_description_1">When you log in using our system, we will use your
+        credentials solely to fetch your account information on your behalf. Your credentials will
+        be stored safely on this device.
+    </string>
+    <string name="privacy_description_2">Your netid and password will never leave your device, and
+        will never be stored on our servers or viewed by anyone on our team
+    </string>
+    <string name="privacy_description_3">You may uncheck auto login to erase all of your account
+        information from this device
+    </string>
     <string name="login_label">Login</string>
     <string name="logout_label">Logout</string>
     <string name="auto_login">Auto login on start</string>
@@ -36,7 +51,9 @@
     <string name="city_bucks">City Bucks</string>
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
-    <string name="google_maps_key"></string>
     <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
+    <string name="encryption_key"></string>
+    <string name="encryption_salt"></string>
+    <string name="google_maps_key"></string>
 
 </resources>

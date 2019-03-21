@@ -12,8 +12,8 @@ import com.cornellappdev.android.eatery.util.MoneyUtil;
 
 import java.util.List;
 
-/*
-    This listAdapter renders all the history items for the AccountInfoFragment Fragment
+/**
+ * This listAdapter renders all the purchase history items for the AccountInfoFragment Fragment
  */
 public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
 
@@ -28,39 +28,40 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
         mHistory = objects;
     }
 
-    // Each cell of the list has a name, a timestamp, and an amount of the purchase
-    public static class ViewHolder {
-        private TextView display_name;
-        private TextView display_timestamp;
-        private TextView display_amount;
-
-    }
-    
     public View getView(int position, View convertView, ViewGroup parent) {
-        View vi = convertView;
+        View historyItemView = convertView;
         final ViewHolder holder;
         try {
             if (convertView == null) {
-                vi = sInflater.inflate(mLayout, null);
+                historyItemView = sInflater.inflate(mLayout, null);
                 holder = new ViewHolder();
 
-                holder.display_name = (TextView) vi.findViewById(R.id.purchase_eatery);
-                holder.display_timestamp = (TextView) vi.findViewById(R.id.purchase_timestamp);
-                holder.display_amount = (TextView) vi.findViewById(R.id.purchase_amount);
+                holder.displayName = (TextView) historyItemView.findViewById(R.id.purchase_eatery);
+                holder.displayTimestamp = (TextView) historyItemView.findViewById(
+                        R.id.purchase_timestamp);
+                holder.displayAmount = (TextView) historyItemView.findViewById(
+                        R.id.purchase_amount);
 
-                vi.setTag(holder);
+                historyItemView.setTag(holder);
             } else {
-                holder = (ViewHolder) vi.getTag();
+                holder = (ViewHolder) historyItemView.getTag();
             }
 
-            holder.display_name.setText(mHistory.get(position).getName());
-            holder.display_timestamp.setText(mHistory.get(position).getTimestamp());
-            holder.display_amount.setText(
+            holder.displayName.setText(mHistory.get(position).getName());
+            holder.displayTimestamp.setText(mHistory.get(position).getTimestamp());
+            holder.displayAmount.setText(
                     "- " + MoneyUtil.toMoneyString(mHistory.get(position).getAmount()));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return vi;
+        return historyItemView;
+    }
+
+    // Each cell of the list has a name, a timestamp, and an amount of the purchase
+    public static class ViewHolder {
+        private TextView displayAmount;
+        private TextView displayName;
+        private TextView displayTimestamp;
     }
 }

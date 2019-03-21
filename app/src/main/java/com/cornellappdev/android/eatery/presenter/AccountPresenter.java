@@ -11,32 +11,32 @@ public class AccountPresenter {
 
     private Repository rInstance = Repository.getInstance();
     private boolean isLoggingIn;
-    private String netID = "";
-    private String password = "";
-    private Context currentContext;
+    private String mNetID = "";
+    private String mPassword = "";
+    private Context mCurrentContext;
 
     public void setNetID(String netid) {
-        this.netID = netid;
+        this.mNetID = netid;
     }
 
     public void setContext(Context c) {
-        this.currentContext = c;
+        this.mCurrentContext = c;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.mPassword = password;
     }
 
     public boolean isLoggedIn() {
         return rInstance.getBrbInfoModel() != null;
     }
 
-    public void setLoggingIn(boolean b) {
-        this.isLoggingIn = b;
-    }
-
     public boolean isLoggingIn() {
         return this.isLoggingIn;
+    }
+
+    public void setLoggingIn(boolean b) {
+        this.isLoggingIn = b;
     }
 
     public boolean getSaveCredentials() {
@@ -52,20 +52,20 @@ public class AccountPresenter {
     }
 
     public void resetLoginJS() {
-        GetLoginUtilities.resetLoginAbility(netID, password);
+        GetLoginUtilities.resetLoginAbility(mNetID, mPassword);
     }
 
     public String[] readSavedCredentials() {
-        return AccountManagerUtil.readSavedCredentials(currentContext);
+        return AccountManagerUtil.readSavedCredentials(mCurrentContext);
     }
 
     public void outputCredentialsToFile() {
-        AccountManagerUtil.outputCredentialsToFile(this.netID, this.password,
-                this.currentContext);
+        AccountManagerUtil.outputCredentialsToFile(this.mNetID, this.mPassword,
+                this.mCurrentContext);
     }
 
     public void eraseSavedCredentials() {
-        AccountManagerUtil.eraseSavedCredentials(this.currentContext);
+        AccountManagerUtil.eraseSavedCredentials(this.mCurrentContext);
     }
 }
 

@@ -29,23 +29,19 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MainPresenter presenter;
+    public static boolean JSON_FALLBACK = false;
+    // Should never be displayed, used to retrieve session_id from Cornell web page
+    public static WebView sLoginWebView;
     public BottomNavigationView bnv;
     public CafeteriaDbHelper dbHelper;
-
-    public static boolean JSON_FALLBACK = false;
-
     LoginFragment loginFragment;
-    public static WebView sLoginWebView;
-            // Should never be displayed, methods just used to auto-submit form for session_id
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         loginFragment = new LoginFragment();
-
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
             public void failedLogin() {
@@ -57,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
                 Repository.getInstance().setBrbInfoModel(model);
                 loginFragment.setLoading(false);
+                // If the user is viewing the loginFragment
                 if (getSupportFragmentManager().findFragmentById(
                         R.id.frame_fragment_holder) instanceof LoginFragment) {
-                    // If the user successfully logged in, if the curret
                     FragmentTransaction transaction =
                             getSupportFragmentManager().beginTransaction();
                     transaction
@@ -102,20 +98,18 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
-                                transaction
-                                        .replace(R.id.frame_fragment_holder, new MainListFragment())
+                                transaction.replace(R.id.frame_fragment_holder,
+                                        new MainListFragment())
                                         .commit();
                                 break;
                             case R.id.action_week:
-                                transaction
-                                        .replace(R.id.frame_fragment_holder,
-                                                new WeeklyMenuFragment())
+                                transaction.replace(R.id.frame_fragment_holder,
+                                        new WeeklyMenuFragment())
                                         .commit();
                                 break;
                             case R.id.action_brb:
-                                // Because state needs to be saved
-                                transaction
-                                        .replace(R.id.frame_fragment_holder, loginFragment, "Login")
+                                transaction.replace(R.id.frame_fragment_holder, loginFragment,
+                                        "Login")
                                         .commit();
                                 break;
                         }
@@ -145,16 +139,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ArrayList<EateryBaseModel> doInBackground(String... params) {
             ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-            ConnectivityManager cm =
-                    (ConnectivityManager) getApplicationContext().getSystemService(
-                            Context.CONNECTIVITY_SERVICE);
-
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(
+                    Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            if (!isConnected
-                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
-                    != null) {
+            if (!isConnected && JsonUtilities.parseJson(dbHelper.getLastRow(),
+                    getApplicationContext()) != null) {
                 eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(),
                         getApplicationContext());
             } else {
@@ -169,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<EateryBaseModel> result) {
             presenter.setEateryList(result);
-
             try {
                 getSupportFragmentManager()
                         .beginTransaction()

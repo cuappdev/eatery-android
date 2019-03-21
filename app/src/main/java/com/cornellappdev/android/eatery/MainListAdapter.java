@@ -36,16 +36,12 @@ import java.util.Set;
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
     private final ListAdapterOnClickHandler mListAdapterOnClickHandler;
+    private final int TEXT = 1;
+    private final int IMAGE = 0;
     private int mCount;
     private String mQuery;
     private ArrayList<EateryBaseModel> cafeListFiltered;
-    private final int TEXT = 1;
-    private final int IMAGE = 0;
     private Repository rInstance = Repository.getInstance();
-
-    public interface ListAdapterOnClickHandler {
-        void onClick(int position, ArrayList<EateryBaseModel> list);
-    }
 
     MainListAdapter(
             Context context,
@@ -202,6 +198,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return mCount;
+    }
+
+    public interface ListAdapterOnClickHandler {
+        void onClick(int position, ArrayList<EateryBaseModel> list);
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

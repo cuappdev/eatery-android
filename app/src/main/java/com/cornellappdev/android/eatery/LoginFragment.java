@@ -4,6 +4,7 @@ package com.cornellappdev.android.eatery;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +22,20 @@ import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 
+/**
+ * This fragment is the login page reached from the bottomnavbar, and is the screen where users input
+ * their netid and password to view their account information. Upon a successful login, redirect
+ * to AccountInfoFragment
+ */
 public class LoginFragment extends Fragment {
-    private TextView mDescriptionText;
-    private Button mLoginButton;
     private EditText mNetID;
     private EditText mPassword;
+    private TextView mDescriptionText;
     private TextView mPrivacy;
+    private Button mLoginButton;
     private ProgressBar mProgressBar;
     private CheckBox mSaveInfoCheck;
     private AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
-
     private AccountPresenter mAccountPresenter = new AccountPresenter();
 
     @Override
@@ -39,10 +44,11 @@ public class LoginFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         getActivity().setTitle("Login");
-
+        // Disable the back button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         if (mAccountPresenter.isLoggedIn()) {
-            // If the user has already logged in in this session of the app (comes up when they
-            // navigate with the bottom tab bar) just load the accountInfo page
+            // If the user has already logged in in this session of the app, just load the
+            // accountInfo page and don't require another login
             loadAccountPage(true);
             return rootView;
         }
@@ -62,15 +68,15 @@ public class LoginFragment extends Fragment {
             String[] loginInfo = mAccountPresenter.readSavedCredentials();
             if (loginInfo != null) {
                 // This is not null upon auto-logging in on app launch. Thus, set the textfields
-                // to the values found in the filesx
+                // to the values found in the files
                 mNetID.setText(loginInfo[0]);
                 mPassword.setText(loginInfo[1]);
                 mSaveInfoCheck.setChecked(true);
                 mAccountPresenter.setSaveCredentials(true);
             }
-            loadingGUI();
             // Always display animation whether logging in automatically or after
             // manually clicking logging in and renavigating to this page
+            loadingGUI();
         } else {
             resumeGUI();
             mSaveInfoCheck.setChecked(mAccountPresenter.getSaveCredentials());
@@ -79,13 +85,10 @@ public class LoginFragment extends Fragment {
                 public void onClick(View v) {
                     PrivacyFragment privacyFragment = new PrivacyFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction
-                            .replace(R.id.frame_fragment_holder, privacyFragment)
-                            .addToBackStack(null)
-                            .commit();
+                    transaction.replace(R.id.frame_fragment_holder, privacyFragment).addToBackStack(
+                            null).commit();
                 }
             });
-
             mSaveInfoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -100,8 +103,8 @@ public class LoginFragment extends Fragment {
             GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
                 @Override
                 public void failedLogin() {
-                    if (getFragmentManager()
-                            != null) { // If the user is still viewing this fragment
+                    // If the user is still viewing this fragment
+                    if (getFragmentManager() != null) {
                         mDescriptionText.setText("Incorrect netid and/or password\n");
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
                         mAccountPresenter.setLoggingIn(false);
@@ -114,22 +117,21 @@ public class LoginFragment extends Fragment {
                     BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
                     mAccountPresenter.setBrbModel(model);
                     mAccountPresenter.setLoggingIn(false);
-                    if (getFragmentManager() != null) { // If user is still viewing this fragment
+                    // If user is still viewing this fragment
+                    if (getFragmentManager() != null) {
                         loadAccountPage(false);
                     }
                 }
             };
-
-            // Basically, the way we get credentials is to load a specific url and execute javascript
-            // to submit form data with the user's netid and password. Then, we retrieve a session_id
-            // from the resulting url
+            // Basically, the way we get credentials is to load a specific url on a webview and
+            // execute javascript to submit form data with the user's netid and password. Then,
+            // we retrieve a session_id from the resulting url
             MainActivity.sLoginWebView.getSettings().setJavaScriptEnabled(true);
             MainActivity.sLoginWebView.setWebViewClient(new WebViewClient() {
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    // Gets called on every page redirect (the initial redirect is the loadurl call
-                    // below
+                    // Gets called on every page redirect - initial redirect is loadurl(...)
                     GetLoginUtilities.loginBrb(url, view, callback);
                 }
             });
@@ -139,28 +141,25 @@ public class LoginFragment extends Fragment {
                     loadingGUI();
                     mAccountPresenter.setNetID(mNetID.getText().toString());
                     mAccountPresenter.setPassword(mPassword.getText().toString());
-                    mAccountPresenter.setContext(getContext()); // set the context to the context on
+                    // set the context to the context on
                     // which the button was clicked. This context will then be used for file
                     // writing later
-                    mAccountPresenter.resetLoginJS();
+                    mAccountPresenter.setContext(getContext());
                     // change the login javascript to have the correct username and password
+                    mAccountPresenter.resetLoginJS();
 
                     MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
                 }
             });
-
-
         }
-
         return rootView;
     }
 
-    /*
-        This method is called simply to display that the GUI is loading. When the user tries to log
-        in with get, loadingGUI is called. This method disables all textInputs and displays the
-        loading
-        progress bar
-    */
+    /**
+     * This method is called simply to display that the GUI is loading. When the user tries to log
+     * in with get, loadingGUI is called. This method disables all textInputs and displays the
+     * loading progress bar
+     */
     private void loadingGUI() {
         mProgressBar.setVisibility(View.VISIBLE);
         mLoginButton.setBackgroundColor(getResources().getColor(R.color.fadedblue));
@@ -174,9 +173,9 @@ public class LoginFragment extends Fragment {
     }
 
     /*
-        Called to make sure the UI of this page is all in the correct display for the user to
-        interact with. Called once if the page is not loading anyone, and called once if the
-        user failed to log in
+     *   Called to make sure the UI of this page is all in the correct display for the user to
+     *   interact with. Called once if the page is not loading anyone, and called once if the
+     *   user failed to log in
      */
     private void resumeGUI() {
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -189,14 +188,14 @@ public class LoginFragment extends Fragment {
     }
 
     /*
-        @requires alreadyLoggedIn - if in this session of the app the user has already logged in (if
-        there already exists a BrbInfoModel). If alreadyLoggedIn==true then there is no need to
-        save/erase credentials. The other condition would be the first time the user puts in
-        their data or gets logged in
-        This method loads the accountInfoPage
+     *   @requires alreadyLoggedIn - if in this session of the app the user has already logged in
+     *   (if
+     *   there already exists a BrbInfoModel). If alreadyLoggedIn==true then there is no need to
+     *   save/erase credentials. The other condition would be the first time the user puts in
+     *   their data or gets logged in
+     *   This method loads the accountInfoPage
      */
     private void loadAccountPage(boolean alreadyLoggedIn) {
-
         if (getFragmentManager().findFragmentById(
                 R.id.frame_fragment_holder) instanceof LoginFragment) {
             if (!alreadyLoggedIn) {
@@ -210,17 +209,14 @@ public class LoginFragment extends Fragment {
             // If the user was already logged in (just navigated with bottom view)
             // don't do anything with file writing/erasing
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction
-                    .replace(R.id.frame_fragment_holder, accountInfoFragment)
-                    .commit();
+            transaction.replace(R.id.frame_fragment_holder, accountInfoFragment).commit();
         }
-
     }
 
     // Called from auto-logging in on app launch. Need to be able to notify this page that
     // it is currently trying to log in
-    public void setLoading(boolean b) {
-        mAccountPresenter.setLoggingIn(b);
+    public void setLoading(boolean loggingIn) {
+        mAccountPresenter.setLoggingIn(loggingIn);
     }
 
 }

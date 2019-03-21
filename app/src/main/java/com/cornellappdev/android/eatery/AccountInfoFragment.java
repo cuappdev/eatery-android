@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +16,16 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
 
+/**
+ * This class is the redirected page after LoginFragment, and displays a user's account info along
+ * with a list of past purchases
+ */
 public class AccountInfoFragment extends Fragment {
 
-    private TextView mSwipesLabel;
     private TextView mBrbLabel;
     private TextView mCityBucksLabel;
     private TextView mLaundryLabel;
+    private TextView mSwipesLabel;
     private HistoryInfoAdapter mListAdapter;
     private ListView mHistoryView;
     private View mInfoHeader;
@@ -37,50 +42,42 @@ public class AccountInfoFragment extends Fragment {
         mLaundryLabel = mInfoHeader.findViewById(R.id.laundryValue);
 
         BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
-        String outputText = "";
-        if (model.getSwipes() == 1) {
-            outputText = model.getSwipes() + " meal left";
-        } else {
-            outputText = model.getSwipes() + " meals left";
-        }
+        String outputText = model.getSwipes() + " meal(s) left";
         mSwipesLabel.setText(outputText);
         mBrbLabel.setText(MoneyUtil.toMoneyString(model.getBRBs()));
         mCityBucksLabel.setText(MoneyUtil.toMoneyString(model.getCityBucks()));
         mLaundryLabel.setText(MoneyUtil.toMoneyString(model.getLaundry()));
-
         mListAdapter = new HistoryInfoAdapter(getContext(), R.layout.history_item,
                 model.getHistory());
         mHistoryView.setAdapter(mListAdapter);
         mHistoryView.addHeaderView(mInfoHeader, null, false);
 
+        getActivity().setTitle("Account Info");
         setHasOptionsMenu(true);
-
+        // Remove the back button
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return rootView;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout_button:
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                LogoutFragment logoutFragment = new LogoutFragment();
-                // Upon clicking the settings button, redirect the logout fragment page
-                transaction
-                        .replace(R.id.frame_fragment_holder, logoutFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return true;
-            default:
-                // The user's action was not recognized, and invoke the superclass to handle it
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.logout_button) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            LogoutFragment logoutFragment = new LogoutFragment();
+            // Upon clicking the settings button, redirect to the logout fragment page
+            transaction.replace(R.id.frame_fragment_holder, logoutFragment)
+                    .addToBackStack(null)
+                    .commit();
+            return true;
+        } else {
+            // The user's action was not recognized, and invoke the superclass to handle it
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.menu_about, menu);
-        getActivity().setTitle("Account Info");
-
     }
 }
 

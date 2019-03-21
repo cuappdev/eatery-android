@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -53,6 +54,7 @@ public class MainListFragment extends Fragment
 
         getActivity().setTitle("Eateries");
         setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mRecyclerView = rootView.findViewById(R.id.cafe_list);
         mListPresenter = new MainListPresenter();
@@ -198,12 +200,9 @@ public class MainListFragment extends Fragment
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(
-                    searchTextView,
-                    R.drawable
-                            .cursor); // This sets the cursor resource ID to 0 or @null which
-          // will make it visible
-            // on white background
+            mCursorDrawableRes.set(searchTextView, R.drawable.cursor);
+            // This sets the cursor resource ID to 0 or @null which
+            // will make it visible on white background
         } catch (Exception e) {
             // Don't do anything
         }
