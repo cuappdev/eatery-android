@@ -80,7 +80,7 @@ public final class NetworkUtilities {
       @Override
       public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
         eateries = response.data().eateries();
-        ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,activity);
+        ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries, activity);
         Collections.sort(eateryList);
         rInstance.setEateryList(eateryList);
 
