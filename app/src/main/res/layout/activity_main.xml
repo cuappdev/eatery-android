@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".MainActivity">
+                               xmlns:app="http://schemas.android.com/apk/res-auto"
+                               xmlns:tools="http://schemas.android.com/tools"
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               tools:context=".MainActivity">
 
-  <FrameLayout
-    android:id="@+id/frame_fragment_holder"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="?attr/actionBarSize" />
+    <FrameLayout
+        android:id="@+id/frame_fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"/>
 
-  <android.support.design.widget.BottomNavigationView
-    android:id="@+id/bottom_navigation"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    app:itemBackground="@color/white"
-    app:itemIconTint="@color/bnv_tab_item_foreground"
-    app:itemTextColor="@color/bnv_tab_item_foreground"
-    app:labelVisibilityMode="unlabeled"
-    app:menu="@menu/bottom_nav_main" />
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/bnv_tab_item_foreground"
+        app:itemTextColor="@color/bnv_tab_item_foreground"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottom_nav_main"/>
+    <WebView
+        android:id="@+id/login_webview"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+    </WebView>
 
 </android.widget.RelativeLayout>
