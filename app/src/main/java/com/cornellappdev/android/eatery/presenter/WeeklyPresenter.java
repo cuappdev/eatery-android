@@ -53,9 +53,11 @@ public class WeeklyPresenter {
         ArrayList<DiningHallModel> northList = new ArrayList<>();
         ArrayList<DiningHallModel> centralList = new ArrayList<>();
         for (DiningHallModel dhm : getDiningHallList()) {
-            if (dhm.getMealByDateAndType(date, mealType) != null ||
-                    (mealType == MealType.LUNCH && dhm.getMealByDateAndType(date, MealType.BRUNCH)
-                            != null)) {
+            boolean hasMeal = dhm.getMealByDateAndType(date, mealType) != null;
+            boolean hasBrunch = mealType == MealType.LUNCH && dhm.getMealByDateAndType(date,
+                    MealType.BRUNCH)
+                    != null;
+            if (hasMeal || hasBrunch) {
                 switch (dhm.getArea()) {
                     case NORTH:
                         northList.add(dhm);

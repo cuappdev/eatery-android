@@ -56,8 +56,7 @@ public class AboutFragment extends Fragment {
         if (item.getItemId() == android.R.id.home) {
             getActivity().onBackPressed();
             return true;
-        } else {
-            // The user's action was not recognized, and invoke the superclass to handle it.
+        } else { // The user's action was not recognized, and invoke the superclass to handle it.
             return super.onOptionsItemSelected(item);
         }
     }

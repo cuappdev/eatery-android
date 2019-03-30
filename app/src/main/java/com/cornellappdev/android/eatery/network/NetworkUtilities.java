@@ -155,9 +155,9 @@ public final class NetworkUtilities {
         });
     }
 
-    //BRB callback
+    // BRB callback
     public interface BRBAccountCallback {
-        //parameters can be of any types, depending on the event defined
+        // parameters can be of any types, depending on the event defined
         void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo);
     }
 }

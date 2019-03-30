@@ -20,6 +20,7 @@ public class CustomPager extends ViewPager {
      * Note(lesley): Code is either from StackOverflow or official docs, allows for ViewPager to be
      * visible inside of MenuActivity. TBH not sure how it works, but it has something to do with
      * resizing the Viewpager window
+     * https://stackoverflow.com/questions/8394681/android-i-am-unable-to-have-viewpager-wrap-content/18167273
      */
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

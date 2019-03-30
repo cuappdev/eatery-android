@@ -173,9 +173,9 @@ public class LoginFragment extends Fragment {
     }
 
     /*
-     *   Called to make sure the UI of this page is all in the correct display for the user to
-     *   interact with. Called once if the page is not loading anyone, and called once if the
-     *   user failed to log in
+     * Called to make sure the UI of this page is all in the correct display for the user to
+     * interact with. Called once if the page is not loading anyone, and called once if the
+     * user failed to log in
      */
     private void resumeGUI() {
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -188,12 +188,11 @@ public class LoginFragment extends Fragment {
     }
 
     /*
-     *   @requires alreadyLoggedIn - if in this session of the app the user has already logged in
-     *   (if
-     *   there already exists a BrbInfoModel). If alreadyLoggedIn==true then there is no need to
-     *   save/erase credentials. The other condition would be the first time the user puts in
-     *   their data or gets logged in
-     *   This method loads the accountInfoPage
+     * @requires alreadyLoggedIn - if in this session of the app the user has already logged in
+     * (if there already exists a BrbInfoModel). If alreadyLoggedIn==true then there is no need to
+     * save/erase credentials. The other condition would be the first time the user puts in
+     * their data or gets logged in
+     * This method loads the accountInfoPage
      */
     private void loadAccountPage(boolean alreadyLoggedIn) {
         if (getFragmentManager().findFragmentById(

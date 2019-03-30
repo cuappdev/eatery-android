@@ -52,8 +52,8 @@
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
     <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
-    <string name="encryption_key"></string>
-    <string name="encryption_salt"></string>
-    <string name="google_maps_key"></string>
+    <string name="encryption_key">a</string>
+    <string name="encryption_salt">a</string>
+    <string name="google_maps_key">a</string>
 
 </resources>

@@ -17,15 +17,13 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_TABLE =
-                "CREATE TABLE "
-                        + CafeteriaContract.CafeteriaEntry.TABLE_NAME
-                        + " ("
-                        + CafeteriaContract.CafeteriaEntry._ID
-                        + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-                        + CafeteriaContract.CafeteriaEntry.COLUMN_DATA
-                        + " TEXT NOT NULL"
-                        + ");";
+        String createTableQuery =
+                "CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT NOT "
+                        + "NULL);";
+        final String SQL_CREATE_TABLE = String.format(createTableQuery,
+                CafeteriaContract.CafeteriaEntry.TABLE_NAME,
+                CafeteriaContract.CafeteriaEntry._ID,
+                CafeteriaContract.CafeteriaEntry.COLUMN_DATA);
         db.execSQL(SQL_CREATE_TABLE);
     }
 
@@ -47,12 +45,9 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper {
     public String getLastRow() {
         String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
-        String query =
-                "SELECT * FROM "
-                        + CafeteriaContract.CafeteriaEntry.TABLE_NAME
-                        + " ORDER BY "
-                        + CafeteriaContract.CafeteriaEntry._ID
-                        + " DESC LIMIT 1";
+        String lastRowQuery = "SELECT * FROM %s ORDER BY %s DESC LIMIT 1";
+        String query = String.format(lastRowQuery, CafeteriaContract.CafeteriaEntry.TABLE_NAME,
+                CafeteriaContract.CafeteriaEntry._ID);
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             dbString =
@@ -65,12 +60,9 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper {
 
     public void removeData() {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(
-                "DELETE FROM "
-                        + CafeteriaContract.CafeteriaEntry.TABLE_NAME
-                        + " WHERE "
-                        + CafeteriaContract.CafeteriaEntry._ID
-                        + " =1 ");
+        String deleteQuery = "DELETE FROM %s WHERE %s = 1";
+        db.execSQL(String.format(deleteQuery, CafeteriaContract.CafeteriaEntry.TABLE_NAME,
+                CafeteriaContract.CafeteriaEntry._ID));
     }
 
     public long getProfilesCount() {
@@ -90,14 +82,11 @@ public class CafeteriaDbHelper extends SQLiteOpenHelper {
         // CURSOR points to first in the queried result
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
-
         while (c.moveToNext()) {
-            if (c.getString(c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA))
-                    != null) {
-                dbString +=
-                        (c.getString(
-                                c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA)))
-                                + " ";
+            String columnEntry = c.getString(
+                    c.getColumnIndex(CafeteriaContract.CafeteriaEntry.COLUMN_DATA));
+            if (columnEntry != null) {
+                dbString += columnEntry + " ";
             }
         }
 
