@@ -113,20 +113,21 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void changeButtonVisbility(boolean setCampusbuttonVisible) {
-        if (setCampusbuttonVisible) {
+    public void changeButtonVisbility(boolean setCTownButtonVisible) {
+        if (setCTownButtonVisible) {
             for (Button button : mCampusButtons.values()) {
-                button.setVisibility(View.VISIBLE);
-            }
-            for (Button button : mCollegetownButtons.values()) {
                 button.setVisibility(View.GONE);
             }
+            for (Button button : mCollegetownButtons.values()) {
+                button.setVisibility(View.VISIBLE);
+            }
+
         } else {
             for (Button button : mCampusButtons.values()) {
-                button.setVisibility(View.GONE);
+                button.setVisibility(View.VISIBLE);
             }
             for (Button button : mCollegetownButtons.values()) {
-                button.setVisibility(View.VISIBLE);
+                button.setVisibility(View.GONE);
             }
         }
     }
@@ -192,8 +193,14 @@ public class MainListFragment extends Fragment
     }
 
     public void handleCollegetownSwitchButtonPress() {
-        changeButtonVisbility(false);
-        mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
+        mListPresenter.setDisplayCTown(!mListPresenter.getDisplayCTown());
+        changeButtonVisbility(mListPresenter.getDisplayCTown());
+        if(mListPresenter.getDisplayCTown()) {
+            mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
+        }
+        else {
+            mListPresenter.setCurrentList(mListPresenter.getEateryList());
+        }
         updateListAdapter();
     }
 
@@ -205,7 +212,6 @@ public class MainListFragment extends Fragment
             changeButtonColor(R.color.white, R.color.blue, button);
             mAreaButtonsPressed.add(button);
         }
-
         getCurrentAreas();
         mListPresenter.filterImageList();
     }
@@ -285,7 +291,7 @@ public class MainListFragment extends Fragment
         SearchView searchView = (SearchView) searchItem.getActionView();
         getActivity().setTitle("Eateries");
         AutoCompleteTextView searchTextView =
-                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+                searchView.findViewById(R.id.search_src_text);
         searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");

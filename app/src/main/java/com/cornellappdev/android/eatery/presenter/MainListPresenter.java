@@ -18,7 +18,7 @@ public class MainListPresenter {
     private HashSet<PaymentMethod> mPaymentSet;
     private HashSet<CampusArea> mAreaSet;
     private HashSet<Category> mCategorySet;
-    private String query;
+    private String mQuery;
 
     private Repository rInstance = Repository.getInstance();
 
@@ -29,7 +29,11 @@ public class MainListPresenter {
         mPaymentSet = new HashSet<>();
         mAreaSet = new HashSet<>();
         mCategorySet = new HashSet<>();
-        query = "";
+        mQuery = "";
+    }
+
+    public boolean getDisplayCTown() {
+        return rInstance.getDisplayCTown();
     }
 
     public ArrayList<EateryBaseModel> getEateryList() {
@@ -38,6 +42,10 @@ public class MainListPresenter {
 
     public ArrayList<EateryBaseModel> getCtEateryList() {
         return mCtEateryList;
+    }
+
+    public void setDisplayCTown(boolean displayCTown) {
+        rInstance.setDisplayCTown(displayCTown);
     }
 
     public void setPaymentSet(HashSet<PaymentMethod> paymentSet) {
@@ -63,7 +71,7 @@ public class MainListPresenter {
 
     private boolean isUnderCategory(EateryBaseModel model) {
         for (Category category : mCategorySet) {
-            if (((CollegeTownModel)model).isUnderCategory(category)) {
+            if (((CollegeTownModel) model).isUnderCategory(category)) {
                 return true;
             }
         }
@@ -93,8 +101,7 @@ public class MainListPresenter {
                 model.setMatchesFilter(true);
             } else if (model.isCtEatery() && categoryFuzzyMatches) {
                 model.setMatchesFilter(true);
-            }
-            else {
+            } else {
                 model.setMatchesFilter(false);
             }
         }
@@ -138,16 +145,16 @@ public class MainListPresenter {
     }
 
     public String getQuery() {
-        return query;
+        return mQuery;
     }
 
     public void setQuery(String query) {
-        this.query = query;
+        this.mQuery = query;
     }
 
     // Updates the eatery models to matchSearch for this specific query
     public void filterSearchList() {
-        searchList(query);
+        searchList(mQuery);
     }
 
     // Returns all eateries that matchsearch and filter
