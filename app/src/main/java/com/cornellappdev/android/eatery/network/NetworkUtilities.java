@@ -8,6 +8,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
+import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.R;
@@ -35,12 +36,10 @@ public final class NetworkUtilities {
     private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
     private static ApolloClient apolloClient;
     private static Repository rInstance = Repository.getInstance();
-
     public static boolean collegetownEateriesLoaded = true;
 
     private static void buildApolloClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-
         apolloClient = ApolloClient.builder()
                 .serverUrl(GRAPHQL_URL)
                 .okHttpClient(okHttpClient)
@@ -80,7 +79,8 @@ public final class NetworkUtilities {
             @Override
             public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
                 eateries = response.data().eateries();
-                ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,activity);
+                ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,
+                        activity);
                 Collections.sort(eateryList);
                 rInstance.setEateryList(eateryList);
 
@@ -89,7 +89,7 @@ public final class NetworkUtilities {
                     @Override
                     public void run() {
                         try {
-                            ((MainActivity)activity).getSupportFragmentManager()
+                            ((MainActivity) activity).getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.frame_fragment_holder, new MainListFragment())
                                     .commit();
@@ -98,6 +98,29 @@ public final class NetworkUtilities {
                         }
                     }
                 });
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                MainActivity.JSON_FALLBACK = true;
+            }
+        });
+    }
+
+    public static void getBrbInfo(String session_id, BRBAccountCallback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .build();
+
+        ApolloClient apolloClient = ApolloClient.builder()
+                .serverUrl(GRAPHQL_URL)
+                .okHttpClient(okHttpClient)
+                .build();
+        final BrbInfoQuery brbInfoQuery = BrbInfoQuery.builder().accountId(session_id).build();
+        ApolloCall<BrbInfoQuery.Data> brbCall = apolloClient.query(brbInfoQuery);
+        brbCall.enqueue(new ApolloCall.Callback<BrbInfoQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<BrbInfoQuery.Data> response) {
+                callback.retrievedAccountInfo(response.data().accountInfo());
             }
 
             @Override
@@ -117,15 +140,22 @@ public final class NetworkUtilities {
             public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
                 collegetownEateriesLoaded = true;
                 collegetownEateries = response.data().collegetownEateries();
-                ArrayList<EateryBaseModel> collegetownEateryList = JsonUtilities.parseCtEateries(activity, collegetownEateries);
+                ArrayList<EateryBaseModel> collegetownEateryList = JsonUtilities.parseCtEateries(
+                        activity, collegetownEateries);
                 Collections.sort(collegetownEateryList);
                 rInstance.setCtEateryList(collegetownEateryList);
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
+                MainActivity.JSON_FALLBACK = true;
                 collegetownEateriesLoaded = false;
             }
         });
+    }
+    // BRB callback
+    public interface BRBAccountCallback {
+        // parameters can be of any types, depending on the event defined
+        void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo);
     }
 }

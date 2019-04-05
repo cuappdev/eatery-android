@@ -99,7 +99,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
                 holder.cafeName.setText(eateryModel.getNickName());
-
                 String imageLocation = null;
                 if (!eateryModel.isCtEatery()) {
                     imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());

@@ -96,10 +96,10 @@ public class MainListPresenter {
                     mPaymentSet.isEmpty() || hasPaymentMethod(model);
             boolean categoryFuzzyMatches =
                     mCategorySet.isEmpty() || isUnderCategory(model);
-
             if (!model.isCtEatery() && areaFuzzyMatches && paymentFuzzyMatches) {
                 model.setMatchesFilter(true);
             } else if (model.isCtEatery() && categoryFuzzyMatches) {
+
                 model.setMatchesFilter(true);
             } else {
                 model.setMatchesFilter(false);
@@ -170,5 +170,6 @@ public class MainListPresenter {
 
     public void setCurrentList(ArrayList<EateryBaseModel> eateryList) {
         mCurrentList = eateryList;
+
     }
 }

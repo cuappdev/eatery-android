@@ -147,14 +147,12 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
         mPrice = ctEatery.price();
         mRating = ctEatery.rating();
         mYelpUrl = ctEatery.url();
-
         for(String category : mCategories) {
             Category eateryCategory = Category.fromShortDescription(category);
             if(eateryCategory != null) {
                 mCategoryList.add(eateryCategory);
             }
         }
-
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")

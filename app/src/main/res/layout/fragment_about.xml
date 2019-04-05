@@ -1,117 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  tools:context=".AboutFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".AboutFragment">
 
-  <ScrollView
-    android:id="@+id/scrollView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentStart="true"
-    android:layout_marginBottom="70dp">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
-
-      <TextView
-        android:id="@+id/descriptionHeader"
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:text="@string/description_header"
-        android:textColor="@color/primary"
-        android:textSize="20sp"
-        android:textStyle="normal" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="70dp">
 
-      <TextView
-        android:id="@+id/descriptionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lineSpacingExtra="10sp"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:text="@string/description_text_1"
-        android:textColor="@color/primary"
-        android:textSize="18sp"
-        android:textStyle="normal" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lineSpacingExtra="10sp"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:text="@string/description_text_2"
-        android:textColor="@color/primary"
-        android:textSize="18sp"
-        android:textStyle="normal" />
+            <TextView
+                android:id="@+id/descriptionHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:text="@string/description_header"
+                android:textColor="@color/primary"
+                android:textSize="20sp"
+                android:textStyle="normal"/>
 
-      <TextView
-        android:id="@+id/websiteText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:text="@string/appdev_website"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
-        android:textStyle="normal" />
+            <TextView
+                android:id="@+id/descriptionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:text="@string/description_text_1"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="normal"/>
 
-      <TextView
-        android:id="@+id/feedbackHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:paddingLeft="15dp"
-        android:paddingTop="30dp"
-        android:paddingRight="15dp"
-        android:text="@string/feedback_header"
-        android:textColor="@color/primary"
-        android:textSize="20sp"
-        android:textStyle="normal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:text="@string/description_text_2"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="normal"/>
 
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:lineSpacingExtra="10sp"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:text="@string/feedback_text"
-        android:textColor="@color/primary"
-        android:textSize="18sp"
-        android:textStyle="normal" />
+            <TextView
+                android:id="@+id/websiteText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:text="@string/appdev_website"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="normal"/>
 
-      <TextView
-        android:id="@+id/feedbackText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="15dp"
-        android:paddingTop="20dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="20dp"
-        android:text="@string/google_form"
-        android:textColor="@color/blue"
-        android:textSize="20sp"
-        android:textStyle="normal" />
-    </LinearLayout>
-  </ScrollView>
+            <TextView
+                android:id="@+id/feedbackHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:paddingLeft="15dp"
+                android:paddingTop="30dp"
+                android:paddingRight="15dp"
+                android:text="@string/feedback_header"
+                android:textColor="@color/primary"
+                android:textSize="20sp"
+                android:textStyle="normal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:text="@string/feedback_text"
+                android:textColor="@color/primary"
+                android:textSize="18sp"
+                android:textStyle="normal"/>
+
+            <TextView
+                android:id="@+id/feedbackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="15dp"
+                android:paddingTop="20dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="20dp"
+                android:text="@string/google_form"
+                android:textColor="@color/blue"
+                android:textSize="20sp"
+                android:textStyle="normal"/>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

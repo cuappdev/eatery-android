@@ -1,10 +1,15 @@
 package com.cornellappdev.android.eatery;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -33,10 +38,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
-
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
     private static MainListPresenter mListPresenter;
@@ -48,7 +49,6 @@ public class MainListFragment extends Fragment
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class MainListFragment extends Fragment
 
         getActivity().setTitle("Eateries");
         setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mRecyclerView = rootView.findViewById(R.id.cafe_list);
         mListPresenter = new MainListPresenter();
@@ -74,12 +75,10 @@ public class MainListFragment extends Fragment
                         mListPresenter.getEateryList());
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setVisibility(View.VISIBLE);
-
         mCampusButtons = new HashMap<>();
         mCollegetownButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
         initializeCollegeTownEateryButtons(rootView);
-
         return rootView;
     }
 
@@ -131,7 +130,6 @@ public class MainListFragment extends Fragment
             }
         }
     }
-
     public void changeButtonColor(int textColor, int backgroundColor, Button button) {
         button.setTextColor(
                 ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
@@ -165,7 +163,6 @@ public class MainListFragment extends Fragment
         }
         mListPresenter.setPaymentSet(paymentSet);
     }
-
     public void getCurrentCategory() {
         HashSet<Category> categorySet = new HashSet<>();
         for (Button button : mCategoryButtonsPressed) {
@@ -203,7 +200,6 @@ public class MainListFragment extends Fragment
         }
         updateListAdapter();
     }
-
     private void handleAreaButtonPress(Button button) {
         if (mAreaButtonsPressed.contains(button)) {
             changeButtonColor(R.color.blue, R.color.wash, button);
@@ -291,17 +287,15 @@ public class MainListFragment extends Fragment
         SearchView searchView = (SearchView) searchItem.getActionView();
         getActivity().setTitle("Eateries");
         AutoCompleteTextView searchTextView =
-                searchView.findViewById(R.id.search_src_text);
+                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+
         searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(
-                    searchTextView,
-                    R.drawable
-                            .cursor); // This sets the cursor resource ID to 0 or @null which
-          // will make it visible
-            // on white background
+            mCursorDrawableRes.set(searchTextView, R.drawable.cursor);
+            // This sets the cursor resource ID to 0 or @null which
+            // will make it visible on white background
         } catch (Exception e) {
             // Don't do anything
         }

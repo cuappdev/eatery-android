@@ -1,27 +1,30 @@
 package com.cornellappdev.android.eatery;
 
+import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
 import java.util.ArrayList;
 
 public class Repository {
+    private static final Repository sRepoInstance = new Repository();
     private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
     private ArrayList<EateryBaseModel> mCollegetownEateryList = new ArrayList<>();
     private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
-    private static final Repository sRepoInstance = new Repository();
-    private boolean isSearchPressed = false;
+    private BrbInfoModel mCurrentModel;
+    private boolean mIsSearchPressed = false;
+    private boolean mIsSaveInfoChecked = false;
     private boolean mDisplayingCTown;
 
     public static Repository getInstance() {
         return sRepoInstance;
     }
 
-    public void setEateryList(ArrayList<EateryBaseModel> eateryList) {
-        this.mEateryList = eateryList;
-    }
-
     public ArrayList<EateryBaseModel> getEateryList() {
         return mEateryList;
+    }
+
+    public void setEateryList(ArrayList<EateryBaseModel> eateryList) {
+        this.mEateryList = eateryList;
     }
 
     public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
@@ -49,11 +52,27 @@ public class Repository {
     }
 
     public boolean getIsSearchPressed() {
-        return isSearchPressed;
+        return mIsSearchPressed;
     }
 
     public void setIsSearchPressed(boolean isPressed) {
-        isSearchPressed = isPressed;
+        mIsSearchPressed = isPressed;
+    }
+
+    public BrbInfoModel getBrbInfoModel() {
+        return this.mCurrentModel;
+    }
+
+    public void setBrbInfoModel(BrbInfoModel m) {
+        this.mCurrentModel = m;
+    }
+
+    public boolean getSaveCredentials() {
+        return this.mIsSaveInfoChecked;
+    }
+
+    public void setSaveCredentials(boolean isChecked) {
+        this.mIsSaveInfoChecked = isChecked;
     }
 
 }
