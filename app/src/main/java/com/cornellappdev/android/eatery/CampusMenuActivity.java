@@ -31,7 +31,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuActivity extends AppCompatActivity {
+public class CampusMenuActivity extends AppCompatActivity {
     TextView cafeText;
     SimpleDraweeView cafeImage;
     TextView cafeLoc;

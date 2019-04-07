@@ -1,9 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
-
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -28,6 +24,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
+import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 
 import java.lang.reflect.Field;
@@ -37,6 +34,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
@@ -48,10 +49,12 @@ public class MainListFragment extends Fragment
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
+    public Button mCampusPill;
+    public Button mCollegetownPill;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
@@ -61,6 +64,8 @@ public class MainListFragment extends Fragment
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mRecyclerView = rootView.findViewById(R.id.cafe_list);
+        mCampusPill = rootView.findViewById(R.id.pill_campus);
+        mCollegetownPill = rootView.findViewById(R.id.pill_collegetown);
         mListPresenter = new MainListPresenter();
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
@@ -79,6 +84,23 @@ public class MainListFragment extends Fragment
         mCollegetownButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
         initializeCollegeTownEateryButtons(rootView);
+
+        mCampusPill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCampusPillPress();
+            }
+        });
+        if (NetworkUtilities.collegetownEateriesLoaded) {
+            mCollegetownPill.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    handleCollegetownPillPress();
+                }
+            });
+        } else {
+            mCollegetownPill.setEnabled(false);
+        }
         return rootView;
     }
 
@@ -130,6 +152,7 @@ public class MainListFragment extends Fragment
             }
         }
     }
+
     public void changeButtonColor(int textColor, int backgroundColor, Button button) {
         button.setTextColor(
                 ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
@@ -163,10 +186,11 @@ public class MainListFragment extends Fragment
         }
         mListPresenter.setPaymentSet(paymentSet);
     }
+
     public void getCurrentCategory() {
         HashSet<Category> categorySet = new HashSet<>();
         for (Button button : mCategoryButtonsPressed) {
-            switch(button.getId()) {
+            switch (button.getId()) {
                 case R.id.american:
                     categorySet.add(Category.American);
                     break;
@@ -189,17 +213,24 @@ public class MainListFragment extends Fragment
         mListPresenter.setCategorySet(categorySet);
     }
 
-    public void handleCollegetownSwitchButtonPress() {
-        mListPresenter.setDisplayCTown(!mListPresenter.getDisplayCTown());
-        changeButtonVisbility(mListPresenter.getDisplayCTown());
-        if(mListPresenter.getDisplayCTown()) {
-            mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
-        }
-        else {
-            mListPresenter.setCurrentList(mListPresenter.getEateryList());
-        }
+    public void handleCollegetownPillPress() {
+        mListPresenter.setDisplayCTown(true);
+        mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
+        mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
+        changeButtonVisbility(true);
+        mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
         updateListAdapter();
     }
+
+    public void handleCampusPillPress() {
+        mListPresenter.setDisplayCTown(false);
+        mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
+        mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
+        changeButtonVisbility(false);
+        mListPresenter.setCurrentList(mListPresenter.getEateryList());
+        updateListAdapter();
+    }
+
     private void handleAreaButtonPress(Button button) {
         if (mAreaButtonsPressed.contains(button)) {
             changeButtonColor(R.color.blue, R.color.wash, button);
@@ -236,7 +267,7 @@ public class MainListFragment extends Fragment
         mListPresenter.filterImageList();
     }
 
-    private void updateListAdapter(){
+    private void updateListAdapter() {
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
         Collections.sort(cafesToDisplay);
         mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
@@ -258,8 +289,14 @@ public class MainListFragment extends Fragment
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list) {
         EateryBaseModel model = list.get(position);
-        if (!model.isCtEatery()) {
-            Intent intent = new Intent(getActivity(), MenuActivity.class);
+        if(model.isCtEatery()) {
+            Intent intent = new Intent(getActivity(), CollegeTownMenuActivity.class);
+            intent.putExtra("cafeInfo", model);
+            intent.putExtra("locName", model.getNickName());
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(getActivity(), CampusMenuActivity.class);
             intent.putExtra("cafeInfo", model);
             intent.putExtra("locName", model.getNickName());
             startActivity(intent);

@@ -98,7 +98,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), CampusMenuActivity.class);
                         String markerName = marker.getTitle();
                         int position = 0;
                         for (int i = 0; i < cafeData.size(); i++) {

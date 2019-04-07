@@ -32,7 +32,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key"/>
         <activity
-            android:name=".MenuActivity"
+            android:name=".CampusMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".CollegeTownMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
         <activity

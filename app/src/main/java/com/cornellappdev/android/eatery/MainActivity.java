@@ -36,12 +36,10 @@ public class MainActivity extends AppCompatActivity {
     public static WebView sLoginWebView;
     public BottomNavigationView bnv;
     public CafeteriaDbHelper dbHelper;
-    LoginFragment loginFragment;
+    private LoginFragment loginFragment;
     private MainPresenter presenter;
-    public Button mCollegetownSwitchButton;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
-    private AboutFragment aboutFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new CafeteriaDbHelper(this);
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
-        mCollegetownSwitchButton = findViewById(R.id.collegetown_switch_button);
         loginFragment = new LoginFragment();
 
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
@@ -129,25 +126,13 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
         // Try pulling data from GraphQL, if not fallback to json from cornell dining
         NetworkUtilities.getEateries(this);
         if (JSON_FALLBACK) {
             new ProcessJson().execute("");
         }
-
         // Disable switch button if failed to retrieve data for collegetown eateries
         NetworkUtilities.getCtEateries(this);
-        if (NetworkUtilities.collegetownEateriesLoaded) {
-            mCollegetownSwitchButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mainListFragment.handleCollegetownSwitchButtonPress();
-                }
-            });
-        } else {
-            mCollegetownSwitchButton.setEnabled(false);
-        }
     }
 
     public void setLoginInstance(LoginFragment instance) {
