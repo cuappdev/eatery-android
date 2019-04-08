@@ -290,10 +290,7 @@ public class MainListFragment extends Fragment
     public void onClick(int position, ArrayList<EateryBaseModel> list) {
         EateryBaseModel model = list.get(position);
         if(model.isCtEatery()) {
-            Intent intent = new Intent(getActivity(), CollegeTownMenuActivity.class);
-            intent.putExtra("cafeInfo", model);
-            intent.putExtra("locName", model.getNickName());
-            startActivity(intent);
+            // TODO: Add onclick
         }
         else {
             Intent intent = new Intent(getActivity(), CampusMenuActivity.class);

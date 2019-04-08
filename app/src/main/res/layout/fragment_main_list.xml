@@ -234,14 +234,14 @@
             <Button
                 android:id="@+id/pill_campus"
                 android:layout_width="150dp"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
                 android:background="@drawable/pill_campus_active"
                 />
 
             <Button
                 android:id="@+id/pill_collegetown"
                 android:layout_width="150dp"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
                 android:background="@drawable/pill_ct_inactive"
                 />
         </LinearLayout>
