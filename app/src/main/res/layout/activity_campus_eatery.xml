@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/wash"
     android:fitsSystemWindows="true"
-    tools:context="com.cornellappdev.android.eatery.MenuActivity">
+    tools:context="com.cornellappdev.android.eatery.CampusMenuActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

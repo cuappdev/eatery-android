@@ -1,63 +1,65 @@
 package com.cornellappdev.android.eatery;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cornellappdev.android.eatery.model.CafeModel;
-import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
-import com.cornellappdev.android.eatery.model.MealModel;
-import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-public class CtownMenuActivity extends AppCompatActivity {
-    TextView cafeText;
-    SimpleDraweeView cafeImage;
-    TextView cafeLoc;
-    TextView cafeIsOpen;
-    TextView menuText;
-    ImageView swipeIcon;
-    ImageView brbIcon;
-    LinearLayout linLayout;
-    EateryBaseModel cafeData;
-    Toolbar toolbar;
-    AppBarLayout appbar;
-    CollapsingToolbarLayout collapsingToolbar;
-    private TabLayout tabLayout;
-    private CustomPager customPager;
+public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCallback {
+    SimpleDraweeView mCafeImage;
+    TextView mCafeDirections;
+    TextView mCafeIsOpen;
+    TextView mCafeLoc;
+    TextView mCafeText;
+    TextView mCafeWebsite;
+    TextView mCafePhoneNumber;
+    EateryBaseModel mCafeData;
+    GoogleMap mMap;
+    MapView mMapView;
+    Toolbar mToolbar;
+    AppBarLayout mAppbar;
+    CollapsingToolbarLayout mCollapsingToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
+        setContentView(R.layout.activity_ctown_eatery);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -66,15 +68,15 @@ public class CtownMenuActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String cafeName = (String) intent.getSerializableExtra("locName");
-        cafeText = findViewById(R.id.ind_cafe_name);
-        cafeText.setText(cafeName);
-        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
-        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayout);
+        mCafeText = findViewById(R.id.ind_cafe_name);
+        mCafeText.setText(cafeName);
+        mCollapsingToolbar = findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbar.setTitle(" ");
+        mCollapsingToolbar.setCollapsedTitleTextAppearance(R.style.collapsingToolbarLayout);
 
         // Shows/hides title depending on scroll offset
-        appbar = findViewById(R.id.appbar);
-        appbar.addOnOffsetChangedListener(
+        mAppbar = findViewById(R.id.appbar);
+        mAppbar.addOnOffsetChangedListener(
                 new AppBarLayout.OnOffsetChangedListener() {
                     boolean isShow = true;
                     int scrollRange = -1;
@@ -85,185 +87,170 @@ public class CtownMenuActivity extends AppCompatActivity {
                             scrollRange = appBarLayout.getTotalScrollRange();
                         }
                         if (scrollRange + verticalOffset == 0) {
-                            collapsingToolbar.setTitle(cafeName);
+                            mCollapsingToolbar.setTitle(cafeName);
                             isShow = true;
                         } else if (isShow) {
-                            collapsingToolbar.setTitle(" ");
+                            mCollapsingToolbar.setTitle(" ");
                             isShow = false;
                         }
                     }
                 });
 
-        cafeData = (EateryBaseModel) intent.getSerializableExtra("cafeInfo");
-
+        mCafeData = (CollegeTownModel) intent.getSerializableExtra("cafeInfo");
         // Format string for opening/closing time
-        cafeIsOpen = findViewById(R.id.ind_open);
-        EateryBaseModel.Status currentStatus = cafeData.getCurrentStatus();
-        cafeIsOpen.setText(currentStatus.toString());
+        mCafeIsOpen = findViewById(R.id.ind_open);
+        CollegeTownModel.Status currentStatus = mCafeData.getCurrentStatus();
+        mCafeIsOpen.setText(currentStatus.toString());
         if (currentStatus == EateryBaseModel.Status.OPEN) {
-            cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            mCafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
         } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
-            cafeIsOpen.setTextColor(
+            mCafeIsOpen.setTextColor(
                     ContextCompat.getColor(getApplicationContext(), R.color.yellow));
         } else {
-            cafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+            mCafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
         }
+        mCafeText = findViewById(R.id.ind_time);
+        mCafeText.setText(TimeUtil.format(mCafeData.getCurrentStatus(), mCafeData.getChangeTime()));
+        mCafeLoc = findViewById(R.id.ind_loc);
+        mCafeLoc.setText(mCafeData.getBuildingLocation());
+        mCafeImage = findViewById(R.id.ind_image);
+        mCafeImage.setBackgroundColor(0xFFff0000);
 
-        cafeText = findViewById(R.id.ind_time);
-        cafeText.setText(TimeUtil.format(cafeData.getCurrentStatus(), cafeData.getChangeTime()));
-
-        cafeLoc = findViewById(R.id.ind_loc);
-        cafeLoc.setText(cafeData.getBuildingLocation());
-
-        cafeImage = findViewById(R.id.ind_image);
-        cafeImage.setBackgroundColor(0xFFff0000);
-
-        String imageLocation = EateryBaseModel.getImageURL(cafeName);
+        String imageLocation = ((CollegeTownModel) mCafeData).getImageUrl();
         Uri uri = Uri.parse(imageLocation);
-        cafeImage.setImageURI(uri);
+        mCafeImage.setImageURI(uri);
 
-        brbIcon = findViewById(R.id.brb_icon);
-        if (cafeData.hasPaymentMethod(PaymentMethod.BRB)) {
-            brbIcon.setVisibility(View.VISIBLE);
-        }
-
-        swipeIcon = findViewById(R.id.swipe_icon);
-        if (cafeData.hasPaymentMethod(PaymentMethod.SWIPES)) {
-            brbIcon.setVisibility(View.VISIBLE);
-        }
-
-        customPager = findViewById(R.id.pager);
-        tabLayout = findViewById(R.id.tabs);
-        linLayout = findViewById(R.id.linear);
-
-        float scale = getResources().getDisplayMetrics().density;
-
-        // Formatting for when eatery is a cafe
-        if (cafeData instanceof CafeModel) {
-            customPager.setVisibility(View.GONE);
-            tabLayout.setVisibility(View.GONE);
-            linLayout.setVisibility(View.VISIBLE);
-
-            View blank = new View(this);
-            blank.setLayoutParams(
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            blank.setBackgroundColor(
-                    ContextCompat.getColor(getApplicationContext(), R.color.inactive));
-            blank.setElevation(-1);
-            linLayout.addView(blank);
-
-            List<String> menu = ((CafeModel) cafeData).getCafeMenu();
-            for (int i = 0; i < menu.size(); i++) {
-                TextView mealItemText = new TextView(this);
-                mealItemText.setText(menu.get(i));
-                mealItemText.setTextSize(14);
-                mealItemText.setTextColor(
-                        ContextCompat.getColor(getApplicationContext(), R.color.primary));
-                mealItemText.setPadding(
-                        (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
-                        (int) (8 * scale + 0.5f));
-                linLayout.addView(mealItemText);
-
-                // Add divider if text is not the last item in list
-                if (i != menu.size() - 1) {
-                    View divider = new View(this);
-                    divider.setBackgroundColor(
-                            ContextCompat.getColor(getApplicationContext(), R.color.wash));
-                    LinearLayout.LayoutParams dividerParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    1);
-                    dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
-                    divider.setElevation(-1);
-                    divider.setLayoutParams(dividerParams);
-                    linLayout.addView(divider);
-                }
+        mCafeDirections = findViewById(R.id.cafe_directions);
+        mCafeDirections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Opening up google maps with the latitude and longitude on click
+                String uri = String.format(Locale.ENGLISH,
+                        "http://maps.google.com/maps?daddr=%f,%f",
+                        mCafeData.getLatitude(), mCafeData.getLongitude());
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
             }
-        }
-        // Formatting for when eatery is a dining hall and has a menu
-        else if (cafeData instanceof DiningHallModel) {
-            menuText = findViewById(R.id.ind_menu);
-            customPager.setVisibility(View.GONE);
-            tabLayout.setVisibility(View.GONE);
+        });
 
-            ArrayList<MealModel> mm =
-                    ((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals();
-            if (mm.isEmpty() || mm.get(0).getMenu().getNumberOfCategories() == 0) {
-                menuText.setText(R.string.no_menu_text);
-                menuText.setTextSize(16);
-                menuText.setPadding(0, 96, 0, 0);
-                menuText.setBackgroundColor(
-                        ContextCompat.getColor(getApplicationContext(), R.color.wash));
-                menuText.setGravity(Gravity.CENTER_HORIZONTAL);
-            } else {
-                menuText.setVisibility(View.GONE);
-                customPager.setVisibility(View.VISIBLE);
-                tabLayout.setVisibility(View.VISIBLE);
-                linLayout.setVisibility(View.GONE);
-                setupViewPager(customPager);
-                tabLayout.setupWithViewPager(customPager);
-                tabLayout.setTabTextColors(
-                        ContextCompat.getColor(getApplicationContext(), R.color.primary),
-                        ContextCompat.getColor(getApplicationContext(), R.color.blue));
+        mCafePhoneNumber = findViewById(R.id.cafe_phone);
+        mCafePhoneNumber.setText(String.format("Call %s", mCafeData.getPhoneNumber()));
+        mCafePhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Calling the number on click
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse(String.format("tel: %s", mCafeData.getPhoneNumber())));
+                startActivity(callIntent);
             }
+        });
+
+        mCafeWebsite = findViewById(R.id.cafe_website);
+        String shortenedUrl = ((CollegeTownModel) mCafeData).getYelpUrl().substring(0, 37) + "...";
+        mCafeWebsite.setText(String.format("Visit:  %s", shortenedUrl));
+        mCafeWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Opening up the website on click
+                Uri uri = Uri.parse(((CollegeTownModel) mCafeData).getYelpUrl());
+                // missing 'http://' will cause crashed
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
+
+        mMapView = findViewById(R.id.cafe_map);
+        if (mMapView != null) {
+            mMapView.onCreate(null);
+            mMapView.onResume();
+            mMapView.getMapAsync(this);
+            mMapView.setClickable(true);
+            mMapView.setFocusable(true);
+            mMapView.setDuplicateParentStateEnabled(false);
         }
     }
 
-    private void setupViewPager(CustomPager customPager) {
-        ViewPagerAdapter adapter =
-                new ViewPagerAdapter(getApplicationContext(), getSupportFragmentManager());
-        customPager.setAdapter(adapter);
+    private Location getMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // If the user has not given permission for maps, request permission
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    1);
+        }
+        // Get location from GPS if it's available
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Location wasn't found, check the next most accurate place for the current location
+        if (myLocation == null) {
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+            // Finds a provider that matches the criteria
+            String provider = lm.getBestProvider(criteria, true);
+            // Use the provider to get the last known location
+            myLocation = lm.getLastKnownLocation(provider);
+        }
+
+        return myLocation;
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        DiningHallModel dhm = (DiningHallModel) cafeData;
-        private Context mContext;
-        private int mCurrentPosition = -1;
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MarkerOptions cafeMarker;
+        mMap = googleMap;
+        // Add the marker for the cafe's location (color of marker is red)
+        cafeMarker = new MarkerOptions().position(new LatLng(mCafeData.getLatitude(),
+                mCafeData.getLongitude())).title(mCafeData.getName());
+        mMap.addMarker(cafeMarker);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setAllGesturesEnabled(false);
 
-        public ViewPagerAdapter(Context context, FragmentManager manager) {
-            super(manager);
-            mContext = context;
-        }
-
-        // Set menu fragment to first MealModel object
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            if (position != mCurrentPosition) {
-                if (mCurrentPosition == -1) position = 0;
-                Fragment fragment = (Fragment) object;
-                CustomPager pager = (CustomPager) container;
-                if (fragment != null && fragment.getView() != null) {
-                    mCurrentPosition = position;
-                    pager.measureCurrentView(fragment.getView());
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // If the user has not given permission for maps, request permission
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    1);
+        } else if (mMap != null) {
+            // Make the blue dot appear
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            CameraPosition position = CameraPosition.builder().target(
+                    new LatLng(mCafeData.getLatitude(), mCafeData.getLongitude()))
+                    .zoom(16).bearing(0).build();
+            // Move the camera to be directly over the cafe
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            Location myLocation = getMyLocation();
+            builder.include(cafeMarker.getPosition());
+            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                // When map loads, zoom out to see user position on the map as well
+                @Override
+                public void onMapLoaded() {
+                    int padding = 90; // offset from edges of the map in pixels
+                    if (myLocation != null) {
+                        double distance = Math.pow(myLocation.getLatitude() - mCafeData.getLatitude(), 2) +
+                                Math.pow(myLocation.getLatitude() - mCafeData.getLatitude(), 2);
+                        if (distance < 2.05886E-5) {
+                            // Only display current location if within a specified range of the eatery
+                            builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+                            LatLngBounds bounds = builder.build();
+                            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                            mMap.animateCamera(cu);
+                        }
+                    }
                 }
-            }
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Bundle b = new Bundle();
-            b.putInt("position", position);
-            ArrayList<MealModel> todayMeals = dhm.getCurrentDayMenu().getAllMeals();
-            b.putSerializable("cafeData", todayMeals.get(position));
-            MenuFragment f = new MenuFragment();
-            f.setArguments(b);
-            return f;
-        }
-
-        @Override
-        public int getCount() {
-            int n;
-            try {
-                n = dhm.getCurrentDayMenu().getAllMealTypes().size();
-            } catch (Exception e) {
-                n = 0;
-            }
-            return n;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return dhm.getCurrentDayMenu().getAllMealTypes().get(position).toString();
+            });
         }
     }
 }

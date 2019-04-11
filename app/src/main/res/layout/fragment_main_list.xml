@@ -358,26 +358,37 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="35dp"
             android:background="@drawable/pill_bg"
             android:gravity="center"
-            android:layout_marginBottom="35dp">
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/pill_campus"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:background="@drawable/pill_campus_active"
-                />
+            <LinearLayout
+                android:id="@+id/pill_campus_holder"
+                android:layout_width="135dp"
+                android:layout_height="40dp"
+                android:gravity="center">
 
-            <Button
-                android:id="@+id/pill_collegetown"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:background="@drawable/pill_ct_inactive"
-                />
+                <ImageView
+                    android:id="@+id/pill_campus"
+                    android:layout_width="75dp"
+                    android:layout_height="19dp"
+                    android:background="@drawable/pill_campus_active" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/pill_ctown_holder"
+                android:layout_width="135dp"
+                android:layout_height="40dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/pill_collegetown"
+                    android:layout_width="100dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/pill_ct_inactive" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </FrameLayout>
