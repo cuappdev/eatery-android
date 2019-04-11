@@ -88,37 +88,18 @@ public final class JsonUtilities {
     public static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
             Context mainContext) {
         ArrayList<EateryBaseModel> eateryList = new ArrayList<EateryBaseModel>();
-        JSONObject hardCodedData = null;
-        try {
-            hardCodedData = new JSONObject(loadJSONFromAsset(mainContext, "externalEateries.json"));
-            JSONArray hardCodedEateries = hardCodedData.getJSONArray("eateries");
-            for (int i = 0; i < hardCodedEateries.length(); i++) {
-                JSONObject obj = hardCodedEateries.getJSONObject(i);
-                EateryBaseModel model;
-                if (obj.has("id") && DINING_HALL_IDS.contains(obj.getInt("id"))) {
-                    model = DiningHallModel.fromJSON(mainContext, true, obj);
-                } else {
-                    model = CafeModel.fromJSONObject(mainContext, true, obj);
-                }
-                if (model != null) {
-                    eateryList.add(model);
-                }
+        for (AllEateriesQuery.Eatery eatery : eateries) {
+            EateryBaseModel model = null;
+            if (DINING_HALL_IDS.contains(eatery.id())) {
+                model = DiningHallModel.fromEatery(mainContext, false, eatery);
+            } else {
+                model = CafeModel.fromEatery(mainContext, false, eatery);
             }
-            for (AllEateriesQuery.Eatery eatery : eateries) {
-                EateryBaseModel model = null;
-                if (DINING_HALL_IDS.contains(eatery.id())) {
-                    model = DiningHallModel.fromEatery(mainContext, false, eatery);
-                } else {
-                    model = CafeModel.fromEatery(mainContext, false, eatery);
-                }
-                if (model != null) {
-                    eateryList.add(model);
-                }
+            if (model != null) {
+                eateryList.add(model);
             }
-        } catch (
-                JSONException e) {
-            e.printStackTrace();
         }
+
         return eateryList;
     }
 
