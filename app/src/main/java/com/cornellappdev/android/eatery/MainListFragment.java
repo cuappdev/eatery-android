@@ -122,10 +122,19 @@ public class MainListFragment extends Fragment
     public void initializeCollegeTownEateryButtons(View rootView) {
         int[] viewIds = {
                 R.id.american,
-                R.id.korean,
+                R.id.coffee,
                 R.id.chinese,
+                R.id.desserts,
+                R.id.grocery,
+                R.id.italian,
+                R.id.indian,
                 R.id.japanese,
-                R.id.indian};
+                R.id.korean,
+                R.id.mediterranean,
+                R.id.thai,
+                R.id.vietnamese
+        };
+
         for (int id : viewIds) {
             Button tempButton = rootView.findViewById(id);
             mCollegetownButtons.put(id, tempButton);
@@ -194,17 +203,38 @@ public class MainListFragment extends Fragment
                 case R.id.american:
                     categorySet.add(Category.American);
                     break;
-                case R.id.korean:
-                    categorySet.add(Category.Korean);
+                case R.id.coffee:
+                    categorySet.add(Category.Coffee);
                     break;
                 case R.id.chinese:
                     categorySet.add(Category.Chinese);
                     break;
-                case R.id.japanese:
-                    categorySet.add(Category.Japanese);
+                case R.id.desserts:
+                    categorySet.add(Category.Desserts);
+                    break;
+                case R.id.grocery:
+                    categorySet.add(Category.Grocery);
+                    break;
+                case R.id.italian:
+                    categorySet.add(Category.Italian);
                     break;
                 case R.id.indian:
                     categorySet.add(Category.Indian);
+                    break;
+                case R.id.japanese:
+                    categorySet.add(Category.Japanese);
+                    break;
+                case R.id.korean:
+                    categorySet.add(Category.Korean);
+                    break;
+                case R.id.mediterranean:
+                    categorySet.add(Category.Mediterranean);
+                    break;
+                case R.id.thai:
+                    categorySet.add(Category.Thai);
+                    break;
+                case R.id.vietnamese:
+                    categorySet.add(Category.Vietnamese);
                     break;
                 default:
                     break;
@@ -290,7 +320,10 @@ public class MainListFragment extends Fragment
     public void onClick(int position, ArrayList<EateryBaseModel> list) {
         EateryBaseModel model = list.get(position);
         if(model.isCtEatery()) {
-            // TODO: Add onclick
+            Intent intent = new Intent(getActivity(), CtownMenuActivity.class);
+            intent.putExtra("cafeInfo", model);
+            intent.putExtra("locName", model.getNickName());
+            startActivity(intent);
         }
         else {
             Intent intent = new Intent(getActivity(), CampusMenuActivity.class);

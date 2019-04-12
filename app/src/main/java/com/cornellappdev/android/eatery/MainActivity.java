@@ -9,10 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     // Gets executed on every page redirect. Only want to evaluate JS once
-                    Log.i("Loading page",url);
                     GetLoginUtilities.loginBrb(url, view, callback);
                 }
             });
@@ -131,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         if (JSON_FALLBACK) {
             new ProcessJson().execute("");
         }
-        // Disable switch button if failed to retrieve data for collegetown eateries
+
         NetworkUtilities.getCtEateries(this);
     }
 
