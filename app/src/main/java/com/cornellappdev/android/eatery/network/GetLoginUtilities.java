@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.network;
 
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 

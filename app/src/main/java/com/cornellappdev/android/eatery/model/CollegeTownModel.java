@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
+import com.cornellappdev.android.eatery.model.enums.Category;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 public class CollegeTownModel extends EateryBaseModel implements Serializable {
     protected String mImageUrl, mPrice, mRating, mYelpUrl;
+    private List<Category> mCategoryList;
     private List<String> mCategories;
     private List<String> mCtEateryMenu; // To be populated upon menu addition to backend
     private Map<LocalDate, List<Interval>> mHours;
@@ -27,6 +29,7 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
 
     public CollegeTownModel() {
         mCategories = new ArrayList<>();
+        mCategoryList = new ArrayList<>();
         mCtEateryMenu = new ArrayList<>();
         mHours = new HashMap<>();
         mSortedDates = new ArrayList<>();
@@ -43,6 +46,10 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
         return mCategories;
     }
 
+    public List<Category> getCategoryList() {
+        return mCategoryList;
+    }
+
     public String getImageUrl() {
         return mImageUrl;
     }
@@ -57,6 +64,10 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
 
     public String getYelpUrl() {
         return mYelpUrl;
+    }
+
+    public boolean isUnderCategory(Category category) {
+        return mCategoryList.contains(category);
     }
 
     private void setHours(LocalDate date, List<Interval> hours) {
@@ -132,11 +143,16 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
     public void parseCtEatery(Context context, AllCtEateriesQuery.CollegetownEatery ctEatery) {
         super.parseCtEatery(context, ctEatery);
         mCategories = ctEatery.categories();
-        mImageUrl = ctEatery.eateryType();
+        mImageUrl = ctEatery.imageUrl();
         mPrice = ctEatery.price();
         mRating = ctEatery.rating();
         mYelpUrl = ctEatery.url();
-
+        for(String category : mCategories) {
+            Category eateryCategory = Category.fromShortDescription(category);
+            if(eateryCategory != null) {
+                mCategoryList.add(eateryCategory);
+            }
+        }
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")

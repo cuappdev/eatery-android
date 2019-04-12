@@ -41,6 +41,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     private ArrayList<String> mSearchedItems;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
+    private boolean isCtEatery = false;
     private CampusArea mArea;
     private Double mLatitude, mLongitude;
     private List<PaymentMethod> mPayMethods;
@@ -130,8 +131,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     /**
      * This method returns a LocalDateTime. If the eatery has a current status of open or closing
      * soon
-     * then the time returned represents the closing time. If the eatery is closed the time
-     * returned
+     * then the time returned represents the closing time. If the eatery is closed the time returned
      * represents the opening time. This method can return null in the case when there is no known
      * next time for opening.
      */
@@ -140,6 +140,10 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     public boolean isOpen() {
         Status status = getCurrentStatus();
         return status == Status.OPEN || status == Status.CLOSINGSOON;
+    }
+
+    public boolean isCtEatery() {
+        return isCtEatery;
     }
 
     public boolean hasPaymentMethod(PaymentMethod method) {
@@ -154,6 +158,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLongitude = eatery.coordinates().longitude();
         mPhoneNumber = eatery.phone();
         mEateryType = eatery.eateryType();
+        isCtEatery = false;
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
         if (eatery.paymentMethods().brbs()) {
@@ -188,6 +193,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mId = ctEatery.id();
         mPhoneNumber = ctEatery.phone();
         mEateryType = ctEatery.eateryType();
+        isCtEatery = true;
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
         if (ctEatery.paymentMethods().brbs()) {

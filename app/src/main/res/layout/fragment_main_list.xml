@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".MainListFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainListFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,10 +21,10 @@
                 android:id="@+id/linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp">
 
                 <Button
                     android:id="@+id/northButton"
@@ -42,7 +42,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/westButton"
@@ -51,7 +51,6 @@
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="6dp"
-                    android:layout_marginBottom="10dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -61,7 +60,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/centralButton"
@@ -79,7 +78,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/swipes"
@@ -97,7 +96,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/brb"
@@ -115,7 +114,236 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
-                    android:textStyle="normal"/>
+                    android:textStyle="normal" />
+
+                <Button
+                    android:id="@+id/american"
+                    android:layout_width="85dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="American"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/chinese"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Chinese"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/coffee"
+                    android:layout_width="80dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Coffee"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/desserts"
+                    android:layout_width="65dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Desserts"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/grocery"
+                    android:layout_width="65dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Grocery"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/indian"
+                    android:layout_width="65dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Indian"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/italian"
+                    android:layout_width="65dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Italian"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/japanese"
+                    android:layout_width="85dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Japanese"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/korean"
+                    android:layout_width="65dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Korean"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/mediterranean"
+                    android:layout_width="115dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Mediterranean"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/thai"
+                    android:layout_width="55dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Thai"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/vietnamese"
+                    android:layout_width="95dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_horizontal"
+                    android:padding="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="Vietnamese"
+                    android:textAllCaps="false"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -125,6 +353,31 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/scroll"
             android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"/>
+            android:nestedScrollingEnabled="false" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/pill_bg"
+            android:gravity="center"
+            android:layout_marginBottom="35dp">
+
+            <Button
+                android:id="@+id/pill_campus"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@drawable/pill_campus_active"
+                />
+
+            <Button
+                android:id="@+id/pill_collegetown"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:background="@drawable/pill_ct_inactive"
+                />
+        </LinearLayout>
     </RelativeLayout>
 </FrameLayout>

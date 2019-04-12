@@ -13,6 +13,7 @@ public class Repository {
     private BrbInfoModel mCurrentModel;
     private boolean mIsSearchPressed = false;
     private boolean mIsSaveInfoChecked = false;
+    private boolean mDisplayingCTown;
 
     public static Repository getInstance() {
         return sRepoInstance;
@@ -26,20 +27,28 @@ public class Repository {
         this.mEateryList = eateryList;
     }
 
+    public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
+        this.mCollegetownEateryList = ctEateryList;
+    }
+
     public ArrayList<EateryBaseModel> getCtEateryList() {
         return mCollegetownEateryList;
     }
 
-    public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
-        this.mCollegetownEateryList = ctEateryList;
+    public void setSearchList(ArrayList<EateryBaseModel> searchList) {
+        this.mSearchList = searchList;
+    }
+
+    public void setDisplayCTown(boolean displayCTown) {
+        this.mDisplayingCTown = displayCTown;
     }
 
     public ArrayList<EateryBaseModel> getSearchList() {
         return mSearchList;
     }
 
-    public void setSearchList(ArrayList<EateryBaseModel> searchList) {
-        this.mSearchList = searchList;
+    public boolean getDisplayCTown() {
+        return mDisplayingCTown;
     }
 
     public boolean getIsSearchPressed() {

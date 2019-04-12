@@ -26,7 +26,6 @@ import com.cornellappdev.android.eatery.util.AccountManagerUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class MainActivity extends AppCompatActivity {
 
     public static boolean JSON_FALLBACK = false;
@@ -34,14 +33,21 @@ public class MainActivity extends AppCompatActivity {
     public static WebView sLoginWebView;
     public BottomNavigationView bnv;
     public CafeteriaDbHelper dbHelper;
-    LoginFragment loginFragment;
+    private LoginFragment loginFragment;
     private MainPresenter presenter;
+    private MainListFragment mainListFragment;
+    private WeeklyMenuFragment weeklyMenuFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        presenter = new MainPresenter();
+        dbHelper = new CafeteriaDbHelper(this);
+        mainListFragment = new MainListFragment();
+        weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
+
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
             public void failedLogin() {
@@ -98,30 +104,30 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
-                                transaction.replace(R.id.frame_fragment_holder,
-                                        new MainListFragment())
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, mainListFragment)
                                         .commit();
                                 break;
                             case R.id.action_week:
-                                transaction.replace(R.id.frame_fragment_holder,
-                                        new WeeklyMenuFragment())
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                                         .commit();
                                 break;
                             case R.id.action_brb:
-                                transaction.replace(R.id.frame_fragment_holder, loginFragment,
-                                        "Login")
+                                transaction
+                                        .replace(R.id.frame_fragment_holder, loginFragment)
                                         .commit();
                                 break;
                         }
                         return true;
                     }
                 });
-
         // Try pulling data from GraphQL, if not fallback to json from cornell dining
         NetworkUtilities.getEateries(this);
         if (JSON_FALLBACK) {
             new ProcessJson().execute("");
         }
+
         NetworkUtilities.getCtEateries(this);
     }
 
@@ -130,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -139,12 +144,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ArrayList<EateryBaseModel> doInBackground(String... params) {
             ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(
-                    Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager cm =
+                    (ConnectivityManager) getApplicationContext().getSystemService(
+                            Context.CONNECTIVITY_SERVICE);
+
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
             boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-            if (!isConnected && JsonUtilities.parseJson(dbHelper.getLastRow(),
-                    getApplicationContext()) != null) {
+            if (!isConnected
+                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
+                    != null) {
+
                 eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(),
                         getApplicationContext());
             } else {

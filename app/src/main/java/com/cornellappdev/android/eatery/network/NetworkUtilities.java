@@ -30,15 +30,13 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 public final class NetworkUtilities {
-
-    private static final String DINING_URI =
-            "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
+    private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
     private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
-    public static boolean collegetownEateriesLoaded = false;
     private static List<AllEateriesQuery.Eatery> eateries;
     private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
     private static ApolloClient apolloClient;
     private static Repository rInstance = Repository.getInstance();
+    public static boolean collegetownEateriesLoaded = true;
 
     private static void buildApolloClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
@@ -150,11 +148,11 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
+                MainActivity.JSON_FALLBACK = true;
                 collegetownEateriesLoaded = false;
             }
         });
     }
-
     // BRB callback
     public interface BRBAccountCallback {
         // parameters can be of any types, depending on the event defined
