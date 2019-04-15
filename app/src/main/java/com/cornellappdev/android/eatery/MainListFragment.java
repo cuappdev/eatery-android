@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,16 +42,18 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
-    private static MainListPresenter mListPresenter;
-    private static MainListAdapter mListAdapter;
-    private static Map<Integer, Button> mCampusButtons;
-    private static Map<Integer, Button> mCollegetownButtons;
+    private MainListPresenter mListPresenter;
+    private MainListAdapter mListAdapter;
+    private Map<Integer, Button> mCampusButtons;
+    private Map<Integer, Button> mCollegetownButtons;
     private RecyclerView mRecyclerView;
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
-    public Button mCampusPill;
-    public Button mCollegetownPill;
+    public ImageView mCampusPill;
+    public ImageView mCollegetownPill;
+    public LinearLayout mCampusPillHolder;
+    public LinearLayout mCtownPillHolder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +69,8 @@ public class MainListFragment extends Fragment
         mRecyclerView = rootView.findViewById(R.id.cafe_list);
         mCampusPill = rootView.findViewById(R.id.pill_campus);
         mCollegetownPill = rootView.findViewById(R.id.pill_collegetown);
+        mCampusPillHolder = rootView.findViewById(R.id.pill_campus_holder);
+        mCtownPillHolder = rootView.findViewById(R.id.pill_ctown_holder);
         mListPresenter = new MainListPresenter();
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
@@ -85,21 +90,21 @@ public class MainListFragment extends Fragment
         initializeCampusEateryButtons(rootView);
         initializeCollegeTownEateryButtons(rootView);
 
-        mCampusPill.setOnClickListener(new View.OnClickListener() {
+        mCampusPillHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleCampusPillPress();
             }
         });
-        if (NetworkUtilities.collegetownEateriesLoaded) {
-            mCollegetownPill.setOnClickListener(new View.OnClickListener() {
+        if (mListPresenter.getCollegeTownEateriesLoaded()) {
+            mCtownPillHolder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     handleCollegetownPillPress();
                 }
             });
         } else {
-            mCollegetownPill.setEnabled(false);
+            mCtownPillHolder.setEnabled(false);
         }
         return rootView;
     }
@@ -319,13 +324,12 @@ public class MainListFragment extends Fragment
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list) {
         EateryBaseModel model = list.get(position);
-        if(model.isCtEatery()) {
+        if (model.isCtEatery()) {
             Intent intent = new Intent(getActivity(), CtownMenuActivity.class);
             intent.putExtra("cafeInfo", model);
             intent.putExtra("locName", model.getNickName());
             startActivity(intent);
-        }
-        else {
+        } else {
             Intent intent = new Intent(getActivity(), CampusMenuActivity.class);
             intent.putExtra("cafeInfo", model);
             intent.putExtra("locName", model.getNickName());

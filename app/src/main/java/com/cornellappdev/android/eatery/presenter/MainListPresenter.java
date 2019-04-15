@@ -6,6 +6,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
+import com.cornellappdev.android.eatery.network.NetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -58,6 +59,10 @@ public class MainListPresenter {
 
     public void setCategorySet(HashSet<Category> categorySet) {
         mCategorySet = categorySet;
+    }
+
+    public boolean getCollegeTownEateriesLoaded() {
+        return NetworkUtilities.collegetownEateriesLoaded;
     }
 
     private boolean hasPaymentMethod(EateryBaseModel model) {
