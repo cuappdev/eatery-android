@@ -92,6 +92,7 @@ public class MainListFragment extends Fragment
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // On scroll, if scrolling down at a rate then make the pill invisible, if scrolling
                 // up make the pill visiible
