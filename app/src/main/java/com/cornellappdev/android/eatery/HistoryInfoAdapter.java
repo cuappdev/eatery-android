@@ -34,6 +34,9 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
         try {
             if (convertView == null) {
                 historyItemView = sInflater.inflate(mLayout, null);
+                // Making item non-clickable
+                historyItemView.setEnabled(false);
+                historyItemView.setOnClickListener(null);
                 holder = new ViewHolder();
 
                 holder.displayName = (TextView) historyItemView.findViewById(R.id.purchase_eatery);
@@ -55,6 +58,7 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return historyItemView;
     }
 

@@ -1,5 +1,11 @@
 package com.cornellappdev.android.eatery;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -25,7 +31,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 
 import java.lang.reflect.Field;
@@ -35,10 +40,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
@@ -50,18 +51,20 @@ public class MainListFragment extends Fragment
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
-    public ImageView mCampusPill;
-    public ImageView mCollegetownPill;
-    public LinearLayout mCampusPillHolder;
-    public LinearLayout mCtownPillHolder;
+    private ImageView mCampusPill;
+    private ImageView mCollegetownPill;
+    private LinearLayout mCampusPillHolder;
+    private LinearLayout mCtownPillHolder;
+    private LinearLayout mPillHolder;
+    private boolean mCurrentlyAnimating;
+    private boolean mPillVisible = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
-
         getActivity().setTitle("Eateries");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -71,10 +74,13 @@ public class MainListFragment extends Fragment
         mCollegetownPill = rootView.findViewById(R.id.pill_collegetown);
         mCampusPillHolder = rootView.findViewById(R.id.pill_campus_holder);
         mCtownPillHolder = rootView.findViewById(R.id.pill_ctown_holder);
+        mPillHolder = rootView.findViewById(R.id.pill_holder);
+
         mListPresenter = new MainListPresenter();
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
         mCategoryButtonsPressed = new HashSet<>();
+
         // Set up recyclerView and corresponding listAdapter
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager =
@@ -85,6 +91,19 @@ public class MainListFragment extends Fragment
                         mListPresenter.getEateryList());
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setVisibility(View.VISIBLE);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // On scroll, if scrolling down at a rate then make the pill invisible, if scrolling
+                // up make the pill visiible
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 25) {
+                    animatePillInvisible();
+                } else if (dy < 0) {
+                    animatePillVisible();
+                }
+
+            }
+        });
         mCampusButtons = new HashMap<>();
         mCollegetownButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
@@ -199,6 +218,36 @@ public class MainListFragment extends Fragment
             }
         }
         mListPresenter.setPaymentSet(paymentSet);
+    }
+
+    public void animatePillInvisible() {
+        if (!mCurrentlyAnimating && mPillVisible) {
+            mCurrentlyAnimating = true;
+            mPillHolder.animate().translationY(300).setDuration(500).setListener(
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mCurrentlyAnimating = false;
+                            mPillVisible = false;
+                        }
+                    });
+        }
+    }
+
+    public void animatePillVisible() {
+        if (!mCurrentlyAnimating && !mPillVisible) {
+            mCurrentlyAnimating = true;
+            mPillHolder.animate().translationY(0).setDuration(500).setListener(
+                    new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mCurrentlyAnimating = false;
+                            mPillVisible = true;
+                        }
+                    });
+        }
     }
 
     public void getCurrentCategory() {

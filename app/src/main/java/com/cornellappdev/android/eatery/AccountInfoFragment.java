@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +35,7 @@ public class AccountInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
-        mHistoryView = rootView.findViewById(R.id.historylistview);
+        mHistoryView = rootView.findViewById(R.id.purchase_history);
         mInfoHeader = inflater.inflate(R.layout.account_info_header, null);
         mSwipesLabel = mInfoHeader.findViewById(R.id.swipesValue);
         mBrbLabel = mInfoHeader.findViewById(R.id.brbValue);

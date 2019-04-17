@@ -43,17 +43,17 @@ public class TimeUtil {
         if (status == Status.CLOSED) {
             if (changeTime.toLocalDate().equals(LocalDate.now())) {
                 String updatedTime = changeTime.format(ONLY_TIME_FORMAT);
-                return String.format("Opens %s", updatedTime);
+                return String.format("until %s", updatedTime);
             } else if (changeTime.toLocalDate().equals(LocalDate.now().plusDays(1l))) {
                 String updatedTime = changeTime.format(ONLY_TIME_FORMAT);
-                return String.format("Opens Tomorrow %s", updatedTime);
+                return String.format("until tomorrow at %s", updatedTime);
             } else {
                 String updatedTime = changeTime.format(DATE_AND_TIME_FORMAT);
-                return String.format("Opens on %s", updatedTime);
+                return String.format("until %s", updatedTime);
 
             }
         }
-        return String.format("Closes %s", changeTime.format(ONLY_TIME_FORMAT));
+        return String.format("until %s", changeTime.format(ONLY_TIME_FORMAT));
     }
 
     public static String format(Status status, Interval interval, LocalDateTime changeTime) {

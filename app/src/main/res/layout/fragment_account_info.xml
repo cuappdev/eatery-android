@@ -5,8 +5,9 @@
              android:layout_height="match_parent"
              tools:context=".AccountInfoFragment">
     <ListView
-        android:id="@+id/historylistview"
+        android:id="@+id/purchase_history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false" />
 </FrameLayout>

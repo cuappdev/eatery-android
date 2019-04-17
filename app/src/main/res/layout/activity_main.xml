@@ -27,5 +27,12 @@
         android:id="@+id/login_webview"
         android:layout_width="0dp"
         android:layout_height="0dp" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/dummy_map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="20dp"
+        android:background="@color/white"
+    />
 
 </android.widget.RelativeLayout>
