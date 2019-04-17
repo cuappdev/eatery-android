@@ -1,5 +1,9 @@
 package com.cornellappdev.android.eatery;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -25,7 +29,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 
 import java.lang.reflect.Field;
@@ -35,10 +38,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
@@ -52,6 +51,7 @@ public class MainListFragment extends Fragment
     private Set<Button> mCategoryButtonsPressed;
     public ImageView mCampusPill;
     public ImageView mCollegetownPill;
+    public SearchView searchView;
     public LinearLayout mCampusPillHolder;
     public LinearLayout mCtownPillHolder;
 
@@ -254,6 +254,8 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
         mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
+        searchView.setQuery("",false);
+        mListPresenter.filterImageList();
         updateListAdapter();
     }
 
@@ -263,6 +265,8 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
+        searchView.setQuery("",false);
+        mListPresenter.filterImageList();
         updateListAdapter();
     }
 
@@ -355,7 +359,7 @@ public class MainListFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         getActivity().setTitle("Eateries");
         AutoCompleteTextView searchTextView =
                 searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
