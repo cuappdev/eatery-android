@@ -185,7 +185,6 @@ public class CafeModel extends EateryBaseModel implements Serializable {
                 setHours(localDate, dailyHours);
             }
         }
-
         mCafeMenu = cafeItems;
     }
 

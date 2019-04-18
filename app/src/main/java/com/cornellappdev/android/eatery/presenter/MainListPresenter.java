@@ -131,7 +131,6 @@ public class MainListPresenter {
 
             ArrayList<String> matchedItems = new ArrayList<>();
             boolean foundItem = false;
-            Log.i("Hello-----", model.getName());
 
             for (String item : mealSet) {
                 if (item.toLowerCase().contains(lowercaseQuery)) {

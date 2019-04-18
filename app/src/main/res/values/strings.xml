@@ -2,7 +2,7 @@
     <string name="app_name">eatery-android</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">Eateries</string>
-    <string name="closing_soon">Closing Soon</string>
+    <string name="closing_soon">Closing</string>
     <string name="closed">Closed</string>
     <string name="open">Open</string>
     <string name="appdev_website">Visit Our Website</string>
@@ -44,7 +44,7 @@
     <string name="netid">NetID</string>
     <string name="password_hint">Type your password</string>
     <string name="netid_hint">Type your netid (e.g. abc123)</string>
-    <string name="about">About</string>
+    <string name="about">About</string>`
     <string name="accounts">Accounts</string>
     <string name="meal_swipes">Meal Swipes</string>
     <string name="brbs">BRBs</string>
