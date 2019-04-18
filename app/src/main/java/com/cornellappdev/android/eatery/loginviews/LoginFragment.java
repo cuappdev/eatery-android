@@ -27,9 +27,8 @@ import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
- * input
- * their netid and password to view their account information. Upon a successful login, redirect
- * to AccountInfoFragment
+ * input their netid and password to view their account information. Upon a successful login,
+ * redirect to AccountInfoFragment
  */
 public class LoginFragment extends Fragment {
     private EditText mNetID;
