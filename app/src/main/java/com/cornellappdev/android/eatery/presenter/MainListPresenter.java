@@ -1,7 +1,5 @@
 package com.cornellappdev.android.eatery.presenter;
 
-import android.util.Log;
-
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -101,12 +99,14 @@ public class MainListPresenter {
                     mAreaSet.isEmpty() || mAreaSet.contains(model.getArea());
             boolean paymentFuzzyMatches =
                     mPaymentSet.isEmpty() || hasPaymentMethod(model);
-            boolean categoryFuzzyMatches =
-                    mCategorySet.isEmpty() || isUnderCategory(model);
+
+            // only used for ctown eateries
+            boolean categoryFuzzyMatches = mCategorySet.isEmpty()
+                    || (model instanceof CollegeTownModel && isUnderCategory(model));
+            
             if (!model.isCtEatery() && areaFuzzyMatches && paymentFuzzyMatches) {
                 model.setMatchesFilter(true);
             } else if (model.isCtEatery() && categoryFuzzyMatches) {
-
                 model.setMatchesFilter(true);
             } else {
                 model.setMatchesFilter(false);
