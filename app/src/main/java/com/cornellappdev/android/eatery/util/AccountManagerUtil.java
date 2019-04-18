@@ -85,7 +85,7 @@ public class AccountManagerUtil {
             byte[] salt = context.getResources().getString(R.string.encryption_salt).getBytes();
             int encryptionIteration = 4000;
             int keyLength = 128;
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2withHmacSHA1And8BIT");
             PBEKeySpec keySpec = new PBEKeySpec(key, salt, encryptionIteration, keyLength);
             SecretKey keyTmp = keyFactory.generateSecret(keySpec);
             return new SecretKeySpec(keyTmp.getEncoded(), "AES");

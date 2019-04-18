@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -16,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
@@ -42,6 +45,10 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
     TextView mCafeText;
     TextView mCafeWebsite;
     TextView mCafePhoneNumber;
+    TextView mDollarSignOne;
+    TextView mDollarSignTwo;
+    TextView mDollarSignThree;
+    RatingBar mCafeRating;
     EateryBaseModel mCafeData;
     GoogleMap mMap;
     MapView mMapView;
@@ -102,7 +109,8 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         CollegeTownModel.Status currentStatus = mCafeData.getCurrentStatus();
         mCafeIsOpen.setText(currentStatus.toString());
         if (currentStatus == EateryBaseModel.Status.OPEN) {
-            mCafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            mCafeIsOpen.setTextColor(
+                    ContextCompat.getColor(getApplicationContext(), R.color.green));
         } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
             mCafeIsOpen.setTextColor(
                     ContextCompat.getColor(getApplicationContext(), R.color.yellow));
@@ -114,11 +122,29 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         mCafeLoc = findViewById(R.id.ind_loc);
         mCafeLoc.setText(mCafeData.getBuildingLocation());
         mCafeImage = findViewById(R.id.ind_image);
-        mCafeImage.setBackgroundColor(0xFFff0000);
-
+        mDollarSignOne = findViewById(R.id.dollar_sign_1);
+        mDollarSignTwo = findViewById(R.id.dollar_sign_2);
+        mDollarSignThree = findViewById(R.id.dollar_sign_3);
+        String price = ((CollegeTownModel) mCafeData).getPrice();
+        // price is either $, $$, or $$$. Adjust the corresponding texts
+        if (price.equals("$")) {
+            mDollarSignTwo.setTextColor(ContextCompat.getColor(this, R.color.inactive));
+            mDollarSignThree.setTextColor(ContextCompat.getColor(this, R.color.inactive));
+        } else if (price.equals("$$")) {
+            mDollarSignThree.setTextColor(ContextCompat.getColor(this, R.color.inactive));
+        } else {
+            assert price.equals("$$$");
+        }
         String imageLocation = ((CollegeTownModel) mCafeData).getImageUrl();
         Uri uri = Uri.parse(imageLocation);
         mCafeImage.setImageURI(uri);
+        mCafeRating = findViewById(R.id.cafe_rating);
+        LayerDrawable stars = (LayerDrawable) mCafeRating.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(ContextCompat.getColor(this, R.color.blue),
+                PorterDuff.Mode.SRC_ATOP);
+        stars.getDrawable(0).setColorFilter(ContextCompat.getColor(this, R.color.blue),
+                PorterDuff.Mode.SRC_ATOP);
+        mCafeRating.setRating(Float.parseFloat(((CollegeTownModel) mCafeData).getRating()));
 
         mCafeDirections = findViewById(R.id.cafe_directions);
         mCafeDirections.setOnClickListener(new View.OnClickListener() {
@@ -134,7 +160,12 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         });
 
         mCafePhoneNumber = findViewById(R.id.cafe_phone);
-        mCafePhoneNumber.setText(String.format("Call %s", mCafeData.getPhoneNumber()));
+        String displayPhoneNumber = mCafeData.getPhoneNumber().
+                substring(mCafeData.getPhoneNumber().length() - 10);
+        mCafePhoneNumber.setText(String.format("Call (%s)-%s-%s",
+                displayPhoneNumber.substring(0, 3),
+                displayPhoneNumber.substring(3, 6),
+                displayPhoneNumber.substring(6, 10)));
         mCafePhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,8 +177,7 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         });
 
         mCafeWebsite = findViewById(R.id.cafe_website);
-        String shortenedUrl = ((CollegeTownModel) mCafeData).getYelpUrl().substring(0, 37) + "...";
-        mCafeWebsite.setText(String.format("Visit:  %s", shortenedUrl));
+        mCafeWebsite.setText(String.format("Visit %s", mCafeData.getNickName()));
         mCafeWebsite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,17 +267,15 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
                 // When map loads, zoom out to see user position on the map as well
                 @Override
                 public void onMapLoaded() {
-                    int padding = 90; // offset from edges of the map in pixels
+                    int padding = 230; // offset from edges of the map in pixels
                     if (myLocation != null) {
-                        double distance = Math.pow(myLocation.getLatitude() - mCafeData.getLatitude(), 2) +
-                                Math.pow(myLocation.getLatitude() - mCafeData.getLatitude(), 2);
-                        if (distance < 2.05886E-5) {
-                            // Only display current location if within a specified range of the eatery
-                            builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-                            LatLngBounds bounds = builder.build();
-                            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                            mMap.animateCamera(cu);
-                        }
+                        // Only display current location if within a specified range of the eatery
+                        builder.include(
+                                new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+                        LatLngBounds bounds = builder.build();
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                        mMap.animateCamera(cu);
+
                     }
                 }
             });

@@ -15,6 +15,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
+import com.cornellappdev.android.eatery.loginviews.AccountInfoFragment;
+import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
@@ -22,6 +24,9 @@ import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.AccountManagerUtil;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,6 +133,16 @@ public class MainActivity extends AppCompatActivity {
             new ProcessJson().execute("");
         }
 
+        // The first time a map is loaded in the app, the app automatically takes time to initialize
+        // google play services apis. Thus, we do this in MainActivity so it doesn't take the user
+        // time to initialize when loading the map itself
+        MapView mDummyMapInitializer = findViewById(R.id.dummy_map);
+        mDummyMapInitializer.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+            }
+        });
+
         NetworkUtilities.getCtEateries(this);
     }
 
@@ -150,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
             if (!isConnected
                     && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
                     != null) {

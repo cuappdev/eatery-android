@@ -4,150 +4,142 @@
              android:id="@+id/login_frame_layout"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".LoginFragment">
-
-    <ScrollView
-        android:id="@+id/scrollView"
+             tools:context=".loginviews.LoginFragment">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:paddingStart="25dp"
+            android:paddingTop="30dp"
+            android:paddingEnd="25dp"
+            android:text="@string/description_text_1"
+            android:textColor="@color/primary"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
+        <TextView
+            android:id="@+id/netIDLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingStart="20dp"
+            android:paddingTop="30dp"
+            android:paddingEnd="20dp"
+            android:text="@string/netid"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/net_id_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/netid_hint"
+            android:inputType="textPersonName"
+            android:paddingTop="15dp"
+            android:paddingBottom="20dp"
+            android:textSize="19sp"/>
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingStart="20dp"
+            android:paddingTop="15dp"
+            android:text="@string/password"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/password_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:paddingTop="15dp"
+            android:paddingBottom="20dp"
+            android:textSize="19sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+        >
             <TextView
-                android:id="@+id/descriptionText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:gravity="center"
                 android:lineSpacingExtra="3sp"
-                android:paddingStart="25dp"
-                android:paddingTop="30dp"
-                android:paddingEnd="25dp"
-                android:text="@string/description_text_1"
+                android:text="@string/auto_login"
                 android:textColor="@color/primary"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/netIDLabel"
+                android:textStyle="bold"
+            />
+            <CheckBox
+                android:id="@+id/saveInfoCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingStart="20dp"
-                android:paddingTop="30dp"
-                android:paddingEnd="20dp"
-                android:text="@string/netid"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/net_id_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginEnd="18dp"
-                android:ems="10"
-                android:fontFamily="sans-serif"
-                android:hint="@string/netid_hint"
-                android:inputType="textPersonName"
-                android:paddingTop="15dp"
-                android:paddingBottom="20dp"
-                android:textSize="19sp"/>
-
-            <TextView
-                android:id="@+id/passwordLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingStart="20dp"
-                android:paddingTop="15dp"
-                android:text="@string/password"
-                android:textColor="@color/primary"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/password_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginEnd="18dp"
-                android:ems="10"
-                android:fontFamily="sans-serif"
-                android:hint="@string/password_hint"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:paddingTop="15dp"
-                android:paddingBottom="20dp"
-                android:textSize="19sp"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-            >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="3sp"
-                    android:text="@string/auto_login"
-                    android:textColor="@color/primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                />
-                <CheckBox
-                    android:id="@+id/saveInfoCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                />
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
-                <ProgressBar
-                    android:id="@+id/progress_loader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:translationZ="10dp"/>
-                <Button
-                    android:id="@+id/login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="18dp"
-                    android:background="@drawable/login_button"
-                    android:fontFamily="sans-serif"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="15dp"
-                    android:text="@string/login_label"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="19sp"/>
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/privacyStatement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif"
-                android:paddingTop="25dp"
-                android:text="@string/privacy_statement"
-                android:textColor="@color/blue"
-                android:textSize="16sp"/>
+            />
         </LinearLayout>
-    </ScrollView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <ProgressBar
+                android:id="@+id/progress_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:translationZ="10dp"/>
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/login_button"
+                android:fontFamily="sans-serif"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="@string/login_label"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="19sp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/privacyStatement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:paddingTop="25dp"
+            android:text="@string/privacy_statement"
+            android:textColor="@color/blue"
+            android:textSize="16sp"/>
+    </LinearLayout>
 
 
 </FrameLayout>

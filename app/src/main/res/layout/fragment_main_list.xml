@@ -22,17 +22,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
+                android:background="@color/white"
                 android:paddingRight="10dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="7dp">
 
                 <Button
                     android:id="@+id/northButton"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -41,16 +42,17 @@
                     android:text="North"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/westButton"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -59,16 +61,17 @@
                     android:text="West"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/centralButton"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -77,16 +80,17 @@
                     android:text="Central"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/swipes"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -95,16 +99,17 @@
                     android:text="Swipes"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/brb"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -113,16 +118,17 @@
                     android:text="BRB"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal" />
 
                 <Button
                     android:id="@+id/american"
-                    android:layout_width="85dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="105dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -131,17 +137,18 @@
                     android:text="American"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/chinese"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -150,17 +157,18 @@
                     android:text="Chinese"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/coffee"
-                    android:layout_width="80dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -169,17 +177,18 @@
                     android:text="Coffee"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/desserts"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -188,17 +197,18 @@
                     android:text="Desserts"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/grocery"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -207,16 +217,18 @@
                     android:text="Grocery"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/indian"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:layout_marginRight="6dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
@@ -226,17 +238,18 @@
                     android:text="Indian"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/italian"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -245,17 +258,18 @@
                     android:text="Italian"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/japanese"
-                    android:layout_width="85dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="95dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -264,17 +278,18 @@
                     android:text="Japanese"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/korean"
-                    android:layout_width="65dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -283,17 +298,18 @@
                     android:text="Korean"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/mediterranean"
-                    android:layout_width="115dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="125dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -302,17 +318,18 @@
                     android:text="Mediterranean"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/thai"
-                    android:layout_width="55dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="75dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -321,17 +338,18 @@
                     android:text="Thai"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
                 <Button
                     android:id="@+id/vietnamese"
-                    android:layout_width="95dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="6dp"
+                    android:layout_width="105dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginRight="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="4dp"
                     android:background="@drawable/button"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_horizontal"
@@ -340,7 +358,7 @@
                     android:text="Vietnamese"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
 
@@ -356,37 +374,38 @@
             android:nestedScrollingEnabled="false" />
 
         <LinearLayout
+            android:id="@+id/pill_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/pill_bg"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/pill_campus_holder"
-                android:layout_width="135dp"
+                android:layout_width="162dp"
                 android:layout_height="40dp"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/pill_campus"
-                    android:layout_width="75dp"
-                    android:layout_height="19dp"
+                    android:layout_width="74dp"
+                    android:layout_height="17dp"
                     android:background="@drawable/pill_campus_active" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/pill_ctown_holder"
-                android:layout_width="135dp"
+                android:layout_width="162dp"
                 android:layout_height="40dp"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/pill_collegetown"
-                    android:layout_width="100dp"
-                    android:layout_height="18dp"
+                    android:layout_width="101dp"
+                    android:layout_height="17dp"
                     android:background="@drawable/pill_ct_inactive" />
             </LinearLayout>
         </LinearLayout>

@@ -55,5 +55,4 @@
     <string name="encryption_key">a</string>
     <string name="encryption_salt">a</string>
     <string name="google_maps_key">a</string>
-
 </resources>

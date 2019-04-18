@@ -116,7 +116,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         cafeLoc.setText(cafeData.getBuildingLocation());
 
         cafeImage = findViewById(R.id.ind_image);
-        cafeImage.setBackgroundColor(0xFFff0000);
 
         String imageLocation = EateryBaseModel.getImageURL(cafeName);
         Uri uri = Uri.parse(imageLocation);
