@@ -150,7 +150,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             eateryModel.getChangeTime())));
                 } else if (eateryModel.getCurrentStatus() == CLOSINGSOON) {
                     holder2.cafe_time.setText(R.string.closing_soon);
-                    holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+                    holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.yellow));
                     holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),
                             eateryModel.getChangeTime())));
                 } else {
