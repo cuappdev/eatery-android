@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.cornellappdev.android.eatery.R;
 
 public class PrivacyFragment extends Fragment {
 

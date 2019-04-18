@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery.presenter;
 
+import android.util.Log;
+
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -129,6 +131,8 @@ public class MainListPresenter {
 
             ArrayList<String> matchedItems = new ArrayList<>();
             boolean foundItem = false;
+            Log.i("Hello-----", model.getName());
+
             for (String item : mealSet) {
                 if (item.toLowerCase().contains(lowercaseQuery)) {
                     foundItem = true;

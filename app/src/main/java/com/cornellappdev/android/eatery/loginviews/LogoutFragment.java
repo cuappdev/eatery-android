@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
  * AccountInfoFragment. Upon clicking logout, it redirects the user to LoginFragment, and
  * also has a redirect to an about page (AboutFragment)
  */
+import com.cornellappdev.android.eatery.MainActivity;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 
 public class LogoutFragment extends Fragment {

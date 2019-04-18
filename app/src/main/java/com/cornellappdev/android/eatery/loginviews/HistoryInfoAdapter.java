@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.HistoryObjectModel;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
 

@@ -409,7 +409,6 @@ public class MainListFragment extends Fragment
         getActivity().setTitle("Eateries");
         AutoCompleteTextView searchTextView =
                 searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-
         searchView.setMaxWidth(2000);
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");

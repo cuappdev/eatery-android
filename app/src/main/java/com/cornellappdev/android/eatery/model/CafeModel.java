@@ -117,11 +117,8 @@ public class CafeModel extends EateryBaseModel implements Serializable {
 
     @Override
     public HashSet<String> getMealItems() {
-        if (getCurrentStatus() == Status.OPEN) {
             return new HashSet<>(mCafeMenu);
-        } else {
-            return new HashSet<>();
-        }
+
     }
 
     public List<String> getCafeMenu() {

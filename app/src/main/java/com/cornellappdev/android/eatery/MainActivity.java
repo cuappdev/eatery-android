@@ -15,6 +15,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
+import com.cornellappdev.android.eatery.loginviews.AccountInfoFragment;
+import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;

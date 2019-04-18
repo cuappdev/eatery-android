@@ -53,6 +53,10 @@ public class TimeUtil {
 
             }
         }
+        else if (status == Status.CLOSINGSOON) {
+            return String.format("at %s", changeTime.format(ONLY_TIME_FORMAT));
+
+        }
         return String.format("until %s", changeTime.format(ONLY_TIME_FORMAT));
     }
 

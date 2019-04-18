@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.cornellappdev.android.eatery.R;
 
 /**
  * This class can be reached from LogoutFragment, and describes the gist of Eatery and provides

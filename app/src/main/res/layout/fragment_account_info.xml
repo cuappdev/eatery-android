@@ -3,7 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".AccountInfoFragment">
+             tools:context=".loginviews.AccountInfoFragment">
     <ListView
         android:id="@+id/purchase_history"
         android:layout_width="match_parent"

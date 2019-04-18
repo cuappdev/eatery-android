@@ -1,10 +1,9 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
 

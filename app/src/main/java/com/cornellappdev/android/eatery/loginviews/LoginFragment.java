@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.loginviews;
 
 
 import android.os.Bundle;
@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.BrbInfoQuery;
+import com.cornellappdev.android.eatery.MainActivity;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;

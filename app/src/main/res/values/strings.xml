@@ -54,6 +54,6 @@
     <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
     <string name="encryption_key">a</string>
     <string name="encryption_salt">a</string>
-    <string name="google_maps_key">AIzaSyBDjzqiK5_DVoZ-6nCSZNFwEYM9dr1q7MI</string>
+    <string name="google_maps_key">a</string>
 
 </resources>
