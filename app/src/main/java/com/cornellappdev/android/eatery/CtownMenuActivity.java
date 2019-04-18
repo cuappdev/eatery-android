@@ -132,8 +132,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
             mDollarSignThree.setTextColor(ContextCompat.getColor(this, R.color.inactive));
         } else if (price.equals("$$")) {
             mDollarSignThree.setTextColor(ContextCompat.getColor(this, R.color.inactive));
-        } else {
-            assert price.equals("$$$");
         }
         String imageLocation = ((CollegeTownModel) mCafeData).getImageUrl();
         Uri uri = Uri.parse(imageLocation);

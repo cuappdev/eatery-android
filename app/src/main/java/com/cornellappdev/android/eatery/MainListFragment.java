@@ -305,7 +305,7 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
         mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
-        searchView.setQuery("",false);
+        searchView.setQuery("", false);
         mListPresenter.filterImageList();
         updateListAdapter();
     }
@@ -316,7 +316,7 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
-        searchView.setQuery("",false);
+        searchView.setQuery("", false);
         mListPresenter.filterImageList();
         updateListAdapter();
     }
