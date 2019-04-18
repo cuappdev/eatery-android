@@ -56,6 +56,7 @@ public class MainListFragment extends Fragment
     private LinearLayout mCampusPillHolder;
     private LinearLayout mCtownPillHolder;
     private LinearLayout mPillHolder;
+    public SearchView searchView;
     private boolean mCurrentlyAnimating;
     private boolean mPillVisible = true;
 
@@ -304,6 +305,8 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
         mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
+        searchView.setQuery("",false);
+        mListPresenter.filterImageList();
         updateListAdapter();
     }
 
@@ -313,6 +316,8 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
+        searchView.setQuery("",false);
+        mListPresenter.filterImageList();
         updateListAdapter();
     }
 
@@ -405,7 +410,7 @@ public class MainListFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView = (SearchView) searchItem.getActionView();
         getActivity().setTitle("Eateries");
         AutoCompleteTextView searchTextView =
                 searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);

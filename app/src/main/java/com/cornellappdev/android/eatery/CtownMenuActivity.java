@@ -122,7 +122,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         mCafeLoc = findViewById(R.id.ind_loc);
         mCafeLoc.setText(mCafeData.getBuildingLocation());
         mCafeImage = findViewById(R.id.ind_image);
-        mCafeImage.setBackgroundColor(0xFFff0000);
         mDollarSignOne = findViewById(R.id.dollar_sign_1);
         mDollarSignTwo = findViewById(R.id.dollar_sign_2);
         mDollarSignThree = findViewById(R.id.dollar_sign_3);
@@ -189,7 +188,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
                 startActivity(intent);
             }
         });
-
 
         mMapView = findViewById(R.id.cafe_map);
         if (mMapView != null) {
