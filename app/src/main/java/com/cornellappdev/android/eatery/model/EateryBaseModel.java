@@ -253,7 +253,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 
     public enum Status {
         OPEN("Open"),
-        CLOSINGSOON("Closing soon"),
+        CLOSINGSOON("Closing"),
         CLOSED("Closed");
         private String displayName;
 

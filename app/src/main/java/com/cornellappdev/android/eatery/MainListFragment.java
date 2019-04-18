@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -305,7 +306,7 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
         mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
-        searchView.setQuery("",false);
+        searchView.setQuery("", false);
         mListPresenter.filterImageList();
         updateListAdapter();
     }
@@ -316,7 +317,7 @@ public class MainListFragment extends Fragment
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
-        searchView.setQuery("",false);
+        searchView.setQuery("", false);
         mListPresenter.filterImageList();
         updateListAdapter();
     }
