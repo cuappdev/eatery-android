@@ -13,7 +13,7 @@
         android:name=".EateryApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Eateries"
+        android:label="Eatery"
         android:supportsRtl="true">
         <activity
             android:name=".MainActivity"
