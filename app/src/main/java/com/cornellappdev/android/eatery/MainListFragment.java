@@ -412,7 +412,7 @@ public class MainListFragment extends Fragment
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
-        getActivity().setTitle("Eateries");
+        getActivity().setTitle("Eatery");
         AutoCompleteTextView searchTextView =
                 searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchView.setMaxWidth(2000);
