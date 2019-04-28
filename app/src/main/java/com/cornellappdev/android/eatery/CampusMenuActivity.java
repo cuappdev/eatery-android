@@ -1,12 +1,15 @@
 package com.cornellappdev.android.eatery;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,7 +17,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +32,8 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +59,27 @@ public class CampusMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_campus_eatery);
 
+        Bundle extras = getIntent().getExtras();
+        String imageUrl = extras.getString("eateryImage");
+
+        Picasso.get()
+                .load(imageUrl)
+                .noFade()
+                .into((ImageView)findViewById(R.id.ind_image));
+
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishAfterTransition();
             }
+
         });
 
         Intent intent = getIntent();
@@ -115,12 +133,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         cafeLoc = findViewById(R.id.ind_loc);
         cafeLoc.setText(cafeData.getBuildingLocation());
 
-        cafeImage = findViewById(R.id.ind_image);
-
-        String imageLocation = EateryBaseModel.getImageURL(cafeName);
-        Uri uri = Uri.parse(imageLocation);
-        cafeImage.setImageURI(uri);
-
         brbIcon = findViewById(R.id.brb_icon);
         if (cafeData.hasPaymentMethod(PaymentMethod.BRB)) {
             brbIcon.setVisibility(View.VISIBLE);
@@ -128,7 +140,7 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         swipeIcon = findViewById(R.id.swipe_icon);
         if (cafeData.hasPaymentMethod(PaymentMethod.SWIPES)) {
-            brbIcon.setVisibility(View.VISIBLE);
+            swipeIcon.setVisibility(View.VISIBLE);
         }
 
         customPager = findViewById(R.id.pager);

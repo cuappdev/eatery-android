@@ -9,13 +9,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+
+import android.support.v4.util.Pair;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,7 +72,6 @@ public class MainListFragment extends Fragment
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
-        getActivity().setTitle("Eateries");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -378,7 +382,14 @@ public class MainListFragment extends Fragment
     }
 
     @Override
-    public void onClick(int position, ArrayList<EateryBaseModel> list) {
+    public void onClick(int position, ArrayList<EateryBaseModel> list, View viewHolder) {
+        View sharedCafeImage = viewHolder.findViewById(R.id.cafe_image);
+        View sharedCafeName = viewHolder.findViewById(R.id.cafe_name);
+        View sharedCafeOpen = viewHolder.findViewById(R.id.cafe_open);
+        View sharedCafeTime = viewHolder.findViewById(R.id.cafe_time);
+        View sharedDollarIcon = viewHolder.findViewById(R.id.card_dollar);
+        View sharedBrbIcon = viewHolder.findViewById(R.id.card_swipe);
+        View sharedSwipeIcon = viewHolder.findViewById(R.id.card_brb);
         EateryBaseModel model = list.get(position);
         if (model.isCtEatery()) {
             Intent intent = new Intent(getActivity(), CtownMenuActivity.class);
@@ -389,7 +400,35 @@ public class MainListFragment extends Fragment
             Intent intent = new Intent(getActivity(), CampusMenuActivity.class);
             intent.putExtra("cafeInfo", model);
             intent.putExtra("locName", model.getNickName());
-            startActivity(intent);
+            intent.putExtra("eateryImage", EateryBaseModel.getImageURL(model.getNickName()));
+
+            Pair<View, String> imageTransition = Pair.create(sharedCafeImage, ViewCompat.getTransitionName(sharedCafeImage));
+            Pair<View, String> nameTransition = Pair.create(sharedCafeName, ViewCompat.getTransitionName(sharedCafeName));
+            Pair<View, String> openTransition = Pair.create(sharedCafeOpen, ViewCompat.getTransitionName(sharedCafeOpen));
+            Pair<View, String> timeTransition = Pair.create(sharedCafeTime, ViewCompat.getTransitionName(sharedCafeTime));
+
+            Pair<View, String> dollarTransition = Pair.create(sharedDollarIcon, ViewCompat.getTransitionName(sharedDollarIcon));
+            Pair<View, String> brbTransition;
+            Pair<View, String> swipeTransition;
+
+            if(sharedSwipeIcon.getVisibility()==View.INVISIBLE) {
+                Log.i("HEHEH", "HOHOHHOH");
+                swipeTransition = Pair.create(null, "");
+            } else {
+                swipeTransition = Pair.create(sharedSwipeIcon, ViewCompat.getTransitionName(sharedSwipeIcon));
+            }
+
+            if(sharedBrbIcon.getVisibility()==View.INVISIBLE)
+                brbTransition=Pair.create(null, "");
+            else {
+                brbTransition = Pair.create(sharedBrbIcon, ViewCompat.getTransitionName(sharedBrbIcon));
+            }
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    imageTransition, nameTransition, openTransition, timeTransition,
+                    swipeTransition, dollarTransition, brbTransition);
+            startActivity(intent, options.toBundle());
         }
     }
 

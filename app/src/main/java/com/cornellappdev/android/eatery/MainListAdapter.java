@@ -6,6 +6,7 @@ import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOS
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,8 @@ import com.facebook.common.logging.FLog;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +103,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
                 holder.cafeName.setText(eateryModel.getNickName());
-                String imageLocation = null;
+                String imageLocation;
                 if (!eateryModel.isCtEatery()) {
                     imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());
                 } else {
@@ -107,6 +111,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 Uri uri = Uri.parse(imageLocation);
                 holder.cafeDrawee.setImageURI(uri);
+                Picasso.get()
+                        .load(uri)
+                        .noFade()
+                        .into(holder.cafeDrawee);
 
                 String openText = eateryModel.getCurrentStatus().toString();
                 SpannableString openString = new SpannableString(openText);
@@ -206,17 +214,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public interface ListAdapterOnClickHandler {
-        void onClick(int position, ArrayList<EateryBaseModel> list);
+        void onClick(int position, ArrayList<EateryBaseModel> list, View sharedImageView);
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
-        SimpleDraweeView cafeDrawee;
+        ImageView cafeDrawee;
         CardView rlayout;
         ImageView swipe_icon;
         ImageView brb_icon;
+        View viewHolder;
 
         ListAdapterViewHolder(View itemView) {
             super(itemView);
@@ -227,13 +236,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             brb_icon = itemView.findViewById(R.id.card_brb);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
             rlayout = itemView.findViewById(R.id.cv);
+            viewHolder = itemView;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered, viewHolder);
         }
     }
 
@@ -255,7 +265,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered, null);
         }
     }
 }
