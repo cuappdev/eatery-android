@@ -72,6 +72,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingBottom="2dp"
                     android:transitionName="eateryName"
+                    android:text="Name"
                     android:textColor="@color/primary"
                     android:textSize="16sp"/>
 
@@ -84,6 +85,7 @@
                     android:layout_marginBottom="9dp"
                     android:layout_marginRight="4dp"
                     android:transitionName="eateryOpen"
+                    android:text="Open?"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
 
@@ -96,6 +98,7 @@
                     android:fontFamily="sans-serif-regular"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryTime"
+                    android:text="Time"
                     android:textColor="@color/secondary"
                     android:textSize="14sp"/>
 
@@ -126,7 +129,7 @@
                     android:layout_marginRight="42dp"
                     android:transitionName="eateryBrbIcon"
                     android:src="@drawable/brb_icon"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/swipe_icon"
@@ -136,7 +139,7 @@
                     android:layout_marginRight="68dp"
                     android:transitionName="eaterySwipeIcon"
                     android:src="@drawable/swipe_icon"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <TextView

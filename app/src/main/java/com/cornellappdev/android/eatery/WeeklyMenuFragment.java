@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 /**
@@ -159,7 +160,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         cal.setTime(now);
         for (TextView textView : dateTvList) {
             // Formatting for each day
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE", Locale.US);
             dateFormat.setCalendar(cal);
             String sDay = dateFormat.format(cal.getTime());
 
@@ -169,8 +170,8 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
             SpannableString ssDate = new SpannableString(sDay + '\n' + sDate);
             ssDate.setSpan(new RelativeSizeSpan(0.8f), 0, 3, 0);
             ssDate.setSpan(new RelativeSizeSpan(2f), 4, ssDate.length(), 0);
-            TextView tv = textView;
-            tv.setText(ssDate);
+
+            textView.setText(ssDate);
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 

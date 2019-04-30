@@ -25,17 +25,10 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
-import com.facebook.common.logging.FLog;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.listener.RequestListener;
-import com.facebook.imagepipeline.listener.RequestLoggingListener;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
@@ -57,12 +50,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeListFiltered = list;
 
-        Set<RequestListener> requestListeners = new HashSet<>();
-        requestListeners.add(new RequestLoggingListener());
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
-    private void setList(ArrayList<EateryBaseModel> list, int count, String query) {
+    protected void setList(ArrayList<EateryBaseModel> list, int count, String query) {
         mQuery = query;
         mCount = count;
         cafeListFiltered = list;
@@ -135,11 +125,13 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                     holder.rlayout.setAlpha(1f);
                 }
-                holder.brb_icon.setVisibility(View.GONE);
-                holder.swipe_icon.setVisibility(View.GONE);
+
+                holder.brb_icon.setVisibility(View.INVISIBLE);
                 if (eateryModel.hasPaymentMethod(PaymentMethod.BRB)) {
                     holder.brb_icon.setVisibility(View.VISIBLE);
                 }
+
+                holder.swipe_icon.setVisibility(View.INVISIBLE);
                 if (eateryModel instanceof DiningHallModel) {
                     holder.swipe_icon.setVisibility(View.VISIBLE);
                 }

@@ -18,13 +18,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.util.TimeUtil;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,11 +34,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
 public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCallback {
-    SimpleDraweeView mCafeImage;
     TextView mCafeDirections;
     TextView mCafeIsOpen;
     TextView mCafeLoc;
@@ -69,12 +69,21 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishAfterTransition();
             }
         });
 
         Intent intent = getIntent();
-        final String cafeName = (String) intent.getSerializableExtra("locName");
+        mCafeData = (CollegeTownModel) intent.getSerializableExtra("cafeInfo");
+        String cafeName = mCafeData.getNickName();
+        String imageUrl = ((CollegeTownModel) mCafeData).getImageUrl();
+
+        // Load image animation
+        Picasso.get()
+                .load(imageUrl)
+                .noFade()
+                .into((ImageView)findViewById(R.id.ind_image));
+
         mCafeText = findViewById(R.id.ind_cafe_name);
         mCafeText.setText(cafeName);
         mCollapsingToolbar = findViewById(R.id.collapsing_toolbar);
@@ -103,7 +112,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
                     }
                 });
 
-        mCafeData = (CollegeTownModel) intent.getSerializableExtra("cafeInfo");
         // Format string for opening/closing time
         mCafeIsOpen = findViewById(R.id.ind_open);
         CollegeTownModel.Status currentStatus = mCafeData.getCurrentStatus();
@@ -121,7 +129,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         mCafeText.setText(TimeUtil.format(mCafeData.getCurrentStatus(), mCafeData.getChangeTime()));
         mCafeLoc = findViewById(R.id.ind_loc);
         mCafeLoc.setText(mCafeData.getBuildingLocation());
-        mCafeImage = findViewById(R.id.ind_image);
         mDollarSignOne = findViewById(R.id.dollar_sign_1);
         mDollarSignTwo = findViewById(R.id.dollar_sign_2);
         mDollarSignThree = findViewById(R.id.dollar_sign_3);
@@ -133,9 +140,6 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         } else if (price.equals("$$")) {
             mDollarSignThree.setTextColor(ContextCompat.getColor(this, R.color.inactive));
         }
-        String imageLocation = ((CollegeTownModel) mCafeData).getImageUrl();
-        Uri uri = Uri.parse(imageLocation);
-        mCafeImage.setImageURI(uri);
         mCafeRating = findViewById(R.id.cafe_rating);
         LayerDrawable stars = (LayerDrawable) mCafeRating.getProgressDrawable();
         stars.getDrawable(2).setColorFilter(ContextCompat.getColor(this, R.color.blue),
