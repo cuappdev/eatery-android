@@ -6,7 +6,7 @@ import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOS
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +14,6 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,13 +57,12 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeListFiltered = list;
 
-        // Logcat for Fresco
         Set<RequestListener> requestListeners = new HashSet<>();
         requestListeners.add(new RequestLoggingListener());
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
-    public void setList(ArrayList<EateryBaseModel> list, int count, String query) {
+    private void setList(ArrayList<EateryBaseModel> list, int count, String query) {
         mQuery = query;
         mCount = count;
         cafeListFiltered = list;

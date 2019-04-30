@@ -47,7 +47,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     private TextView mLunchText;
     private TextView mDinnerText;
     private LinearLayout mLinDate;
-    private ArrayList<TextView> dateTvList = new ArrayList<>();
+    private ArrayList<TextView> dateTvList;
     private WeeklyPresenter mPresenter;
     private int mLastExpandedPosition;
     private NonScrollExpandableListView mLastClickedListView;
@@ -79,6 +79,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         int dateArr[] = {R.id.date0, R.id.date1, R.id.date2, R.id.date3, R.id.date4, R.id.date5,
                 R.id.date6};
 
+        dateTvList = new ArrayList<>();
         for (int dateId : dateArr) {
             rootView.findViewById(dateId).setOnClickListener(this);
             dateTvList.add((TextView) rootView.findViewById(dateId));
@@ -168,7 +169,6 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
             SpannableString ssDate = new SpannableString(sDay + '\n' + sDate);
             ssDate.setSpan(new RelativeSizeSpan(0.8f), 0, 3, 0);
             ssDate.setSpan(new RelativeSizeSpan(2f), 4, ssDate.length(), 0);
-
             TextView tv = textView;
             tv.setText(ssDate);
             cal.add(Calendar.DAY_OF_YEAR, 1);

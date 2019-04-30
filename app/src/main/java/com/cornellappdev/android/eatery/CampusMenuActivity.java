@@ -1,15 +1,11 @@
 package com.cornellappdev.android.eatery;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,9 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +26,6 @@ import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -198,7 +191,8 @@ public class CampusMenuActivity extends AppCompatActivity {
 
             ArrayList<MealModel> mm =
                     ((DiningHallModel) cafeData).getCurrentDayMenu().getAllMeals();
-            if (mm.isEmpty() || mm.get(0).getMenu().getNumberOfCategories() == 0) {
+
+            if (mm.isEmpty()) {
                 menuText.setText(R.string.no_menu_text);
                 menuText.setTextSize(16);
                 menuText.setPadding(0, 96, 0, 0);

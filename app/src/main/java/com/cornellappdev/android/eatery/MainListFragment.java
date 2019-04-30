@@ -20,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -412,7 +411,6 @@ public class MainListFragment extends Fragment
             Pair<View, String> swipeTransition;
 
             if(sharedSwipeIcon.getVisibility()==View.INVISIBLE) {
-                Log.i("HEHEH", "HOHOHHOH");
                 swipeTransition = Pair.create(null, "");
             } else {
                 swipeTransition = Pair.create(sharedSwipeIcon, ViewCompat.getTransitionName(sharedSwipeIcon));
