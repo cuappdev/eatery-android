@@ -26,6 +26,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 
     private Map<LocalDate, DailyMenuModel> mWeeklyMenu;
     private List<LocalDate> mSortedDates;
+    private List<Swipe> mSwipeDataList;
 
     public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)
             throws JSONException {
@@ -47,6 +48,10 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
             today = today.minusDays(1);
         }
         return mWeeklyMenu.get(today);
+    }
+
+    public List<Swipe> getSwipeData() {
+        return mSwipeDataList;
     }
 
     private MealModel getCurrentMeal() {
@@ -151,6 +156,7 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
         super.parseEatery(context, hardcoded, eatery);
         mWeeklyMenu = new HashMap<>();
         mSortedDates = new ArrayList<>();
+        mSwipeDataList = new ArrayList<>();
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")
@@ -161,6 +167,18 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
                 .toFormatter();
 
         mId = eatery.id();
+
+        for (AllEateriesQuery.SwipeDatum swipeDatum : eatery.swipeData()) {
+            LocalTime start = null, end = null;
+            start = LocalTime.parse(swipeDatum.startTime().toUpperCase().replaceAll("\\s+", ""),
+                    timeFormatter);
+            end = LocalTime.parse(swipeDatum.endTime().toUpperCase().replaceAll("\\s+", ""),
+                    timeFormatter);
+            mSwipeDataList.add(
+                    new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
+                            swipeDatum.waitTimeHigh()));
+        }
+        Collections.sort(mSwipeDataList);
 
         // Each Operating Hour is a single day for dining halls
         for (AllEateriesQuery.OperatingHour operatingHour : eatery.operatingHours()) {

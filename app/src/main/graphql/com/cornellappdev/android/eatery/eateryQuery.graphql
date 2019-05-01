@@ -39,6 +39,13 @@ query AllEateries {
                 }
             }
         }
+        swipeData {
+            startTime
+            endTime
+            swipeDensity
+            waitTimeLow
+            waitTimeHigh
+        }
     }
 }
 
