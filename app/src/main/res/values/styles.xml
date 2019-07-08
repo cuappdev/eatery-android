@@ -1,51 +1,51 @@
 <resources>
 
-	<style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-		<item name="android:windowActionBar">false</item>
-		<item name="android:windowNoTitle">true</item>
-		<item name="actionMenuTextColor">@color/inactive</item>
-		<item name="colorPrimary">@color/blue</item>
-		<item name="colorControlNormal">@color/white</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/red</item>
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="actionMenuTextColor">@color/inactive</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/red</item>
+    </style>
 
-	</style>
+    <style name="collapsingToolbarLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-	<style name="collapsingToolbarLayout" parent="@android:style/TextAppearance.Widget.TabWidget">
-		<item name="android:textColor">@color/white</item>
-		<item name="android:textSize">20dp</item>
-		<item name="android:textStyle">bold</item>
-	</style>
+    <style name="tabLayoutText" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
 
-	<style name="tabLayoutText" parent="@android:style/TextAppearance.Widget.TabWidget">
-		<item name="android:textSize">16sp</item>
-		<item name="android:textAllCaps">true</item>
-		<item name="android:textStyle">bold</item>
-		<item name="android:textColor">@color/primary</item>
-	</style>
+    <style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="textAllCaps">false</item>
+    </style>
 
-	<style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
-		<item name="textAllCaps">false</item>
-	</style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
 
-	<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-		<item name="colorPrimary">@color/blue</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="android:windowAnimationStyle">@null</item>
-	</style>
-
-	<style name="AppTheme.NoActionBar">
-		<item name="windowActionBar">false</item>
-		<item name="windowNoTitle">true</item>
-	</style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 
-	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-	<style name="AppTheme.Colored" parent="Widget.AppCompat.Button.Colored" />
+    <style name="AppTheme.Colored" parent="Widget.AppCompat.Button.Colored" />
 
-	<style name="AppTheme.Borderless" parent="Widget.AppCompat.Button.Borderless.Colored" />
+    <style name="AppTheme.Borderless" parent="Widget.AppCompat.Button.Borderless.Colored" />
 
 </resources>

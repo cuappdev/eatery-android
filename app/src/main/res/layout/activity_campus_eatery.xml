@@ -24,12 +24,13 @@
             app:expandedTitleMarginTop="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/ind_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:fitsSystemWindows="true"
+                android:transitionName="eateryImage"
                 android:scaleType="centerCrop"/>
 
             <android.support.v7.widget.Toolbar
@@ -66,13 +67,14 @@
 
                 <TextView
                     android:id="@+id/ind_cafe_name"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:paddingBottom="2dp"
+                    android:transitionName="eateryName"
                     android:text="Name"
                     android:textColor="@color/primary"
-                    android:textSize="18dp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/ind_open"
@@ -80,10 +82,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_cafe_name"
                     android:fontFamily="sans-serif-medium"
-                    android:paddingBottom="9dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_marginRight="4dp"
+                    android:transitionName="eateryOpen"
                     android:text="Open?"
                     android:textColor="@color/primary"
-                    android:textSize="14dp"/>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/ind_time"
@@ -92,11 +96,11 @@
                     android:layout_below="@id/ind_cafe_name"
                     android:layout_toRightOf="@id/ind_open"
                     android:fontFamily="sans-serif-regular"
-                    android:paddingLeft="4dp"
-                    android:paddingBottom="9dp"
+                    android:layout_marginBottom="9dp"
+                    android:transitionName="eateryTime"
                     android:text="Time"
                     android:textColor="@color/secondary"
-                    android:textSize="14dp"/>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/ind_loc"
@@ -104,7 +108,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_open"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Location"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
 
@@ -114,6 +117,7 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
+                    android:transitionName="eateryDollarIcon"
                     android:src="@drawable/dollar_icon"
                     android:visibility="visible"/>
 
@@ -123,8 +127,9 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="42dp"
+                    android:transitionName="eateryBrbIcon"
                     android:src="@drawable/brb_icon"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/swipe_icon"
@@ -132,8 +137,9 @@
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="68dp"
+                    android:transitionName="eaterySwipeIcon"
                     android:src="@drawable/swipe_icon"
-                    android:visibility="gone"/>
+                    android:visibility="invisible"/>
             </RelativeLayout>
 
             <TextView

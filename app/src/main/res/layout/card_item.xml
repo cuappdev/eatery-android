@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:fresco="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@color/wash"
@@ -24,38 +23,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/cafe_image"
                 android:layout_width="match_parent"
                 android:layout_height="95dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                fresco:actualImageScaleType="centerCrop"
-                fresco:placeholderImage="@drawable/my_drawable"/>
+                android:transitionName="eateryImage"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/cafe_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_image"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="Location"
+                android:transitionName="eateryName"
+                android:fontFamily="sans-serif-medium"
                 android:textColor="@color/primary"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/cafe_open"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_name"
-                android:paddingLeft="16dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="0dp"
-                android:text="Open"
-                android:textSize="12sp"
-                android:textStyle="bold"/>
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="4dp"
+                android:transitionName="eateryOpen"
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/cafe_time"
@@ -63,8 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_name"
                 android:layout_toRightOf="@id/cafe_open"
-                android:text="Time"
-                android:textSize="12sp"/>
+                android:transitionName="eateryTime"
+                android:textSize="14sp"/>
 
             <ImageView
                 android:id="@+id/card_dollar"
@@ -75,6 +73,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="20dp"
+                android:transitionName="eateryDollarIcon"
                 android:src="@drawable/dollar_icon"/>
 
             <ImageView
@@ -86,6 +85,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="20dp"
                 android:layout_toLeftOf="@id/card_dollar"
+                android:transitionName="eateryBrbIcon"
                 android:src="@drawable/brb_icon"
                 android:visibility="gone"/>
 
@@ -98,6 +98,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="20dp"
                 android:layout_toLeftOf="@id/card_brb"
+                android:transitionName="eaterySwipeIcon"
                 android:src="@drawable/swipe_icon"
                 android:visibility="gone"/>
         </RelativeLayout>
