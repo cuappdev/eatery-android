@@ -5,11 +5,11 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.Category;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.LocalTime;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.format.DateTimeFormatterBuilder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.HashMap;

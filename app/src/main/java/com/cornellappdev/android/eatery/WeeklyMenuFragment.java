@@ -19,8 +19,8 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.presenter.WeeklyPresenter;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
