@@ -6,6 +6,7 @@ import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOS
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -24,15 +25,10 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
-import com.facebook.common.logging.FLog;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.listener.RequestListener;
-import com.facebook.imagepipeline.listener.RequestLoggingListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
@@ -54,13 +50,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mCount = count;
         cafeListFiltered = list;
 
-        // Logcat for Fresco
-        Set<RequestListener> requestListeners = new HashSet<>();
-        requestListeners.add(new RequestLoggingListener());
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
     }
 
-    public void setList(ArrayList<EateryBaseModel> list, int count, String query) {
+    protected void setList(ArrayList<EateryBaseModel> list, int count, String query) {
         mQuery = query;
         mCount = count;
         cafeListFiltered = list;
@@ -99,7 +91,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
 
                 holder.cafeName.setText(eateryModel.getNickName());
-                String imageLocation = null;
+                String imageLocation;
                 if (!eateryModel.isCtEatery()) {
                     imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());
                 } else {
@@ -107,6 +99,10 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 Uri uri = Uri.parse(imageLocation);
                 holder.cafeDrawee.setImageURI(uri);
+                Picasso.get()
+                        .load(uri)
+                        .noFade()
+                        .into(holder.cafeDrawee);
 
                 String openText = eateryModel.getCurrentStatus().toString();
                 SpannableString openString = new SpannableString(openText);
@@ -129,11 +125,13 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     holder.cafeOpen.setTextColor(ContextCompat.getColor(mContext, R.color.green));
                     holder.rlayout.setAlpha(1f);
                 }
-                holder.brb_icon.setVisibility(View.GONE);
-                holder.swipe_icon.setVisibility(View.GONE);
+
+                holder.brb_icon.setVisibility(View.INVISIBLE);
                 if (eateryModel.hasPaymentMethod(PaymentMethod.BRB)) {
                     holder.brb_icon.setVisibility(View.VISIBLE);
                 }
+
+                holder.swipe_icon.setVisibility(View.INVISIBLE);
                 if (eateryModel instanceof DiningHallModel) {
                     holder.swipe_icon.setVisibility(View.VISIBLE);
                 }
@@ -206,17 +204,18 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public interface ListAdapterOnClickHandler {
-        void onClick(int position, ArrayList<EateryBaseModel> list);
+        void onClick(int position, ArrayList<EateryBaseModel> list, View sharedImageView);
     }
 
     class ListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView cafeName;
         TextView cafeTime;
         TextView cafeOpen;
-        SimpleDraweeView cafeDrawee;
+        ImageView cafeDrawee;
         CardView rlayout;
         ImageView swipe_icon;
         ImageView brb_icon;
+        View viewHolder;
 
         ListAdapterViewHolder(View itemView) {
             super(itemView);
@@ -227,13 +226,14 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             brb_icon = itemView.findViewById(R.id.card_brb);
             cafeDrawee = itemView.findViewById(R.id.cafe_image);
             rlayout = itemView.findViewById(R.id.cv);
+            viewHolder = itemView;
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered, viewHolder);
         }
     }
 
@@ -255,7 +255,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered);
+            mListAdapterOnClickHandler.onClick(adapterPosition, cafeListFiltered, null);
         }
     }
 }

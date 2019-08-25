@@ -59,6 +59,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         if (str.equals("Martha's Express")) return "Marthas-Cafe.jpg";
         if (str.equals("Bus Stop Bagels")) return "Bug-Stop-Bagels.jpg";
         if (str.equals("Straight from the Market")) return "StraightMarket.jpg";
+        if (str.equals("Temple of Zeus")) return "Zeus.jpg";
         str = str.replaceAll("!", "");
         str = str.replaceAll("[&\']", "");
         str = str.replaceAll(" ", "-");

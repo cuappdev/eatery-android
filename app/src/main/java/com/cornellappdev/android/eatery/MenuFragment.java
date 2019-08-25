@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,10 +37,12 @@ public class MenuFragment extends Fragment {
         // Checks for unavailable or missing menus
         if (mMenu.getNumberOfCategories() == 0) {
             TextView missingMenuText = new TextView(getContext());
-            missingMenuText.setText("Nothing on the menu 😮");
-            missingMenuText.setTextColor(ContextCompat.getColor(getContext(), R.color.primary));
-            missingMenuText.setPadding(0, (int) (96 * scale + 0.5f), 0, 0);
-            missingMenuText.setTextSize(32);
+            missingMenuText.setText(R.string.no_menu_text);
+            missingMenuText.setTextSize(16);
+            missingMenuText.setPadding(0, 96, 0, 0);
+            missingMenuText.setBackgroundColor(
+                    ContextCompat.getColor(getContext(), R.color.wash));
+            missingMenuText.setGravity(Gravity.CENTER_HORIZONTAL);
             mLinear.addView(missingMenuText);
         }
 

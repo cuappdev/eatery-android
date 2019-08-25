@@ -1,21 +1,19 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +40,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
     private MainListPresenter mListPresenter;
@@ -63,11 +65,10 @@ public class MainListFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
-        getActivity().setTitle("Eateries");
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -378,17 +379,56 @@ public class MainListFragment extends Fragment
     }
 
     @Override
-    public void onClick(int position, ArrayList<EateryBaseModel> list) {
+    public void onClick(int position, ArrayList<EateryBaseModel> list, View viewHolder) {
+
         EateryBaseModel model = list.get(position);
+        Intent intent;
         if (model.isCtEatery()) {
-            Intent intent = new Intent(getActivity(), CtownMenuActivity.class);
-            intent.putExtra("cafeInfo", model);
-            intent.putExtra("locName", model.getNickName());
-            startActivity(intent);
+            intent = new Intent(getActivity(), CtownMenuActivity.class);
         } else {
-            Intent intent = new Intent(getActivity(), CampusMenuActivity.class);
-            intent.putExtra("cafeInfo", model);
-            intent.putExtra("locName", model.getNickName());
+            intent = new Intent(getActivity(), CampusMenuActivity.class);
+        }
+        intent.putExtra("cafeInfo", model);
+
+        if(viewHolder != null) {
+            View sharedCafeImage = viewHolder.findViewById(R.id.cafe_image);
+            View sharedCafeName = viewHolder.findViewById(R.id.cafe_name);
+            View sharedCafeOpen = viewHolder.findViewById(R.id.cafe_open);
+            View sharedCafeTime = viewHolder.findViewById(R.id.cafe_time);
+            View sharedDollarIcon = viewHolder.findViewById(R.id.card_dollar);
+            View sharedSwipeIcon = viewHolder.findViewById(R.id.card_swipe);
+            View sharedBrbIcon = viewHolder.findViewById(R.id.card_brb);
+
+            Pair<View, String> imageTransition = Pair.create(sharedCafeImage, ViewCompat.getTransitionName(sharedCafeImage));
+            Pair<View, String> nameTransition = Pair.create(sharedCafeName, ViewCompat.getTransitionName(sharedCafeName));
+            Pair<View, String> openTransition = Pair.create(sharedCafeOpen, ViewCompat.getTransitionName(sharedCafeOpen));
+            Pair<View, String> timeTransition = Pair.create(sharedCafeTime, ViewCompat.getTransitionName(sharedCafeTime));
+
+            Pair<View, String> dollarTransition = Pair.create(sharedDollarIcon, ViewCompat.getTransitionName(sharedDollarIcon));
+            Pair<View, String> brbTransition;
+            Pair<View, String> swipeTransition;
+
+            if (sharedSwipeIcon != null && sharedSwipeIcon.getVisibility() == View.INVISIBLE) {
+                // If the icon isn't visible, don't animate it
+                swipeTransition = Pair.create(sharedCafeName, "");
+            } else {
+                swipeTransition = Pair.create(sharedSwipeIcon, ViewCompat.getTransitionName(sharedSwipeIcon));
+            }
+
+            if (sharedBrbIcon != null && sharedBrbIcon.getVisibility() == View.INVISIBLE)
+                brbTransition = Pair.create(sharedCafeName, "");
+            else {
+                brbTransition = Pair.create(sharedBrbIcon, ViewCompat.getTransitionName(sharedBrbIcon));
+            }
+
+            // Adds transitions for all the elements Pair<View, String> specified above
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    imageTransition, nameTransition, openTransition, timeTransition,
+                    swipeTransition, dollarTransition, brbTransition);
+            startActivity(intent, options.toBundle());
+        }
+        else {
             startActivity(intent);
         }
     }
