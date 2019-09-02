@@ -4,10 +4,10 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel.Status;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class TimeUtil {
     private final static DateTimeFormatter ONLY_TIME_FORMAT = DateTimeFormatter.ofPattern("h:mm a");

@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
@@ -8,11 +9,11 @@ import com.cornellappdev.android.eatery.model.enums.MealType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.LocalTime;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.format.DateTimeFormatterBuilder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;

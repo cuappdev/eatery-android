@@ -2,7 +2,7 @@ package com.cornellappdev.android.eatery.model;
 
 import android.support.annotation.NonNull;
 
-import org.threeten.bp.LocalTime;
+import java.time.LocalTime;
 
 import java.io.Serializable;
 

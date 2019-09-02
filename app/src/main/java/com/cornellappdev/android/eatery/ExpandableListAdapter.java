@@ -16,8 +16,8 @@ import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 
