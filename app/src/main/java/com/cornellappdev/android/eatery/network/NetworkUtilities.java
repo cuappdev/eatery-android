@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery.network;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
@@ -17,7 +16,6 @@ import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
 import org.jetbrains.annotations.NotNull;
-import com.cornellappdev.android.eatery.MainActivity.ProcessJson;
 
 import java.io.BufferedReader;
 import java.io.IOException;

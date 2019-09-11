@@ -5,14 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.core.util.Pair;
-
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +63,6 @@ public class MainListFragment extends Fragment
     public SearchView searchView;
     private boolean mCurrentlyAnimating;
     private boolean mPillVisible = true;
-
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override

@@ -1,9 +1,8 @@
 package com.cornellappdev.android.eatery.loginviews;
 
-import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
