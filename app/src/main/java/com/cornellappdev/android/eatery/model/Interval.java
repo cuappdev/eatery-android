@@ -1,6 +1,6 @@
 package com.cornellappdev.android.eatery.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
 

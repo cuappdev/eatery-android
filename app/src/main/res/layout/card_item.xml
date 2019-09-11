@@ -8,7 +8,7 @@
               android:paddingTop="2dp"
               android:paddingRight="4dp">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,5 +102,5 @@
                 android:src="@drawable/swipe_icon"
                 android:visibility="gone"/>
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

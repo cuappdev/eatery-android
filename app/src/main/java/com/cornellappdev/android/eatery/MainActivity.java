@@ -5,10 +5,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
+                                Log.d("TESTINZ", "navigation this better fucking work");
                                 transaction
                                         .replace(R.id.frame_fragment_holder, mainListFragment)
                                         .commit();
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         // Try pulling data from GraphQL, if not fallback to json from cornell dining
         NetworkUtilities.getEateries(this);
         if (JSON_FALLBACK) {
-            new ProcessJson().execute("");
+            // TODO Get Json working
         }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize

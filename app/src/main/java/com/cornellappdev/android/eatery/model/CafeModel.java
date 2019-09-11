@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -151,11 +152,11 @@ public class CafeModel extends EateryBaseModel implements Serializable {
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")
-                .toFormatter();
+                .toFormatter(Locale.US);
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("yyyy-MM-dd")
-                .toFormatter();
+                .toFormatter(Locale.US);
 
         for (AllEateriesQuery.OperatingHour operatingHour : cafe.operatingHours()) {
             List<LocalDate> localDates = new ArrayList<>();

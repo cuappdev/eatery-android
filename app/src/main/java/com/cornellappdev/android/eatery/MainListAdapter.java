@@ -7,9 +7,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.cardview.widget.CardView;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
