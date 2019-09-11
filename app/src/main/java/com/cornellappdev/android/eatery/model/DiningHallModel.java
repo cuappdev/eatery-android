@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DiningHallModel extends EateryBaseModel implements Serializable {
@@ -161,11 +162,11 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")
-                .toFormatter();
+                .toFormatter(Locale.US);
         DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("yyyy-MM-dd")
-                .toFormatter();
+                .toFormatter(Locale.US);
 
         mId = eatery.id();
 
