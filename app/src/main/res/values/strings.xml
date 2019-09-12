@@ -52,7 +52,7 @@
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
     <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
-    <string name="encryption_key">a</string>
-    <string name="encryption_salt">a</string>
-    <string name="google_maps_key">a</string>
+    <string name="encryption_key">hi</string>
+    <string name="encryption_salt">you</string>
+    <string name="google_maps_key">guys!</string>
 </resources>

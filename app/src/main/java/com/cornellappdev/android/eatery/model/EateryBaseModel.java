@@ -1,7 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;

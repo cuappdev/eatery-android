@@ -5,15 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +31,7 @@ import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class MainListFragment extends Fragment
     public SearchView searchView;
     private boolean mCurrentlyAnimating;
     private boolean mPillVisible = true;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,7 +89,7 @@ public class MainListFragment extends Fragment
         // Set up recyclerView and corresponding listAdapter
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false);
+                new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mListAdapter =
                 new MainListAdapter(getContext(), this, mListPresenter.getEateryList().size(),
@@ -302,6 +304,10 @@ public class MainListFragment extends Fragment
     }
 
     public void handleCollegetownPillPress() {
+        Bundle bundle = new Bundle();
+        bundle.putString("time", System.currentTimeMillis() + "");
+        mFirebaseAnalytics.logEvent("ctown_pressed", bundle);
+
         mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
@@ -313,6 +319,10 @@ public class MainListFragment extends Fragment
     }
 
     public void handleCampusPillPress() {
+        Bundle bundle = new Bundle();
+        bundle.putString("time", System.currentTimeMillis() + "");
+        mFirebaseAnalytics.logEvent("campus_pressed", bundle);
+
         mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
@@ -454,8 +464,9 @@ public class MainListFragment extends Fragment
         searchView = (SearchView) searchItem.getActionView();
         getActivity().setTitle("Eatery");
         AutoCompleteTextView searchTextView =
-                searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+                searchView.findViewById(R.id.search_src_text);
         searchView.setMaxWidth(2000);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
