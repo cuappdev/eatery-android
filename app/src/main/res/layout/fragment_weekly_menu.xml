@@ -183,7 +183,7 @@
                 android:paddingBottom="12dp"
                 android:text="North Campus"
                 android:textColor="@color/primary"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:textStyle="bold"/>
 
             <com.cornellappdev.android.eatery.NonScrollExpandableListView

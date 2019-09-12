@@ -29,7 +29,7 @@
                 android:paddingBottom="20dp"
                 android:text="Settings"
                 android:textColor="@color/primary"
-                android:textSize="23sp"
+                android:textSize="@dimen/account_info_header_text_size"
                 android:textStyle="bold"/>
             <RelativeLayout
                 android:id="@+id/about_segway"
@@ -52,7 +52,7 @@
                     android:text="@string/about"
                     android:textAllCaps="false"
                     android:textColor="@color/primary"
-                    android:textSize="19sp"
+                    android:textSize="@dimen/account_info_attributes_text_size"
                 />
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                     android:text="@string/auto_login"
                     android:textAllCaps="false"
                     android:textColor="@color/primary"
-                    android:textSize="19sp"
+                    android:textSize="@dimen/account_info_attributes_text_size"
                 />
                 <CheckBox
                     android:id="@+id/saveCheckInfo"
@@ -120,7 +120,7 @@
                     android:text="@string/logout_label"
                     android:textAllCaps="true"
                     android:textColor="@color/blue"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/account_info_attributes_text_size"
                     android:textStyle="bold"
                 />
             </RelativeLayout>

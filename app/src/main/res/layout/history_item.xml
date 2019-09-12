@@ -25,7 +25,7 @@
                 android:paddingTop="15dp"
                 android:paddingEnd="15dp"
                 android:textColor="#222222"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/account_info_attributes_text_size"/>
 
             <TextView
                 android:id="@+id/purchase_timestamp"
@@ -37,7 +37,7 @@
                 android:paddingEnd="15dp"
                 android:paddingBottom="20dp"
                 android:textColor="#888888"
-                android:textSize="16sp"/>
+                android:textSize="@dimen/account_info_attributes_sub_text_size"/>
         </LinearLayout>
         <TextView
             android:id="@+id/purchase_amount"
@@ -49,6 +49,6 @@
             android:paddingTop="30dp"
             android:paddingEnd="25dp"
             android:textColor="#f2655d"
-            android:textSize="17sp"/>
+            android:textSize="@dimen/account_info_attributes_text_size"/>
     </LinearLayout>
 </LinearLayout>

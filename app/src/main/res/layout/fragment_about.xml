@@ -28,7 +28,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/description_header"
                 android:textColor="@color/primary"
-                android:textSize="20sp"
+                android:textSize="@dimen/account_info_header_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -42,7 +42,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/description_text_1"
                 android:textColor="@color/primary"
-                android:textSize="18sp"
+                android:textSize="@dimen/account_info_attributes_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -55,7 +55,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/description_text_2"
                 android:textColor="@color/primary"
-                android:textSize="18sp"
+                android:textSize="@dimen/account_info_attributes_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -68,7 +68,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/appdev_website"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="@dimen/account_info_attributes_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -81,7 +81,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/feedback_header"
                 android:textColor="@color/primary"
-                android:textSize="20sp"
+                android:textSize="@dimen/account_info_header_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -94,7 +94,7 @@
                 android:paddingRight="15dp"
                 android:text="@string/feedback_text"
                 android:textColor="@color/primary"
-                android:textSize="18sp"
+                android:textSize="@dimen/account_info_attributes_text_size"
                 android:textStyle="normal"/>
 
             <TextView
@@ -108,7 +108,7 @@
                 android:paddingBottom="20dp"
                 android:text="@string/google_form"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="@dimen/account_info_attributes_text_size"
                 android:textStyle="normal"/>
         </LinearLayout>
     </ScrollView>
