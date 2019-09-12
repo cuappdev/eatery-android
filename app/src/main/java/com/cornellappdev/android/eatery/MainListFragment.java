@@ -305,7 +305,7 @@ public class MainListFragment extends Fragment
 
     public void handleCollegetownPillPress() {
         Bundle bundle = new Bundle();
-        bundle.putString("time", System.currentTimeMillis()+"");
+        bundle.putString("time", System.currentTimeMillis() + "");
         mFirebaseAnalytics.logEvent("ctown_pressed", bundle);
 
         mListPresenter.setDisplayCTown(true);
@@ -320,7 +320,7 @@ public class MainListFragment extends Fragment
 
     public void handleCampusPillPress() {
         Bundle bundle = new Bundle();
-        bundle.putString("time", System.currentTimeMillis()+"");
+        bundle.putString("time", System.currentTimeMillis() + "");
         mFirebaseAnalytics.logEvent("campus_pressed", bundle);
 
         mListPresenter.setDisplayCTown(false);

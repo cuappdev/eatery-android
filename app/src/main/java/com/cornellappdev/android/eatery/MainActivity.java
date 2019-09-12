@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
-                                Log.d("TESTINZ", "navigation this better fucking work");
                                 transaction
                                         .replace(R.id.frame_fragment_holder, mainListFragment)
                                         .commit();
