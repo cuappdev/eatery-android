@@ -49,7 +49,6 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mListAdapterOnClickHandler = clickHandler;
         mCount = count;
         cafeListFiltered = list;
-
     }
 
     protected void setList(ArrayList<EateryBaseModel> list, int count, String query) {
