@@ -142,9 +142,7 @@ public class LoginFragment extends Fragment {
             });
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("time", System.currentTimeMillis() + "");
-                    mFirebaseAnalytics.logEvent("user_brb_login", bundle);
+                    mFirebaseAnalytics.logEvent("user_brb_login", null);
                     mAccountPresenter.setLoggingIn(true);
                     loadingGUI();
                     mAccountPresenter.setNetID(mNetID.getText().toString());

@@ -111,23 +111,21 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         FragmentTransaction transaction =
                                 getSupportFragmentManager().beginTransaction();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("time", System.currentTimeMillis() + "");
                         switch (item.getItemId()) {
                             case R.id.action_home:
-                                mFirebaseAnalytics.logEvent("eatery_tab_press", bundle);
+                                mFirebaseAnalytics.logEvent("eatery_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, mainListFragment)
                                         .commit();
                                 break;
                             case R.id.action_week:
-                                mFirebaseAnalytics.logEvent("lookahead_tab_press", bundle);
+                                mFirebaseAnalytics.logEvent("lookahead_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                                         .commit();
                                 break;
                             case R.id.action_brb:
-                                mFirebaseAnalytics.logEvent("brb_tab_press", bundle);
+                                mFirebaseAnalytics.logEvent("brb_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, loginFragment)
                                         .commit();
