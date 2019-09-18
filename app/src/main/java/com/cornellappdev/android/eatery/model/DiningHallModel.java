@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
@@ -171,13 +172,17 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 
         for (AllEateriesQuery.SwipeDatum swipeDatum : eatery.swipeData()) {
             LocalTime start = null, end = null;
-            start = LocalTime.parse(swipeDatum.startTime().toUpperCase().replaceAll("\\s+", ""),
-                    timeFormatter);
-            end = LocalTime.parse(swipeDatum.endTime().toUpperCase().replaceAll("\\s+", ""),
-                    timeFormatter);
-            mSwipeDataList.add(
-                    new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
-                            swipeDatum.waitTimeHigh()));
+            try {
+                start = LocalTime.parse(swipeDatum.startTime().toUpperCase().replaceAll("\\s+", ""),
+                        timeFormatter);
+                end = LocalTime.parse(swipeDatum.endTime().toUpperCase().replaceAll("\\s+", ""),
+                        timeFormatter);
+                mSwipeDataList.add(
+                        new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
+                                swipeDatum.waitTimeHigh()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Collections.sort(mSwipeDataList);
 
