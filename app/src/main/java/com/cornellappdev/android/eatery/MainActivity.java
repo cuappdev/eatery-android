@@ -28,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public static WebView sLoginWebView;
     public BottomNavigationView bnv;
     public CafeteriaDbHelper dbHelper;
+    private FirebaseAnalytics mFirebaseAnalytics;
     private LoginFragment loginFragment;
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
+            public void successLogin(com.cornellappdev.android.eatery.BrbInfoQuery.AccountInfo accountInfo) {
                 BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
                 Repository.getInstance().setBrbInfoModel(model);
                 loginFragment.setLoading(false);
@@ -110,16 +113,19 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction();
                         switch (item.getItemId()) {
                             case R.id.action_home:
+                                mFirebaseAnalytics.logEvent("eatery_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, mainListFragment)
                                         .commit();
                                 break;
                             case R.id.action_week:
+                                mFirebaseAnalytics.logEvent("lookahead_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                                         .commit();
                                 break;
                             case R.id.action_brb:
+                                mFirebaseAnalytics.logEvent("brb_tab_press", null);
                                 transaction
                                         .replace(R.id.frame_fragment_holder, loginFragment)
                                         .commit();

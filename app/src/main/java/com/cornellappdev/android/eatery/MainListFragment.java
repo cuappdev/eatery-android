@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
@@ -304,9 +305,7 @@ public class MainListFragment extends Fragment
     }
 
     public void handleCollegetownPillPress() {
-        Bundle bundle = new Bundle();
-        bundle.putString("time", System.currentTimeMillis() + "");
-        mFirebaseAnalytics.logEvent("ctown_pressed", bundle);
+        mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
 
         mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
@@ -319,9 +318,7 @@ public class MainListFragment extends Fragment
     }
 
     public void handleCampusPillPress() {
-        Bundle bundle = new Bundle();
-        bundle.putString("time", System.currentTimeMillis() + "");
-        mFirebaseAnalytics.logEvent("campus_pressed", bundle);
+        mFirebaseAnalytics.logEvent("campus_pill_press", null);
 
         mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
@@ -379,10 +376,23 @@ public class MainListFragment extends Fragment
     public void onClick(View view) {
         if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
                 || view.getId() == R.id.westButton) {
+            if (view.getId() == R.id.northButton) {
+                mFirebaseAnalytics.logEvent("north_filter_press", null);
+            } else if (view.getId() == R.id.centralButton) {
+                mFirebaseAnalytics.logEvent("central_filter_press", null);
+            } else if (view.getId() == R.id.westButton) {
+                mFirebaseAnalytics.logEvent("west_filter_press", null);
+            }
             handleAreaButtonPress(mCampusButtons.get(view.getId()));
         } else if (view.getId() == R.id.brb || view.getId() == R.id.swipes) {
+            if (view.getId() == R.id.brb) {
+                mFirebaseAnalytics.logEvent("brb_filter_press", null);
+            } else if (view.getId() == R.id.swipes) {
+                mFirebaseAnalytics.logEvent("swipes_filter_press", null);
+            }
             handlePaymentButtonPress(mCampusButtons.get(view.getId()));
         } else {
+            mFirebaseAnalytics.logEvent("collegetown_filters_press", null);
             handleCategoryButtonPress(mCollegetownButtons.get(view.getId()));
         }
         updateListAdapter();
@@ -394,8 +404,14 @@ public class MainListFragment extends Fragment
         EateryBaseModel model = list.get(position);
         Intent intent;
         if (model.isCtEatery()) {
+            mFirebaseAnalytics.logEvent("collegetown_eatery_press", null);
             intent = new Intent(getActivity(), CtownMenuActivity.class);
         } else {
+            if (model instanceof DiningHallModel) {
+                mFirebaseAnalytics.logEvent("campus_dining_hall_press", null);
+            } else {
+                mFirebaseAnalytics.logEvent("campus_cafe_press", null);
+            }
             intent = new Intent(getActivity(), CampusMenuActivity.class);
         }
         intent.putExtra("cafeInfo", model);
@@ -447,6 +463,7 @@ public class MainListFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_map:
+                mFirebaseAnalytics.logEvent("homescreen_map_press", null);
                 Intent intent = new Intent(getActivity().getApplicationContext(),
                         MapsActivity.class);
                 startActivity(intent);

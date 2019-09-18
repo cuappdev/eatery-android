@@ -23,6 +23,7 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
@@ -39,6 +40,7 @@ public class LoginFragment extends Fragment {
     private CheckBox mSaveInfoCheck;
     private AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
     private AccountPresenter mAccountPresenter = new AccountPresenter();
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,6 +66,7 @@ public class LoginFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
         if (mAccountPresenter.isLoggingIn()) {
             mAccountPresenter.setContext(getContext());
@@ -139,6 +142,7 @@ public class LoginFragment extends Fragment {
             });
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    mFirebaseAnalytics.logEvent("user_brb_login", null);
                     mAccountPresenter.setLoggingIn(true);
                     loadingGUI();
                     mAccountPresenter.setNetID(mNetID.getText().toString());
