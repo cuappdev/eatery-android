@@ -169,7 +169,8 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
 
         mId = eatery.id();
 
-        for (AllEateriesQuery.SwipeDatum swipeDatum : eatery.swipeData()) {
+        // TODO: Fix parsing of swipe data times
+        /*for (AllEateriesQuery.SwipeDatum swipeDatum : eatery.swipeData()) {
             LocalTime start = null, end = null;
             start = LocalTime.parse(swipeDatum.startTime().toUpperCase().replaceAll("\\s+", ""),
                     timeFormatter);
@@ -178,8 +179,10 @@ public class DiningHallModel extends EateryBaseModel implements Serializable {
             mSwipeDataList.add(
                     new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
                             swipeDatum.waitTimeHigh()));
+
         }
         Collections.sort(mSwipeDataList);
+        */
 
         // Each Operating Hour is a single day for dining halls
         for (AllEateriesQuery.OperatingHour operatingHour : eatery.operatingHours()) {
