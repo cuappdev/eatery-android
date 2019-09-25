@@ -47,9 +47,13 @@ public class LoginFragment extends Fragment {
             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        getActivity().setTitle("Login");
-        // Disable the back button
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getActivity() != null) {
+            getActivity().setTitle("Login");
+            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+                // Disable the back button
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
+        }
         if (mAccountPresenter.isLoggedIn()) {
             // If the user has already logged in in this session of the app, just load the
             // accountInfo page and don't require another login
@@ -120,11 +124,19 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
                     BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
-                    mAccountPresenter.setBrbModel(model);
-                    mAccountPresenter.setLoggingIn(false);
-                    // If user is still viewing this fragment
-                    if (getFragmentManager() != null) {
-                        loadAccountPage(false);
+                    if (model == null) {
+                        mDescriptionText.setText("Internal Error\n");
+                        mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                        mAccountPresenter.setLoggingIn(false);
+                        resumeGUI();
+                    }
+                    else {
+                        mAccountPresenter.setBrbModel(model);
+                        mAccountPresenter.setLoggingIn(false);
+                        // If user is still viewing this fragment
+                        if (getFragmentManager() != null) {
+                            loadAccountPage(false);
+                        }
                     }
                 }
             };
@@ -184,13 +196,18 @@ public class LoginFragment extends Fragment {
      * user failed to log in
      */
     private void resumeGUI() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mLoginButton.setBackgroundColor(getResources().getColor(R.color.blue));
-        mLoginButton.setText(R.string.login_label);
-        mNetID.setEnabled(true);
-        mPassword.setEnabled(true);
-        mPrivacy.setEnabled(true);
-        mSaveInfoCheck.setEnabled(true);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mLoginButton.setBackgroundColor(getResources().getColor(R.color.blue));
+                mLoginButton.setText(R.string.login_label);
+                mNetID.setEnabled(true);
+                mPassword.setEnabled(true);
+                mPrivacy.setEnabled(true);
+                mSaveInfoCheck.setEnabled(true);
+            }
+        });
     }
 
     /*
