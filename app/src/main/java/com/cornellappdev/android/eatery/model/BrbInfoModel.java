@@ -22,6 +22,9 @@ public class BrbInfoModel implements Serializable {
     }
 
     public static BrbInfoModel loadFromInfo(BrbInfoQuery.AccountInfo brbInfo) {
+        if (brbInfo == null) {
+            return null;
+        }
         float cityBucks = Float.parseFloat(brbInfo.cityBucks());
         float laundry = Float.parseFloat(brbInfo.laundry());
         float brbs = Float.parseFloat(brbInfo.brbs());
