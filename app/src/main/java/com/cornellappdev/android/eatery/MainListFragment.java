@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ public class MainListFragment extends Fragment
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
+    private boolean mNearestFirstButtonPressed;
     private ImageView mCampusPill;
     private ImageView mCollegetownPill;
     private LinearLayout mCampusPillHolder;
@@ -86,6 +88,7 @@ public class MainListFragment extends Fragment
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
         mCategoryButtonsPressed = new HashSet<>();
+        mNearestFirstButtonPressed = false;
 
         // Set up recyclerView and corresponding listAdapter
         mRecyclerView.setHasFixedSize(true);
@@ -137,6 +140,7 @@ public class MainListFragment extends Fragment
 
     public void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
+                R.id.nearestFirstButton,
                 R.id.northButton,
                 R.id.westButton,
                 R.id.centralButton,
@@ -330,6 +334,15 @@ public class MainListFragment extends Fragment
         updateListAdapter();
     }
 
+    private void handleNearestFirstButtonPress(Button button) {
+        if (mNearestFirstButtonPressed) {
+            changeButtonColor(R.color.white, R.color.blue, button);
+        } else {
+            changeButtonColor(R.color.blue, R.color.wash, button);
+        }
+        mListPresenter.filterImageList();
+    }
+
     private void handleAreaButtonPress(Button button) {
         if (mAreaButtonsPressed.contains(button)) {
             changeButtonColor(R.color.blue, R.color.wash, button);
@@ -374,7 +387,11 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
+        if (view.getId() == R.id.nearestFirstButton) {
+            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
+            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;
+            handleNearestFirstButtonPress(mCampusButtons.get(view.getId()));
+        } else if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
                 || view.getId() == R.id.westButton) {
             if (view.getId() == R.id.northButton) {
                 mFirebaseAnalytics.logEvent("north_filter_press", null);
