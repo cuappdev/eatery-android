@@ -4,7 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.model.GradientColor;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -46,6 +60,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
+    private BarChart mWaitTimesChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +152,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         mCustomPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
-        LineChart mWaitTimesChart = (LineChart) findViewById(R.id.wait_time_chart);
 
         float scale = getResources().getDisplayMetrics().density;
 
@@ -209,6 +223,85 @@ public class CampusMenuActivity extends AppCompatActivity {
                         ContextCompat.getColor(getApplicationContext(), R.color.blue));
             }
         }
+
+        setupWaitTimesChart();
+    }
+
+
+    private void setupWaitTimesChart() {
+        mWaitTimesChart = (BarChart) findViewById(R.id.wait_time_chart);
+        mWaitTimesChart.setDescription(null);
+        mWaitTimesChart.getLegend().setEnabled(false);
+        mWaitTimesChart.setDoubleTapToZoomEnabled(false);
+        mWaitTimesChart.animateY(2000);
+        mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        XAxis xAxis = mWaitTimesChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisLineColor(R.color.inactive);
+        xAxis.setAxisMaximum(22);
+        xAxis.setLabelCount(8);
+        ArrayList<String> xAxisLabels = new ArrayList<String>();
+        for(int i = 0; i < 22; i++) {
+            int hourNum = (i + 6) % 12;
+            if (hourNum == 0) {
+                hourNum = 12;
+            }
+            String ap = i <= 5 || i >= 18 ? "a" : "p";
+            xAxisLabels.add(hourNum + ap);
+        }
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
+
+        YAxis yAxisLeft = mWaitTimesChart.getAxisLeft();
+        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setEnabled(false);
+
+        YAxis yAxisRight = mWaitTimesChart.getAxisRight();
+        yAxisRight.setDrawGridLines(false);
+        yAxisRight.setDrawLabels(false);
+        yAxisRight.setEnabled(false);
+
+        List<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(0, 30f));
+        entries.add(new BarEntry(1f, 30f));
+        entries.add(new BarEntry(2f, 30f));
+        entries.add(new BarEntry(3f, 30f));
+        entries.add(new BarEntry(4f, 30f));
+        entries.add(new BarEntry(5f, 30f));
+        entries.add(new BarEntry(6f, 60f));
+        entries.add(new BarEntry(7f, 60f));
+        entries.add(new BarEntry(8f, 60f));
+        entries.add(new BarEntry(9f, 60f));
+        entries.add(new BarEntry(10f, 60f));
+        entries.add(new BarEntry(11f, 60f));
+        entries.add(new BarEntry(12f, 60f));
+        entries.add(new BarEntry(13f, 60f));
+        entries.add(new BarEntry(14f, 60f));
+        entries.add(new BarEntry(15f, 60f));
+        entries.add(new BarEntry(16f, 60f));
+        entries.add(new BarEntry(17f, 60f));
+        entries.add(new BarEntry(18f, 60f));
+        entries.add(new BarEntry(19f, 60f));
+        entries.add(new BarEntry(20f, 60f));
+
+
+        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+        set.setColors(ContextCompat.getColor(getApplicationContext(), R.color.lightblue));
+        BarData barData = new BarData(set);
+        barData.setDrawValues(false);
+        mWaitTimesChart.setData(barData);
     }
 
     private void setupViewPager(CustomPager customPager) {

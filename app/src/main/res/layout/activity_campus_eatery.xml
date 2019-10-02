@@ -168,10 +168,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/wait_time_label"
                 android:background="@color/white">
-                <com.github.mikephil.charting.charts.LineChart
+                <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/wait_time_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="180dp"
+                    />
             </RelativeLayout>
 
             </RelativeLayout>
