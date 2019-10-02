@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -136,6 +137,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         mCustomPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
+        LineChart mWaitTimesChart = (LineChart) findViewById(R.id.wait_time_chart);
 
         float scale = getResources().getDisplayMetrics().density;
 
