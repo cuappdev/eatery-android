@@ -24,26 +24,25 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
-
-                <Button
-                    android:id="@+id/nearestFirstButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/button"
-                    android:elevation="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_horizontal"
-                    android:minWidth="75dp"
-                    android:padding="8dp"
-                    android:stateListAnimator="@null"
-                    android:text="Nearest First"
-                    android:textAllCaps="false"
-                    android:textColor="@color/blue"
-                    android:textSize="16sp"
-                    android:textStyle="normal"/>
+<!--                <Button-->
+<!--                    android:id="@+id/nearestFirstButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_marginLeft="8dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:background="@drawable/button"-->
+<!--                    android:elevation="4dp"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_horizontal"-->
+<!--                    android:minWidth="75dp"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:stateListAnimator="@null"-->
+<!--                    android:text="Nearest First"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/blue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="normal"/>-->
 
                 <Button
                     android:id="@+id/northButton"

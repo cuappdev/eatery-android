@@ -75,7 +75,7 @@
                     android:transitionName="eateryName"
                     android:text="Name"
                     android:textColor="@color/primary"
-                    android:textSize="16sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/ind_open"
@@ -143,13 +143,32 @@
                     android:visibility="invisible"/>
             </RelativeLayout>
             <RelativeLayout
-                android:id="@+id/wait_time_box"
+                android:id="@+id/wait_time_horizontal_divider"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/infobox"
                 android:background="@color/white"
                 android:elevation="1dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:paddingRight="16dp"
                 android:paddingLeft="16dp"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/inactive"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/wait_time_box"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/wait_time_horizontal_divider"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:paddingTop="7dp"
                 android:paddingBottom="7dp">
                 <TextView
@@ -161,7 +180,7 @@
                     android:layout_marginBottom="9dp"
                     android:text="Popular Times"
                     android:textColor="@color/primary"
-                    android:textSize="14sp"/>
+                    android:textSize="18sp"/>
             <RelativeLayout
                 android:id="@+id/wait_time_graph"
                 android:layout_width="fill_parent"

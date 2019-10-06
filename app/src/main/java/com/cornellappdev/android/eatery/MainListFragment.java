@@ -140,7 +140,7 @@ public class MainListFragment extends Fragment
 
     public void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
-                R.id.nearestFirstButton,
+//                R.id.nearestFirstButton,
                 R.id.northButton,
                 R.id.westButton,
                 R.id.centralButton,
@@ -387,11 +387,12 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.nearestFirstButton) {
-            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
-            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;
-            handleNearestFirstButtonPress(mCampusButtons.get(view.getId()));
-        } else if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
+//        if (view.getId() == R.id.nearestFirstButton) {
+//            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
+//            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;
+//            handleNearestFirstButtonPress(mCampusButtons.get(view.getId()));
+//        }
+        if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
                 || view.getId() == R.id.westButton) {
             if (view.getId() == R.id.northButton) {
                 mFirebaseAnalytics.logEvent("north_filter_press", null);
