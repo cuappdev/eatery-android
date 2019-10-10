@@ -180,7 +180,7 @@ public class LoginFragment extends Fragment {
      */
     private void loadingGUI() {
         mProgressBar.setVisibility(View.VISIBLE);
-        mLoginButton.setBackgroundColor(getResources().getColor(R.color.fadedblue));
+        mLoginButton.setBackgroundColor(getResources().getColor(R.color.fadedBlue));
         mLoginButton.setText("");
         mDescriptionText.setTextColor(getResources().getColor(R.color.closed));
         mDescriptionText.setText("Logging in. This may take a minute ...\n");

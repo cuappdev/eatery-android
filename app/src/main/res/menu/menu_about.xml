@@ -4,7 +4,7 @@
              tools:context=".loginviews.AccountInfoFragment">
 <item
     android:id="@+id/logout_button"
-    android:icon="@drawable/ic_settings"
+    android:icon="@drawable/ic_info"
     android:title="Settings"
     app:showAsAction="ifRoom|collapseActionView" />
 </menu>
