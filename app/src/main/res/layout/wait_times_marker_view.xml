@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/waitTimesLayout"
     android:layout_width="wrap_content"
-    android:layout_height="40dp"
-    android:background="@drawable/blue_pin"
-    >
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
     <TextView
         android:id="@+id/timeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:textSize="12dp"
-        android:textColor="@android:color/white"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-</RelativeLayout>
+        android:background="@drawable/wait_times_marker"
+        android:padding="8dp"
+        android:text="Now: 00-00m wait"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+    <View
+        android:id="@+id/waitTimesView"
+        android:layout_width="2dp"
+        android:layout_gravity="center"
+        android:layout_height="0dp"
+        android:background="@color/inactive" />
+</LinearLayout>

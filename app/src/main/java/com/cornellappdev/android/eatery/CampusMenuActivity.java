@@ -282,6 +282,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         mWaitTimesChart.setPinchZoom(false);
         mWaitTimesChart.animateY(2000);
         mWaitTimesChart.setExtraBottomOffset(24f);
+        mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -305,14 +306,14 @@ public class CampusMenuActivity extends AppCompatActivity {
         entries.add(new BarEntry(3f, 20f));
         entries.add(new BarEntry(4f, 30f));
         entries.add(new BarEntry(5f, 40f));
-        entries.add(new BarEntry(6f, 50f));
+        entries.add(new BarEntry(6f, 40f));
         entries.add(new BarEntry(7f, 35f));
-        entries.add(new BarEntry(8f, 50f));
+        entries.add(new BarEntry(8f, 40f));
         entries.add(new BarEntry(9f, 30f));
         entries.add(new BarEntry(10f, 2f));
         entries.add(new BarEntry(11f, 5f));
         entries.add(new BarEntry(12f, 10f));
-        entries.add(new BarEntry(13f, 60f));
+        entries.add(new BarEntry(13f, 40f));
         entries.add(new BarEntry(14f, 40f));
         entries.add(new BarEntry(15f, 20f));
         entries.add(new BarEntry(16f, 2f));
@@ -322,7 +323,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         entries.add(new BarEntry(20f, 2f));
 
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
-        set.setColors(ContextCompat.getColor(getApplicationContext(), R.color.lightblue));
+        set.setColors(ContextCompat.getColor(getApplicationContext(), R.color.lightBlue));
         set.setValueTypeface(Typeface.SANS_SERIF);
         set.setHighLightColor(getResources().getColor(R.color.blue));
         set.setHighLightAlpha(255);
