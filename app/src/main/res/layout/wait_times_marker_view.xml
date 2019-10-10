@@ -3,21 +3,41 @@
     android:id="@+id/waitTimesLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@drawable/wait_times_marker"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/nowLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Now:"
+        android:textFontWeight="400"
+        android:textColor="@color/closed"
+        android:textSize="12sp"/>
     <TextView
         android:id="@+id/timeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/wait_times_marker"
-        android:padding="8dp"
-        android:text="Now: 00-00m wait"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="00-00m"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="12sp" />
-    <View
-        android:id="@+id/waitTimesView"
-        android:layout_width="2dp"
-        android:layout_gravity="center"
-        android:layout_height="0dp"
-        android:background="@color/inactive" />
+        android:textFontWeight="700"
+        android:textColor="@color/blue"
+        android:textSize="12sp"/>
+    <TextView
+        android:id="@+id/waitLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="wait"
+        android:textFontWeight="400"
+        android:textColor="@color/closed"
+        android:textSize="12sp"/>
 </LinearLayout>

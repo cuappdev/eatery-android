@@ -285,6 +285,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+//          TODO (yanlam): update with wait times from backend
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 
