@@ -24,12 +24,15 @@ import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.AccountManagerUtil;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
+import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -57,49 +60,8 @@ public class MainActivity extends AppCompatActivity {
         loginFragment = new LoginFragment();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
-            @Override
-            public void failedLogin() {
-                loginFragment.setLoading(false);
-            }
-
-            @Override
-            public void successLogin(com.cornellappdev.android.eatery.BrbInfoQuery.AccountInfo accountInfo) {
-                BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
-                Repository.getInstance().setBrbInfoModel(model);
-                loginFragment.setLoading(false);
-                // If the user is viewing the loginFragment
-                if (getSupportFragmentManager().findFragmentById(
-                        R.id.frame_fragment_holder) instanceof LoginFragment) {
-                    FragmentTransaction transaction =
-                            getSupportFragmentManager().beginTransaction();
-                    transaction
-                            .replace(R.id.frame_fragment_holder, new AccountInfoFragment())
-                            .commit();
-                }
-            }
-        };
-
-        // Removed saved data from webview with CookeManager
-        CookieManager.getInstance().removeAllCookies(null);
-        CookieManager.getInstance().flush();
         sLoginWebView = findViewById(R.id.login_webview);
-        sLoginWebView.getSettings().setJavaScriptEnabled(true);
-        String[] fileData = AccountManagerUtil.readSavedCredentials(getApplicationContext());
-        if (fileData != null) { // Automatically log into user's account if file exists
-            // A nonexistent file (fileData == null) means that the user has specified they do not
-            // want to save data
-            loginFragment.setLoading(true);
-            GetLoginUtilities.resetLoginAbility(fileData[0], fileData[1]);
-            sLoginWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    // Gets executed on every page redirect. Only want to evaluate JS once
-                    GetLoginUtilities.loginBrb(url, view, callback);
-                }
-            });
-            sLoginWebView.loadUrl("https://get.cbord.com/cornell/full/login.php?mobileapp=1");
-        }
+        GetLoginUtilities.autoLogin(getApplicationContext(), sLoginWebView);
 
         presenter = new MainPresenter();
         dbHelper = new CafeteriaDbHelper(this);
@@ -141,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
-        // google play services apis. Thus, we do this in MainActivity so it doesn't take the user
-        // time to initialize when loading the map itself
+        // google play services apis. We load it here at the beginning of the app
         MapView mDummyMapInitializer = findViewById(R.id.dummy_map);
         mDummyMapInitializer.getMapAsync(new OnMapReadyCallback() {
             @Override

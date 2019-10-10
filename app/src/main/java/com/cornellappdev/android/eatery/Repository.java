@@ -12,7 +12,6 @@ public class Repository {
     private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
     private BrbInfoModel mCurrentModel;
     private boolean mIsSearchPressed = false;
-    private boolean mIsSaveInfoChecked = false;
     private boolean mDisplayingCTown;
 
     public static Repository getInstance() {
@@ -65,14 +64,6 @@ public class Repository {
 
     public void setBrbInfoModel(BrbInfoModel m) {
         this.mCurrentModel = m;
-    }
-
-    public boolean getSaveCredentials() {
-        return this.mIsSaveInfoChecked;
-    }
-
-    public void setSaveCredentials(boolean isChecked) {
-        this.mIsSaveInfoChecked = isChecked;
     }
 
 }

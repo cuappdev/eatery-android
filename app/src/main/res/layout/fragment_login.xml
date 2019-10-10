@@ -79,29 +79,6 @@
             android:paddingBottom="20dp"
             android:textSize="@dimen/account_info_attributes_text_size"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-        >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingExtra="3sp"
-                android:text="@string/auto_login"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/account_info_attributes_text_size"
-                android:textStyle="bold"
-            />
-            <CheckBox
-                android:id="@+id/saveInfoCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-            />
-        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

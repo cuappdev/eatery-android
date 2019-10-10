@@ -72,38 +72,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingTop="12dp">
-                <TextView
-                    android:id="@+id/save_login_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="18dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:paddingStart="8dp"
-                    android:paddingTop="3dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="15dp"
-                    android:text="@string/auto_login"
-                    android:textAllCaps="false"
-                    android:textColor="@color/primary"
-                    android:textSize="@dimen/account_info_attributes_text_size"
-                />
-                <CheckBox
-                    android:id="@+id/saveCheckInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:background="@color/white">
                 <Button
                     android:id="@+id/logout"

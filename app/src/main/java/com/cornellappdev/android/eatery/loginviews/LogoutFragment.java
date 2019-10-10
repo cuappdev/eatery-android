@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 
 /**
@@ -20,12 +18,15 @@ import android.widget.RelativeLayout;
  */
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+import com.cornellappdev.android.eatery.util.InternalStorage;
+
+import java.io.IOException;
 
 public class LogoutFragment extends Fragment {
 
     private Button mLogoutButton;
-    private CheckBox mSaveInfoCheck;
     private RelativeLayout mAboutArea;
     // re-using the same kind of presenter
     private AccountPresenter mAccountPresenter = new AccountPresenter();
@@ -35,24 +36,15 @@ public class LogoutFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_logout, container, false);
         mLogoutButton = rootView.findViewById(R.id.logout);
-        mAccountPresenter.setContext(getContext());
-        String[] loginInfo = mAccountPresenter.readSavedCredentials();
-        mAccountPresenter.setSaveCredentials(loginInfo != null);
 
-        mSaveInfoCheck = rootView.findViewById(R.id.saveCheckInfo);
-        mSaveInfoCheck.setChecked(mAccountPresenter.getSaveCredentials());
-        mSaveInfoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mAccountPresenter.setSaveCredentials(isChecked);
-            }
-        });
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mAccountPresenter.setBrbModel(null);
-                if (!mAccountPresenter.getSaveCredentials()) {
-                    mAccountPresenter.setContext(getContext());
-                    mAccountPresenter.eraseSavedCredentials();
+                mAccountPresenter.eraseSavedCredentials(getContext());
+                try {
+                    InternalStorage.writeObject(getContext(), CacheType.BRB, null);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 LoginFragment loginFragment = new LoginFragment();
@@ -82,18 +74,7 @@ public class LogoutFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (!mAccountPresenter.getSaveCredentials()) {
-                    // If the saveInfo checkbox is not checked, erase all data upon going back
-                    mAccountPresenter.setContext(getContext());
-                    mAccountPresenter.eraseSavedCredentials();
-                }
-                getActivity().onBackPressed();
-                return true;
-            default:
-                // The user's action was not recognized, and invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
+        getActivity().onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }
