@@ -140,6 +140,7 @@ public class MainListFragment extends Fragment
 
     public void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
+//                TODO: Add nearest first button back when functionality is implemented.
 //                R.id.nearestFirstButton,
                 R.id.northButton,
                 R.id.westButton,
@@ -387,6 +388,7 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(View view) {
+//        TODO: Add nearest first button back when functionality is implemented.
 //        if (view.getId() == R.id.nearestFirstButton) {
 //            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
 //            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;

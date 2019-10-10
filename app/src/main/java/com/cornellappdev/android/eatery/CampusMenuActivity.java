@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import com.cornellappdev.android.eatery.components.WaitTimesMarkerView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -64,6 +65,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
     private BarChart mWaitTimesChart;
+    private WaitTimesMarkerView mWaitTimesMarkerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,8 +283,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         mWaitTimesChart.animateY(2000);
         mWaitTimesChart.setExtraBottomOffset(24f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
-
-
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -298,6 +298,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         setupAxis(mWaitTimesChart);
 
         List<BarEntry> entries = new ArrayList<>();
+//        TODO (yanlam): pull wait times from backend and make bar entries dynamic.
         entries.add(new BarEntry(0, 2f));
         entries.add(new BarEntry(1f, 30f));
         entries.add(new BarEntry(2f, 10f));
@@ -323,12 +324,15 @@ public class CampusMenuActivity extends AppCompatActivity {
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
         set.setColors(ContextCompat.getColor(getApplicationContext(), R.color.lightblue));
         set.setValueTypeface(Typeface.SANS_SERIF);
-//        set.setHighlightEnabled(false);
         set.setHighLightColor(getResources().getColor(R.color.blue));
         set.setHighLightAlpha(255);
         BarData barData = new BarData(set);
         barData.setDrawValues(false);
+
         mWaitTimesChart.setData(barData);
+
+        mWaitTimesMarkerView = new WaitTimesMarkerView(this.getApplicationContext(), R.layout.wait_times_marker_view);
+        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
     }
 
     private void setupViewPager(CustomPager customPager) {

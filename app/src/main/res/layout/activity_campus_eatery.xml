@@ -142,6 +142,7 @@
                     android:src="@drawable/swipe_icon"
                     android:visibility="invisible"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/wait_time_horizontal_divider"
                 android:layout_width="fill_parent"
@@ -149,17 +150,18 @@
                 android:layout_below="@id/infobox"
                 android:background="@color/white"
                 android:elevation="1dp"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:paddingRight="16dp"
-                android:paddingLeft="16dp"
-                >
+                android:paddingLeft="16dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/inactive"
-                    />
+                    android:background="@color/inactive"/>
+
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/wait_time_box"
                 android:layout_width="fill_parent"
@@ -171,6 +173,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="7dp"
                 android:paddingBottom="7dp">
+
                 <TextView
                     android:id="@+id/wait_time_label"
                     android:background="@color/white"
@@ -181,17 +184,19 @@
                     android:text="Popular Times"
                     android:textColor="@color/primary"
                     android:textSize="18sp"/>
+
             <RelativeLayout
                 android:id="@+id/wait_time_graph"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/wait_time_label"
                 android:background="@color/white">
+
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/wait_time_chart"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    />
+                    android:layout_height="180dp"/>
+
             </RelativeLayout>
 
             </RelativeLayout>

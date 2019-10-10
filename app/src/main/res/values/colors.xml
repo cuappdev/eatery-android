@@ -2,8 +2,8 @@
 <resources>
 	<color name="colorPrimaryDark">#476693</color>
 	<color name="blue">#4a90e2</color>
-    <color name="fadedblue"> #994a90e2</color>
-	<color name="lightblue">#b7d3f3</color>
+    <color name="fadedBlue"> #994a90e2</color>
+	<color name="lightBlue">#b7d3f3</color>
 	<color name="red">#f2655d</color>
 	<color name="white">#ffffff</color>
 	<color name="green">#63c774</color>

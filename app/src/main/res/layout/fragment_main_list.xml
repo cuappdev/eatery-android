@@ -24,6 +24,7 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
+<!--            TODO: Add nearest first button back when functionality is implemented.-->
 <!--                <Button-->
 <!--                    android:id="@+id/nearestFirstButton"-->
 <!--                    android:layout_width="wrap_content"-->
