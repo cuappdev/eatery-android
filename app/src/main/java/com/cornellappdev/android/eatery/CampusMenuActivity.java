@@ -46,7 +46,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
-    private WaitTimesFragment waitTimesFragment;
+    private WaitTimesFragment mWaitTimesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,9 +211,9 @@ public class CampusMenuActivity extends AppCompatActivity {
         }
 
         // Set up wait times feature.
-        waitTimesFragment = new WaitTimesFragment();
+        mWaitTimesFragment = new WaitTimesFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.wait_times_frame, waitTimesFragment)
+                .replace(R.id.wait_times_frame, mWaitTimesFragment)
                 .commit();
     }
 
