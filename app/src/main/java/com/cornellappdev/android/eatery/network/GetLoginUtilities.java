@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
-import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;

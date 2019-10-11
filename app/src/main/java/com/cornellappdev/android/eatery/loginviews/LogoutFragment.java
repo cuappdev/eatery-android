@@ -11,19 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-/**
- * This fragment is the page reached upon clicking the gear icon in the upper right of
- * AccountInfoFragment. Upon clicking logout, it redirects the user to LoginFragment, and
- * also has a redirect to an about page (AboutFragment)
- */
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
-
 import java.io.IOException;
 
+/**
+ * This fragment is the page reached upon clicking the gear icon in the upper right of
+ * AccountInfoFragment. Upon clicking logout, it redirects the user to LoginFragment, and
+ * also has a redirect to an about page (AboutFragment)
+ */
 public class LogoutFragment extends Fragment {
 
     private Button mLogoutButton;
