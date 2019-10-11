@@ -158,6 +158,8 @@ public class CafeModel extends CampusModel implements Serializable {
                 .appendPattern("yyyy-MM-dd")
                 .toFormatter(Locale.US);
 
+        parseSwipeData(cafe.swipeData());
+
         for (AllEateriesQuery.OperatingHour operatingHour : cafe.operatingHours()) {
             List<LocalDate> localDates = new ArrayList<>();
             LocalDate localDate = LocalDate.parse(operatingHour.date(), dateFormatter);

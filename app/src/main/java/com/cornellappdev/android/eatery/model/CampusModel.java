@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
+import android.util.Log;
+
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 
 import java.io.Serializable;
@@ -36,6 +38,7 @@ public abstract class CampusModel extends EateryBaseModel implements Serializabl
                             swipeDatum.waitTimeHigh()));
         }
         Collections.sort(swipes);
+        Log.i("qwerty", swipes.toString());
         mSwipeDataList = swipes;
     }
 
