@@ -15,7 +15,7 @@
         android:text="Now:"
         android:textFontWeight="400"
         android:textColor="@color/closed"
-        android:textSize="12sp"/>
+        android:textSize="12dp"/>
     <TextView
         android:id="@+id/timeLabel"
         android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
         android:textAlignment="center"
         android:textFontWeight="700"
         android:textColor="@color/blue"
-        android:textSize="12sp"/>
+        android:textSize="12dp"/>
     <TextView
         android:id="@+id/waitLabel"
         android:layout_width="wrap_content"
@@ -39,5 +39,5 @@
         android:text="wait"
         android:textFontWeight="400"
         android:textColor="@color/closed"
-        android:textSize="12sp"/>
+        android:textSize="12dp"/>
 </LinearLayout>

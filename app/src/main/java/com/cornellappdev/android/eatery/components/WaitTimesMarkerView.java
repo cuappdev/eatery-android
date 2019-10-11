@@ -2,9 +2,7 @@ package com.cornellappdev.android.eatery.components;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.text.Html;
-import android.text.format.DateFormat;
-import android.view.View;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,8 +33,13 @@ public class WaitTimesMarkerView extends MarkerView {
         Paint paint = new Paint();
         paint.setColor(getResources().getColor(R.color.inactive));
         paint.setStrokeWidth(4f);
+
+        // Draw vertical line from label to bar.
         canvas.drawLine(posX, eY, posX, posY, paint);
+
+        // Move label to match bar position.
         canvas.translate((float)(posX + getXOffset(eX)), eY);
+
         draw(canvas);
         canvas.restoreToCount(canvasSave);
     }
@@ -53,16 +56,10 @@ public class WaitTimesMarkerView extends MarkerView {
     }
 
     public double getXOffset(float xpos) {
-        double k = 2.0;
-        if (xpos <= 2) {
-            k = 0.96 * Math.pow((xpos - 2), 2.0) + 2.2;
-        } else if (xpos >= 18) {
-            k = 0.08 * Math.pow((xpos - 21), 2.0) + 1.11;
-        }
-        return -(getWidth() / k);
-    }
-
-    public double getYOffset(float ypos) {
-        return 0;
+        // Adjust label position to keep it from going offscreen.
+        double d = xpos <= 2 ? (0.96 * Math.pow((xpos - 2), 2) + 2.2)
+                : xpos >= 18 ? (0.08 * Math.pow((xpos - 21), 2) + 1.11)
+                : 2.0;
+        return -(getWidth() / d);
     }
 }

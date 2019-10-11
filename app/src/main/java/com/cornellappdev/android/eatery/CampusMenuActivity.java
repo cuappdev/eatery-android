@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cornellappdev.android.eatery.components.WaitTimesFragment;
-import com.cornellappdev.android.eatery.components.WaitTimesMarkerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -211,6 +210,7 @@ public class CampusMenuActivity extends AppCompatActivity {
             }
         }
 
+        // Set up wait times feature.
         waitTimesFragment = new WaitTimesFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wait_times_frame, waitTimesFragment)

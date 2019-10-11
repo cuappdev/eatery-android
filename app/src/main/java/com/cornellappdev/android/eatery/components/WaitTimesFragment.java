@@ -1,6 +1,5 @@
 package com.cornellappdev.android.eatery.components;
 
-import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,17 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.cornellappdev.android.eatery.MainListAdapter;
 import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -30,8 +23,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class WaitTimesFragment extends Fragment {
@@ -44,8 +35,6 @@ public class WaitTimesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wait_times, container, false);
 
         mWaitTimesChart = (BarChart) view.findViewById(R.id.wait_time_chart);
-        mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
-        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
         this.setupWaitTimesChart();
 
         return view;
@@ -61,7 +50,7 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            //          TODO (yanlam): update with wait times from backend
+//          TODO (yanlam): update with wait times from backend
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 
@@ -99,6 +88,7 @@ public class WaitTimesFragment extends Fragment {
         entries.add(new BarEntry(19f, 2f));
         entries.add(new BarEntry(20f, 2f));
 
+        // Set up wait times bar graph colors.
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
         set.setColors(ContextCompat.getColor(getContext(), R.color.lightBlue));
         set.setValueTypeface(Typeface.SANS_SERIF);
@@ -106,8 +96,11 @@ public class WaitTimesFragment extends Fragment {
         set.setHighLightAlpha(255);
         BarData barData = new BarData(set);
         barData.setDrawValues(false);
-
         mWaitTimesChart.setData(barData);
+
+        // Set up wait times marker label.
+        mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
+        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
     }
 
     private void setupWaitTimesChartAxis() {
