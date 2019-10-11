@@ -28,12 +28,6 @@ public class GetLoginUtilities {
     }
 
     public static void autoLogin(Context c, WebView sLoginWebView) {
-        try {
-            BrbInfoModel model = (BrbInfoModel) InternalStorage.readObject(c, CacheType.BRB);
-            Repository.getInstance().setBrbInfoModel(model);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         // Callback for successful autologin on launch
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override

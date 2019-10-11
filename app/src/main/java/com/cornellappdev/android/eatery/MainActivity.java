@@ -5,17 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
-import com.cornellappdev.android.eatery.loginviews.AccountInfoFragment;
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -23,7 +19,6 @@ import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
-import com.cornellappdev.android.eatery.util.AccountManagerUtil;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -67,6 +62,13 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new CafeteriaDbHelper(this);
         bnv = findViewById(R.id.bottom_navigation);
         // Add functionality to bottom nav bar
+
+        try {
+            BrbInfoModel model = (BrbInfoModel) InternalStorage.readObject(getApplicationContext(), CacheType.BRB);
+            Repository.getInstance().setBrbInfoModel(model);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         bnv.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override

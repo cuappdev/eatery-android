@@ -1,8 +1,6 @@
 package com.cornellappdev.android.eatery.util;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 
 import java.io.FileInputStream;

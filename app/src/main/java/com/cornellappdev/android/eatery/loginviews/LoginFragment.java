@@ -19,10 +19,14 @@ import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.io.IOException;
 
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
@@ -107,6 +111,11 @@ public class LoginFragment extends Fragment {
                 public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
                     Repository.getInstance().setBrbInfoModel(JsonUtilities.parseBrbInfo(accountInfo));
                     BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
+                    try {
+                        InternalStorage.writeObject(getContext(), CacheType.BRB, model);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (model == null) {
                         mDescriptionText.setText("Internal Error\n");
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
