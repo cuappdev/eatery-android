@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cornellappdev.android.eatery.components.WaitTimesFragment;
+import com.cornellappdev.android.eatery.model.CampusModel;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -54,7 +55,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_campus_eatery);
 
         Intent intent = getIntent();
-        mCafeData = (EateryBaseModel) intent.getSerializableExtra("cafeInfo");
+        mCafeData = (CampusModel) intent.getSerializableExtra("cafeInfo");
         String cafeName = mCafeData.getNickName();
         String imageUrl = EateryBaseModel.getImageURL(mCafeData.getNickName());
 
@@ -205,7 +206,7 @@ public class CampusMenuActivity extends AppCompatActivity {
                 setupViewPager(mCustomPager);
                 mTabLayout.setupWithViewPager(mCustomPager);
                 mTabLayout.setTabTextColors(
-                        ContextCompat.getColor(getApplicationContext(), R.color.primary),
+                        ContextCompat.getColor(getAp plicationContext(), R.color.primary),
                         ContextCompat.getColor(getApplicationContext(), R.color.blue));
             }
         }
