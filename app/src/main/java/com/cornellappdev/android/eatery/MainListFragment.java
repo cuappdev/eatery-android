@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,6 +66,7 @@ public class MainListFragment extends Fragment
     private LinearLayout mPillHolder;
     public SearchView searchView;
     private boolean mCurrentlyAnimating;
+    private boolean mEateryClickable = true;
     private boolean mPillVisible = true;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -136,6 +138,13 @@ public class MainListFragment extends Fragment
             mCtownPillHolder.setEnabled(false);
         }
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        // Reset ability to tap eateries when fragment is re-focused
+        this.mEateryClickable = true;
+        super.onResume();
     }
 
     public void initializeCampusEateryButtons(View rootView) {
@@ -311,7 +320,6 @@ public class MainListFragment extends Fragment
 
     public void handleCollegetownPillPress() {
         mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
-
         mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
@@ -324,7 +332,6 @@ public class MainListFragment extends Fragment
 
     public void handleCampusPillPress() {
         mFirebaseAnalytics.logEvent("campus_pill_press", null);
-
         mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
@@ -420,23 +427,23 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list, View viewHolder) {
-
         EateryBaseModel model = list.get(position);
         Intent intent;
-        if (model.isCtEatery()) {
-            mFirebaseAnalytics.logEvent("collegetown_eatery_press", null);
-            intent = new Intent(getActivity(), CtownMenuActivity.class);
-        } else {
-            if (model instanceof DiningHallModel) {
-                mFirebaseAnalytics.logEvent("campus_dining_hall_press", null);
+        if (this.mEateryClickable) {
+            this.mEateryClickable = false;
+            if (model.isCtEatery()) {
+                mFirebaseAnalytics.logEvent("collegetown_eatery_press", null);
+                intent = new Intent(getActivity(), CtownMenuActivity.class);
             } else {
-                mFirebaseAnalytics.logEvent("campus_cafe_press", null);
+                if (model instanceof DiningHallModel) {
+                    mFirebaseAnalytics.logEvent("campus_dining_hall_press", null);
+                } else {
+                    mFirebaseAnalytics.logEvent("campus_cafe_press", null);
+                }
+                intent = new Intent(getActivity(), CampusMenuActivity.class);
             }
-            intent = new Intent(getActivity(), CampusMenuActivity.class);
-        }
-        intent.putExtra("cafeInfo", model);
+            intent.putExtra("cafeInfo", model);
 
-        if(viewHolder != null) {
             View sharedCafeImage = viewHolder.findViewById(R.id.cafe_image);
             View sharedCafeName = viewHolder.findViewById(R.id.cafe_name);
             View sharedCafeOpen = viewHolder.findViewById(R.id.cafe_open);
@@ -473,9 +480,6 @@ public class MainListFragment extends Fragment
                     imageTransition, nameTransition, openTransition, timeTransition,
                     swipeTransition, dollarTransition, brbTransition);
             startActivity(intent, options.toBundle());
-        }
-        else {
-            startActivity(intent);
         }
     }
 
