@@ -2,28 +2,10 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
-import com.cornellappdev.android.eatery.components.WaitTimesBarChart;
+import com.cornellappdev.android.eatery.components.WaitTimesFragment;
 import com.cornellappdev.android.eatery.components.WaitTimesMarkerView;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.model.GradientColor;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -65,8 +47,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
-    private WaitTimesBarChart mWaitTimesChart;
-    private WaitTimesMarkerView mWaitTimesMarkerView;
+    private WaitTimesFragment waitTimesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,10 +211,10 @@ public class CampusMenuActivity extends AppCompatActivity {
             }
         }
 
-        mWaitTimesChart = new WaitTimesBarChart(getApplicationContext());
-        mWaitTimesChart = (WaitTimesBarChart) findViewById(R.id.wait_time_chart);
-        mWaitTimesMarkerView = new WaitTimesMarkerView(getApplicationContext(), R.layout.wait_times_marker_view);
-        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
+        waitTimesFragment = new WaitTimesFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.wait_times_frame, waitTimesFragment)
+                .commit();
     }
 
     private void setupViewPager(CustomPager customPager) {
