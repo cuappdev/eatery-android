@@ -206,7 +206,7 @@ public class CampusMenuActivity extends AppCompatActivity {
                 setupViewPager(mCustomPager);
                 mTabLayout.setupWithViewPager(mCustomPager);
                 mTabLayout.setTabTextColors(
-                        ContextCompat.getColor(getAp plicationContext(), R.color.primary),
+                        ContextCompat.getColor(getApplicationContext(), R.color.primary),
                         ContextCompat.getColor(getApplicationContext(), R.color.blue));
             }
         }

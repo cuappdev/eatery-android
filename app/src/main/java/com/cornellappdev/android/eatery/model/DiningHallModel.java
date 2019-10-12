@@ -157,7 +157,6 @@ public class DiningHallModel extends CampusModel implements Serializable {
                 .appendPattern("h:mma")
                 .toFormatter(Locale.US);
         mId = eatery.id();
-        parseSwipeData(eatery.swipeData());
         // Each Operating Hour is a single day for dining halls
         for (AllEateriesQuery.OperatingHour operatingHour : eatery.operatingHours()) {
             DailyMenuModel dailyMenuModel = new DailyMenuModel();
