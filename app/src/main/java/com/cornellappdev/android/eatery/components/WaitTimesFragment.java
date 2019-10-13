@@ -29,6 +29,11 @@ import java.util.List;
 public class WaitTimesFragment extends Fragment {
     private BarChart mWaitTimesChart;
     private WaitTimesMarkerView mWaitTimesMarkerView;
+    private List<Swipe> mSwipeData;
+
+    public WaitTimesFragment(List<Swipe> swipeData) {
+        mSwipeData = swipeData;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,7 +42,6 @@ public class WaitTimesFragment extends Fragment {
 
         mWaitTimesChart = (BarChart) view.findViewById(R.id.wait_time_chart);
         this.setupWaitTimesChart();
-
         return view;
     }
 
@@ -52,13 +56,13 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
 
         this.setupWaitTimesChartAxis();
-
+        this.setupWaitTimesData();
         // Set up wait times marker label.
         mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
         mWaitTimesChart.setMarker(mWaitTimesMarkerView);
     }
 
-    public void setupWaitTimesData(List<Swipe> mSwipeDataList) {
+    private void setupWaitTimesData() {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             //          TODO (yanlam): update with wait times from backend
             @Override
@@ -73,9 +77,10 @@ public class WaitTimesFragment extends Fragment {
         });
         List<BarEntry> entries = new ArrayList<>();
 //        TODO (yanlam): pull wait times from backend and make bar entries dynamic.
-        for(int i = 0; i < 21; i++) {
-            entries.add(new BarEntry(i, (float)mSwipeDataList.get(i).swipeDensity));
-        }
+//        for(int i = 0; i < 21; i++) {
+////            entries.add(new BarEntry(i, (float)(mSwipeData.get(i).swipeDensity)));
+////        }
+//        entries.add(new BarEntry(0, 10));
 
         // Set up wait times bar graph colors.
         BarDataSet set = new BarDataSet(entries, "BarDataSet");

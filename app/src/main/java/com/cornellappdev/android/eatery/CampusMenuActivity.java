@@ -218,8 +218,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Return if eatery is not a dining hall / no swipe data available.
         if (!(mCafeData instanceof DiningHallModel)) { return; }
         // Set up wait times feature.
-        mWaitTimesFragment = new WaitTimesFragment();
-        //        mWaitTimesFragment.setupWaitTimesData(((DiningHallModel) mCafeData).getSwipeData());
+        mWaitTimesFragment = new WaitTimesFragment(((DiningHallModel) mCafeData).getSwipeData());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wait_times_frame, mWaitTimesFragment)
                 .commit();
