@@ -14,13 +14,15 @@ import com.github.mikephil.charting.highlight.Highlight;
 public class WaitTimesMarkerView extends MarkerView {
 
     private TextView timeLabel;
+    private TextView waitTimeLabel;
     private LinearLayout markerLayout;
     private Entry entry;
 
     public WaitTimesMarkerView (Context context, int layoutResource) {
         super(context, layoutResource);
-        timeLabel = (TextView) findViewById(R.id.timeLabel);
-        markerLayout = (LinearLayout) findViewById(R.id.waitTimesLayout);
+        timeLabel = findViewById(R.id.timeLabel);
+        waitTimeLabel = findViewById(R.id.waitTimeLabel);
+        markerLayout = findViewById(R.id.waitTimesLayout);
         entry = null;
     }
 
@@ -49,10 +51,14 @@ public class WaitTimesMarkerView extends MarkerView {
         entry = e;
         float eX = e.getX();
         float eY = e.getY();
+        int t = (int)((eX + 6) % 12);
+        t = t == 0 ? 12 : t;
+        String time = t + (eX <= 5 || eX >= 18 ? "am" : "pm") + ":";
+        timeLabel.setText(time);
 
         String waitTime = "5-10m";
 //        TODO: update wait time.
-        timeLabel.setText(waitTime);
+        waitTimeLabel.setText(waitTime);
     }
 
     public double getXOffset(float xpos) {

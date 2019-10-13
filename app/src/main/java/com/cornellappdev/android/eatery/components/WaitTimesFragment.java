@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.Swipe;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -49,8 +50,17 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.setExtraBottomOffset(24f);
         mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
+
+        this.setupWaitTimesChartAxis();
+
+        // Set up wait times marker label.
+        mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
+        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
+    }
+
+    public void setupWaitTimesData(List<Swipe> mSwipeDataList) {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//          TODO (yanlam): update with wait times from backend
+            //          TODO (yanlam): update with wait times from backend
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 
@@ -61,32 +71,11 @@ public class WaitTimesFragment extends Fragment {
 
             }
         });
-
-        this.setupWaitTimesChartAxis();
-
         List<BarEntry> entries = new ArrayList<>();
 //        TODO (yanlam): pull wait times from backend and make bar entries dynamic.
-        entries.add(new BarEntry(0, 2f));
-        entries.add(new BarEntry(1f, 30f));
-        entries.add(new BarEntry(2f, 10f));
-        entries.add(new BarEntry(3f, 20f));
-        entries.add(new BarEntry(4f, 30f));
-        entries.add(new BarEntry(5f, 40f));
-        entries.add(new BarEntry(6f, 40f));
-        entries.add(new BarEntry(7f, 35f));
-        entries.add(new BarEntry(8f, 40f));
-        entries.add(new BarEntry(9f, 30f));
-        entries.add(new BarEntry(10f, 2f));
-        entries.add(new BarEntry(11f, 5f));
-        entries.add(new BarEntry(12f, 10f));
-        entries.add(new BarEntry(13f, 40f));
-        entries.add(new BarEntry(14f, 40f));
-        entries.add(new BarEntry(15f, 20f));
-        entries.add(new BarEntry(16f, 2f));
-        entries.add(new BarEntry(17f, 2f));
-        entries.add(new BarEntry(18f, 10f));
-        entries.add(new BarEntry(19f, 2f));
-        entries.add(new BarEntry(20f, 2f));
+        for(int i = 0; i < 21; i++) {
+            entries.add(new BarEntry(i, (float)mSwipeDataList.get(i).swipeDensity));
+        }
 
         // Set up wait times bar graph colors.
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
@@ -97,10 +86,6 @@ public class WaitTimesFragment extends Fragment {
         BarData barData = new BarData(set);
         barData.setDrawValues(false);
         mWaitTimesChart.setData(barData);
-
-        // Set up wait times marker label.
-        mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
-        mWaitTimesChart.setMarker(mWaitTimesMarkerView);
     }
 
     private void setupWaitTimesChartAxis() {
