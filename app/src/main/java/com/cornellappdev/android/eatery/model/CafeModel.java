@@ -27,7 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public class CafeModel extends EateryBaseModel implements Serializable {
+public class CafeModel extends CampusModel implements Serializable {
     private static Set<String> HARDCODED_CAFE_ITEMS = new HashSet<>(
             Arrays.asList("Starbucks Coffees",
                     "Pepsi Beverages",
