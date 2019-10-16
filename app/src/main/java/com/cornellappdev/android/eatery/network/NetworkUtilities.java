@@ -14,6 +14,8 @@ import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
+import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +38,6 @@ public final class NetworkUtilities {
     private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
     private static ApolloClient apolloClient;
     private static Repository rInstance = Repository.getInstance();
-    public static boolean collegetownEateriesLoaded = true;
 
     private static void buildApolloClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
@@ -69,7 +70,7 @@ public final class NetworkUtilities {
         }
     }
 
-    public static void getEateries(Activity activity) {
+    public static void getEateries(Activity activity, MainListFragment mainFragment) {
         buildApolloClient();
 
         final AllEateriesQuery eateriesQuery = AllEateriesQuery.builder().build();
@@ -81,17 +82,17 @@ public final class NetworkUtilities {
                 ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(eateries,
                         activity);
                 Collections.sort(eateryList);
+                try {
+                    InternalStorage.writeObject(activity.getApplicationContext(), CacheType.CAMPUS_EATERY, eateryList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 rInstance.setEateryList(eateryList);
-
-                // Runs on MainActivity's UI Thread
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            ((MainActivity) activity).getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.frame_fragment_holder, new MainListFragment())
-                                    .commit();
+                            mainFragment.initializeEateries();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -135,17 +136,21 @@ public final class NetworkUtilities {
         ctEateryCall.enqueue(new ApolloCall.Callback<AllCtEateriesQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
-                collegetownEateriesLoaded = true;
                 collegetownEateries = response.data().collegetownEateries();
                 ArrayList<EateryBaseModel> collegetownEateryList = QueryUtilities.parseCtEateries(
                         activity, collegetownEateries);
+                try {
+                    InternalStorage.writeObject(activity.getApplicationContext(),
+                            CacheType.CTOWN_EATERY, collegetownEateryList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Collections.sort(collegetownEateryList);
                 rInstance.setCtEateryList(collegetownEateryList);
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-                collegetownEateriesLoaded = false;
             }
         });
     }
