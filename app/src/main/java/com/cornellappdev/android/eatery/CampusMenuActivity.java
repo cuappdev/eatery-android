@@ -225,12 +225,10 @@ public class CampusMenuActivity extends AppCompatActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         DiningHallModel dhm = (DiningHallModel) mCafeData;
-        private Context mContext;
         private int mCurrentPosition = -1;
 
         public ViewPagerAdapter(Context context, FragmentManager manager) {
             super(manager);
-            mContext = context;
         }
 
         // Set menu fragment to first MealModel object

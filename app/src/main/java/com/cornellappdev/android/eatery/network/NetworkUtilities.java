@@ -62,8 +62,7 @@ public final class NetworkUtilities {
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
-            String json = buffer.toString();
-            return json;
+            return buffer.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -79,7 +78,7 @@ public final class NetworkUtilities {
             @Override
             public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
                 eateries = response.data().eateries();
-                ArrayList<EateryBaseModel> eateryList = JsonUtilities.parseEateries(eateries,
+                ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(eateries,
                         activity);
                 Collections.sort(eateryList);
                 rInstance.setEateryList(eateryList);
@@ -102,7 +101,6 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-                MainActivity.JSON_FALLBACK = true;
             }
         });
     }
@@ -125,7 +123,6 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-                MainActivity.JSON_FALLBACK = true;
             }
         });
     }
@@ -140,7 +137,7 @@ public final class NetworkUtilities {
             public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
                 collegetownEateriesLoaded = true;
                 collegetownEateries = response.data().collegetownEateries();
-                ArrayList<EateryBaseModel> collegetownEateryList = JsonUtilities.parseCtEateries(
+                ArrayList<EateryBaseModel> collegetownEateryList = QueryUtilities.parseCtEateries(
                         activity, collegetownEateries);
                 Collections.sort(collegetownEateryList);
                 rInstance.setCtEateryList(collegetownEateryList);
@@ -148,7 +145,6 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-                MainActivity.JSON_FALLBACK = true;
                 collegetownEateriesLoaded = false;
             }
         });

@@ -16,7 +16,7 @@ import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
-import com.cornellappdev.android.eatery.network.JsonUtilities;
+import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
@@ -33,7 +33,6 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static boolean JSON_FALLBACK = false;
     // Should never be displayed, used to retrieve session_id from Cornell web page
     public static WebView sLoginWebView;
     public BottomNavigationView bnv;
@@ -98,11 +97,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        // Try pulling data from GraphQL, if not fallback to json from cornell dining
+        // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this);
-        if (JSON_FALLBACK) {
-            // TODO Get Json working
-        }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
@@ -120,48 +116,4 @@ public class MainActivity extends AppCompatActivity {
         loginFragment = instance;
     }
 
-    public class ProcessJson extends AsyncTask<String, Void, ArrayList<EateryBaseModel>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected ArrayList<EateryBaseModel> doInBackground(String... params) {
-            ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
-            ConnectivityManager cm =
-                    (ConnectivityManager) getApplicationContext().getSystemService(
-                            Context.CONNECTIVITY_SERVICE);
-
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-            boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
-            if (!isConnected
-                    && JsonUtilities.parseJson(dbHelper.getLastRow(), getApplicationContext())
-                    != null) {
-
-                eateryList = JsonUtilities.parseJson(dbHelper.getLastRow(),
-                        getApplicationContext());
-            } else {
-                String json = NetworkUtilities.getJSON();
-                dbHelper.addData(json);
-                eateryList = JsonUtilities.parseJson(json, getApplicationContext());
-            }
-            Collections.sort(eateryList);
-            return eateryList;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<EateryBaseModel> result) {
-            presenter.setEateryList(result);
-            try {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.frame_fragment_holder, new MainListFragment())
-                        .commit();
-            } catch (Exception e) {
-                super.onPostExecute(result);
-            }
-        }
-    }
 }
