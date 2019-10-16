@@ -13,14 +13,9 @@ public class AccountPresenter {
     private boolean isLoggingIn;
     private String mNetID = "";
     private String mPassword = "";
-    private Context mCurrentContext;
 
     public void setNetID(String netid) {
         this.mNetID = netid;
-    }
-
-    public void setContext(Context c) {
-        this.mCurrentContext = c;
     }
 
     public void setPassword(String password) {
@@ -39,14 +34,6 @@ public class AccountPresenter {
         this.isLoggingIn = b;
     }
 
-    public boolean getSaveCredentials() {
-        return rInstance.getSaveCredentials();
-    }
-
-    public void setSaveCredentials(boolean b) {
-        rInstance.setSaveCredentials(b);
-    }
-
     public void setBrbModel(BrbInfoModel model) {
         rInstance.setBrbInfoModel(model);
     }
@@ -55,17 +42,16 @@ public class AccountPresenter {
         GetLoginUtilities.resetLoginAbility(mNetID, mPassword);
     }
 
-    public String[] readSavedCredentials() {
-        return AccountManagerUtil.readSavedCredentials(mCurrentContext);
+    public String[] readSavedCredentials(Context c) {
+        return AccountManagerUtil.readSavedCredentials(c);
     }
 
-    public void outputCredentialsToFile() {
-        AccountManagerUtil.outputCredentialsToFile(this.mNetID, this.mPassword,
-                this.mCurrentContext);
+    public void outputCredentialsToFile(Context c) {
+        AccountManagerUtil.outputCredentialsToFile(this.mNetID, this.mPassword, c);
     }
 
-    public void eraseSavedCredentials() {
-        AccountManagerUtil.eraseSavedCredentials(this.mCurrentContext);
+    public void eraseSavedCredentials(Context c) {
+        AccountManagerUtil.eraseSavedCredentials(c);
     }
 }
 

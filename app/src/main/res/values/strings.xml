@@ -39,7 +39,6 @@
     </string>
     <string name="login_label">Login</string>
     <string name="logout_label">Logout</string>
-    <string name="auto_login">Auto login on start</string>
     <string name="password">Password</string>
     <string name="netid">NetID</string>
     <string name="password_hint">Type your password</string>

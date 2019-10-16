@@ -3,7 +3,9 @@ package com.cornellappdev.android.eatery.model;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 
-public class HistoryObjectModel {
+import java.io.Serializable;
+
+public class HistoryObjectModel implements Serializable {
     private String mName;
     private String mTimestamp;
     private float mAmount;

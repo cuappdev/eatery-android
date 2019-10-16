@@ -508,15 +508,6 @@ public class MainListFragment extends Fragment
                 searchView.findViewById(R.id.search_src_text);
         searchView.setMaxWidth(2000);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchTextView, R.drawable.cursor);
-            // This sets the cursor resource ID to 0 or @null which
-            // will make it visible on white background
-        } catch (Exception e) {
-            // Don't do anything
-        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,11 +17,16 @@ import android.widget.TextView;
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.JsonUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.io.IOException;
 
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
@@ -37,7 +40,6 @@ public class LoginFragment extends Fragment {
     private TextView mPrivacy;
     private Button mLoginButton;
     private ProgressBar mProgressBar;
-    private CheckBox mSaveInfoCheck;
     private AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
     private AccountPresenter mAccountPresenter = new AccountPresenter();
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -62,7 +64,6 @@ public class LoginFragment extends Fragment {
         }
         mPrivacy = rootView.findViewById(R.id.privacyStatement);
         mDescriptionText = rootView.findViewById(R.id.descriptionText);
-        mSaveInfoCheck = rootView.findViewById(R.id.saveInfoCheck);
         mLoginButton = rootView.findViewById(R.id.login);
         mNetID = rootView.findViewById(R.id.net_id_input);
         mPassword = rootView.findViewById(R.id.password_input);
@@ -73,22 +74,18 @@ public class LoginFragment extends Fragment {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
 
         if (mAccountPresenter.isLoggingIn()) {
-            mAccountPresenter.setContext(getContext());
-            String[] loginInfo = mAccountPresenter.readSavedCredentials();
+            String[] loginInfo = mAccountPresenter.readSavedCredentials(getContext());
             if (loginInfo != null) {
                 // This is not null upon auto-logging in on app launch. Thus, set the textfields
                 // to the values found in the files
                 mNetID.setText(loginInfo[0]);
                 mPassword.setText(loginInfo[1]);
-                mSaveInfoCheck.setChecked(true);
-                mAccountPresenter.setSaveCredentials(true);
             }
             // Always display animation whether logging in automatically or after
             // manually clicking logging in and renavigating to this page
             loadingGUI();
         } else {
             resumeGUI();
-            mSaveInfoCheck.setChecked(mAccountPresenter.getSaveCredentials());
             mPrivacy.setOnClickListener(new View.OnClickListener() {
                 // On privacy statement clicked
                 public void onClick(View v) {
@@ -96,17 +93,6 @@ public class LoginFragment extends Fragment {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_fragment_holder, privacyFragment).addToBackStack(
                             null).commit();
-                }
-            });
-            mSaveInfoCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mAccountPresenter.setSaveCredentials(isChecked);
-                    if (!isChecked) {
-                        // Erase data if checkbox is unclicked
-                        mAccountPresenter.setContext(getContext());
-                        mAccountPresenter.eraseSavedCredentials();
-                    }
                 }
             });
             GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
@@ -123,7 +109,13 @@ public class LoginFragment extends Fragment {
 
                 @Override
                 public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                    BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
+                    Repository.getInstance().setBrbInfoModel(JsonUtilities.parseBrbInfo(accountInfo));
+                    BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
+                    try {
+                        InternalStorage.writeObject(getContext(), CacheType.BRB, model);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if (model == null) {
                         mDescriptionText.setText("Internal Error\n");
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
@@ -149,7 +141,7 @@ public class LoginFragment extends Fragment {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     // Gets called on every page redirect - initial redirect is loadurl(...)
-                    GetLoginUtilities.loginBrb(url, view, callback);
+                    GetLoginUtilities.webLogin(url, view, callback);
                 }
             });
             mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -159,10 +151,6 @@ public class LoginFragment extends Fragment {
                     loadingGUI();
                     mAccountPresenter.setNetID(mNetID.getText().toString());
                     mAccountPresenter.setPassword(mPassword.getText().toString());
-                    // set the context to the context on
-                    // which the button was clicked. This context will then be used for file
-                    // writing later
-                    mAccountPresenter.setContext(getContext());
                     // change the login javascript to have the correct username and password
                     mAccountPresenter.resetLoginJS();
 
@@ -186,7 +174,6 @@ public class LoginFragment extends Fragment {
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
-        mSaveInfoCheck.setEnabled(false);
         mPrivacy.setEnabled(false);
     }
 
@@ -205,7 +192,6 @@ public class LoginFragment extends Fragment {
                 mNetID.setEnabled(true);
                 mPassword.setEnabled(true);
                 mPrivacy.setEnabled(true);
-                mSaveInfoCheck.setEnabled(true);
             }
         });
     }
@@ -221,24 +207,11 @@ public class LoginFragment extends Fragment {
         if (getFragmentManager().findFragmentById(
                 R.id.frame_fragment_holder) instanceof LoginFragment) {
             if (!alreadyLoggedIn) {
-                // If the user manually clicked login, then save credentials or erase credentials
-                if (mAccountPresenter.getSaveCredentials()) {
-                    mAccountPresenter.outputCredentialsToFile();
-                } else {
-                    mAccountPresenter.eraseSavedCredentials();
-                }
+                // If the user clicked login, then save credentials
+                mAccountPresenter.outputCredentialsToFile(getContext());
             }
-            // If the user was already logged in (just navigated with bottom view)
-            // don't do anything with file writing/erasing
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_fragment_holder, accountInfoFragment).commit();
         }
     }
-
-    // Called from auto-logging in on app launch. Need to be able to notify this page that
-    // it is currently trying to log in
-    public void setLoading(boolean loggingIn) {
-        mAccountPresenter.setLoggingIn(loggingIn);
-    }
-
 }
