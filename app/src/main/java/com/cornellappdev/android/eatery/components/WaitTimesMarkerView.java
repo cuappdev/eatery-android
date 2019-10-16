@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.Swipe;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -55,9 +56,10 @@ public class WaitTimesMarkerView extends MarkerView {
         t = t == 0 ? 12 : t;
         String time = t + (eX <= 5 || eX >= 18 ? "am" : "pm") + ":";
         timeLabel.setText(time);
+    }
 
-        String waitTime = "5-10m";
-//        TODO: update wait time.
+    public void updateMarkerLabel(Swipe s) {
+        String waitTime = s.waitTimeLow + "-" + s.waitTimeHigh + "m";
         waitTimeLabel.setText(waitTime);
     }
 

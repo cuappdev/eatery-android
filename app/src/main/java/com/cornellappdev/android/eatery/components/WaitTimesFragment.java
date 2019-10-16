@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.renderer.BarChartRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +65,11 @@ public class WaitTimesFragment extends Fragment {
 
     private void setupWaitTimesData() {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            //          TODO (yanlam): update with wait times from backend
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-
+                mWaitTimesMarkerView.updateMarkerLabel(mSwipeData.get((int) e.getX()));
             }
-
+            // onNothingSelected must be overridden for onChartValueSelectedListener.
             @Override
             public void onNothingSelected() {
 
@@ -77,10 +77,9 @@ public class WaitTimesFragment extends Fragment {
         });
         List<BarEntry> entries = new ArrayList<>();
 //        TODO (yanlam): pull wait times from backend and make bar entries dynamic.
-//        for(int i = 0; i < 21; i++) {
-////            entries.add(new BarEntry(i, (float)(mSwipeData.get(i).swipeDensity)));
-////        }
-//        entries.add(new BarEntry(0, 10));
+        for(int i = 0; i < Math.min(mSwipeData.size()-1,21); i++) {
+            entries.add(new BarEntry(i, (float)(mSwipeData.get(i).swipeDensity)));
+        }
 
         // Set up wait times bar graph colors.
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
@@ -99,19 +98,19 @@ public class WaitTimesFragment extends Fragment {
         yAxisLeft.setDrawGridLines(false);
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setEnabled(false);
-        yAxisLeft.setAxisMinimum(-0.5f);
+        yAxisLeft.setAxisMinimum(0);
 
         // Remove bar chart Y axis - right side.
         YAxis yAxisRight = mWaitTimesChart.getAxisRight();
         yAxisRight.setDrawGridLines(false);
         yAxisRight.setDrawLabels(false);
         yAxisRight.setEnabled(false);
+        yAxisLeft.setAxisMinimum(0);
 
         // Customize bar chart X axis.
         XAxis xAxis = mWaitTimesChart.getXAxis();
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
         // Set X axis colors and fonts.
         // "xAxis.set[_]Color(R.color.[_])" will use Android's default colors, rather than our custom defined.
         xAxis.setAxisLineColor(getResources().getColor(R.color.inactive));
