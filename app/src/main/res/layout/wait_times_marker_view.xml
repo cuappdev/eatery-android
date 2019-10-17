@@ -6,38 +6,13 @@
     android:background="@drawable/wait_times_marker"
     android:orientation="horizontal">
     <TextView
-        android:id="@+id/timeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="12pm:"
-        android:textFontWeight="400"
-        android:textColor="@color/closed"
-        android:textSize="12dp"/>
-    <TextView
         android:id="@+id/waitTimeLabel"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="00-00m"
+        android:layout_width="wrap_content"
+        android:padding="8dp"
+        android:fontFamily="sans-serif"
+        android:text="12pm: 00-00m wait"
         android:textAlignment="center"
-        android:textFontWeight="700"
-        android:textColor="@color/blue"
-        android:textSize="12dp"/>
-    <TextView
-        android:id="@+id/waitLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="wait"
-        android:textFontWeight="400"
         android:textColor="@color/closed"
-        android:textSize="12dp"/>
+        android:textSize="12dp" />
 </LinearLayout>

@@ -80,7 +80,7 @@ public class WaitTimesFragment extends Fragment {
                     mWaitTimesChart.highlightValue(null);
                 } else {
                     // Update waitTimeLow and waitTimeHigh on wait times marker.
-                    mWaitTimesMarkerView.updateMarkerLabel(s);
+                    mWaitTimesMarkerView.updateMarkerLabel(e, s);
                 }
             }
             // onNothingSelected must be overridden for onChartValueSelectedListener.

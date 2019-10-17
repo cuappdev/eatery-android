@@ -220,7 +220,9 @@ public class CampusMenuActivity extends AppCompatActivity {
     // Set up wait times feature.
     private void setupWaitTimes() {
         // Return if eatery is not a campus eatery / no swipe data available.
-        if (!(mCafeData instanceof CampusModel)) { return; }
+        if (!(mCafeData instanceof CampusModel) || ((CampusModel) mCafeData).getSwipeData().size() == 0) {
+            return;
+        }
 
         // Data for wait times chart.
         List<Swipe> swipeData = new ArrayList<Swipe>();

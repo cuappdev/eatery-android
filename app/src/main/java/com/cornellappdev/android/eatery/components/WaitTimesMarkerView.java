@@ -3,6 +3,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import android.graphics.Typeface;
+import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,18 +12,15 @@ import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.highlight.Highlight;
 
 public class WaitTimesMarkerView extends MarkerView {
 
-    private TextView timeLabel;
     private TextView waitTimeLabel;
     private LinearLayout markerLayout;
     private Entry entry;
 
     public WaitTimesMarkerView (Context context, int layoutResource) {
         super(context, layoutResource);
-        timeLabel = findViewById(R.id.timeLabel);
         waitTimeLabel = findViewById(R.id.waitTimeLabel);
         markerLayout = findViewById(R.id.waitTimesLayout);
         entry = null;
@@ -47,20 +46,18 @@ public class WaitTimesMarkerView extends MarkerView {
         canvas.restoreToCount(canvasSave);
     }
 
-    @Override
-    public void refreshContent(Entry e, Highlight h) {
+    public void updateMarkerLabel(Entry e, Swipe s) {
         entry = e;
         float eX = e.getX();
-        float eY = e.getY();
         int t = (int)((eX + 6) % 12);
         t = t == 0 ? 12 : t;
-        String time = t + (eX <= 5 || eX >= 18 ? "am" : "pm") + ":";
-        timeLabel.setText(time);
-    }
-
-    public void updateMarkerLabel(Swipe s) {
+        String time = t + (eX <= 5 || eX >= 18 ? "am" : "pm") + ": ";
         String waitTime = s.waitTimeLow + "-" + s.waitTimeHigh + "m";
-        waitTimeLabel.setText(waitTime);
+        String waitTimeHtml = time
+                + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"
+                + waitTime
+                + "</font> wait";
+        waitTimeLabel.setText(Html.fromHtml(waitTimeHtml));
     }
 
     public double getXOffset(float xpos) {
