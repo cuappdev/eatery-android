@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery.components;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +22,21 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WaitTimesFragment extends Fragment {
     private BarChart mWaitTimesChart;
     private WaitTimesMarkerView mWaitTimesMarkerView;
-    // mSwipeData has swipes with start, end = null. Start hour is determined by index, with 6am being 0.
+    /**
+     * mSwipeData -
+     *  Should have size of 21 upon construction within CampusMenuActivity.
+     * Swipe s: mSwipeData -
+     *  Hour determined by index, with 0 representing start = 6am, end = 7am.
+     *  start, end = null.
+     *  swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
+     */
     private List<Swipe> mSwipeData;
 
     public WaitTimesFragment(List<Swipe> swipeData) {
@@ -70,7 +74,14 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                mWaitTimesMarkerView.updateMarkerLabel(mSwipeData.get((int) e.getX()));
+                Swipe s = mSwipeData.get((int) e.getX());
+                if (s.waitTimeLow == 0 && s.waitTimeHigh == 0) {
+                    // Prevent wait times marker from showing for hours without backend swipe data.
+                    mWaitTimesChart.highlightValue(null);
+                } else {
+                    // Update waitTimeLow and waitTimeHigh on wait times marker.
+                    mWaitTimesMarkerView.updateMarkerLabel(s);
+                }
             }
             // onNothingSelected must be overridden for onChartValueSelectedListener.
             @Override
@@ -78,8 +89,9 @@ public class WaitTimesFragment extends Fragment {
 
             }
         });
+
+        // Use wait times data from backend.
         List<BarEntry> entries = new ArrayList<>();
-        Log.i("qwerty: mSwipeData.size(): ", mSwipeData.size() + "");
         for (int i = 0; i < mSwipeData.size(); i++) {
             entries.add(new BarEntry(i, (float) mSwipeData.get(i).swipeDensity));
         }

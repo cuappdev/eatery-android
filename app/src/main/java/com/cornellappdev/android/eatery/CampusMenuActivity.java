@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,13 +33,8 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.squareup.picasso.Picasso;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -220,15 +217,21 @@ public class CampusMenuActivity extends AppCompatActivity {
         this.setupWaitTimes();
     }
 
+    // Set up wait times feature.
     private void setupWaitTimes() {
-        // Return if eatery is not a dining hall / no swipe data available.
+        // Return if eatery is not a campus eatery / no swipe data available.
         if (!(mCafeData instanceof CampusModel)) { return; }
-        // Set up wait times feature.
+
+        // Data for wait times chart.
         List<Swipe> swipeData = new ArrayList<Swipe>();
+
+        // Wait times chart must have 21 elements for each hour within 6am - 3am.
+        // i represents the hour, with 0 being 6am - 7am.
         for (int i = 0; i < 21; i++) {
-            List<Swipe> swipeDataAtHour = new ArrayList<Swipe>();
+            // Default swipeDensity, waitTimeLow, waitTimeHigh = 0 for hours without backend swipe data.
             double swipeDensity = 0;
             int waitTimeLow = 0, waitTimeHigh = 0;
+            // Parse through backend swipe data. If multiple swipe data found for the hour, use maximum.
             for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
                 if (s.getStart().getHour() == i + 6) {
                     swipeDensity = Math.max(swipeDensity, s.swipeDensity);
@@ -236,14 +239,15 @@ public class CampusMenuActivity extends AppCompatActivity {
                     waitTimeHigh = Math.max(waitTimeHigh, s.waitTimeHigh);
                 }
             }
+            // Index of swipeData now represents start/end with 0 being start = 6am, end = 7am.
             swipeData.add(new Swipe(null, null, swipeDensity, waitTimeLow, waitTimeHigh));
         }
 
+        // Create and load wait times chart.
         mWaitTimesFragment = new WaitTimesFragment(swipeData);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wait_times_frame, mWaitTimesFragment)
                 .commit();
-
     }
 
     private void setupViewPager(CustomPager customPager) {
