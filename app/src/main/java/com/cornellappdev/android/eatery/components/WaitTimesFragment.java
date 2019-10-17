@@ -23,6 +23,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +106,7 @@ public class WaitTimesFragment extends Fragment {
         BarData barData = new BarData(set);
         barData.setDrawValues(false);
         mWaitTimesChart.setData(barData);
+//        mWaitTimesChart.highlightValue((LocalTime.now().getHour()), 0, true);
     }
 
     private void setupWaitTimesChartAxis() {

@@ -227,6 +227,14 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Data for wait times chart.
         List<Swipe> swipeData = new ArrayList<Swipe>();
 
+        for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
+            Log.i("swipeDataLog:", "\n" + "\n"
+                    + "\n Start: " + s.getStart().getHour() + ", End: " + s.getEnd().getHour()
+                    + "\n Density: " + s.swipeDensity
+                    + "\n Low: " + s.waitTimeLow + ", End: " + s.waitTimeHigh
+            );
+        }
+
         // Wait times chart must have 21 elements for each hour within 6am - 3am.
         // i represents the hour, with 0 being 6am - 7am.
         for (int i = 0; i < 21; i++) {
@@ -235,7 +243,9 @@ public class CampusMenuActivity extends AppCompatActivity {
             int waitTimeLow = 0, waitTimeHigh = 0;
             // Parse through backend swipe data. If multiple swipe data found for the hour, use maximum.
             for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
-                if (s.getStart().getHour() == i + 6) {
+                int hourFromSwipe = s.getStart().getHour();
+                hourFromSwipe = hourFromSwipe < 6 ? (18 + hourFromSwipe) : hourFromSwipe - 6;
+                if (hourFromSwipe == i) {
                     swipeDensity = Math.max(swipeDensity, s.swipeDensity);
                     waitTimeLow = Math.max(waitTimeLow, s.waitTimeLow);
                     waitTimeHigh = Math.max(waitTimeHigh, s.waitTimeHigh);

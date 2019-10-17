@@ -51,7 +51,7 @@ public class WaitTimesMarkerView extends MarkerView {
         float eX = e.getX();
         int t = (int)((eX + 6) % 12);
         t = t == 0 ? 12 : t;
-        String time = t + (eX <= 5 || eX >= 18 ? "am" : "pm") + ": ";
+        String time = t + (eX <= 5 || eX >= 18 ? "a" : "p") + ": ";
         String waitTime = s.waitTimeLow + "-" + s.waitTimeHigh + "m";
         String waitTimeHtml = time
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"
