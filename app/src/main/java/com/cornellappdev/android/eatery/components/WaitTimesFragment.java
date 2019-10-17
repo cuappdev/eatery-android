@@ -59,7 +59,7 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.setDoubleTapToZoomEnabled(false);
         mWaitTimesChart.setPinchZoom(false);
         mWaitTimesChart.animateY(2000);
-        mWaitTimesChart.setExtraBottomOffset(24f);
+        mWaitTimesChart.setExtraBottomOffset(8f);
         mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
 
