@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.cornellappdev.android.eatery.components.WaitTimesFragment;
 import com.cornellappdev.android.eatery.model.CampusModel;
+import com.cornellappdev.android.eatery.model.Swipe;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -30,8 +31,13 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -218,7 +224,22 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Return if eatery is not a dining hall / no swipe data available.
         if (!(mCafeData instanceof CampusModel)) { return; }
         // Set up wait times feature.
-        mWaitTimesFragment = new WaitTimesFragment(((CampusModel) mCafeData).getSwipeData());
+        List<Swipe> swipeData = new ArrayList<Swipe>();
+        for (int i = 0; i < 21; i++) {
+            List<Swipe> swipeDataAtHour = new ArrayList<Swipe>();
+            double swipeDensity = 0;
+            int waitTimeLow = 0, waitTimeHigh = 0;
+            for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
+                if (s.getStart().getHour() == i + 6) {
+                    swipeDensity = Math.max(swipeDensity, s.swipeDensity);
+                    waitTimeLow = Math.max(waitTimeLow, s.waitTimeLow);
+                    waitTimeHigh = Math.max(waitTimeHigh, s.waitTimeHigh);
+                }
+            }
+            swipeData.add(new Swipe(null, null, swipeDensity, waitTimeLow, waitTimeHigh));
+        }
+
+        mWaitTimesFragment = new WaitTimesFragment(swipeData);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.wait_times_frame, mWaitTimesFragment)
                 .commit();

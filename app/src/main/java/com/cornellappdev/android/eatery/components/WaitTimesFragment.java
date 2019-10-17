@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.components;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,14 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WaitTimesFragment extends Fragment {
     private BarChart mWaitTimesChart;
     private WaitTimesMarkerView mWaitTimesMarkerView;
+    // mSwipeData has swipes with start, end = null. Start hour is determined by index, with 6am being 0.
     private List<Swipe> mSwipeData;
 
     public WaitTimesFragment(List<Swipe> swipeData) {
@@ -76,9 +79,9 @@ public class WaitTimesFragment extends Fragment {
             }
         });
         List<BarEntry> entries = new ArrayList<>();
-//        TODO (yanlam): pull wait times from backend and make bar entries dynamic.
-        for(int i = 0; i < Math.min(mSwipeData.size()-1,21); i++) {
-            entries.add(new BarEntry(i, (float)(mSwipeData.get(i).swipeDensity)));
+        Log.i("qwerty: mSwipeData.size(): ", mSwipeData.size() + "");
+        for (int i = 0; i < mSwipeData.size(); i++) {
+            entries.add(new BarEntry(i, (float) mSwipeData.get(i).swipeDensity));
         }
 
         // Set up wait times bar graph colors.
