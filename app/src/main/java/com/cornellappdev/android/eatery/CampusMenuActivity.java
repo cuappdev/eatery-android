@@ -227,14 +227,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Data for wait times chart.
         List<Swipe> swipeData = new ArrayList<Swipe>();
 
-        for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
-            Log.i("swipeDataLog:", "\n" + "\n"
-                    + "\n Start: " + s.getStart().getHour() + ", End: " + s.getEnd().getHour()
-                    + "\n Density: " + s.swipeDensity
-                    + "\n Low: " + s.waitTimeLow + ", End: " + s.waitTimeHigh
-            );
-        }
-
         // Still render chart for all campus eateries, but will notify that there is no chart data available for ones without.
         if (((CampusModel) mCafeData).getSwipeData().size() != 0) {
             // Wait times chart must have 21 elements for each hour within 6am - 3am.

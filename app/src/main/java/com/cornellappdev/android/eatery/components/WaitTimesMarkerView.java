@@ -13,6 +13,8 @@ import com.cornellappdev.android.eatery.model.Swipe;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 
+import java.time.LocalTime;
+
 public class WaitTimesMarkerView extends MarkerView {
 
     private TextView waitTimeLabel;
@@ -51,7 +53,7 @@ public class WaitTimesMarkerView extends MarkerView {
         float eX = e.getX();
         int t = (int)((eX + 6) % 12);
         t = t == 0 ? 12 : t;
-        String time = t + (eX <= 5 || eX >= 18 ? "a" : "p") + ": ";
+        String time = (LocalTime.now().getHour() - 6 == eX ? "Now" : (t + (eX <= 5 || eX >= 18 ? "a" : "p"))) + ": ";
         String waitTime = s.waitTimeLow + "-" + s.waitTimeHigh + "m";
         String waitTimeHtml = time
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"

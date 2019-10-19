@@ -28,6 +28,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +83,10 @@ public class WaitTimesFragment extends Fragment {
         }
     }
 
+    private void highlightCurrentHour() {
+        mWaitTimesChart.highlightValue(LocalTime.now().getHour() - 6, 0);
+    }
+
     private void setupWaitTimesChart() {
         mWaitTimesChart.setDescription(null);
         mWaitTimesChart.getLegend().setEnabled(false);
@@ -97,6 +102,7 @@ public class WaitTimesFragment extends Fragment {
         // Set up wait times marker label.
         mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
         mWaitTimesChart.setMarker(mWaitTimesMarkerView);
+        highlightCurrentHour();
     }
 
     private void setupWaitTimesData() {
@@ -104,18 +110,11 @@ public class WaitTimesFragment extends Fragment {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 Swipe s = mSwipeData.get((int) e.getX());
-                if (s.waitTimeLow == 0 && s.waitTimeHigh == 0) {
-                    // Prevent wait times marker from showing for hours without backend swipe data.
-                    mWaitTimesChart.highlightValue(null);
-                } else {
-                    // Update waitTimeLow and waitTimeHigh on wait times marker.
-                    mWaitTimesMarkerView.updateMarkerLabel(e, s);
-                }
+                mWaitTimesMarkerView.updateMarkerLabel(e, s);
             }
-            // onNothingSelected must be overridden for onChartValueSelectedListener.
             @Override
             public void onNothingSelected() {
-
+                highlightCurrentHour();
             }
         });
 
@@ -134,7 +133,6 @@ public class WaitTimesFragment extends Fragment {
         BarData barData = new BarData(set);
         barData.setDrawValues(false);
         mWaitTimesChart.setData(barData);
-//        mWaitTimesChart.highlightValue((LocalTime.now().getHour()), 0, true);
     }
 
     private void setupWaitTimesChartAxis() {
