@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,13 +28,14 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WaitTimesFragment extends Fragment {
     private BarChart mWaitTimesChart;
+    private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
+
     /**
      * mSwipeData -
      *  Should have size of 21 upon construction within CampusMenuActivity.
@@ -39,6 +45,7 @@ public class WaitTimesFragment extends Fragment {
      *  swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
      */
     private List<Swipe> mSwipeData;
+    private boolean mShowWaitTimes;
 
     public WaitTimesFragment(List<Swipe> swipeData) {
         mSwipeData = swipeData;
@@ -49,9 +56,30 @@ public class WaitTimesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_wait_times, container, false);
 
-        mWaitTimesChart = (BarChart) view.findViewById(R.id.wait_time_chart);
+        mShowWaitTimes = true;
+
+        mWaitTimesButton = view.findViewById(R.id.wait_time_show_button);
+        mWaitTimesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mShowWaitTimes = !mShowWaitTimes;
+                toggleShowWaitTimesChart();
+            }
+        });
+
+        mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         this.setupWaitTimesChart();
+
         return view;
+    }
+
+    private void toggleShowWaitTimesChart() {
+        if (mShowWaitTimes) {
+            mWaitTimesButton.setText("Hide");
+            mWaitTimesChart.setVisibility(View.VISIBLE);
+        } else {
+            mWaitTimesButton.setText("Show");
+            mWaitTimesChart.setVisibility(View.GONE);
+        }
     }
 
     private void setupWaitTimesChart() {
