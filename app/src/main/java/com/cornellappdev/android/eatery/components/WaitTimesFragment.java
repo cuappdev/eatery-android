@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -20,7 +21,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
@@ -32,6 +32,8 @@ public class WaitTimesFragment extends Fragment {
     private BarChart mWaitTimesChart;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
+    private View mWaitTimesXAxisLine;
+    private TableRow mWaitTimesXAxisLabels;
 
     /**
      * mSwipeData -
@@ -66,6 +68,9 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         this.setupWaitTimesChart();
 
+        mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
+        mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
+
         return view;
     }
 
@@ -73,9 +78,13 @@ public class WaitTimesFragment extends Fragment {
         if (mShowWaitTimes) {
             mWaitTimesButton.setText("Hide");
             mWaitTimesChart.setVisibility(View.VISIBLE);
+            mWaitTimesXAxisLine.setVisibility(View.VISIBLE);
+            mWaitTimesXAxisLabels.setVisibility(View.VISIBLE);
         } else {
             mWaitTimesButton.setText("Show");
             mWaitTimesChart.setVisibility(View.GONE);
+            mWaitTimesXAxisLine.setVisibility(View.GONE);
+            mWaitTimesXAxisLabels.setVisibility(View.GONE);
         }
     }
 
@@ -84,17 +93,19 @@ public class WaitTimesFragment extends Fragment {
     }
 
     private void setupWaitTimesChart() {
+        mWaitTimesChart.setNoDataText("No wait times available.");
+        mWaitTimesChart.setNoDataTextColor(getResources().getColor(R.color.secondary));
+        mWaitTimesChart.setNoDataTextTypeface(Typeface.SANS_SERIF);
         mWaitTimesChart.setDescription(null);
         mWaitTimesChart.getLegend().setEnabled(false);
         mWaitTimesChart.setDoubleTapToZoomEnabled(false);
         mWaitTimesChart.setPinchZoom(false);
-        mWaitTimesChart.animateY(2000);
-        mWaitTimesChart.setExtraBottomOffset(8f);
-        mWaitTimesChart.setExtraTopOffset(48f);
         mWaitTimesChart.getRendererXAxis().getPaintAxisLabels().setTextAlign(Paint.Align.LEFT);
+        mWaitTimesChart.setViewPortOffsets(0, 100f, 0, 0);
 
         this.setupWaitTimesChartAxis();
         this.setupWaitTimesData();
+
         // Set up wait times marker label.
         mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
         mWaitTimesChart.setMarker(mWaitTimesMarkerView);
@@ -134,42 +145,16 @@ public class WaitTimesFragment extends Fragment {
     private void setupWaitTimesChartAxis() {
         // Remove bar chart Y axis - left side.
         YAxis yAxisLeft = mWaitTimesChart.getAxisLeft();
-        yAxisLeft.setDrawGridLines(false);
-        yAxisLeft.setDrawLabels(false);
         yAxisLeft.setEnabled(false);
         yAxisLeft.setAxisMinimum(0);
 
         // Remove bar chart Y axis - right side.
         YAxis yAxisRight = mWaitTimesChart.getAxisRight();
-        yAxisRight.setDrawGridLines(false);
-        yAxisRight.setDrawLabels(false);
         yAxisRight.setEnabled(false);
-        yAxisLeft.setAxisMinimum(0);
 
         // Customize bar chart X axis.
         XAxis xAxis = mWaitTimesChart.getXAxis();
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        // Set X axis colors and fonts.
-        // "xAxis.set[_]Color(R.color.[_])" will use Android's default colors, rather than our custom defined.
-        xAxis.setAxisLineColor(getResources().getColor(R.color.inactive));
-        xAxis.setTextColor(getResources().getColor(R.color.secondary));
-        xAxis.setTextSize(14f);
-        xAxis.setAxisLineWidth(2f);
-        // Setup X axis labels.
+        xAxis.setEnabled(false);
         xAxis.setAxisMaximum(21);
-        xAxis.setLabelCount(8);
-        xAxis.setTypeface(Typeface.SANS_SERIF);
-        xAxis.setYOffset(8f);
-        ArrayList<String> xAxisLabels = new ArrayList<String>();
-        for(int i = 0; i < 22; i++) {
-            int hourNum = (i + 6) % 12;
-            if (hourNum == 0) {
-                hourNum = 12;
-            }
-            String ap = i <= 5 || i >= 18 ? "a" : "p";
-            xAxisLabels.add(hourNum + ap);
-        }
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xAxisLabels));
     }
 }
