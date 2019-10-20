@@ -44,6 +44,7 @@ public class WaitTimesFragment extends Fragment {
      *  swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
      */
     private List<Swipe> mSwipeData;
+    private Entry mLastEntry;
     private boolean mShowWaitTimes;
 
     public WaitTimesFragment(List<Swipe> swipeData) {
@@ -56,6 +57,7 @@ public class WaitTimesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wait_times, container, false);
 
         mShowWaitTimes = true;
+        mLastEntry = null;
 
         mWaitTimesButton = view.findViewById(R.id.wait_time_show_button);
         mWaitTimesButton.setOnClickListener(new View.OnClickListener() {
@@ -112,16 +114,26 @@ public class WaitTimesFragment extends Fragment {
         highlightCurrentHour();
     }
 
+    private void updateMarkerAtEntry(Entry e) {
+        Swipe s = mSwipeData.get((int) e.getX());
+        mWaitTimesMarkerView.updateMarkerLabel(e, s);
+    }
+
     private void setupWaitTimesData() {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Swipe s = mSwipeData.get((int) e.getX());
-                mWaitTimesMarkerView.updateMarkerLabel(e, s);
+                updateMarkerAtEntry(e);
+                mLastEntry = e;
             }
             @Override
             public void onNothingSelected() {
-                highlightCurrentHour();
+                if (mLastEntry == null) {
+                    highlightCurrentHour();
+                } else {
+                    updateMarkerAtEntry(mLastEntry);
+                    mWaitTimesChart.highlightValue(mLastEntry.getX(), 0);
+                }
             }
         });
 
