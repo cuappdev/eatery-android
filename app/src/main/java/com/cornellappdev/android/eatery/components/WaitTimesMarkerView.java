@@ -65,9 +65,8 @@ public class WaitTimesMarkerView extends MarkerView {
 
         // If there is no data, return the text 'No Estimate'
         if (hasNoData) {
-            return
-                    "<font color=\"" + getResources().getColor(R.color.gray) + "\" face=\"sans-serif-medium\">"
-                    + "No Estimate</font>";
+            return "<font color=\"" + getResources().getColor(R.color.gray) + "\" face=\"sans-serif-medium\">"
+                + "No Estimate</font>";
         }
         return " <font face=\"sans-serif-medium\">" + timeString + "</font>"
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"

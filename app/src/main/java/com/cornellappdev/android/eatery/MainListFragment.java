@@ -444,6 +444,10 @@ public class MainListFragment extends Fragment
             }
             intent.putExtra("cafeInfo", model);
 
+            if(viewHolder == null) {
+                startActivity(intent);
+                return;
+            }
             View sharedCafeImage = viewHolder.findViewById(R.id.cafe_image);
             View sharedCafeName = viewHolder.findViewById(R.id.cafe_name);
             View sharedCafeOpen = viewHolder.findViewById(R.id.cafe_open);

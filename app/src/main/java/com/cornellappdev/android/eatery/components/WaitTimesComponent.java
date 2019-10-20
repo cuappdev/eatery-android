@@ -64,12 +64,18 @@ public class WaitTimesComponent {
                 toggleShowWaitTimesChart();
             }
         });
-
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
-        this.setupWaitTimesChart(context);
-
+        mWaitTimesChart.setNoDataText("");
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
+
+        if(mSwipeData.size() == 0) {
+            mShowWaitTimes = false;
+            toggleShowWaitTimesChart();
+        }
+        else {
+            this.setupWaitTimesChart(context);
+        }
     }
 
     private void toggleShowWaitTimesChart() {
