@@ -1,16 +1,14 @@
 package com.cornellappdev.android.eatery.components;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
@@ -28,7 +26,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WaitTimesFragment extends Fragment {
+public class WaitTimesComponent {
     private BarChart mWaitTimesChart;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
@@ -47,14 +45,14 @@ public class WaitTimesFragment extends Fragment {
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
 
-    public WaitTimesFragment(List<Swipe> swipeData) {
+    public WaitTimesComponent(List<Swipe> swipeData) {
         mSwipeData = swipeData;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    // Inflates the wait times component into the passed in holder
+    public void inflateView(Context context, FrameLayout holder) {
 
-        View view = inflater.inflate(R.layout.fragment_wait_times, container, false);
+        View view = View.inflate(context, R.layout.wait_times, holder);
 
         mShowWaitTimes = true;
         mLastEntry = null;
@@ -68,12 +66,10 @@ public class WaitTimesFragment extends Fragment {
         });
 
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
-        this.setupWaitTimesChart();
+        this.setupWaitTimesChart(context);
 
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
-
-        return view;
     }
 
     private void toggleShowWaitTimesChart() {
@@ -94,9 +90,9 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.highlightValue(LocalTime.now().getHour() - 6, 0);
     }
 
-    private void setupWaitTimesChart() {
+    private void setupWaitTimesChart(Context context) {
         mWaitTimesChart.setNoDataText("No wait times available.");
-        mWaitTimesChart.setNoDataTextColor(getResources().getColor(R.color.secondary));
+        mWaitTimesChart.setNoDataTextColor(context.getResources().getColor(R.color.secondary));
         mWaitTimesChart.setNoDataTextTypeface(Typeface.SANS_SERIF);
         mWaitTimesChart.setDescription(null);
         mWaitTimesChart.getLegend().setEnabled(false);
@@ -106,10 +102,10 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesChart.setViewPortOffsets(0, 100f, 0, 0);
 
         this.setupWaitTimesChartAxis();
-        this.setupWaitTimesData();
+        this.setupWaitTimesData(context);
 
         // Set up wait times marker label.
-        mWaitTimesMarkerView = new WaitTimesMarkerView(getContext(), R.layout.wait_times_marker_view);
+        mWaitTimesMarkerView = new WaitTimesMarkerView(context, R.layout.wait_times_marker_view);
         mWaitTimesChart.setMarker(mWaitTimesMarkerView);
         highlightCurrentHour();
     }
@@ -119,7 +115,7 @@ public class WaitTimesFragment extends Fragment {
         mWaitTimesMarkerView.updateMarkerLabel(e, s);
     }
 
-    private void setupWaitTimesData() {
+    private void setupWaitTimesData(Context context) {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -145,9 +141,9 @@ public class WaitTimesFragment extends Fragment {
 
         // Set up wait times bar graph colors.
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
-        set.setColors(ContextCompat.getColor(getContext(), R.color.lightBlue));
+        set.setColors(ContextCompat.getColor(context, R.color.lightBlue));
         set.setValueTypeface(Typeface.SANS_SERIF);
-        set.setHighLightColor(getResources().getColor(R.color.blue));
+        set.setHighLightColor(context.getResources().getColor(R.color.blue));
         set.setHighLightAlpha(255);
         BarData barData = new BarData(set);
         barData.setDrawValues(false);

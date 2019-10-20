@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cornellappdev.android.eatery.components.WaitTimesFragment;
+import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CampusModel;
 import com.cornellappdev.android.eatery.model.Swipe;
 import com.google.android.material.appbar.AppBarLayout;
@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,7 +50,8 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
-    private WaitTimesFragment mWaitTimesFragment;
+    private WaitTimesComponent mWaitTimesComponent;
+    private FrameLayout mWaitTimesHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,10 +252,9 @@ public class CampusMenuActivity extends AppCompatActivity {
         }
 
         // Create and load wait times chart.
-        mWaitTimesFragment = new WaitTimesFragment(swipeData);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.wait_times_frame, mWaitTimesFragment)
-                .commit();
+        mWaitTimesComponent = new WaitTimesComponent(swipeData);
+        mWaitTimesHolder = findViewById(R.id.wait_times_frame);
+        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder);
     }
 
     private void setupViewPager(CustomPager customPager) {

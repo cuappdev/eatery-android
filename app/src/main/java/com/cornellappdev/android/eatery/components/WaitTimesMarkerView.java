@@ -17,13 +17,11 @@ import java.time.LocalTime;
 public class WaitTimesMarkerView extends MarkerView {
 
     private TextView waitTimeLabel;
-    private LinearLayout markerLayout;
     private Entry entry;
 
     public WaitTimesMarkerView (Context context, int layoutResource) {
         super(context, layoutResource);
         waitTimeLabel = findViewById(R.id.waitTimeLabel);
-        markerLayout = findViewById(R.id.waitTimesLayout);
         entry = null;
     }
 
@@ -55,20 +53,26 @@ public class WaitTimesMarkerView extends MarkerView {
         return (isCurrentTime ? "Now" : (time + (eX <= 5 || eX >= 18 ? "a" : "p"))) + ": ";
     }
 
-    // formatWaitTime is "?" if no data available, otherwise, format of "0-3m" for 0 to 3 minute wait.
-    private String formatWaitTime(Swipe s, boolean hasNoData) {
-        return hasNoData ? "?" : (s.waitTimeLow + "-" + s.waitTimeHigh + "m");
+    private String formatWaitTime(Swipe s) {
+        return s.waitTimeLow + "-" + s.waitTimeHigh + "m";
     }
 
     // formatMarkerLabel is the HTML string for the marker label.
     private String formatMarkerLabel(float eX, Swipe s) {
-        boolean hasNoData = s.waitTimeLow == 0 && s.waitTimeHigh == 0;
         String timeString = formatTime(eX);
-        String waitTime = formatWaitTime(s, hasNoData);
-        return timeString
+        String waitTime = formatWaitTime(s);
+        boolean hasNoData = s.waitTimeLow == 0 && s.waitTimeHigh == 0;
+
+        // If there is no data, return the text 'No Estimate'
+        if (hasNoData) {
+            return
+                    "<font color=\"" + getResources().getColor(R.color.gray) + "\" face=\"sans-serif-medium\">"
+                    + "No Estimate</font>";
+        }
+        return " <font face=\"sans-serif-medium\">" + timeString + "</font>"
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"
                 + waitTime
-                + (hasNoData ? "</font>" : "</font> wait");
+                + "</font> <font face=\"sans-serif-medium\"> wait </font>";
     }
 
     // updateMarkerLabel is called when a bar is selected in the corresponding bar chart.
@@ -81,7 +85,7 @@ public class WaitTimesMarkerView extends MarkerView {
     public double getXOffset(float xpos) {
         // Adjust label position to keep it from going offscreen.
         double d = xpos <= 4 ? (0.96 * Math.pow((xpos - 4), 2) + 3.2)
-                : xpos >= 16 ? (0.08 * Math.pow((xpos - 19), 2) + 1.11)
+                : xpos >= 16 ? (0.08 * Math.pow((xpos - 19.5), 2) + 1.11)
                 : 2.0;
         return -(getWidth() / d);
     }

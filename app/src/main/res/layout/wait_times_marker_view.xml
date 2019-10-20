@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/waitTimesLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/wait_times_marker"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:minWidth="110dp"
+    android:minHeight="26dp"
     android:orientation="horizontal">
     <TextView
         android:id="@+id/waitTimeLabel"
@@ -11,8 +14,7 @@
         android:layout_width="wrap_content"
         android:padding="8dp"
         android:fontFamily="sans-serif"
-        android:text="12pm: 00-00m wait"
         android:textAlignment="center"
         android:textColor="@color/closed"
-        android:textSize="12dp" />
+        android:textSize="12sp" />
 </LinearLayout>
