@@ -47,18 +47,34 @@ public class WaitTimesMarkerView extends MarkerView {
         canvas.restoreToCount(canvasSave);
     }
 
-    public void updateMarkerLabel(Entry e, Swipe s) {
-        entry = e;
-        float eX = e.getX();
-        int t = (int)((eX + 6) % 12);
-        t = t == 0 ? 12 : t;
+    // formatTime is "Now: " if current time, otherwise, format of "12p" for noon.
+    private String formatTime(float eX) {
+        int time = (int)((eX + 6) % 12);
+        time = time == 0 ? 12 : time;
+        boolean isCurrentTime = LocalTime.now().getHour() - 6 == eX;
+        return (isCurrentTime ? "Now" : (time + (eX <= 5 || eX >= 18 ? "a" : "p"))) + ": ";
+    }
+
+    // formatWaitTime is "?" if no data available, otherwise, format of "0-3m" for 0 to 3 minute wait.
+    private String formatWaitTime(Swipe s, boolean hasNoData) {
+        return hasNoData ? "?" : (s.waitTimeLow + "-" + s.waitTimeHigh + "m");
+    }
+
+    // formatMarkerLabel is the HTML string for the marker label.
+    private String formatMarkerLabel(float eX, Swipe s) {
         boolean hasNoData = s.waitTimeLow == 0 && s.waitTimeHigh == 0;
-        String time = (LocalTime.now().getHour() - 6 == eX ? "Now" : (t + (eX <= 5 || eX >= 18 ? "a" : "p"))) + ": ";
-        String waitTime = hasNoData ? "?" : (s.waitTimeLow + "-" + s.waitTimeHigh + "m");
-        String waitTimeHtml = time
+        String timeString = formatTime(eX);
+        String waitTime = formatWaitTime(s, hasNoData);
+        return timeString
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"
                 + waitTime
                 + (hasNoData ? "</font>" : "</font> wait");
+    }
+
+    // updateMarkerLabel is called when a bar is selected in the corresponding bar chart.
+    public void updateMarkerLabel(Entry e, Swipe s) {
+        entry = e;
+        String waitTimeHtml = formatMarkerLabel(e.getX(), s);
         waitTimeLabel.setText(Html.fromHtml(waitTimeHtml));
     }
 
