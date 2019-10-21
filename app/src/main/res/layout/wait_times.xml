@@ -76,204 +76,168 @@
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"/>
 
-        <TableRow
+        <LinearLayout
             android:id="@+id/wait_time_x_axis_labels"
             android:layout_below="@id/wait_time_x_axis_line"
             android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="8dp">
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_column="0">
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="0">
-                    <View
-                        android:id="@+id/wait_time_tick_6a"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_6a"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="6a"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="1">
-                    <View
-                        android:id="@+id/wait_time_tick_9a"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_9a"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="9a"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="2">
-                    <View
-                        android:id="@+id/wait_time_tick_12p"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_12p"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="12p"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="3">
-                    <View
-                        android:id="@+id/wait_time_tick_3p"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_3p"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="3p"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="4">
-                    <View
-                        android:id="@+id/wait_time_tick_6p"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_6p"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="6p"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="5">
-                    <View
-                        android:id="@+id/wait_time_tick_9p"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_9p"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="9p"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_column="6">
-                    <View
-                        android:id="@+id/wait_time_tick_12a"
-                        android:layout_width="2dp"
-                        android:layout_height="8dp"
-                        android:background="@color/inactive"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentTop="true"/>
-                    <TextView
-                        android:layout_below="@id/wait_time_tick_12a"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="12a"
-                        android:textColor="@color/secondary"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14dp"/>
-                </RelativeLayout>
-            </TableRow>
 
             <RelativeLayout
-                android:layout_column="1"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_6a"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_6a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6a"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_9a"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_9a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9a"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_12p"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_12p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12p"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_3p"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_3p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3p"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_6p"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_6p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6p"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_9p"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_9p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9p"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <View
+                    android:id="@+id/wait_time_tick_12a"
+                    android:layout_width="2dp"
+                    android:layout_height="8dp"
+                    android:background="@color/inactive"/>
+                <TextView
+                    android:layout_below="@id/wait_time_tick_12a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12a"
+                    android:textColor="@color/secondary"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <View
                     android:id="@+id/wait_time_tick_3a"
                     android:layout_width="2dp"
                     android:layout_height="8dp"
-                    android:background="@color/inactive"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"/>
+                    android:background="@color/inactive"/>
                 <TextView
                     android:layout_below="@id/wait_time_tick_3a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:text="3a"
                     android:textColor="@color/secondary"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="14dp"/>
             </RelativeLayout>
 
-        </TableRow>
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -5,7 +5,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TableRow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -31,7 +31,7 @@ public class WaitTimesComponent {
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
-    private TableRow mWaitTimesXAxisLabels;
+    private LinearLayout mWaitTimesXAxisLabels;
 
     /**
      * mSwipeData -
