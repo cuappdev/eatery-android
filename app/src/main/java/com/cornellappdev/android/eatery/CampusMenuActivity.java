@@ -1,6 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -220,18 +219,16 @@ public class CampusMenuActivity extends AppCompatActivity {
 
     private void setupViewPager(CustomPager customPager) {
         ViewPagerAdapter adapter =
-                new ViewPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+                new ViewPagerAdapter(getSupportFragmentManager());
         customPager.setAdapter(adapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         DiningHallModel dhm = (DiningHallModel) mCafeData;
-        private Context mContext;
         private int mCurrentPosition = -1;
 
-        public ViewPagerAdapter(Context context, FragmentManager manager) {
-            super(manager);
-            mContext = context;
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         // Set menu fragment to first MealModel object

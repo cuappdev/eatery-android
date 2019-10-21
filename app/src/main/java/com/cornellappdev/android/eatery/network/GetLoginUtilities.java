@@ -37,7 +37,7 @@ public class GetLoginUtilities {
 
             @Override
             public void successLogin(com.cornellappdev.android.eatery.BrbInfoQuery.AccountInfo accountInfo) {
-                BrbInfoModel model = JsonUtilities.parseBrbInfo(accountInfo);
+                BrbInfoModel model = QueryUtilities.parseBrbInfo(accountInfo);
                 Repository.getInstance().setBrbInfoModel(model);
                 try {
                     // Cache data internally

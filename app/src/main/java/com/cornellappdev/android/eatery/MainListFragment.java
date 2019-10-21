@@ -2,7 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +26,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -36,7 +35,6 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -97,9 +95,8 @@ public class MainListFragment extends Fragment
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
-        mListAdapter =
-                new MainListAdapter(getContext(), this, mListPresenter.getEateryList().size(),
-                        mListPresenter.getEateryList());
+        mListAdapter = new MainListAdapter(getContext(), this, mListPresenter
+                .getEateryList().size(), mListPresenter.getEateryList());
         mRecyclerView.setAdapter(mListAdapter);
         mRecyclerView.setVisibility(View.VISIBLE);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -127,16 +124,13 @@ public class MainListFragment extends Fragment
                 handleCampusPillPress();
             }
         });
-        if (mListPresenter.getCollegeTownEateriesLoaded()) {
-            mCtownPillHolder.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    handleCollegetownPillPress();
-                }
-            });
-        } else {
-            mCtownPillHolder.setEnabled(false);
-        }
+        mCtownPillHolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCollegetownPillPress();
+            }
+        });
+
         return rootView;
     }
 
@@ -147,7 +141,7 @@ public class MainListFragment extends Fragment
         super.onResume();
     }
 
-    public void initializeCampusEateryButtons(View rootView) {
+    private void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
 //                TODO: Add nearest first button back when functionality is implemented.
 //                R.id.nearestFirstButton,
@@ -164,7 +158,7 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void initializeCollegeTownEateryButtons(View rootView) {
+    private void initializeCollegeTownEateryButtons(View rootView) {
         int[] viewIds = {
                 R.id.american,
                 R.id.coffee,
@@ -188,7 +182,7 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void changeButtonVisbility(boolean setCTownButtonVisible) {
+    private void changeButtonVisbility(boolean setCTownButtonVisible) {
         if (setCTownButtonVisible) {
             for (Button button : mCampusButtons.values()) {
                 button.setVisibility(View.GONE);
@@ -207,7 +201,7 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void changeButtonColor(int textColor, int backgroundColor, Button button) {
+    private void changeButtonColor(int textColor, int backgroundColor, Button button) {
         button.setTextColor(
                 ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
         GradientDrawable bgShape = (GradientDrawable) button.getBackground();
@@ -215,7 +209,7 @@ public class MainListFragment extends Fragment
                 ContextCompat.getColor(getActivity().getApplicationContext(), backgroundColor));
     }
 
-    public void getCurrentAreas() {
+    private void getCurrentAreas() {
         HashSet<CampusArea> areaSet = new HashSet<>();
         for (Button button : mAreaButtonsPressed) {
             if (button.getId() == R.id.northButton) {
@@ -229,7 +223,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setAreaSet(areaSet);
     }
 
-    public void getCurrentPaymentTypes() {
+    private void getCurrentPaymentTypes() {
         HashSet<PaymentMethod> paymentSet = new HashSet<>();
         for (Button button : mPaymentButtonsPressed) {
             if (button.getId() == R.id.brb) {
@@ -241,7 +235,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setPaymentSet(paymentSet);
     }
 
-    public void animatePillInvisible() {
+    private void animatePillInvisible() {
         if (!mCurrentlyAnimating && mPillVisible) {
             mCurrentlyAnimating = true;
             mPillHolder.animate().translationY(300).setDuration(500).setListener(
@@ -256,7 +250,7 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void animatePillVisible() {
+    private void animatePillVisible() {
         if (!mCurrentlyAnimating && !mPillVisible) {
             mCurrentlyAnimating = true;
             mPillHolder.animate().translationY(0).setDuration(500).setListener(
@@ -271,7 +265,7 @@ public class MainListFragment extends Fragment
         }
     }
 
-    public void getCurrentCategory() {
+    private void getCurrentCategory() {
         HashSet<Category> categorySet = new HashSet<>();
         for (Button button : mCategoryButtonsPressed) {
             switch (button.getId()) {
@@ -318,7 +312,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setCategorySet(categorySet);
     }
 
-    public void handleCollegetownPillPress() {
+    private void handleCollegetownPillPress() {
         mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
         mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
@@ -330,7 +324,7 @@ public class MainListFragment extends Fragment
         updateListAdapter();
     }
 
-    public void handleCampusPillPress() {
+    private void handleCampusPillPress() {
         mFirebaseAnalytics.logEvent("campus_pill_press", null);
         mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
@@ -387,6 +381,10 @@ public class MainListFragment extends Fragment
         mListPresenter.filterImageList();
     }
 
+    public void initializeEateries() {
+        mListPresenter.setCurrentList(mListPresenter.getEateryList());
+        updateListAdapter();
+    }
     private void updateListAdapter() {
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
         Collections.sort(cafesToDisplay);

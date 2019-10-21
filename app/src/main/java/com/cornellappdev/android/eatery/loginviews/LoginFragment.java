@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.loginviews;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.Fragment;
@@ -21,7 +22,7 @@ import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
-import com.cornellappdev.android.eatery.network.JsonUtilities;
+import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -48,6 +49,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
+        Context currContext = getContext();
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         if (getActivity() != null) {
             getActivity().setTitle("Login");
@@ -71,7 +73,7 @@ public class LoginFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(currContext);
 
         if (mAccountPresenter.isLoggingIn()) {
             String[] loginInfo = mAccountPresenter.readSavedCredentials(getContext());
@@ -109,10 +111,10 @@ public class LoginFragment extends Fragment {
 
                 @Override
                 public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                    Repository.getInstance().setBrbInfoModel(JsonUtilities.parseBrbInfo(accountInfo));
+                    Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
                     BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                     try {
-                        InternalStorage.writeObject(getContext(), CacheType.BRB, model);
+                        InternalStorage.writeObject(currContext, CacheType.BRB, model);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

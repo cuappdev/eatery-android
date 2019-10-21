@@ -13,8 +13,6 @@ import java.util.HashSet;
 
 public class MainListPresenter {
 
-    private ArrayList<EateryBaseModel> mEateryList;
-    private ArrayList<EateryBaseModel> mCtEateryList;
     private ArrayList<EateryBaseModel> mCurrentList;
     private HashSet<PaymentMethod> mPaymentSet;
     private HashSet<CampusArea> mAreaSet;
@@ -24,9 +22,7 @@ public class MainListPresenter {
     private Repository rInstance = Repository.getInstance();
 
     public MainListPresenter() {
-        mEateryList = rInstance.getEateryList();
-        mCtEateryList = rInstance.getCtEateryList();
-        mCurrentList = mEateryList;
+        mCurrentList = rInstance.getEateryList();
         mPaymentSet = new HashSet<>();
         mAreaSet = new HashSet<>();
         mCategorySet = new HashSet<>();
@@ -38,11 +34,11 @@ public class MainListPresenter {
     }
 
     public ArrayList<EateryBaseModel> getEateryList() {
-        return mEateryList;
+        return rInstance.getEateryList();
     }
 
     public ArrayList<EateryBaseModel> getCtEateryList() {
-        return mCtEateryList;
+        return rInstance.getCtEateryList();
     }
 
     public void setDisplayCTown(boolean displayCTown) {
@@ -59,10 +55,6 @@ public class MainListPresenter {
 
     public void setCategorySet(HashSet<Category> categorySet) {
         mCategorySet = categorySet;
-    }
-
-    public boolean getCollegeTownEateriesLoaded() {
-        return NetworkUtilities.collegetownEateriesLoaded;
     }
 
     private boolean hasPaymentMethod(EateryBaseModel model) {
@@ -93,7 +85,7 @@ public class MainListPresenter {
         return cafesToDisplay;
     }
 
-    public ArrayList<EateryBaseModel> filterImageList() {
+    public void filterImageList() {
         for (EateryBaseModel model : mCurrentList) {
             boolean areaFuzzyMatches =
                     mAreaSet.isEmpty() || mAreaSet.contains(model.getArea());
@@ -112,7 +104,6 @@ public class MainListPresenter {
                 model.setMatchesFilter(false);
             }
         }
-        return mCurrentList;
     }
 
     public void setIsSearchPressed(boolean isPressed) {
@@ -178,6 +169,5 @@ public class MainListPresenter {
 
     public void setCurrentList(ArrayList<EateryBaseModel> eateryList) {
         mCurrentList = eateryList;
-
     }
 }

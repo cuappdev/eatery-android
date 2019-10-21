@@ -38,11 +38,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cafe_image"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:transitionName="eateryName"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/primary"
-                android:textSize="16sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/cafe_open"
