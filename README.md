@@ -22,4 +22,4 @@ The Key Store password can be found in the Android-Eatery slack as well and the 
 
 Step 6) After Gradle builds and the release has been created, the app.aab file (what we will submit to the playstore) should be under eatery-android/app/release. Continuing from where we left off in Google Console, select the blue "MANAGE" button under the production track, click CREATE RELEASE, and then browse files and upload the app.aab files. Release name should be the updated versionName, and put in a message for "What's new in this release?"
 
-Step 7) Hit review -> then push to production. Good work!
+Step 7) Push to production
