@@ -3,7 +3,7 @@ Eatery app for Android
 
 
 
-Pushing to the Play Store!
+# Pushing to the Play Store!
 
 Step 1) Create a new release branch off of master. Navigate to src/res/values/strings.xml.
 Update the strings with name "encryption_key", "encryption_salt", and "google_maps_key" with the values pinned in the eatery-android Slack channel.
