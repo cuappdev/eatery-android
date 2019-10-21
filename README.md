@@ -16,7 +16,7 @@ Step 3) Returning to your release branch, navigate to app/build.gradle. Update t
 
 Step 4) RUN THE SIMULATOR, CLICK AROUND A LOT, MAKE SURE EVERYTHING WORKS. ESPECIALLY MAKE SURE MAPS WORKS (if it is blank/can't get the locations of eateries it means the maps API key was copied incorrectly)
 
-Step 5) We almost there! In Android Studio, hit Build -> Generate Signed Bundle / APK -> Select Signed Bundle -> Download the eatery key file (also pinned in Eatery-Android) and fill in Key Store path with the path to it  - mine was /Users/connorreinhold/Desktop/eatery. 
+Step 5) We almost there! In Android Studio, hit Build -> Generate Signed Bundle / APK -> Select Signed Bundle -> Download the eatery key file (also pinned in Eatery-Android) and fill in Key Store path with the path to the file. 
 
 The Key Store password can be found in the Android-Eatery slack as well and the key_alias should be a key with name eatery_key. Click Remember passwords -> next -> select release -> finish.
 
