@@ -31,6 +31,7 @@ public class WaitTimesComponent {
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
+    private LinearLayout mWaitTimesXAxisTicks;
     private LinearLayout mWaitTimesXAxisLabels;
 
     /**
@@ -67,6 +68,7 @@ public class WaitTimesComponent {
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         mWaitTimesChart.setNoDataText("");
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
+        mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
 
         if(mSwipeData.size() == 0) {
@@ -83,11 +85,13 @@ public class WaitTimesComponent {
             mWaitTimesButton.setText("Hide");
             mWaitTimesChart.setVisibility(View.VISIBLE);
             mWaitTimesXAxisLine.setVisibility(View.VISIBLE);
+            mWaitTimesXAxisTicks.setVisibility(View.VISIBLE);
             mWaitTimesXAxisLabels.setVisibility(View.VISIBLE);
         } else {
             mWaitTimesButton.setText("Show");
             mWaitTimesChart.setVisibility(View.GONE);
             mWaitTimesXAxisLine.setVisibility(View.GONE);
+            mWaitTimesXAxisTicks.setVisibility(View.GONE);
             mWaitTimesXAxisLabels.setVisibility(View.GONE);
         }
     }
