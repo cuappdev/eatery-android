@@ -93,7 +93,7 @@ public class MainListPresenter {
         return cafesToDisplay;
     }
 
-    public ArrayList<EateryBaseModel> filterImageList() {
+    public void filterImageList() {
         for (EateryBaseModel model : mCurrentList) {
             boolean areaFuzzyMatches =
                     mAreaSet.isEmpty() || mAreaSet.contains(model.getArea());
@@ -112,7 +112,6 @@ public class MainListPresenter {
                 model.setMatchesFilter(false);
             }
         }
-        return mCurrentList;
     }
 
     public void setIsSearchPressed(boolean isPressed) {

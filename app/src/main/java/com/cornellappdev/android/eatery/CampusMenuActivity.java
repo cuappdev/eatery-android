@@ -31,6 +31,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
+import com.cornellappdev.android.eatery.presenter.MenuPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     private CustomPager mCustomPager;
     private WaitTimesComponent mWaitTimesComponent;
     private FrameLayout mWaitTimesHolder;
+    private MenuPresenter mMenuPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mCafeData = (CampusModel) intent.getSerializableExtra("cafeInfo");
+
+        mMenuPresenter = new MenuPresenter(mCafeData);
         String cafeName = mCafeData.getNickName();
         String imageUrl = EateryBaseModel.getImageURL(mCafeData.getNickName());
 
@@ -220,36 +224,11 @@ public class CampusMenuActivity extends AppCompatActivity {
 
     // Set up wait times feature.
     private void setupWaitTimes() {
-        // Return if eatery is not a campus eatery / no swipe data available.
-        if (!(mCafeData instanceof CampusModel) || ((CampusModel) mCafeData).getSwipeData().size() == 0) {
-            return;
-        }
-
-        // Data for wait times chart.
-        List<Swipe> swipeData = new ArrayList<Swipe>();
-
-        // Wait times chart must have 21 elements for each hour within 6am - 3am.
-        // i represents the hour, with 0 being 6am - 7am.
-        for (int i = 0; i < 21; i++) {
-            // Default swipeDensity, waitTimeLow, waitTimeHigh = 0 for hours without backend swipe data.
-            double swipeDensity = 0;
-            int waitTimeLow = 0, waitTimeHigh = 0;
-            // Parse through backend swipe data. If multiple swipe data found for the hour, use maximum.
-            for (Swipe s: ((CampusModel) mCafeData).getSwipeData()) {
-                int hourFromSwipe = s.getStart().getHour();
-                hourFromSwipe = hourFromSwipe < 6 ? (18 + hourFromSwipe) : hourFromSwipe - 6;
-                if (hourFromSwipe == i) {
-                    swipeDensity = Math.max(swipeDensity, s.swipeDensity);
-                    waitTimeLow = Math.max(waitTimeLow, s.waitTimeLow);
-                    waitTimeHigh = Math.max(waitTimeHigh, s.waitTimeHigh);
-                }
-            }
-            // Index of swipeData now represents start/end with 0 being start = 6am, end = 7am.
-            swipeData.add(new Swipe(null, null, swipeDensity, waitTimeLow, waitTimeHigh));
-        }
-
+        // Fetch wait time data for this model
+        List<Swipe> waitTimes = mMenuPresenter.getWaitTimes();
+        if(waitTimes == null) return;
         // Create and load wait times chart.
-        mWaitTimesComponent = new WaitTimesComponent(swipeData);
+        mWaitTimesComponent = new WaitTimesComponent(waitTimes);
         mWaitTimesHolder = findViewById(R.id.wait_times_frame);
         mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder);
     }
@@ -262,12 +241,10 @@ public class CampusMenuActivity extends AppCompatActivity {
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         DiningHallModel dhm = (DiningHallModel) mCafeData;
-        private Context mContext;
         private int mCurrentPosition = -1;
 
         public ViewPagerAdapter(Context context, FragmentManager manager) {
             super(manager);
-            mContext = context;
         }
 
         // Set menu fragment to first MealModel object
