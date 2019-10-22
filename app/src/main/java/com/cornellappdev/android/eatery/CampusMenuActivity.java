@@ -3,8 +3,9 @@ package com.cornellappdev.android.eatery;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cornellappdev.android.eatery.components.WaitTimesFragment;
+import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CampusModel;
+import com.cornellappdev.android.eatery.model.Swipe;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -14,9 +15,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.util.TimeUtil;
+import com.cornellappdev.android.eatery.presenter.MenuPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -46,7 +50,9 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
-    private WaitTimesFragment mWaitTimesFragment;
+    private WaitTimesComponent mWaitTimesComponent;
+    private FrameLayout mWaitTimesHolder;
+    private MenuPresenter mMenuPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,8 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mCafeData = (CampusModel) intent.getSerializableExtra("cafeInfo");
+
+        mMenuPresenter = new MenuPresenter(mCafeData);
         String cafeName = mCafeData.getNickName();
         String imageUrl = EateryBaseModel.getImageURL(mCafeData.getNickName());
 
@@ -210,11 +218,18 @@ public class CampusMenuActivity extends AppCompatActivity {
             }
         }
 
-        // Set up wait times feature.
-        mWaitTimesFragment = new WaitTimesFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.wait_times_frame, mWaitTimesFragment)
-                .commit();
+        this.setupWaitTimes();
+    }
+
+    // Set up wait times feature.
+    private void setupWaitTimes() {
+        // Fetch wait time data for this model
+        List<Swipe> waitTimes = mMenuPresenter.getWaitTimes();
+        if(waitTimes == null) return;
+        // Create and load wait times chart.
+        mWaitTimesComponent = new WaitTimesComponent(waitTimes);
+        mWaitTimesHolder = findViewById(R.id.wait_times_frame);
+        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder);
     }
 
     private void setupViewPager(CustomPager customPager) {

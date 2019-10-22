@@ -37,7 +37,6 @@ public abstract class CampusModel extends EateryBaseModel implements Serializabl
             swipes.add(new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
                             swipeDatum.waitTimeHigh()));
         }
-        Collections.sort(swipes);
         return swipes;
     }
 

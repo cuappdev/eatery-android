@@ -62,7 +62,6 @@
                 android:layout_below="@id/ind_image"
                 android:background="@color/white"
                 android:elevation="1dp"
-                android:paddingLeft="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp">
 
@@ -73,6 +72,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingBottom="2dp"
                     android:transitionName="eateryName"
+                    android:layout_marginLeft="16dp"
                     android:text="Name"
                     android:textColor="@color/primary"
                     android:textSize="18sp"/>
@@ -86,6 +86,7 @@
                     android:layout_marginBottom="9dp"
                     android:layout_marginRight="4dp"
                     android:transitionName="eateryOpen"
+                    android:layout_marginLeft="16dp"
                     android:text="Open?"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
@@ -99,6 +100,7 @@
                     android:fontFamily="sans-serif-regular"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryTime"
+                    android:layout_marginLeft="16dp"
                     android:text="Time"
                     android:textColor="@color/secondary"
                     android:textSize="14sp"/>
@@ -108,6 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_open"
+                    android:layout_marginLeft="16dp"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
@@ -141,55 +144,12 @@
                     android:transitionName="eaterySwipeIcon"
                     android:src="@drawable/swipe_icon"
                     android:visibility="invisible"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wait_time_horizontal_divider"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/infobox"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingRight="16dp"
-                android:paddingLeft="16dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/inactive"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/wait_time_box"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wait_time_horizontal_divider"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="7dp"
-                android:paddingBottom="7dp">
-
-                <TextView
-                    android:id="@+id/wait_time_label"
-                    android:background="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginBottom="9dp"
-                    android:text="Popular Times"
-                    android:textColor="@color/primary"
-                    android:textSize="18sp"/>
 
                 <FrameLayout
                     android:id="@+id/wait_times_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/wait_time_label" />
+                    android:layout_below="@id/ind_loc" />
 
             </RelativeLayout>
 
@@ -197,7 +157,7 @@
                 android:id="@+id/ind_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/infobox"
+                android:layout_below="@id/wait_times_frame"
                 android:layout_marginTop="12dp"
                 android:background="@color/white"
                 android:fontFamily="sans-serif-medium"
