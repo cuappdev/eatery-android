@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.components;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class WaitTimesComponent {
     private BarChart mWaitTimesChart;
+    private BarDataSet mBarDataSet;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
@@ -45,13 +47,19 @@ public class WaitTimesComponent {
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
+    private float mLastX;
+    private float mLastY;
+    private boolean mVerticalScrolling;
 
     public WaitTimesComponent(List<Swipe> swipeData) {
         mSwipeData = swipeData;
+        mLastX = 0.0f;
+        mLastY = 0.0f;
+        mVerticalScrolling = false;
     }
 
     // Inflates the wait times component into the passed in holder
-    public void inflateView(Context context, FrameLayout holder) {
+    public void inflateView(Context context, FrameLayout holder, ControlledScrollView scrollView) {
 
         View view = View.inflate(context, R.layout.wait_times, holder);
 
@@ -67,6 +75,31 @@ public class WaitTimesComponent {
         });
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         mWaitTimesChart.setNoDataText("");
+
+        mWaitTimesChart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                float xDiff = Math.abs(event.getX() - mLastX);
+                float yDiff = Math.abs(event.getY() - mLastY);
+                if(event.getAction() == MotionEvent.ACTION_MOVE) {
+                    // If horizontal scrolling
+                    if (yDiff < 5 && xDiff > 20) {
+                        scrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                }
+
+                if (yDiff > 5) {
+                    mVerticalScrolling = true;
+                }
+                else {
+                    mVerticalScrolling = false;
+                }
+                mLastX = event.getX();
+                mLastY = event.getY();
+                return false;
+            }
+        });
+
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
         mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
@@ -129,8 +162,15 @@ public class WaitTimesComponent {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                updateMarkerAtEntry(e);
-                mLastEntry = e;
+                if (mVerticalScrolling) {
+                    mWaitTimesChart.getOnTouchListener().setLastHighlighted(null);
+                    mWaitTimesChart.highlightValues(null);
+                    updateMarkerAtEntry(mLastEntry);
+                }
+                else {
+                    updateMarkerAtEntry(e);
+                    mLastEntry = e;
+                }
             }
             @Override
             public void onNothingSelected() {

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.components.NonScrollExpandableListView;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.presenter.WeeklyPresenter;

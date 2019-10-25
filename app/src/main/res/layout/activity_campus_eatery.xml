@@ -44,7 +44,8 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <com.cornellappdev.android.eatery.components.ControlledScrollView
+        android:id="@+id/controlled_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -187,12 +188,12 @@
                 app:tabIndicatorColor="@color/blue"
                 app:tabTextAppearance="@style/tabLayoutText"/>
 
-            <com.cornellappdev.android.eatery.CustomPager
+            <com.cornellappdev.android.eatery.components.CustomPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tabs"
                 android:background="@color/white"/>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.cornellappdev.android.eatery.components.ControlledScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

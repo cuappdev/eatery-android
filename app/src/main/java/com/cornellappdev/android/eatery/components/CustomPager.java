@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery;
+package com.cornellappdev.android.eatery.components;
 
 import android.content.Context;
 import androidx.viewpager.widget.ViewPager;

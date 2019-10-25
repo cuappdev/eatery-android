@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import android.text.Html;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.R;
