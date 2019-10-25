@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
@@ -57,7 +58,7 @@ public class WaitTimesComponent {
     }
 
     // Inflates the wait times component into the passed in holder
-    public void inflateView(Context context, FrameLayout holder, ControlledScrollView scrollView) {
+    public void inflateView(Context context, FrameLayout holder, NestedScrollView scrollView) {
 
         View view = View.inflate(context, R.layout.wait_times, holder);
 

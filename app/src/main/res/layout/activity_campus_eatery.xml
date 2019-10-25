@@ -44,7 +44,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.cornellappdev.android.eatery.components.ControlledScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/controlled_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -195,5 +195,5 @@
                 android:layout_below="@id/tabs"
                 android:background="@color/white"/>
         </LinearLayout>
-    </com.cornellappdev.android.eatery.components.ControlledScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

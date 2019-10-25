@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cornellappdev.android.eatery.components.ControlledScrollView;
 import com.cornellappdev.android.eatery.components.CustomPager;
 import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CampusModel;
@@ -11,6 +10,8 @@ import com.cornellappdev.android.eatery.model.Swipe;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -50,7 +51,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     Toolbar mToolbar;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mCollapsingToolbar;
-    ControlledScrollView mControlledScrollView;
+    NestedScrollView mScrollView;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
     private WaitTimesComponent mWaitTimesComponent;
@@ -146,7 +147,7 @@ public class CampusMenuActivity extends AppCompatActivity {
             mSwipeIcon.setVisibility(View.VISIBLE);
         }
 
-        mControlledScrollView = findViewById(R.id.controlled_scroll_view);
+        mScrollView = findViewById(R.id.controlled_scroll_view);
         mCustomPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
@@ -233,7 +234,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Create and load wait times chart.
         mWaitTimesComponent = new WaitTimesComponent(waitTimes);
         mWaitTimesHolder = findViewById(R.id.wait_times_frame);
-        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder, mControlledScrollView);
+        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder, mScrollView);
     }
 
     private void setupViewPager(CustomPager customPager) {
