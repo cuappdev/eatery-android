@@ -49,13 +49,11 @@ public class WaitTimesComponent {
     private boolean mShowWaitTimes;
     private float mLastX;
     private float mLastY;
-    private boolean mVerticalScrolling;
 
     public WaitTimesComponent(List<Swipe> swipeData) {
         mSwipeData = swipeData;
         mLastX = 0.0f;
         mLastY = 0.0f;
-        mVerticalScrolling = false;
     }
 
     // Inflates the wait times component into the passed in holder
@@ -86,13 +84,6 @@ public class WaitTimesComponent {
                     if (yDiff < 5 && xDiff > 20) {
                         scrollView.requestDisallowInterceptTouchEvent(true);
                     }
-                }
-
-                if (yDiff > 5) {
-                    mVerticalScrolling = true;
-                }
-                else {
-                    mVerticalScrolling = false;
                 }
                 mLastX = event.getX();
                 mLastY = event.getY();
@@ -162,15 +153,8 @@ public class WaitTimesComponent {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                if (mVerticalScrolling) {
-                    mWaitTimesChart.getOnTouchListener().setLastHighlighted(null);
-                    mWaitTimesChart.highlightValues(null);
-                    updateMarkerAtEntry(mLastEntry);
-                }
-                else {
-                    updateMarkerAtEntry(e);
-                    mLastEntry = e;
-                }
+                updateMarkerAtEntry(e);
+                mLastEntry = e;
             }
             @Override
             public void onNothingSelected() {
