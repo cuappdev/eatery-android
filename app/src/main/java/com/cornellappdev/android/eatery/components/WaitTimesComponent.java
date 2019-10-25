@@ -83,6 +83,7 @@ public class WaitTimesComponent {
                 if(event.getAction() == MotionEvent.ACTION_MOVE) {
                     // If horizontal scrolling
                     if (yDiff < 5 && xDiff > 20) {
+                        // Prevent scrollView from receiving touch events
                         scrollView.requestDisallowInterceptTouchEvent(true);
                     }
                 }
