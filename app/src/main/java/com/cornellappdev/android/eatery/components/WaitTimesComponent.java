@@ -8,13 +8,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -29,8 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WaitTimesComponent {
-    private BarChart mWaitTimesChart;
-    private BarDataSet mBarDataSet;
+    private WaitTimesChart mWaitTimesChart;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
@@ -48,13 +45,17 @@ public class WaitTimesComponent {
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
-    private float mLastX;
     private float mLastY;
+    private float mLastX;
+    private boolean mVerticalScrolling;
+    private boolean mFingerJustTapped;
 
     public WaitTimesComponent(List<Swipe> swipeData) {
         mSwipeData = swipeData;
-        mLastX = 0.0f;
         mLastY = 0.0f;
+        mLastX = 0.0f;
+        mVerticalScrolling = false;
+        mFingerJustTapped = false;
     }
 
     // Inflates the wait times component into the passed in holder
@@ -78,17 +79,35 @@ public class WaitTimesComponent {
         mWaitTimesChart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                float xDiff = Math.abs(event.getX() - mLastX);
-                float yDiff = Math.abs(event.getY() - mLastY);
-                if(event.getAction() == MotionEvent.ACTION_MOVE) {
-                    // If horizontal scrolling
-                    if (yDiff < 5 && xDiff > 20) {
-                        // Prevent scrollView from receiving touch events
+                if (mFingerJustTapped) {
+                    // Measure the yDiff directly after the tap, high y diff means motion was a
+                    // vertical swipe
+                    float yDiff = Math.abs(event.getY() - mLastY);
+                    float xDiff = Math.abs(event.getX() - mLastX);
+                    // If it was not a vertical swipe
+                    if (xDiff > yDiff) {
                         scrollView.requestDisallowInterceptTouchEvent(true);
+                        mVerticalScrolling = false;
+                    } else {
+                        // This variable (when true) is used below in onValueSelected
+                        // to prevent interaction with the mWaitTimesChart. I couldn't find
+                        // a cleaner way of disabling interaction with the chart
+                        mVerticalScrolling = true;
                     }
+                    mFingerJustTapped = false;
                 }
-                mLastX = event.getX();
-                mLastY = event.getY();
+
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mFingerJustTapped = true;
+                    mLastY = event.getY();
+                    mLastX = event.getX();
+                    v.performClick();
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP
+                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    mFingerJustTapped = false;
+                    mVerticalScrolling = false;
+                }
                 return false;
             }
         });
@@ -154,9 +173,25 @@ public class WaitTimesComponent {
     private void setupWaitTimesData(Context context) {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
+            // This method gets called after a bar is clicked after it has been highlighted
             public void onValueSelected(Entry e, Highlight h) {
-                updateMarkerAtEntry(e);
-                mLastEntry = e;
+                // We want to make sure that if the user is scrolling vertically, we remove
+                // any interactions with the bar chart
+                if(mVerticalScrolling && e != mLastEntry) {
+                    // If scrolling - reset the highlight and update the highlight with the
+                    // highlight from before
+                    mWaitTimesChart.highlightValue(null);
+                    if(mLastEntry == null) {
+                        mWaitTimesChart.highlightValue(LocalTime.now().getHour() - 6, 0);
+                    }
+                    else {
+                        mWaitTimesChart.highlightValue(mLastEntry.getX(), 0);
+                    }
+                }
+                else {
+                    updateMarkerAtEntry(e);
+                    mLastEntry = e;
+                }
             }
             @Override
             public void onNothingSelected() {

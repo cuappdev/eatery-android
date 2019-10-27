@@ -424,6 +424,7 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list, View viewHolder) {
+        if (list.size() <= position) return;
         EateryBaseModel model = list.get(position);
         Intent intent;
         if (this.mEateryClickable) {
