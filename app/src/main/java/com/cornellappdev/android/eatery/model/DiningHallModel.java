@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class DiningHallModel extends CampusModel implements Serializable {
 
@@ -40,6 +41,75 @@ public class DiningHallModel extends CampusModel implements Serializable {
         DiningHallModel model = new DiningHallModel();
         model.parseEatery(context, hardcoded, eatery);
         return model;
+    }
+
+    private HashMap<MealType, Interval> getMealIntervals() {
+        HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
+        for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
+            Interval i = mealModel.getInterval();
+            mealIntervalMap.put(mealModel.getType(), i);
+        }
+        return mealIntervalMap;
+    }
+
+    // NOTE (yanlam): should probably move this somewhere else, but not sure where.
+    /** compareTimes(t1, t2) returns:
+     *      -1 if time of t1 comes before t2
+     *      0 if t1 is equal to t2
+     *      1 if t1 comes after t2
+     */
+    public static int compareTimes(LocalDateTime t1, LocalDateTime t2) {
+        if (t1.getHour() < t2.getHour()
+                && t1.getMinute() < t2.getMinute()
+                && t1.getSecond() < t2.getSecond()) {
+            return -1;
+        }
+        if (t1.getHour() > t2.getHour()
+                && t1.getMinute() > t2.getMinute()
+                && t1.getSecond() > t2.getSecond()) {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * getCurrentMealTypeTabIndex() returns the menu tab index to be displayed, based on the
+     * current time. Note that this does NOT represent the index of the corresponding MealType enum.
+     * */
+    public int getCurrentMealTypeTabIndex() {
+        int mealTypeIndex = 0;
+        HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
+        Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
+        LocalDateTime currentTime = LocalDateTime.now();
+        for(MealType mt: mealIntervalKeys) {
+            Interval i = mealIntervalMap.get(mt);
+            // Must keep order of switch statement for fall through.
+            // Account for absences in mealTypes (ie. no brunch, etc).
+            switch (mt) {
+                case DINNER:
+                    // Always last option.
+                    if (compareTimes(currentTime, i.getStart()) == -1) {
+                        mealTypeIndex = mealIntervalKeys.size() - 1;
+                    }
+                case LUNCH:
+                    // Either last or second-to-last option, depending if dinner exists.
+                    if (compareTimes(currentTime, i.getStart()) == -1) {
+                        int offset = mealIntervalKeys.contains(MealType.DINNER) ? -1 : 0;
+                        mealTypeIndex = mealIntervalKeys.size() + offset;
+                    }
+                case BRUNCH:
+                    // Either first or second option, depending if breakfast exists.
+                    if (compareTimes(currentTime, i.getStart()) == -1) {
+                        mealTypeIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
+                    }
+                case BREAKFAST:
+                    // Always first option.
+                    if (compareTimes(currentTime, i.getStart()) == -1) {
+                        mealTypeIndex = 0;
+                    }
+            }
+        }
+        return mealTypeIndex;
     }
 
     public DailyMenuModel getCurrentDayMenu() {
@@ -167,7 +237,9 @@ public class DiningHallModel extends CampusModel implements Serializable {
                         timeFormatter).atDate(localDate);
                 end = LocalTime.parse(event.endTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
+                // MealType.BREAKFAST, etc.
                 MealType type = MealType.fromDescription(event.description());
+                // MealModel: type, menu, start, end.
                 MealModel mealModel = new MealModel(start, end);
                 mealModel.setType(type);
                 MealMenuModel mealMenuModel = MealMenuModel.fromGraphQL(event.menu());

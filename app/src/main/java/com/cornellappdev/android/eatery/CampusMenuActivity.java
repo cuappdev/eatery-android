@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.cornellappdev.android.eatery.presenter.MenuPresenter;
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,17 +221,28 @@ public class CampusMenuActivity extends AppCompatActivity {
         }
 
         this.setupWaitTimes();
+        this.setupDefaultTab();
     }
 
     // Set up wait times feature.
     private void setupWaitTimes() {
         // Fetch wait time data for this model
         List<Swipe> waitTimes = mMenuPresenter.getWaitTimes();
-        if(waitTimes == null) return;
+        if (waitTimes == null) return;
         // Create and load wait times chart.
         mWaitTimesComponent = new WaitTimesComponent(waitTimes);
         mWaitTimesHolder = findViewById(R.id.wait_times_frame);
         mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder);
+    }
+
+    // Set up default tab / menu for dining halls.
+    private void setupDefaultTab() {
+        if (mCafeData instanceof DiningHallModel) {
+            DiningHallModel dhm = (DiningHallModel) mCafeData;
+            int tabIndex = dhm.getCurrentMealTypeTabIndex();
+            TabLayout.Tab defaultTab = mTabLayout.getTabAt(tabIndex);
+            defaultTab.select();
+        }
     }
 
     private void setupViewPager(CustomPager customPager) {
@@ -251,7 +264,9 @@ public class CampusMenuActivity extends AppCompatActivity {
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
             super.setPrimaryItem(container, position, object);
             if (position != mCurrentPosition) {
-                if (mCurrentPosition == -1) position = 0;
+                if (mCurrentPosition == -1) {
+                    position = 0;
+                }
                 Fragment fragment = (Fragment) object;
                 CustomPager pager = (CustomPager) container;
                 if (fragment != null && fragment.getView() != null) {
