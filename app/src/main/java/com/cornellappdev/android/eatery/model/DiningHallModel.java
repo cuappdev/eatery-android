@@ -44,28 +44,6 @@ public class DiningHallModel extends CampusModel implements Serializable {
         return model;
     }
 
-    // NOTE (yanlam): should probably move this somewhere else, but not sure where.
-    /** compareTimes(t1, t2) returns:
-     *      -1 if time of t1 comes before t2
-     *      0 if t1 is equal to t2
-     *      1 if t1 comes after t2
-     */
-    public static int compareTimes(LocalDateTime t1, LocalDateTime t2) {
-        boolean hoursEqual = t1.getHour() == t2.getHour();
-        boolean minutesEqual = t1.getMinute() == t2.getMinute();
-        if (t1.getHour() < t2.getHour()
-                || (hoursEqual && t1.getMinute() < t2.getMinute())
-                || (hoursEqual && minutesEqual && t1.getSecond() < t2.getSecond())) {
-            return -1;
-        }
-        if (t1.getHour() > t2.getHour()
-                || (hoursEqual && t1.getMinute() > t2.getMinute())
-                || (hoursEqual && minutesEqual &&t1.getSecond() > t2.getSecond())) {
-            return 1;
-        }
-        return 0;
-    }
-
     /**
      * getMealIntervals() returns a HashMap of all possible MealTypes and the corresponding
      * time intervals.
@@ -93,12 +71,12 @@ public class DiningHallModel extends CampusModel implements Serializable {
         for(MealType mt: mealIntervalKeys) {
             Interval i = mealIntervalMap.get(mt);
             Log.i("qwerty", "currentTime: " + currentTime + ", start: " + i.getStart());
-            Log.i("qwerty", "compareTimes: " + compareTimes(currentTime, i.getStart()));
+            Log.i("qwerty", "compareTimes: " + currentTime.compareTo(i.getEnd()));
             // Account for absences in mealTypes (ie. no brunch, etc).
             switch (mt) {
                 case DINNER:
                     // Always last option.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
                         Log.i("qwerty", "Pass dinner");
                         mealTypeTabIndex = mealIntervalKeys.size() - 1;
                         mealTypeIndex = 4;
@@ -106,7 +84,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
                     break;
                 case LUNCH:
                     // Either last or second-to-last option, depending if dinner exists.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
                         Log.i("qwerty", "Pass lunch");
                         int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
                         mealTypeTabIndex = mealIntervalKeys.size() + offset;
@@ -115,7 +93,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
                     break;
                 case BRUNCH:
                     // Either first or second option, depending if breakfast exists.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
                         Log.i("qwerty", "Pass brunch");
                         mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
                         mealTypeIndex = 2;
@@ -123,7 +101,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
                     break;
                 case BREAKFAST:
                     // Always first option.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
                         Log.i("qwerty", "Pass breakfast");
                         mealTypeTabIndex = 0;
                         mealTypeIndex = 1;
@@ -260,9 +238,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
                         timeFormatter).atDate(localDate);
                 end = LocalTime.parse(event.endTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
-                // MealType.BREAKFAST, etc.
                 MealType type = MealType.fromDescription(event.description());
-                // MealModel: type, menu, start, end.
                 MealModel mealModel = new MealModel(start, end);
                 mealModel.setType(type);
                 MealMenuModel mealMenuModel = MealMenuModel.fromGraphQL(event.menu());
