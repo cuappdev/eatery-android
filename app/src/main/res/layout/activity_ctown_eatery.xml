@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,11 +8,209 @@
     android:fitsSystemWindows="true"
     tools:context="com.cornellappdev.android.eatery.CtownMenuActivity">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/wash"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/view_border"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cafe_directions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:text="Get Directions"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/cafe_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/cafe_website"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:textColor="@color/blue"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/infobox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ind_image"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:paddingLeft="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:id="@+id/dollar_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/dollar_icon"
+                    android:transitionName="eateryDollarIcon"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/ind_cafe_holder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="9dp">
+
+                    <RatingBar
+                        android:id="@+id/cafe_rating"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="4.5dp"
+                        android:isIndicator="true"
+                        android:max="5"
+                        android:rating="2.5"
+                        android:stepSize="0.1" />
+
+                    <TextView
+                        android:id="@+id/ind_cafe_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Name"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp"
+                        android:transitionName="eateryName" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ind_open">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="18dp">
+
+                        <TextView
+                            android:id="@+id/dollar_sign_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-black"
+                            android:text="$"
+                            android:textColor="@color/secondary"
+                            android:textSize="19sp" />
+
+                        <TextView
+                            android:id="@+id/dollar_sign_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:fontFamily="sans-serif-black"
+                            android:text="$"
+                            android:textColor="@color/secondary"
+                            android:textSize="19sp" />
+
+                        <TextView
+                            android:id="@+id/dollar_sign_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:fontFamily="sans-serif-black"
+                            android:text="$"
+                            android:textColor="@color/secondary"
+                            android:textSize="19sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ind_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:paddingTop="4dp"
+                        android:text="Location"
+                        android:textColor="@color/secondary"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/ind_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ind_cafe_holder"
+                    android:layout_marginBottom="9dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Open?"
+                    android:textColor="@color/primary"
+                    android:textSize="15sp"
+                    android:transitionName="eateryOpen" />
+
+                <TextView
+                    android:id="@+id/ind_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ind_cafe_holder"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_toRightOf="@id/ind_open"
+                    android:fontFamily="sans-serif-regular"
+                    android:text="Time"
+                    android:textColor="@color/secondary"
+                    android:textSize="15sp"
+                    android:transitionName="eateryTime" />
+            </RelativeLayout>
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/cafe_map"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/view_border" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="275dp">
+        android:layout_height="275dp"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -31,8 +228,8 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:fitsSystemWindows="true"
-                android:transitionName="eateryImage"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:transitionName="eateryImage" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -40,197 +237,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="true"
                 android:minHeight="?attr/actionBarSize"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/wash"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/infobox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ind_image"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="10dp">
-
-                <LinearLayout
-                    android:id="@+id/ind_cafe_holder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp">
-                    <TextView
-                        android:id="@+id/ind_cafe_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:transitionName="eateryName"
-                        android:text="Name"
-                        android:textColor="@color/primary"
-                        android:textSize="16sp"/>
-
-                    <RatingBar
-                        android:id="@+id/cafe_rating"
-                        style="?android:attr/ratingBarStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="4.5dp"
-                        android:isIndicator="true"
-                        android:max="5"
-                        android:rating="2.5"
-                        android:stepSize="0.1"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/ind_open"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ind_cafe_holder"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginBottom="9dp"
-                    android:transitionName="eateryOpen"
-                    android:text="Open?"
-                    android:textColor="@color/primary"
-                    android:textSize="15sp"/>
-
-                <TextView
-                    android:id="@+id/ind_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ind_cafe_holder"
-                    android:layout_toRightOf="@id/ind_open"
-                    android:fontFamily="sans-serif-regular"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginBottom="9dp"
-                    android:transitionName="eateryTime"
-                    android:text="Time"
-                    android:textColor="@color/secondary"
-                    android:textSize="15sp"/>
-
-                <RelativeLayout android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/ind_open">
-                    <TextView
-                        android:id="@+id/ind_loc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:paddingTop="4dp"
-                        android:text="Location"
-                        android:textColor="@color/secondary"
-                        android:textSize="15sp"/>
-
-                    <LinearLayout android:layout_width="wrap_content"
-                                  android:layout_height="wrap_content"
-                                  android:layout_alignParentEnd="true"
-                                  android:layout_marginEnd="18dp">
-                        <TextView
-                            android:id="@+id/dollar_sign_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:text="$"
-                            android:textColor="@color/secondary"
-                            android:textSize="19sp"/>
-                        <TextView
-                            android:id="@+id/dollar_sign_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:layout_marginStart="2dp"
-                            android:text="$"
-                            android:textColor="@color/secondary"
-                            android:textSize="19sp"/>
-                        <TextView
-                            android:id="@+id/dollar_sign_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:layout_marginStart="2dp"
-                            android:text="$"
-                            android:textColor="@color/secondary"
-                            android:textSize="19sp"/>
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/dollar_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
-                    android:src="@drawable/dollar_icon"
-                    android:transitionName="eateryDollarIcon"
-                    android:visibility="visible"/>
-            </RelativeLayout>
-
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="14dp"
-                          android:background="@drawable/view_border"
-                          android:orientation="vertical">
-                <TextView
-                    android:id="@+id/cafe_directions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:text="Get Directions"
-                    android:textColor="@color/blue"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/cafe_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:textColor="@color/blue"
-                    android:textSize="16sp"/>
-
-                <TextView
-                    android:id="@+id/cafe_website"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:textColor="@color/blue"
-                    android:textSize="16sp"/>
-
-            </LinearLayout>
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/cafe_map"
-                android:layout_width="match_parent"
-                android:layout_height="330dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/view_border"
-            />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

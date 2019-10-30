@@ -1,12 +1,11 @@
 package com.cornellappdev.android.eatery.model;
 
-import androidx.annotation.NonNull;
-
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
 
 /**
  * Model class to represent each meal

@@ -1,8 +1,8 @@
 package com.cornellappdev.android.eatery.components;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import android.text.Html;
 import android.widget.TextView;
 
@@ -18,7 +18,7 @@ public class WaitTimesMarkerView extends MarkerView {
     private TextView waitTimeLabel;
     private Entry entry;
 
-    public WaitTimesMarkerView (Context context, int layoutResource) {
+    public WaitTimesMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
         waitTimeLabel = findViewById(R.id.waitTimeLabel);
         entry = null;
@@ -38,7 +38,7 @@ public class WaitTimesMarkerView extends MarkerView {
         canvas.drawLine(posX, eY, posX, posY, paint);
 
         // Move label to match bar position.
-        canvas.translate((float)(posX + getXOffset(eX)), eY);
+        canvas.translate((float) (posX + getXOffset(eX)), eY);
 
         draw(canvas);
         canvas.restoreToCount(canvasSave);
@@ -46,7 +46,7 @@ public class WaitTimesMarkerView extends MarkerView {
 
     // formatTime is "Now: " if current time, otherwise, format of "12p" for noon.
     private String formatTime(float eX) {
-        int time = (int)((eX + 6) % 12);
+        int time = (int) ((eX + 6) % 12);
         time = time == 0 ? 12 : time;
         boolean isCurrentTime = LocalTime.now().getHour() - 6 == eX;
         return (isCurrentTime ? "Now" : (time + (eX <= 5 || eX >= 18 ? "a" : "p"))) + ": ";
@@ -65,7 +65,7 @@ public class WaitTimesMarkerView extends MarkerView {
         // If there is no data, return the text 'No Estimate'
         if (hasNoData) {
             return "<font color=\"" + getResources().getColor(R.color.gray) + "\" face=\"sans-serif-medium\">"
-                + "No Estimate</font>";
+                    + "No Estimate</font>";
         }
         return " <font face=\"sans-serif-medium\">" + timeString + "</font>"
                 + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"

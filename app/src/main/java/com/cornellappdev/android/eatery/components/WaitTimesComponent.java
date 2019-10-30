@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
@@ -26,6 +24,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+
 public class WaitTimesComponent {
     private WaitTimesChart mWaitTimesChart;
     private TextView mWaitTimesButton;
@@ -36,11 +37,11 @@ public class WaitTimesComponent {
 
     /**
      * mSwipeData -
-     *  Should have size of 21 upon construction within CampusMenuActivity.
+     * Should have size of 21 upon construction within CampusMenuActivity.
      * Swipe s: mSwipeData -
-     *  Hour determined by index, with 0 representing start = 6am, end = 7am.
-     *  start, end = null.
-     *  swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
+     * Hour determined by index, with 0 representing start = 6am, end = 7am.
+     * start, end = null.
+     * swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
      */
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
@@ -89,21 +90,17 @@ public class WaitTimesComponent {
                         scrollView.requestDisallowInterceptTouchEvent(true);
                         mVerticalScrolling = false;
                     } else {
-                        // This variable (when true) is used below in onValueSelected
-                        // to prevent interaction with the mWaitTimesChart. I couldn't find
-                        // a cleaner way of disabling interaction with the chart
                         mVerticalScrolling = true;
                     }
                     mFingerJustTapped = false;
                 }
 
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mFingerJustTapped = true;
                     mLastY = event.getY();
                     mLastX = event.getX();
                     v.performClick();
-                }
-                else if(event.getAction() == MotionEvent.ACTION_UP
+                } else if (event.getAction() == MotionEvent.ACTION_UP
                         || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     mFingerJustTapped = false;
                     mVerticalScrolling = false;
@@ -116,11 +113,10 @@ public class WaitTimesComponent {
         mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
 
-        if(mSwipeData.size() == 0) {
+        if (mSwipeData.size() == 0) {
             mShowWaitTimes = false;
             toggleShowWaitTimesChart();
-        }
-        else {
+        } else {
             this.setupWaitTimesChart(context);
         }
     }
@@ -177,22 +173,21 @@ public class WaitTimesComponent {
             public void onValueSelected(Entry e, Highlight h) {
                 // We want to make sure that if the user is scrolling vertically, we remove
                 // any interactions with the bar chart
-                if(mVerticalScrolling && e != mLastEntry) {
+                if (mVerticalScrolling && e != mLastEntry) {
                     // If scrolling - reset the highlight and update the highlight with the
                     // highlight from before
                     mWaitTimesChart.highlightValue(null);
-                    if(mLastEntry == null) {
+                    if (mLastEntry == null) {
                         mWaitTimesChart.highlightValue(LocalTime.now().getHour() - 6, 0);
-                    }
-                    else {
+                    } else {
                         mWaitTimesChart.highlightValue(mLastEntry.getX(), 0);
                     }
-                }
-                else {
+                } else {
                     updateMarkerAtEntry(e);
                     mLastEntry = e;
                 }
             }
+
             @Override
             public void onNothingSelected() {
                 if (mLastEntry == null) {

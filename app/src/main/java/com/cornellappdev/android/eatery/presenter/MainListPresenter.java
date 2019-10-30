@@ -6,7 +6,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import com.cornellappdev.android.eatery.network.NetworkUtilities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,16 +32,16 @@ public class MainListPresenter {
         return rInstance.getDisplayCTown();
     }
 
+    public void setDisplayCTown(boolean displayCTown) {
+        rInstance.setDisplayCTown(displayCTown);
+    }
+
     public ArrayList<EateryBaseModel> getEateryList() {
         return rInstance.getEateryList();
     }
 
     public ArrayList<EateryBaseModel> getCtEateryList() {
         return rInstance.getCtEateryList();
-    }
-
-    public void setDisplayCTown(boolean displayCTown) {
-        rInstance.setDisplayCTown(displayCTown);
     }
 
     public void setPaymentSet(HashSet<PaymentMethod> paymentSet) {
@@ -95,7 +94,7 @@ public class MainListPresenter {
             // only used for ctown eateries
             boolean categoryFuzzyMatches = mCategorySet.isEmpty()
                     || (model instanceof CollegeTownModel && isUnderCategory(model));
-            
+
             if (!model.isCtEatery() && areaFuzzyMatches && paymentFuzzyMatches) {
                 model.setMatchesFilter(true);
             } else if (model.isCtEatery() && categoryFuzzyMatches) {

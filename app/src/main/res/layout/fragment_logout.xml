@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/logout_frame_layout"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".loginviews.LogoutFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logout_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".loginviews.LogoutFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -18,25 +18,25 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingExtra="3sp"
-                android:paddingStart="25dp"
-                android:paddingTop="30dp"
-                android:paddingEnd="25dp"
-                android:paddingBottom="20dp"
-                android:text="Settings"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/account_info_header_text_size"
-                android:textStyle="bold"/>
             <RelativeLayout
                 android:id="@+id/about_segway"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:paddingTop="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingEnd="30dp">
+
+                    <View
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/ic_right_arrow" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/about"
                     android:layout_width="wrap_content"
@@ -52,20 +52,7 @@
                     android:text="@string/about"
                     android:textAllCaps="false"
                     android:textColor="@color/primary"
-                    android:textSize="@dimen/account_info_attributes_text_size"
-                />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:paddingEnd="30dp"
-                >
-                    <View
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:background="@drawable/ic_right_arrow"
-                    />
-                </LinearLayout>
+                    android:textSize="@dimen/account_info_attributes_text_size" />
 
             </RelativeLayout>
 
@@ -73,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
+
                 <Button
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
@@ -80,18 +68,31 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="18dp"
                     android:layout_marginEnd="18dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:paddingTop="15dp"
                     android:paddingBottom="15dp"
-                    android:background="?android:attr/selectableItemBackground"
                     android:text="@string/logout_label"
                     android:textAllCaps="true"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/account_info_attributes_text_size"
-                    android:textStyle="bold"
-                />
+                    android:textStyle="bold" />
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:lineSpacingExtra="3sp"
+                android:paddingStart="25dp"
+                android:paddingTop="30dp"
+                android:paddingEnd="25dp"
+                android:paddingBottom="20dp"
+                android:text="Settings"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/account_info_header_text_size"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

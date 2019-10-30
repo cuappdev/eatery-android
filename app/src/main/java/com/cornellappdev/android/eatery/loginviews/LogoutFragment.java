@@ -1,9 +1,6 @@
 package com.cornellappdev.android.eatery.loginviews;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +13,12 @@ import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
+
 import java.io.IOException;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * This fragment is the page reached upon clicking the gear icon in the upper right of
@@ -32,7 +34,7 @@ public class LogoutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_logout, container, false);
         mLogoutButton = rootView.findViewById(R.id.logout);
 

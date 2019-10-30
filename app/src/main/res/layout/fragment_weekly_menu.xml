@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                               xmlns:tools="http://schemas.android.com/tools"
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent"
-                               tools:context=".WeeklyMenuFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WeeklyMenuFragment">
 
     <LinearLayout
         android:id="@+id/lin_date"
@@ -24,7 +24,7 @@
             android:padding="5dp"
             android:text="01"
             android:textColor="@color/primary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date1"
@@ -35,7 +35,7 @@
             android:padding="5dp"
             android:text="02"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date2"
@@ -46,7 +46,7 @@
             android:padding="5dp"
             android:text="03"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date3"
@@ -57,7 +57,7 @@
             android:padding="5dp"
             android:text="04"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date4"
@@ -68,7 +68,7 @@
             android:padding="5dp"
             android:text="05"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date5"
@@ -79,7 +79,7 @@
             android:padding="5dp"
             android:text="06"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date6"
@@ -90,7 +90,7 @@
             android:padding="5dp"
             android:text="07"
             android:textColor="@color/secondary"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,7 +113,7 @@
             android:padding="10dp"
             android:text="Breakfast"
             android:textAllCaps="true"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/lunch"
@@ -125,7 +125,7 @@
             android:padding="10dp"
             android:text="Lunch"
             android:textAllCaps="true"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/dinner"
@@ -137,7 +137,7 @@
             android:padding="10dp"
             android:text="Dinner"
             android:textAllCaps="true"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ScrollView
@@ -164,14 +164,7 @@
                 android:text="West Campus"
                 android:textColor="@color/primary"
                 android:textSize="30dp"
-                android:textStyle="bold"/>
-
-            <com.cornellappdev.android.eatery.components.NonScrollExpandableListView
-                android:id="@+id/expandablelistview_west"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:dividerHeight="0dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/north_header"
@@ -184,14 +177,7 @@
                 android:text="North Campus"
                 android:textColor="@color/primary"
                 android:textSize="30sp"
-                android:textStyle="bold"/>
-
-            <com.cornellappdev.android.eatery.components.NonScrollExpandableListView
-                android:id="@+id/expandablelistview_north"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:dividerHeight="0dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/central_header"
@@ -204,14 +190,28 @@
                 android:text="Central Campus"
                 android:textColor="@color/primary"
                 android:textSize="30dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
+            <com.cornellappdev.android.eatery.components.NonScrollExpandableListView
+                android:id="@+id/expandablelistview_north"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:dividerHeight="0dp" />
+
+            <com.cornellappdev.android.eatery.components.NonScrollExpandableListView
+                android:id="@+id/expandablelistview_west"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:dividerHeight="0dp" />
 
             <com.cornellappdev.android.eatery.components.NonScrollExpandableListView
                 android:id="@+id/expandablelistview_central"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@null"
-                android:dividerHeight="0dp"/>
+                android:dividerHeight="0dp" />
         </LinearLayout>
     </ScrollView>
 </android.widget.RelativeLayout>

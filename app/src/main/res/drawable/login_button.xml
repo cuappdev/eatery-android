@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners
-        android:radius="4dp"
-        />
-    <solid
-        android:color="@color/blue"/>
+    <corners android:radius="4dp" />
+    <padding
+        android:bottom="0dp"
+        android:left="0dp"
+        android:right="0dp"
+        android:top="0dp" />
 
     //draws a blue button, not a washed button like the other button in drawable
-    <padding
-        android:left="0dp"
-        android:top="0dp"
-        android:right="0dp"
-        android:bottom="0dp"
-        />
+    <solid android:color="@color/blue" />
 </shape>

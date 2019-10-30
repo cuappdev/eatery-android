@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item
-    android:id="@+id/action_home"
-    android:enabled="true"
-    android:icon="@drawable/ic_eatery"
-    android:title="Eateries"
-    app:showAsAction="ifRoom|withText" />
-  <item
-    android:id="@+id/action_week"
-    android:enabled="true"
-    android:icon="@drawable/ic_menu"
-    android:title="Weekly Menu"
-    app:showAsAction="ifRoom|withText" />
-  <item
-    android:id="@+id/action_brb"
-    android:enabled="true"
-    android:icon="@drawable/ic_user"
-    android:title="About"
-    app:showAsAction="ifRoom|withText" />
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_eatery"
+        android:title="Eateries"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_week"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu"
+        android:title="Weekly Menu"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_brb"
+        android:enabled="true"
+        android:icon="@drawable/ic_user"
+        android:title="About"
+        app:showAsAction="ifRoom|withText" />
 </menu>
