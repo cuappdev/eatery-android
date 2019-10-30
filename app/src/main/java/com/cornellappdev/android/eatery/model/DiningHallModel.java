@@ -43,15 +43,6 @@ public class DiningHallModel extends CampusModel implements Serializable {
         return model;
     }
 
-    private HashMap<MealType, Interval> getMealIntervals() {
-        HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
-        for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
-            Interval i = mealModel.getInterval();
-            mealIntervalMap.put(mealModel.getType(), i);
-        }
-        return mealIntervalMap;
-    }
-
     // NOTE (yanlam): should probably move this somewhere else, but not sure where.
     /** compareTimes(t1, t2) returns:
      *      -1 if time of t1 comes before t2
@@ -70,6 +61,19 @@ public class DiningHallModel extends CampusModel implements Serializable {
             return 1;
         }
         return 0;
+    }
+
+    /**
+     * getMealIntervals() returns a HashMap of all possible MealTypes and the corresponding
+     * time intervals.
+     * */
+    private HashMap<MealType, Interval> getMealIntervals() {
+        HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
+        for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
+            Interval i = mealModel.getInterval();
+            mealIntervalMap.put(mealModel.getType(), i);
+        }
+        return mealIntervalMap;
     }
 
     /**
