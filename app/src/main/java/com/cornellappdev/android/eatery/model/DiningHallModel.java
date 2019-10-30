@@ -51,8 +51,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
     private HashMap<MealType, Interval> getMealIntervals() {
         HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
         for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
-            Interval i = mealModel.getInterval();
-            mealIntervalMap.put(mealModel.getType(), i);
+            mealIntervalMap.put(mealModel.getType(), mealModel.getInterval());
         }
         return mealIntervalMap;
     }
@@ -71,20 +70,20 @@ public class DiningHallModel extends CampusModel implements Serializable {
         HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
         Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
         // Dinner - always last option.
-        if (isBeforeMealType(MealType.DINNER, mealIntervalKeys, getMealIntervals())) {
+        if (isBeforeMealType(MealType.DINNER, mealIntervalKeys, mealIntervalMap)) {
             mealTypeTabIndex = mealIntervalKeys.size() - 1;
         }
         // Either last or second-to-last option, depending if dinner exists.
-        if (isBeforeMealType(MealType.LUNCH, mealIntervalKeys, getMealIntervals())) {
+        if (isBeforeMealType(MealType.LUNCH, mealIntervalKeys, mealIntervalMap)) {
             int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
             mealTypeTabIndex = mealIntervalKeys.size() + offset;
         }
         // Either first or second option, depending if breakfast exists.
-        if (isBeforeMealType(MealType.BRUNCH, mealIntervalKeys, getMealIntervals())) {
+        if (isBeforeMealType(MealType.BRUNCH, mealIntervalKeys, mealIntervalMap)) {
             mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
         }
         // Always first option.
-        if (isBeforeMealType(MealType.BREAKFAST, mealIntervalKeys, getMealIntervals())) {
+        if (isBeforeMealType(MealType.BREAKFAST, mealIntervalKeys, mealIntervalMap)) {
             mealTypeTabIndex = 0;
         }
         return mealTypeTabIndex;
