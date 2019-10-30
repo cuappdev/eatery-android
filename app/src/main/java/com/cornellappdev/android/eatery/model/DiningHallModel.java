@@ -1,7 +1,6 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
@@ -17,6 +16,7 @@ import java.time.format.DateTimeFormatterBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,59 +57,36 @@ public class DiningHallModel extends CampusModel implements Serializable {
         return mealIntervalMap;
     }
 
+    public boolean isBeforeMealType(MealType mealType, Set<MealType> set, HashMap<MealType, Interval> map) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return set.contains(mealType) && currentTime.compareTo(map.get(mealType).getEnd()) < 0;
+    }
+
     /**
      * getCurrentMealTypeTabIndex() returns the menu tab index to be displayed, based on the
      * current time. Note that this does NOT represent the index of the corresponding MealType enum.
      * */
     public int getCurrentMealTypeTabIndex() {
-        int mealTypeIndex = 4; // Index corresponding to mealType enum.
         int mealTypeTabIndex = 0; // Tab index to return.
         HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
         Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
-        LocalDateTime currentTime = LocalDateTime.now();
-        Log.i("qwerty", "mealIntervalKeys: " + mealIntervalKeys);
-        for(MealType mt: mealIntervalKeys) {
-            Interval i = mealIntervalMap.get(mt);
-            Log.i("qwerty", "currentTime: " + currentTime + ", start: " + i.getStart());
-            Log.i("qwerty", "compareTimes: " + currentTime.compareTo(i.getEnd()));
-            // Account for absences in mealTypes (ie. no brunch, etc).
-            switch (mt) {
-                case DINNER:
-                    // Always last option.
-                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
-                        Log.i("qwerty", "Pass dinner");
-                        mealTypeTabIndex = mealIntervalKeys.size() - 1;
-                        mealTypeIndex = 4;
-                    }
-                    break;
-                case LUNCH:
-                    // Either last or second-to-last option, depending if dinner exists.
-                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
-                        Log.i("qwerty", "Pass lunch");
-                        int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
-                        mealTypeTabIndex = mealIntervalKeys.size() + offset;
-                        mealTypeIndex = 3;
-                    }
-                    break;
-                case BRUNCH:
-                    // Either first or second option, depending if breakfast exists.
-                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
-                        Log.i("qwerty", "Pass brunch");
-                        mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
-                        mealTypeIndex = 2;
-                    }
-                    break;
-                case BREAKFAST:
-                    // Always first option.
-                    if (currentTime.compareTo(i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
-                        Log.i("qwerty", "Pass breakfast");
-                        mealTypeTabIndex = 0;
-                        mealTypeIndex = 1;
-                    }
-                    break;
-            }
+        // Dinner - always last option.
+        if (isBeforeMealType(MealType.DINNER, mealIntervalKeys, getMealIntervals())) {
+            mealTypeTabIndex = mealIntervalKeys.size() - 1;
         }
-        Log.i("qwerty", "mealTypeIndex: " + mealTypeTabIndex);
+        // Either last or second-to-last option, depending if dinner exists.
+        if (isBeforeMealType(MealType.LUNCH, mealIntervalKeys, getMealIntervals())) {
+            int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
+            mealTypeTabIndex = mealIntervalKeys.size() + offset;
+        }
+        // Either first or second option, depending if breakfast exists.
+        if (isBeforeMealType(MealType.BRUNCH, mealIntervalKeys, getMealIntervals())) {
+            mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
+        }
+        // Always first option.
+        if (isBeforeMealType(MealType.BREAKFAST, mealIntervalKeys, getMealIntervals())) {
+            mealTypeTabIndex = 0;
+        }
         return mealTypeTabIndex;
     }
 
