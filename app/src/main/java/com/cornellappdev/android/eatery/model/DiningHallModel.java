@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatterBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +44,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
     }
 
     /**
-     * getMealIntervals() returns a HashMap of all possible MealTypes and the corresponding
+     * getMealIntervals returns a HashMap of all possible MealTypes and the corresponding
      * time intervals.
      * */
     private HashMap<MealType, Interval> getMealIntervals() {
@@ -56,13 +55,15 @@ public class DiningHallModel extends CampusModel implements Serializable {
         return mealIntervalMap;
     }
 
+    /**
+     * isBeforeMealType returns true if the current time comes before mealType. Otherwise, returns false.
+     * */
     public boolean isBeforeMealType(MealType mealType, Set<MealType> set, HashMap<MealType, Interval> map) {
-        LocalDateTime currentTime = LocalDateTime.now();
-        return set.contains(mealType) && currentTime.compareTo(map.get(mealType).getEnd()) < 0;
+        return set.contains(mealType) && LocalDateTime.now().compareTo(map.get(mealType).getEnd()) < 0;
     }
 
     /**
-     * getCurrentMealTypeTabIndex() returns the menu tab index to be displayed, based on the
+     * getCurrentMealTypeTabIndex returns the menu tab index to be displayed, based on the
      * current time. Note that this does NOT represent the index of the corresponding MealType enum.
      * */
     public int getCurrentMealTypeTabIndex() {
