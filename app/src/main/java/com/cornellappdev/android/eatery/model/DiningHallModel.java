@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
@@ -88,20 +89,25 @@ public class DiningHallModel extends CampusModel implements Serializable {
         HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
         Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
         LocalDateTime currentTime = LocalDateTime.now();
+        Log.i("qwerty", "mealIntervalKeys: " + mealIntervalKeys);
         for(MealType mt: mealIntervalKeys) {
             Interval i = mealIntervalMap.get(mt);
+            Log.i("qwerty", "currentTime: " + currentTime + ", start: " + i.getStart());
+            Log.i("qwerty", "compareTimes: " + compareTimes(currentTime, i.getStart()));
             // Account for absences in mealTypes (ie. no brunch, etc).
             switch (mt) {
                 case DINNER:
                     // Always last option.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                        Log.i("qwerty", "Pass dinner");
                         mealTypeTabIndex = mealIntervalKeys.size() - 1;
                         mealTypeIndex = 4;
                     }
                     break;
                 case LUNCH:
                     // Either last or second-to-last option, depending if dinner exists.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                        Log.i("qwerty", "Pass lunch");
                         int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
                         mealTypeTabIndex = mealIntervalKeys.size() + offset;
                         mealTypeIndex = 3;
@@ -109,20 +115,23 @@ public class DiningHallModel extends CampusModel implements Serializable {
                     break;
                 case BRUNCH:
                     // Either first or second option, depending if breakfast exists.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                        Log.i("qwerty", "Pass brunch");
                         mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
                         mealTypeIndex = 2;
                     }
                     break;
                 case BREAKFAST:
                     // Always first option.
-                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex >= mt.getIndex()) {
+                        Log.i("qwerty", "Pass breakfast");
                         mealTypeTabIndex = 0;
                         mealTypeIndex = 1;
                     }
                     break;
             }
         }
+        Log.i("qwerty", "mealTypeIndex: " + mealTypeTabIndex);
         return mealTypeTabIndex;
     }
 
