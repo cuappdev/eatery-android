@@ -50,14 +50,16 @@ public class DiningHallModel extends CampusModel implements Serializable {
      *      1 if t1 comes after t2
      */
     public static int compareTimes(LocalDateTime t1, LocalDateTime t2) {
+        boolean hoursEqual = t1.getHour() == t2.getHour();
+        boolean minutesEqual = t1.getMinute() == t2.getMinute();
         if (t1.getHour() < t2.getHour()
-                && t1.getMinute() < t2.getMinute()
-                && t1.getSecond() < t2.getSecond()) {
+                || (hoursEqual && t1.getMinute() < t2.getMinute())
+                || (hoursEqual && minutesEqual && t1.getSecond() < t2.getSecond())) {
             return -1;
         }
         if (t1.getHour() > t2.getHour()
-                && t1.getMinute() > t2.getMinute()
-                && t1.getSecond() > t2.getSecond()) {
+                || (hoursEqual && t1.getMinute() > t2.getMinute())
+                || (hoursEqual && minutesEqual &&t1.getSecond() > t2.getSecond())) {
             return 1;
         }
         return 0;
@@ -81,39 +83,47 @@ public class DiningHallModel extends CampusModel implements Serializable {
      * current time. Note that this does NOT represent the index of the corresponding MealType enum.
      * */
     public int getCurrentMealTypeTabIndex() {
-        int mealTypeIndex = 0;
+        int mealTypeIndex = 4; // Index corresponding to mealType enum.
+        int mealTypeTabIndex = 0; // Tab index to return.
         HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
         Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
         LocalDateTime currentTime = LocalDateTime.now();
         for(MealType mt: mealIntervalKeys) {
             Interval i = mealIntervalMap.get(mt);
-            // Must keep order of switch statement for fall through.
             // Account for absences in mealTypes (ie. no brunch, etc).
             switch (mt) {
                 case DINNER:
                     // Always last option.
-                    if (compareTimes(currentTime, i.getStart()) == -1) {
-                        mealTypeIndex = mealIntervalKeys.size() - 1;
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                        mealTypeTabIndex = mealIntervalKeys.size() - 1;
+                        mealTypeIndex = 4;
                     }
+                    break;
                 case LUNCH:
                     // Either last or second-to-last option, depending if dinner exists.
-                    if (compareTimes(currentTime, i.getStart()) == -1) {
-                        int offset = mealIntervalKeys.contains(MealType.DINNER) ? -1 : 0;
-                        mealTypeIndex = mealIntervalKeys.size() + offset;
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                        int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
+                        mealTypeTabIndex = mealIntervalKeys.size() + offset;
+                        mealTypeIndex = 3;
                     }
+                    break;
                 case BRUNCH:
                     // Either first or second option, depending if breakfast exists.
-                    if (compareTimes(currentTime, i.getStart()) == -1) {
-                        mealTypeIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                        mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
+                        mealTypeIndex = 2;
                     }
+                    break;
                 case BREAKFAST:
                     // Always first option.
-                    if (compareTimes(currentTime, i.getStart()) == -1) {
-                        mealTypeIndex = 0;
+                    if (compareTimes(currentTime, i.getEnd()) == -1 && mealTypeIndex > mt.getIndex()) {
+                        mealTypeTabIndex = 0;
+                        mealTypeIndex = 1;
                     }
+                    break;
             }
         }
-        return mealTypeIndex;
+        return mealTypeTabIndex;
     }
 
     public DailyMenuModel getCurrentDayMenu() {
