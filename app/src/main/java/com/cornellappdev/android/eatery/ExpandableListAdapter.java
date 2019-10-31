@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import androidx.core.content.ContextCompat;
 import android.text.SpannableString;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,9 +18,8 @@ import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
 
 /**
  * This class is used in WeeklyMenuActivity, where it displays the
@@ -82,7 +82,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int diningHallNumber, boolean isExpanded, View view,
-                             ViewGroup viewGroup) {
+            ViewGroup viewGroup) {
         // Displays header for explistview
         if (view == null) {
             // Inflate layout if it does not exist already
@@ -122,7 +122,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int diningHallNumber, int menuItemNumber, boolean isLastChild,
-                             View view, ViewGroup viewGroup) {
+            View view, ViewGroup viewGroup) {
         // Inflate layout if it does not exist already
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) this.mContext.getSystemService(

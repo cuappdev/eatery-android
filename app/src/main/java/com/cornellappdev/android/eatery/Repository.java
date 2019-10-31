@@ -26,28 +26,28 @@ public class Repository {
         this.mEateryList = eateryList;
     }
 
-    public ArrayList<EateryBaseModel> getCtEateryList() {
-        return mCollegetownEateryList;
-    }
-
     public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
         this.mCollegetownEateryList = ctEateryList;
     }
 
-    public ArrayList<EateryBaseModel> getSearchList() {
-        return mSearchList;
+    public ArrayList<EateryBaseModel> getCtEateryList() {
+        return mCollegetownEateryList;
     }
 
     public void setSearchList(ArrayList<EateryBaseModel> searchList) {
         this.mSearchList = searchList;
     }
 
-    public boolean getDisplayCTown() {
-        return mDisplayingCTown;
-    }
-
     public void setDisplayCTown(boolean displayCTown) {
         this.mDisplayingCTown = displayCTown;
+    }
+
+    public ArrayList<EateryBaseModel> getSearchList() {
+        return mSearchList;
+    }
+
+    public boolean getDisplayCTown() {
+        return mDisplayingCTown;
     }
 
     public boolean getIsSearchPressed() {

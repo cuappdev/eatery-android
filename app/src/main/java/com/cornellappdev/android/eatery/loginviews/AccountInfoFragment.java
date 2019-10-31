@@ -1,6 +1,9 @@
 package com.cornellappdev.android.eatery.loginviews;
 
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,10 +17,6 @@ import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 /**
  * This class is the redirected page after LoginFragment, and displays a user's account info along
@@ -35,7 +34,7 @@ public class AccountInfoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_account_info, container, false);
         mHistoryView = rootView.findViewById(R.id.purchase_history);
         mInfoHeader = inflater.inflate(R.layout.account_info_header, null);

@@ -13,7 +13,7 @@ public class BrbInfoModel implements Serializable {
     private ArrayList<HistoryObjectModel> mHistory;
 
     public BrbInfoModel(float cityBucks, float laundry, float brbs,
-                        int mealSwipes, ArrayList<HistoryObjectModel> history) {
+            int mealSwipes, ArrayList<HistoryObjectModel> history) {
         this.mCityBucks = cityBucks;
         this.mLaundry = laundry;
         this.mBRBs = brbs;

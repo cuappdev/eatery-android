@@ -17,9 +17,11 @@ public enum Category {
     public static Category fromShortDescription(String category) {
         if (category.toLowerCase().contains("coffee")) {
             return Coffee;
-        } else if (category.toLowerCase().contains("american")) {
+        }
+        else if (category.toLowerCase().contains("american")) {
             return American;
-        } else {
+        }
+        else {
             switch (category.toLowerCase()) {
                 case "burgers":
                     return American;

@@ -5,12 +5,13 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.Category;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
     }
 
     public static CollegeTownModel fromEatery(Context context,
-                                              AllCtEateriesQuery.CollegetownEatery ctEatery) {
+            AllCtEateriesQuery.CollegetownEatery ctEatery) {
         CollegeTownModel model = new CollegeTownModel();
         model.parseCtEatery(context, ctEatery);
         return model;
@@ -147,9 +148,9 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
         mPrice = ctEatery.price();
         mRating = ctEatery.rating();
         mYelpUrl = ctEatery.url();
-        for (String category : mCategories) {
+        for(String category : mCategories) {
             Category eateryCategory = Category.fromShortDescription(category);
-            if (eateryCategory != null) {
+            if(eateryCategory != null) {
                 mCategoryList.add(eateryCategory);
             }
         }

@@ -9,12 +9,18 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 // Parent class of DiningHallModel and CafeModel
 public abstract class CampusModel extends EateryBaseModel implements Serializable {
     private List<Swipe> mSwipeDataList;
+
+    public void parseEatery(Context context, boolean hardcoded, AllEateriesQuery.Eatery eatery) {
+        super.parseEatery(context, hardcoded, eatery);
+        mSwipeDataList = parseSwipeData(eatery.swipeData());
+    }
 
     protected static List<Swipe> parseSwipeData(List<AllEateriesQuery.SwipeDatum> swipeData) {
         List<Swipe> swipes = new ArrayList<Swipe>();
@@ -29,14 +35,9 @@ public abstract class CampusModel extends EateryBaseModel implements Serializabl
             end = LocalTime.parse(swipeDatum.endTime().toUpperCase().substring(11),
                     timeFormatter);
             swipes.add(new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
-                    swipeDatum.waitTimeHigh()));
+                            swipeDatum.waitTimeHigh()));
         }
         return swipes;
-    }
-
-    public void parseEatery(Context context, boolean hardcoded, AllEateriesQuery.Eatery eatery) {
-        super.parseEatery(context, hardcoded, eatery);
-        mSwipeDataList = parseSwipeData(eatery.swipeData());
     }
 
     public List<Swipe> getSwipeData() {

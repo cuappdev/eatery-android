@@ -42,7 +42,7 @@ public class GetLoginUtilities {
                 try {
                     // Cache data internally
                     InternalStorage.writeObject(c, CacheType.BRB, model);
-                } catch (IOException e) {
+                } catch(IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -66,7 +66,7 @@ public class GetLoginUtilities {
     }
 
     public static void webLogin(String url, WebView loadedPage,
-                                GetLoginUtilities.getLoginCallback callback) {
+            GetLoginUtilities.getLoginCallback callback) {
         if (!mEvaluatedJS) {
             loadedPage.evaluateJavascript(loginJS, (String s) -> {
                 mEvaluatedJS = true;

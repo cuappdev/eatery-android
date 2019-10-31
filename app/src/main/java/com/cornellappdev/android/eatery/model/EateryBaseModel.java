@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
@@ -10,15 +11,13 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.time.LocalDateTime;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 

@@ -8,8 +8,6 @@ import com.cornellappdev.android.eatery.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +15,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.TemporalAdjusters;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -64,7 +64,7 @@ public class CafeModel extends CampusModel implements Serializable {
     }
 
     public static CafeModel fromEatery(Context context, boolean hardcoded,
-                                       AllEateriesQuery.Eatery cafe) {
+            AllEateriesQuery.Eatery cafe) {
         CafeModel model = new CafeModel();
         model.parseEatery(context, hardcoded, cafe);
         return model;
@@ -118,7 +118,7 @@ public class CafeModel extends CampusModel implements Serializable {
 
     @Override
     public HashSet<String> getMealItems() {
-        return new HashSet<>(mCafeMenu);
+            return new HashSet<>(mCafeMenu);
 
     }
 
@@ -232,7 +232,7 @@ public class CafeModel extends CampusModel implements Serializable {
                     DayOfWeek end = DayOfWeek.valueOf(rawEnd);
                     DayOfWeek endPlusOne = end.plus(1);
                     for (DayOfWeek current = start; !current.equals(endPlusOne);
-                         current = current.plus(1)) {
+                            current = current.plus(1)) {
                         LocalDate nextLocalDateOfCurrent = localDate
                                 .with(TemporalAdjusters.nextOrSame(current));
                         localDates.add(nextLocalDateOfCurrent);

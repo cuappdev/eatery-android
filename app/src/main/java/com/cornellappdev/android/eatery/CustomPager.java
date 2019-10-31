@@ -1,10 +1,9 @@
-package com.cornellappdev.android.eatery.components;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
-
-import androidx.viewpager.widget.ViewPager;
 
 public class CustomPager extends ViewPager {
     private View mCurrentView;
