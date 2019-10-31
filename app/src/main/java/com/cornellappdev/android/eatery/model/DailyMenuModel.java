@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery.model;
 
+import androidx.annotation.NonNull;
+
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import java.io.Serializable;
@@ -8,8 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
 
 public class DailyMenuModel implements Iterable<MealType>, Serializable {
     private Map<MealType, MealModel> mMenu = new HashMap<>();

@@ -2,6 +2,9 @@ package com.cornellappdev.android.eatery.loginviews;
 
 import android.content.Context;
 import android.os.Bundle;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
  * input their netid and password to view their account information. Upon a successful login,
@@ -48,7 +47,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         Context currContext = getContext();
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
@@ -124,7 +123,8 @@ public class LoginFragment extends Fragment {
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
                         mAccountPresenter.setLoggingIn(false);
                         resumeGUI();
-                    } else {
+                    }
+                    else {
                         mAccountPresenter.setBrbModel(model);
                         mAccountPresenter.setLoggingIn(false);
                         // If user is still viewing this fragment

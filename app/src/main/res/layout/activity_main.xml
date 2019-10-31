@@ -12,18 +12,6 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize" />
 
-    <WebView
-        android:id="@+id/login_webview"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/dummy_map"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:paddingTop="20dp" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -34,5 +22,17 @@
         app:itemTextColor="@color/bnv_tab_item_foreground"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_nav_main" />
+
+    <WebView
+        android:id="@+id/login_webview"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/dummy_map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="20dp"
+        android:background="@color/white"
+    />
 
 </android.widget.RelativeLayout>

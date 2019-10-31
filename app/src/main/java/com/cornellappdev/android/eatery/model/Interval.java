@@ -1,9 +1,10 @@
 package com.cornellappdev.android.eatery.model;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 
-import androidx.annotation.NonNull;
+import java.io.Serializable;
 
 /**
  * Helper class to represent serving time interval for each meal

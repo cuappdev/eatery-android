@@ -2,6 +2,20 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.cornellappdev.android.eatery.components.WaitTimesComponent;
+import com.cornellappdev.android.eatery.model.CampusModel;
+import com.cornellappdev.android.eatery.model.Swipe;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,32 +24,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cornellappdev.android.eatery.components.CustomPager;
-import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CafeModel;
-import com.cornellappdev.android.eatery.model.CampusModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.MealModel;
-import com.cornellappdev.android.eatery.model.Swipe;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import com.cornellappdev.android.eatery.presenter.MenuPresenter;
 import com.cornellappdev.android.eatery.util.TimeUtil;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.tabs.TabLayout;
+import com.cornellappdev.android.eatery.presenter.MenuPresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -49,7 +48,6 @@ public class CampusMenuActivity extends AppCompatActivity {
     Toolbar mToolbar;
     AppBarLayout mAppbar;
     CollapsingToolbarLayout mCollapsingToolbar;
-    NestedScrollView mScrollView;
     private TabLayout mTabLayout;
     private CustomPager mCustomPager;
     private WaitTimesComponent mWaitTimesComponent;
@@ -72,7 +70,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         Picasso.get()
                 .load(imageUrl)
                 .noFade()
-                .into((ImageView) findViewById(R.id.ind_image));
+                .into((ImageView)findViewById(R.id.ind_image));
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -145,7 +143,6 @@ public class CampusMenuActivity extends AppCompatActivity {
             mSwipeIcon.setVisibility(View.VISIBLE);
         }
 
-        mScrollView = findViewById(R.id.controlled_scroll_view);
         mCustomPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
@@ -228,11 +225,11 @@ public class CampusMenuActivity extends AppCompatActivity {
     private void setupWaitTimes() {
         // Fetch wait time data for this model
         List<Swipe> waitTimes = mMenuPresenter.getWaitTimes();
-        if (waitTimes == null) return;
+        if(waitTimes == null) return;
         // Create and load wait times chart.
         mWaitTimesComponent = new WaitTimesComponent(waitTimes);
         mWaitTimesHolder = findViewById(R.id.wait_times_frame);
-        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder, mScrollView);
+        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder);
     }
 
     private void setupViewPager(CustomPager customPager) {

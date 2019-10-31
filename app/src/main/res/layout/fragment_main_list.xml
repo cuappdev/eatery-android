@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainListFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".MainListFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,26 +24,26 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingBottom="8dp">
-                <!--            TODO: Add nearest first button back when functionality is implemented.-->
-                <!--                <Button-->
-                <!--                    android:id="@+id/nearestFirstButton"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_marginLeft="8dp"-->
-                <!--                    android:layout_marginTop="15dp"-->
-                <!--                    android:layout_marginBottom="8dp"-->
-                <!--                    android:background="@drawable/button"-->
-                <!--                    android:elevation="4dp"-->
-                <!--                    android:fontFamily="sans-serif-medium"-->
-                <!--                    android:gravity="center_horizontal"-->
-                <!--                    android:minWidth="75dp"-->
-                <!--                    android:padding="8dp"-->
-                <!--                    android:stateListAnimator="@null"-->
-                <!--                    android:text="Nearest First"-->
-                <!--                    android:textAllCaps="false"-->
-                <!--                    android:textColor="@color/blue"-->
-                <!--                    android:textSize="16sp"-->
-                <!--                    android:textStyle="normal"/>-->
+<!--            TODO: Add nearest first button back when functionality is implemented.-->
+<!--                <Button-->
+<!--                    android:id="@+id/nearestFirstButton"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_marginLeft="8dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:layout_marginBottom="8dp"-->
+<!--                    android:background="@drawable/button"-->
+<!--                    android:elevation="4dp"-->
+<!--                    android:fontFamily="sans-serif-medium"-->
+<!--                    android:gravity="center_horizontal"-->
+<!--                    android:minWidth="75dp"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:stateListAnimator="@null"-->
+<!--                    android:text="Nearest First"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/blue"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="normal"/>-->
 
                 <Button
                     android:id="@+id/northButton"
@@ -63,7 +63,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"/>
 
                 <Button
                     android:id="@+id/westButton"
@@ -83,7 +83,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"/>
 
                 <Button
                     android:id="@+id/centralButton"
@@ -103,7 +103,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"/>
 
                 <Button
                     android:id="@+id/swipes"
@@ -123,7 +123,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"/>
 
                 <Button
                     android:id="@+id/brb"
@@ -144,7 +144,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     android:textSize="16sp"
-                    android:textStyle="normal" />
+                    android:textStyle="normal"/>
 
                 <Button
                     android:id="@+id/american"
@@ -165,7 +165,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/chinese"
@@ -186,7 +186,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/coffee"
@@ -207,7 +207,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/desserts"
@@ -228,7 +228,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/grocery"
@@ -249,7 +249,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/indian"
@@ -270,7 +270,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/italian"
@@ -291,7 +291,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/japanese"
@@ -312,7 +312,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/korean"
@@ -333,7 +333,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/mediterranean"
@@ -354,7 +354,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/thai"
@@ -375,7 +375,7 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/vietnamese"
@@ -398,10 +398,18 @@
                     android:textColor="@color/blue"
                     android:textSize="16sp"
                     android:textStyle="normal"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cafe_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scroll"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"/>
 
         <LinearLayout
             android:id="@+id/pill_holder"
@@ -424,9 +432,8 @@
                     android:id="@+id/pill_campus"
                     android:layout_width="74dp"
                     android:layout_height="17dp"
-                    android:background="@drawable/pill_campus_active" />
+                    android:background="@drawable/pill_campus_active"/>
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/pill_ctown_holder"
                 android:layout_width="162dp"
@@ -437,16 +444,8 @@
                     android:id="@+id/pill_collegetown"
                     android:layout_width="101dp"
                     android:layout_height="17dp"
-                    android:background="@drawable/pill_ct_inactive" />
+                    android:background="@drawable/pill_ct_inactive"/>
             </LinearLayout>
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cafe_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/scroll"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false" />
     </RelativeLayout>
 </FrameLayout>

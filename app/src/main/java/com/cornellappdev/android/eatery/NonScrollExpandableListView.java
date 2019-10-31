@@ -1,4 +1,4 @@
-package com.cornellappdev.android.eatery.components;
+package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -3,14 +3,16 @@ package com.cornellappdev.android.eatery.components;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -24,11 +26,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-
 public class WaitTimesComponent {
-    private WaitTimesChart mWaitTimesChart;
+    private BarChart mWaitTimesChart;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
@@ -37,30 +36,22 @@ public class WaitTimesComponent {
 
     /**
      * mSwipeData -
-     * Should have size of 21 upon construction within CampusMenuActivity.
+     *  Should have size of 21 upon construction within CampusMenuActivity.
      * Swipe s: mSwipeData -
-     * Hour determined by index, with 0 representing start = 6am, end = 7am.
-     * start, end = null.
-     * swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
+     *  Hour determined by index, with 0 representing start = 6am, end = 7am.
+     *  start, end = null.
+     *  swipeDensity, waitTimeLow, waitTimeHigh are the maximums collected from backend data.
      */
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
-    private float mLastY;
-    private float mLastX;
-    private boolean mVerticalScrolling;
-    private boolean mFingerJustTapped;
 
     public WaitTimesComponent(List<Swipe> swipeData) {
         mSwipeData = swipeData;
-        mLastY = 0.0f;
-        mLastX = 0.0f;
-        mVerticalScrolling = false;
-        mFingerJustTapped = false;
     }
 
     // Inflates the wait times component into the passed in holder
-    public void inflateView(Context context, FrameLayout holder, NestedScrollView scrollView) {
+    public void inflateView(Context context, FrameLayout holder) {
 
         View view = View.inflate(context, R.layout.wait_times, holder);
 
@@ -76,47 +67,15 @@ public class WaitTimesComponent {
         });
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         mWaitTimesChart.setNoDataText("");
-
-        mWaitTimesChart.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mFingerJustTapped) {
-                    // Measure the yDiff directly after the tap, high y diff means motion was a
-                    // vertical swipe
-                    float yDiff = Math.abs(event.getY() - mLastY);
-                    float xDiff = Math.abs(event.getX() - mLastX);
-                    // If it was not a vertical swipe
-                    if (xDiff > yDiff) {
-                        scrollView.requestDisallowInterceptTouchEvent(true);
-                        mVerticalScrolling = false;
-                    } else {
-                        mVerticalScrolling = true;
-                    }
-                    mFingerJustTapped = false;
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mFingerJustTapped = true;
-                    mLastY = event.getY();
-                    mLastX = event.getX();
-                    v.performClick();
-                } else if (event.getAction() == MotionEvent.ACTION_UP
-                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    mFingerJustTapped = false;
-                    mVerticalScrolling = false;
-                }
-                return false;
-            }
-        });
-
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
         mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
 
-        if (mSwipeData.size() == 0) {
+        if(mSwipeData.size() == 0) {
             mShowWaitTimes = false;
             toggleShowWaitTimesChart();
-        } else {
+        }
+        else {
             this.setupWaitTimesChart(context);
         }
     }
@@ -169,25 +128,10 @@ public class WaitTimesComponent {
     private void setupWaitTimesData(Context context) {
         mWaitTimesChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
-            // This method gets called after a bar is clicked after it has been highlighted
             public void onValueSelected(Entry e, Highlight h) {
-                // We want to make sure that if the user is scrolling vertically, we remove
-                // any interactions with the bar chart
-                if (mVerticalScrolling && e != mLastEntry) {
-                    // If scrolling - reset the highlight and update the highlight with the
-                    // highlight from before
-                    mWaitTimesChart.highlightValue(null);
-                    if (mLastEntry == null) {
-                        mWaitTimesChart.highlightValue(LocalTime.now().getHour() - 6, 0);
-                    } else {
-                        mWaitTimesChart.highlightValue(mLastEntry.getX(), 0);
-                    }
-                } else {
-                    updateMarkerAtEntry(e);
-                    mLastEntry = e;
-                }
+                updateMarkerAtEntry(e);
+                mLastEntry = e;
             }
-
             @Override
             public void onNothingSelected() {
                 if (mLastEntry == null) {

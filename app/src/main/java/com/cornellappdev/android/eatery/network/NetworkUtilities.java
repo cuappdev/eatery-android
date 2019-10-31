@@ -9,7 +9,9 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.BrbInfoQuery;
+import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.MainListFragment;
+import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
@@ -152,7 +154,6 @@ public final class NetworkUtilities {
             }
         });
     }
-
     // BRB callback
     public interface BRBAccountCallback {
         // parameters can be of any types, depending on the event defined
