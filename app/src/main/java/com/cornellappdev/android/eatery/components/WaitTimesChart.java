@@ -15,7 +15,7 @@ public class WaitTimesChart extends BarChart {
     }
 
     @Override
-    public boolean performClick(){
+    public boolean performClick() {
         return super.performClick();
     }
 }

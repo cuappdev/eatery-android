@@ -11,12 +11,6 @@ import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +22,7 @@ public final class QueryUtilities {
             new HashSet<>(Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30));
 
     public static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
-            Context mainContext) {
+                                                           Context mainContext) {
         ArrayList<EateryBaseModel> eateryList = new ArrayList<EateryBaseModel>();
         for (AllEateriesQuery.Eatery eatery : eateries) {
             EateryBaseModel model = null;
@@ -51,7 +45,7 @@ public final class QueryUtilities {
     }
 
     public static ArrayList<EateryBaseModel> parseCtEateries(Context context,
-            List<AllCtEateriesQuery.CollegetownEatery> collegetowntEateries) {
+                                                             List<AllCtEateriesQuery.CollegetownEatery> collegetowntEateries) {
         ArrayList<EateryBaseModel> collegetownEateryList = new ArrayList<>();
         for (AllCtEateriesQuery.CollegetownEatery eatery : collegetowntEateries) {
             EateryBaseModel model = CollegeTownModel.fromEatery(context, eatery);

@@ -1,10 +1,9 @@
 package com.cornellappdev.android.eatery.model;
 
-import androidx.annotation.NonNull;
-
+import java.io.Serializable;
 import java.time.LocalTime;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
 
 /**
  * Helper class to represent swipe data for each dining hall
@@ -25,7 +24,7 @@ public class Swipe implements Serializable {
     }
 
     public Swipe(@NonNull LocalTime start, @NonNull LocalTime end, double swipeDensity,
-            int waitTimeLow, int waitTimeHigh) {
+                 int waitTimeLow, int waitTimeHigh) {
         this.start = start;
         this.end = end;
         this.swipeDensity = swipeDensity;
