@@ -46,7 +46,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
     /**
      * getMealIntervals returns a HashMap of all possible MealTypes and the corresponding
      * time intervals.
-     * */
+     */
     private HashMap<MealType, Interval> getMealIntervals() {
         HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
         for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
@@ -57,7 +57,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
 
     /**
      * isBeforeMealType returns true if the current time comes before mealType. Otherwise, returns false.
-     * */
+     */
     public boolean isBeforeMealType(MealType mealType, Set<MealType> set, HashMap<MealType, Interval> map) {
         return set.contains(mealType) && LocalDateTime.now().compareTo(map.get(mealType).getEnd()) < 0;
     }
@@ -65,28 +65,26 @@ public class DiningHallModel extends CampusModel implements Serializable {
     /**
      * getCurrentMealTypeTabIndex returns the menu tab index to be displayed, based on the
      * current time. Note that this does NOT represent the index of the corresponding MealType enum.
-     * */
+     */
     public int getCurrentMealTypeTabIndex() {
         int mealTypeTabIndex = 0; // Tab index to return.
         HashMap<MealType, Interval> mealIntervalMap = getMealIntervals();
         Set<MealType> mealIntervalKeys = mealIntervalMap.keySet();
-        // Dinner - always last option.
-        if (isBeforeMealType(MealType.DINNER, mealIntervalKeys, mealIntervalMap)) {
-            mealTypeTabIndex = mealIntervalKeys.size() - 1;
-        }
-        // Either last or second-to-last option, depending if dinner exists.
-        if (isBeforeMealType(MealType.LUNCH, mealIntervalKeys, mealIntervalMap)) {
+        if (isBeforeMealType(MealType.BREAKFAST, mealIntervalKeys, mealIntervalMap)) {
+            // Breakfast is always first option if it exists.
+            mealTypeTabIndex = 0;
+        } else if (isBeforeMealType(MealType.BRUNCH, mealIntervalKeys, mealIntervalMap)) {
+            // Brunch is either first or second option, depending if breakfast exists.
+            mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
+        } else if (isBeforeMealType(MealType.LUNCH, mealIntervalKeys, mealIntervalMap)) {
+            // Lunch is either last or second-to-last option, depending if dinner exists.
             int offset = mealIntervalKeys.contains(MealType.DINNER) ? -2 : -1;
             mealTypeTabIndex = mealIntervalKeys.size() + offset;
+        } else if (isBeforeMealType(MealType.DINNER, mealIntervalKeys, mealIntervalMap)) {
+            // Dinner is always last option if it exists.
+            mealTypeTabIndex = mealIntervalKeys.size() - 1;
         }
-        // Either first or second option, depending if breakfast exists.
-        if (isBeforeMealType(MealType.BRUNCH, mealIntervalKeys, mealIntervalMap)) {
-            mealTypeTabIndex = mealIntervalKeys.contains(MealType.BREAKFAST) ? 1 : 0;
-        }
-        // Always first option.
-        if (isBeforeMealType(MealType.BREAKFAST, mealIntervalKeys, mealIntervalMap)) {
-            mealTypeTabIndex = 0;
-        }
+
         return mealTypeTabIndex;
     }
 
