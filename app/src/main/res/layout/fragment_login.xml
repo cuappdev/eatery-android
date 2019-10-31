@@ -1,42 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/login_frame_layout"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".loginviews.LoginFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_frame_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".loginviews.LoginFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/descriptionText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:lineSpacingExtra="3sp"
-            android:paddingStart="25dp"
-            android:paddingTop="30dp"
-            android:paddingEnd="25dp"
-            android:text="@string/description_text_1"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/account_info_attributes_text_size"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/netIDLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingStart="20dp"
-            android:paddingTop="30dp"
-            android:paddingEnd="20dp"
-            android:text="@string/netid"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/account_info_attributes_text_size"
-            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/net_id_input"
@@ -50,19 +23,7 @@
             android:inputType="textPersonName"
             android:paddingTop="15dp"
             android:paddingBottom="20dp"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
-
-        <TextView
-            android:id="@+id/passwordLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingStart="20dp"
-            android:paddingTop="15dp"
-            android:text="@string/password"
-            android:textColor="@color/primary"
-            android:textSize="@dimen/account_info_attributes_text_size"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/account_info_attributes_text_size" />
 
         <EditText
             android:id="@+id/password_input"
@@ -77,18 +38,13 @@
             android:inputType="textPassword"
             android:paddingTop="15dp"
             android:paddingBottom="20dp"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
+            android:textSize="@dimen/account_info_attributes_text_size" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
-            <ProgressBar
-                android:id="@+id/progress_loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:translationZ="10dp"/>
+
             <Button
                 android:id="@+id/login"
                 android:layout_width="match_parent"
@@ -103,8 +59,55 @@
                 android:text="@string/login_label"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:textSize="19sp"/>
+                android:textSize="19sp" />
+
+            <ProgressBar
+                android:id="@+id/progress_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:translationZ="10dp" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/passwordLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingStart="20dp"
+            android:paddingTop="15dp"
+            android:text="@string/password"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/account_info_attributes_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/netIDLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingStart="20dp"
+            android:paddingTop="30dp"
+            android:paddingEnd="20dp"
+            android:text="@string/netid"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/account_info_attributes_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/descriptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:paddingStart="25dp"
+            android:paddingTop="30dp"
+            android:paddingEnd="25dp"
+            android:text="@string/description_text_1"
+            android:textColor="@color/primary"
+            android:textSize="@dimen/account_info_attributes_text_size"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/privacyStatement"
@@ -115,7 +118,7 @@
             android:paddingTop="25dp"
             android:text="@string/privacy_statement"
             android:textColor="@color/blue"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
+            android:textSize="@dimen/account_info_attributes_text_size" />
     </LinearLayout>
 
 

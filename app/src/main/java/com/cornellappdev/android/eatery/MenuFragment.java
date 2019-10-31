@@ -2,8 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,9 @@ import com.cornellappdev.android.eatery.model.MealMenuModel;
 import com.cornellappdev.android.eatery.model.MealModel;
 
 import java.util.ArrayList;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 public class MenuFragment extends Fragment {
     int position;

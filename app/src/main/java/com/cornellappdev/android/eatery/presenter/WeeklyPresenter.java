@@ -8,7 +8,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
 import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -48,7 +47,7 @@ public class WeeklyPresenter {
     }
 
     public HashMap<String, ArrayList<DiningHallModel>> generateAreaLists(MealType mealType,
-            LocalDate date) {
+                                                                         LocalDate date) {
         ArrayList<DiningHallModel> westList = new ArrayList<>();
         ArrayList<DiningHallModel> northList = new ArrayList<>();
         ArrayList<DiningHallModel> centralList = new ArrayList<>();

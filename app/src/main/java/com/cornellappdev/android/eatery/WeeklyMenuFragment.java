@@ -2,9 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.util.DisplayMetrics;
@@ -14,18 +11,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cornellappdev.android.eatery.components.NonScrollExpandableListView;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.presenter.WeeklyPresenter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +59,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_weekly_menu, container, false);
         mPresenter = new WeeklyPresenter(rootView);

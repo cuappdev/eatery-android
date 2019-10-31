@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
     <item>
         <shape android:shape="rectangle">
             <!-- solid background -->
-            <solid android:color="#ffffff"/>
+            <corners android:radius="10dp" />
             <!-- border-->
-            <stroke
-                android:color="#ffffff"
-                android:width="2dp"
-                />
-            <corners android:radius="10dp"/>
+            <solid android:color="#ffffff" />
+            <stroke android:width="2dp" android:color="#ffffff" />
 
         </shape>
     </item>

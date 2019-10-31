@@ -1,236 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:id="@+id/wait_time_graph"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wait_time_graph"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/wait_time_horizontal_divider"
-        android:background="@color/white"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="16dp"
         android:paddingTop="12dp"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp">
+        android:paddingRight="16dp">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/inactive"/>
+            android:background="@color/inactive" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/wait_time_box"
-        android:animateLayoutChanges="true"
-        android:background="@color/white"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/wait_time_horizontal_divider"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:paddingTop="12dp"
+        android:paddingRight="16dp"
         android:paddingBottom="4dp">
-
-        <TextView
-            android:id="@+id/wait_time_label"
-            android:background="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="Popular Times"
-            android:textColor="@color/primary"
-            android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/wait_time_show_button"
-            android:clickable="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@id/wait_time_label"
-            android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif-medium"
-            android:text="Hide"
-            android:textColor="@color/secondary"
-            android:textSize="18sp"/>
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/wait_time_chart"
-            android:layout_below="@id/wait_time_label"
-            android:animateLayoutChanges="true"
-            android:layout_width="match_parent"
-            android:layout_height="156dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
-
-        <View
-            android:id="@+id/wait_time_x_axis_line"
-            android:animateLayoutChanges="true"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/inactive"
-            android:layout_below="@id/wait_time_chart"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"/>
 
         <LinearLayout
             android:id="@+id/wait_time_x_axis_ticks"
-            android:layout_below="@id/wait_time_x_axis_line"
-            android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_below="@id/wait_time_x_axis_line"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
             <View
                 android:id="@+id/wait_time_tick_6a"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_9a"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_12p"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_3p"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_6p"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_9p"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_12a"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp"
+                android:layout_weight="1" />
+
             <View
                 android:id="@+id/wait_time_tick_3a"
                 android:layout_width="2dp"
                 android:layout_height="8dp"
-                android:background="@color/inactive"/>
+                android:background="@color/inactive" />
+
             <View
                 android:layout_width="14dp"
-                android:layout_height="8dp"/>
+                android:layout_height="8dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/wait_time_x_axis_labels"
-            android:layout_below="@id/wait_time_x_axis_ticks"
-            android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_below="@id/wait_time_x_axis_ticks"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="6a"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="9a"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="12p"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="3p"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="6p"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="9p"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-medium"
                 android:text="12a"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
+
             <TextView
-                android:text="3a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:text="3a"
+                android:textColor="@color/secondary"
+                android:textSize="14dp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/wait_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:text="Popular Times"
+            android:textColor="@color/primary"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/wait_time_show_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/wait_time_label"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:fontFamily="sans-serif-medium"
+            android:text="Hide"
+            android:textColor="@color/secondary"
+            android:textSize="18sp" />
+
+        <View
+            android:id="@+id/wait_time_x_axis_line"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/wait_time_chart"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:animateLayoutChanges="true"
+            android:background="@color/inactive" />
+
+        <com.cornellappdev.android.eatery.components.WaitTimesChart
+            android:id="@+id/wait_time_chart"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            android:layout_below="@id/wait_time_label"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="15dp"
+            android:animateLayoutChanges="true" />
 
     </RelativeLayout>
 
