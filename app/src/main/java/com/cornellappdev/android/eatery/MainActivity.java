@@ -3,34 +3,33 @@ package com.cornellappdev.android.eatery;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.cornellappdev.android.eatery.data.CafeteriaDbHelper;
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
+import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
-import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.util.InternalStorage;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
     // Should never be displayed, used to retrieve session_id from Cornell web page
     public static WebView sLoginWebView;
     public BottomNavigationView bnv;
-    public CafeteriaDbHelper dbHelper;
     private FirebaseAnalytics mFirebaseAnalytics;
     private LoginFragment loginFragment;
     private MainPresenter presenter;
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         presenter = new MainPresenter();
-        dbHelper = new CafeteriaDbHelper(this);
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
@@ -52,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         GetLoginUtilities.autoLogin(getApplicationContext(), sLoginWebView);
 
         presenter = new MainPresenter();
-        dbHelper = new CafeteriaDbHelper(this);
         bnv = findViewById(R.id.bottom_navigation);
         // Add functionality to bottom nav bar
 

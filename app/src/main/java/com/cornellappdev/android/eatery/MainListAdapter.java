@@ -1,15 +1,8 @@
 package com.cornellappdev.android.eatery;
 
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
-
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.cardview.widget.CardView;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -29,6 +22,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;

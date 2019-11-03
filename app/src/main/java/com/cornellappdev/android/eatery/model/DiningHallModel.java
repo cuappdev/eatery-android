@@ -8,13 +8,13 @@ import com.cornellappdev.android.eatery.model.enums.MealType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
     }
 
     public static DiningHallModel fromEatery(Context context, boolean hardcoded,
-            AllEateriesQuery.Eatery eatery) {
+                                             AllEateriesQuery.Eatery eatery) {
         DiningHallModel model = new DiningHallModel();
         model.parseEatery(context, hardcoded, eatery);
         return model;

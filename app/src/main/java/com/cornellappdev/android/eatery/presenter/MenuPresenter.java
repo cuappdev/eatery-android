@@ -1,17 +1,10 @@
 package com.cornellappdev.android.eatery.presenter;
 
-import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CampusModel;
-import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.Swipe;
-import com.cornellappdev.android.eatery.model.enums.CampusArea;
-import com.cornellappdev.android.eatery.model.enums.Category;
-import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
-import com.cornellappdev.android.eatery.network.NetworkUtilities;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class MenuPresenter {
@@ -38,7 +31,7 @@ public class MenuPresenter {
             double maxSwipeDensity = -1;
             Swipe maxSwipe = null;
             // Parse through backend swipe data. If multiple swipe data found for the hour, use maximum.
-            for (Swipe s: ((CampusModel) mModel).getSwipeData()) {
+            for (Swipe s : ((CampusModel) mModel).getSwipeData()) {
                 int hourFromSwipe = s.getStart().getHour();
                 hourFromSwipe = hourFromSwipe < 6 ? (18 + hourFromSwipe) : hourFromSwipe - 6;
                 if (hourFromSwipe == i && s.swipeDensity > maxSwipeDensity) {
@@ -50,8 +43,7 @@ public class MenuPresenter {
             if (maxSwipe == null) {
                 // If no swipes were found, add an empty swipe to the List
                 swipeData.add(new Swipe());
-            }
-            else {
+            } else {
                 swipeData.add(maxSwipe);
             }
         }

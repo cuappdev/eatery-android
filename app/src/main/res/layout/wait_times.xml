@@ -56,7 +56,7 @@
             android:textColor="@color/secondary"
             android:textSize="18sp"/>
 
-        <com.github.mikephil.charting.charts.BarChart
+        <com.cornellappdev.android.eatery.components.WaitTimesChart
             android:id="@+id/wait_time_chart"
             android:layout_below="@id/wait_time_label"
             android:animateLayoutChanges="true"

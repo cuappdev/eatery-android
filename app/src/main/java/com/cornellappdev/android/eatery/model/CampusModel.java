@@ -9,7 +9,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +34,7 @@ public abstract class CampusModel extends EateryBaseModel implements Serializabl
             end = LocalTime.parse(swipeDatum.endTime().toUpperCase().substring(11),
                     timeFormatter);
             swipes.add(new Swipe(start, end, swipeDatum.swipeDensity(), swipeDatum.waitTimeLow(),
-                            swipeDatum.waitTimeHigh()));
+                    swipeDatum.waitTimeHigh()));
         }
         return swipes;
     }

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
@@ -101,10 +102,10 @@ public class AccountManagerUtil {
             pbeCipher.init(Cipher.ENCRYPT_MODE, key);
             AlgorithmParameters parameters = pbeCipher.getParameters();
             IvParameterSpec ivParameterSpec = parameters.getParameterSpec(IvParameterSpec.class);
-            byte[] cryptoText = pbeCipher.doFinal(property.getBytes("UTF-8"));
+            byte[] cryptoText = pbeCipher.doFinal(property.getBytes(StandardCharsets.UTF_8));
             byte[] iv = ivParameterSpec.getIV();
             return base64Encode(iv) + ":" + base64Encode(cryptoText);
-        } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+        } catch (GeneralSecurityException e) {
             e.printStackTrace();
             return null;
         }

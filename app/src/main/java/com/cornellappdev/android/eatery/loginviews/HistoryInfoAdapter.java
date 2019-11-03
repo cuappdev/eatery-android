@@ -40,10 +40,10 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
                 historyItemView.setOnClickListener(null);
                 holder = new ViewHolder();
 
-                holder.displayName = (TextView) historyItemView.findViewById(R.id.purchase_eatery);
-                holder.displayTimestamp = (TextView) historyItemView.findViewById(
+                holder.displayName = historyItemView.findViewById(R.id.purchase_eatery);
+                holder.displayTimestamp = historyItemView.findViewById(
                         R.id.purchase_timestamp);
-                holder.displayAmount = (TextView) historyItemView.findViewById(
+                holder.displayAmount = historyItemView.findViewById(
                         R.id.purchase_amount);
 
                 historyItemView.setTag(holder);

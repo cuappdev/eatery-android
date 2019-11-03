@@ -5,17 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,6 +30,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
@@ -385,6 +384,7 @@ public class MainListFragment extends Fragment
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
         updateListAdapter();
     }
+
     private void updateListAdapter() {
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
         Collections.sort(cafesToDisplay);
@@ -425,6 +425,7 @@ public class MainListFragment extends Fragment
 
     @Override
     public void onClick(int position, ArrayList<EateryBaseModel> list, View viewHolder) {
+        if (list.size() <= position) return;
         EateryBaseModel model = list.get(position);
         Intent intent;
         if (this.mEateryClickable) {
@@ -442,7 +443,7 @@ public class MainListFragment extends Fragment
             }
             intent.putExtra("cafeInfo", model);
 
-            if(viewHolder == null) {
+            if (viewHolder == null) {
                 startActivity(intent);
                 return;
             }
