@@ -10,6 +10,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.onboarding.OnboardingLoginFragment;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
+    private OnboardingLoginFragment onboardingLoginFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
+        onboardingLoginFragment = new OnboardingLoginFragment();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sLoginWebView = findViewById(R.id.login_webview);
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                mainListFragment).commit();
+                onboardingLoginFragment).commit();
 
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
