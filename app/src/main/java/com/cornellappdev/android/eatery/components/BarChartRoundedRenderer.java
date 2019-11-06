@@ -501,9 +501,7 @@ public class BarChartRoundedRenderer extends BarLineScatterCandleBubbleRenderer 
             }
 
             prepareBarHighlight(e.getX(), y1, y2, barData.getBarWidth() / 2f, trans);
-
             setHighlightDrawPos(high, mBarRect);
-
             drawRectHelper(c, mBarRect, mHighlightPaint);
         }
     }
