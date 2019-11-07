@@ -122,7 +122,7 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
     @Override
     public LocalDateTime getChangeTime() {
         if (getCurrentStatus() == Status.OPEN) {
-            List<Interval> intervalList = mHours.get(LocalDate.now());
+            List<Interval> intervalList = getCurrentIntervalList();
             if (intervalList != null) {
                 for (Interval interval : intervalList) {
                     if (interval.containsTime(LocalDateTime.now())) {
