@@ -2,6 +2,8 @@ package com.cornellappdev.android.eatery;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebView;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
@@ -10,6 +12,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.onboarding.OnboardingInfoFragment;
 import com.cornellappdev.android.eatery.onboarding.OnboardingLoginFragment;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
     private OnboardingLoginFragment onboardingLoginFragment;
+    private OnboardingInfoFragment onboardingInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
         onboardingLoginFragment = new OnboardingLoginFragment();
+        onboardingInfoFragment = new OnboardingInfoFragment("Menus","See what’s being served at any campus eatery.");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sLoginWebView = findViewById(R.id.login_webview);
@@ -99,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                onboardingLoginFragment).commit();
+                mainListFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_relative_layout,
+                onboardingInfoFragment).commit();
+        toggleFullscreen(true);
+
 
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
@@ -114,6 +123,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void toggleFullscreen(boolean fullscreen) {
+        if (fullscreen) {
+            bnv.setVisibility(View.GONE);
+            getSupportActionBar().hide();
+        } else {
+            bnv.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
+        }
     }
 
     public void setLoginInstance(LoginFragment instance) {

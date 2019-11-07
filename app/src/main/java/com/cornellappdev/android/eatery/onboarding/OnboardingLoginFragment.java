@@ -47,7 +47,6 @@ public class OnboardingLoginFragment extends Fragment {
         Context currContext = getContext();
         View view = inflater.inflate(R.layout.fragment_onboarding_login, container, false);
 
-        mPrivacy = view.findViewById(R.id.onboarding_privacy_statement);
         mDescriptionText = view.findViewById(R.id.onboarding_description);
         mLoginButton = view.findViewById(R.id.onboarding_login_button);
         mNetID = view.findViewById(R.id.onboarding_netid_input);

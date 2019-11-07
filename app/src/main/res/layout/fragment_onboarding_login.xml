@@ -3,127 +3,131 @@
     android:id="@+id/onboarding_login_frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/blue"
+        android:gravity="center"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/onboarding_login_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:paddingTop="36sp"
             android:paddingBottom="20dp"
             android:text="Login"
             android:textColor="@color/white"
-            android:textSize="36sp"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/onboarding_title_text_size"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/onboarding_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
             android:paddingStart="36dp"
+            android:paddingTop="20dp"
             android:paddingEnd="36dp"
+            android:paddingBottom="20dp"
             android:text="@string/description_text_3"
             android:textColor="@color/white"
-            android:textSize="24sp"/>
-        <TextView
-            android:id="@+id/onboarding_netid_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:paddingTop="20dp"
-            android:paddingBottom="10dp"
-            android:layout_marginStart="42dp"
-            android:layout_marginEnd="42dp"
-            android:text="@string/netid"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-        <EditText
-            android:id="@+id/onboarding_netid_input"
+            android:textSize="@dimen/onboarding_description_text_size" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:hint="@string/netid_hint"
-            android:inputType="textPersonName"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
-        <TextView
-            android:id="@+id/onboarding_password_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginStart="42dp"
-            android:layout_marginEnd="42dp"
-            android:paddingTop="15dp"
-            android:text="@string/password"
-            android:textColor="@color/white"
-            android:textSize="18sp"/>
-        <EditText
-            android:id="@+id/onboarding_password_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
-            android:ems="10"
-            android:fontFamily="sans-serif"
-            android:hint="@string/password_hint"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingTop="15dp"
-            android:paddingBottom="20dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/onboarding_netid_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="42dp"
+                android:layout_marginEnd="42dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:text="@string/netid"
+                android:textColor="@color/white"
+                android:textSize="@dimen/onboarding_label_text_size" />
+
+            <EditText
+                android:id="@+id/onboarding_netid_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="@string/netid_hint"
+                android:inputType="textPersonName"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/account_info_attributes_text_size" />
+
+            <TextView
+                android:id="@+id/onboarding_password_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="42dp"
+                android:layout_marginEnd="42dp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="15dp"
+                android:text="@string/password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/onboarding_label_text_size" />
+
+            <EditText
+                android:id="@+id/onboarding_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:layout_marginEnd="36dp"
+                android:ems="10"
+                android:fontFamily="sans-serif"
+                android:hint="@string/password_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingTop="15dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/account_info_attributes_text_size" />
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
             <ProgressBar
                 android:id="@+id/onboarding_progress_loader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:translationZ="10dp"/>
+                android:translationZ="10dp" />
+
             <Button
                 android:id="@+id/onboarding_login_button"
                 android:layout_width="240dp"
                 android:layout_height="60dp"
-                android:gravity="center"
                 android:layout_gravity="center"
                 android:background="@drawable/bordered_button"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
                 android:text="LOG IN"
                 android:textColor="@color/white"
-                android:textSize="18sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/onboarding_button_text_size"
+                android:textStyle="bold" />
         </RelativeLayout>
-        <TextView
-            android:id="@+id/onboarding_privacy_statement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif"
-            android:paddingTop="25dp"
-            android:text="@string/privacy_statement"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/account_info_attributes_text_size"/>
     </LinearLayout>
-
 
 </FrameLayout>
