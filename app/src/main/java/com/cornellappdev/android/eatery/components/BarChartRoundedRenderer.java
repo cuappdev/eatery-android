@@ -61,7 +61,7 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
             final float barWidth = barData.getBarWidth();
             final float barWidthHalf = barWidth / 2.0f;
             float x;
-            int count = count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
+            int count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
             for (int i = 0; i < count; i++) {
                 BarEntry e = dataSet.getEntryForIndex(i);
                 x = e.getX();
