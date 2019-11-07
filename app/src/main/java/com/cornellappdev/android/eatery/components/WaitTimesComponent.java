@@ -157,6 +157,7 @@ public class WaitTimesComponent {
 
         mWaitTimesChart.setRenderer(new BarChartRoundedRenderer(mWaitTimesChart,
                 mWaitTimesChart.getAnimator(), mWaitTimesChart.getViewPortHandler()));
+        mWaitTimesChart.setScaleEnabled(false);
         this.setupWaitTimesChartAxis();
         this.setupWaitTimesData(context);
 
