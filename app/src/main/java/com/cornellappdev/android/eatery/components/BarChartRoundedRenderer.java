@@ -16,11 +16,20 @@ import com.github.mikephil.charting.renderer.BarChartRenderer;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
-import com.github.mikephil.charting.model.GradientColor;
-import android.graphics.LinearGradient;
 
+/*
+ * This class is an extension of MikePhil's BarChartRenderer allowing us to curve edges of the bar
+ * columns
+ *
+ * We extended the two methods where rectangles (and highlights) are drawn, more information on this
+ * class can be found at:
+ * https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartLib/src/main/java/com/github/mikephil/charting/renderer/BarChartRenderer.java
+ *
+ * More information on the open-sourced repo used here as a whole can be found at:
+ * https://github.com/PhilJay/MPAndroidChart
+ */
 public class BarChartRoundedRenderer extends BarChartRenderer {
-    private static final float CORNER_RADIUS = 10;
+    private static final float CORNER_RADIUS = 7;
 
     BarChartRoundedRenderer(BarDataProvider chart, ChartAnimator animator,
             ViewPortHandler viewPortHandler) {
@@ -42,8 +51,6 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
         drawRectHelper(c, r.left, r.top, r.right, r.bottom, p);
     }
 
-    private RectF mBarShadowRectBuffer = new RectF();
-
     @Override
     public void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
 
@@ -53,31 +60,6 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
         final boolean drawBorder = dataSet.getBarBorderWidth() > 0.f;
         float phaseX = mAnimator.getPhaseX();
         float phaseY = mAnimator.getPhaseY();
-        // draw the bar shadow before the values
-        if (mChart.isDrawBarShadowEnabled()) {
-            mShadowPaint.setColor(dataSet.getBarShadowColor());
-
-            BarData barData = mChart.getBarData();
-            final float barWidth = barData.getBarWidth();
-            final float barWidthHalf = barWidth / 2.0f;
-            float x;
-            int count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
-            for (int i = 0; i < count; i++) {
-                BarEntry e = dataSet.getEntryForIndex(i);
-                x = e.getX();
-                mBarShadowRectBuffer.left = x - barWidthHalf;
-                mBarShadowRectBuffer.right = x + barWidthHalf;
-                trans.rectValueToPixel(mBarShadowRectBuffer);
-                if (!mViewPortHandler.isInBoundsLeft(mBarShadowRectBuffer.right))
-                    continue;
-
-                if (!mViewPortHandler.isInBoundsRight(mBarShadowRectBuffer.left))
-                    break;
-                mBarShadowRectBuffer.top = mViewPortHandler.contentTop();
-                mBarShadowRectBuffer.bottom = mViewPortHandler.contentBottom();
-                drawRectHelper(c, mBarShadowRectBuffer, mShadowPaint);
-            }
-        }
 
         // initialize the buffer
         BarBuffer buffer = mBarBuffers[index];
@@ -92,6 +74,9 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
         if (isSingleColor) {
             mRenderPaint.setColor(dataSet.getColor());
         }
+        // Buffer is an array where index j, j+1, j+2, j+3 where j is a multiple of 4, represents
+        // the position of the left, top, right, and bottom edge respectively
+        // Iterate over all the barchart data and draw bars with correct location and paint
         for (int j = 0; j < buffer.size(); j += 4) {
             if (!mViewPortHandler.isInBoundsLeft(buffer.buffer[j + 2])) {
                 continue;
@@ -103,29 +88,6 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
                 // Set the color for the currently drawn value. If the index
                 // is out of bounds, reuse colors.
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
-            }
-            if (dataSet.getGradientColor() != null) {
-                GradientColor gradientColor = dataSet.getGradientColor();
-                mRenderPaint.setShader(
-                        new LinearGradient(
-                                buffer.buffer[j],
-                                buffer.buffer[j + 3],
-                                buffer.buffer[j],
-                                buffer.buffer[j + 1],
-                                gradientColor.getStartColor(),
-                                gradientColor.getEndColor(),
-                                android.graphics.Shader.TileMode.MIRROR));
-            }
-            if (dataSet.getGradientColors() != null) {
-                mRenderPaint.setShader(
-                        new LinearGradient(
-                                buffer.buffer[j],
-                                buffer.buffer[j + 3],
-                                buffer.buffer[j],
-                                buffer.buffer[j + 1],
-                                dataSet.getGradientColor(j / 4).getStartColor(),
-                                dataSet.getGradientColor(j / 4).getEndColor(),
-                                android.graphics.Shader.TileMode.MIRROR));
             }
             drawRectHelper(c, buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
                     buffer.buffer[j + 3], mRenderPaint);
