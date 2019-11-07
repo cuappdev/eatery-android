@@ -5,10 +5,6 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -54,13 +50,6 @@ public class CafeModel extends CampusModel implements Serializable {
         this.mCafeMenu = new ArrayList<>();
         this.mHours = new HashMap<>();
         this.mSortedDates = new ArrayList<>();
-    }
-
-    public static CafeModel fromJSONObject(Context context, boolean hardcoded, JSONObject cafe)
-            throws JSONException {
-        CafeModel model = new CafeModel();
-        model.parseJSONObject(context, hardcoded, cafe);
-        return model;
     }
 
     public static CafeModel fromEatery(Context context, boolean hardcoded,
@@ -187,96 +176,5 @@ public class CafeModel extends CampusModel implements Serializable {
             }
         }
         mCafeMenu = cafeItems;
-    }
-
-    public void parseJSONObject(Context context, boolean hardcoded, JSONObject cafe)
-            throws JSONException {
-        super.parseJSONObject(context, hardcoded, cafe);
-        List<String> cafeItems = new ArrayList<>();
-        // Parse cafe items available at eatery
-        JSONArray diningItems = cafe.getJSONArray("diningItems");
-        for (int z = 0; z < diningItems.length(); z++) {
-            JSONObject item = diningItems.getJSONObject(z);
-            cafeItems.add(item.getString("item"));
-        }
-        // Note(lesley): trillium is missing cafe items data in the JSON, so it requires
-        // hardcoded items
-        if (mName.equalsIgnoreCase("trillium")) {
-            cafeItems.addAll(HARDCODED_CAFE_ITEMS);
-        }
-        mCafeMenu = cafeItems;
-        JSONArray operatingHours = cafe.getJSONArray("operatingHours");
-        for (int c = 0; c < operatingHours.length(); c++) {
-            // First entry represents opening time, second entry represents closing time
-            JSONObject operatingPeriod = operatingHours.getJSONObject(c);
-            JSONArray events = operatingPeriod.getJSONArray("events");
-            List<LocalDate> localDates = new ArrayList<>();
-            if (operatingPeriod.has("date")) {
-                String rawDate = operatingPeriod.getString("date");
-                LocalDate localDate = LocalDate.parse(rawDate, new DateTimeFormatterBuilder()
-                        .parseCaseInsensitive()
-                        .appendPattern("yyyy-MM-dd")
-                        .toFormatter());
-                localDates.add(localDate);
-            }
-            if (operatingPeriod.has("weekday")) {
-                LocalDate localDate = LocalDate.now(TimeUtil.getInstance().getCornellTimeZone());
-                String rawDays = operatingPeriod.getString("weekday").toUpperCase();
-                String[] rawDayArr = rawDays.split("-");
-                String rawEnd = null, rawStart = rawDayArr[0].trim();
-                if (rawDayArr.length > 1) {
-                    rawEnd = rawDayArr[1].trim();
-                }
-                DayOfWeek start = DayOfWeek.valueOf(rawStart);
-                if (rawEnd != null) {
-                    DayOfWeek end = DayOfWeek.valueOf(rawEnd);
-                    DayOfWeek endPlusOne = end.plus(1);
-                    for (DayOfWeek current = start; !current.equals(endPlusOne);
-                         current = current.plus(1)) {
-                        LocalDate nextLocalDateOfCurrent = localDate
-                                .with(TemporalAdjusters.nextOrSame(current));
-                        localDates.add(nextLocalDateOfCurrent);
-                    }
-                } else {
-                    localDate = localDate.with(TemporalAdjusters.nextOrSame(start));
-                    localDates.add(localDate);
-                }
-            }
-            for (LocalDate localDate : localDates) {
-                List<Interval> dailyHours = new ArrayList<>();
-                for (int e = 0; e < events.length(); e++) {
-                    JSONObject obj = events.getJSONObject(e);
-                    LocalDateTime start = null, end = null;
-                    dailyHours = new ArrayList<>();
-                    if (obj.has("start")) {
-                        String rawStart = obj.getString("start").toUpperCase();
-                        LocalTime localTime = LocalTime.parse(rawStart,
-                                new DateTimeFormatterBuilder()
-                                        .parseCaseInsensitive()
-                                        .appendPattern("h:mma")
-                                        .toFormatter());
-                        start = localTime.atDate(localDate);
-                    }
-                    if (obj.has("end")) {
-                        String rawEnd = obj.getString("end").toUpperCase();
-                        LocalTime localTime = LocalTime.parse(rawEnd, new DateTimeFormatterBuilder()
-                                .parseCaseInsensitive()
-                                .appendPattern("h:mma")
-                                .toFormatter());
-                        end = localTime.atDate(localDate);
-                    }
-                    LocalDateTime midnightTomorrow = localDate.atTime(LocalTime.MIDNIGHT);
-                    if (start != null && end != null) {
-                        if (end.isBefore(start) && (end.isEqual(midnightTomorrow) || end
-                                .isAfter(midnightTomorrow))) {
-                            mOpenPastMidnight = true;
-                            end = end.plusDays(1);
-                        }
-                        dailyHours.add(new Interval(start, end));
-                    }
-                }
-                setHours(localDate, dailyHours);
-            }
-        }
     }
 }

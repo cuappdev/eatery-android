@@ -5,10 +5,6 @@ import android.content.Context;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,13 +24,6 @@ public class DiningHallModel extends CampusModel implements Serializable {
 
     private Map<LocalDate, DailyMenuModel> mWeeklyMenu;
     private List<LocalDate> mSortedDates;
-
-    public static DiningHallModel fromJSON(Context context, boolean hardcoded, JSONObject eatery)
-            throws JSONException {
-        DiningHallModel model = new DiningHallModel();
-        model.parseJSONObject(context, hardcoded, eatery);
-        return model;
-    }
 
     public static DiningHallModel fromEatery(Context context, boolean hardcoded,
                                              AllEateriesQuery.Eatery eatery) {
@@ -220,77 +209,6 @@ public class DiningHallModel extends CampusModel implements Serializable {
                 mealModel.setMenu(mealMenuModel);
                 if (type != null) {
                     dailyMenuModel.addMeal(type, mealModel);
-                }
-            }
-            mWeeklyMenu.put(localDate, dailyMenuModel);
-        }
-    }
-
-    @Override
-    public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
-            throws JSONException {
-        super.parseJSONObject(context, hardcoded, eatery);
-        mWeeklyMenu = new HashMap<>();
-        mSortedDates = new ArrayList<>();
-        DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .appendPattern("h:mma")
-                .toFormatter();
-        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
-                .parseCaseInsensitive()
-                .appendPattern("yyyy-MM-dd")
-                .toFormatter();
-
-        // Each Operating Hour is a single day for dining halls
-        JSONArray operatingHours = eatery.getJSONArray("operatingHours");
-        mId = eatery.getInt("id");
-        for (int k = 0; k < operatingHours.length(); k++) {
-            DailyMenuModel dailyMenuModel = new DailyMenuModel();
-            JSONObject mealPeriods = operatingHours.getJSONObject(k);
-            // Each meal in meals is breakfast, lunch, dinner, etc.
-            JSONArray meals = mealPeriods.getJSONArray("events");
-            LocalDate localDate;
-            if (mealPeriods.has("date")) {
-                String rawDate = mealPeriods.getString("date").toUpperCase();
-                localDate = LocalDate.parse(rawDate, dateFormatter);
-            } else {
-                localDate = LocalDate.now();
-            }
-            // Iterates through each meal in one dining hall
-            for (int l = 0; l < meals.length(); l++) {
-                // Meal object represents a single meal at the eatery (ie. lunch)
-                JSONObject meal = meals.getJSONObject(l);
-                LocalDateTime start = null, end = null;
-
-                // Start Time
-                if (meal.has("start")) {
-                    String rawStart = meal.getString("start").toUpperCase();
-                    LocalTime localTime = LocalTime.parse(rawStart, timeFormatter);
-                    start = localTime.atDate(localDate);
-                }
-
-                // End Time
-                if (meal.has("end")) {
-                    String rawEnd = meal.getString("end").toUpperCase();
-                    LocalTime localTime = LocalTime.parse(rawEnd, timeFormatter);
-                    end = localTime.atDate(localDate);
-                }
-                // Setting which meal of the day this meal is (ie. LUNCH)
-                MealType type = MealType.fromDescription(meal.getString("descr"));
-
-                if (start != null && end != null) {
-                    MealModel mealModel = new MealModel(start, end);
-                    mealModel.setType(type);
-
-                    // Sets the entire menu for the meal (Stations and items at stations)
-                    JSONArray menu = meal.getJSONArray("menu");
-                    MealMenuModel mealMenuModel = MealMenuModel.fromJSONArray(menu);
-                    mealModel.setMenu(mealMenuModel);
-
-                    // We only care about Breakfast, Lunch, Dinner, and Brunch
-                    if (type != null) {
-                        dailyMenuModel.addMeal(type, mealModel);
-                    }
                 }
             }
             mWeeklyMenu.put(localDate, dailyMenuModel);
