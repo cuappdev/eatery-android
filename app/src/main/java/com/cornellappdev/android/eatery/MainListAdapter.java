@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
@@ -88,16 +87,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (input_holder.getItemViewType()) {
             case IMAGE:
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
-
                 holder.cafeName.setText(eateryModel.getNickName());
-                String imageLocation;
-                if (!eateryModel.isCtEatery()) {
-                    imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());
-                } else {
-                    imageLocation = ((CollegeTownModel) eateryModel).getImageUrl();
-                }
+                String imageLocation = eateryModel.getImageURL();
                 Uri uri = Uri.parse(imageLocation);
-                holder.cafeDrawee.setImageURI(uri);
                 Picasso.get()
                         .load(uri)
                         .noFade()
