@@ -7,10 +7,6 @@ import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -217,26 +213,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
             paymentMethods.add(PaymentMethod.fromShortDescription("swipes"));
         }
         mPayMethods = paymentMethods;
-    }
-
-    public void parseJSONObject(Context context, boolean hardcoded, JSONObject eatery)
-            throws JSONException {
-        mName = eatery.getString("name");
-        mBuildingLocation = eatery.getString("location");
-        mNickName = eatery.getString("nameshort");
-        mLatitude = eatery.getDouble("latitude");
-        mLongitude = eatery.getDouble("longitude");
-
-        JSONArray methods = eatery.getJSONArray("payMethods");
-        List<PaymentMethod> payMethods = new ArrayList<>();
-        for (int j = 0; j < methods.length(); j++) {
-            JSONObject method = methods.getJSONObject(j);
-            payMethods.add(PaymentMethod.fromShortDescription(method.getString("descrshort")));
-        }
-        mPayMethods = payMethods;
-
-        String area = eatery.getJSONObject("campusArea").getString("descrshort");
-        mArea = CampusArea.fromShortDescription(area);
     }
 
     /**

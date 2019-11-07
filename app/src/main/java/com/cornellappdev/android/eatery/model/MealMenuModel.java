@@ -2,10 +2,6 @@ package com.cornellappdev.android.eatery.model;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,20 +15,6 @@ import java.util.Map;
 
 public class MealMenuModel implements Serializable {
     private Map<String, List<String>> menu = new LinkedHashMap<>();
-
-    public static MealMenuModel fromJSONArray(JSONArray menu) throws JSONException {
-        MealMenuModel menuModel = new MealMenuModel();
-        for (int m = 0; m < menu.length(); m++) {
-            JSONObject stations = menu.getJSONObject(m);
-            JSONArray items = stations.getJSONArray("items");
-            String category = stations.getString("category");
-            for (int n = 0; n < items.length(); n++) {
-                String item = items.getJSONObject(n).getString("item");
-                menuModel.addItem(category, item);
-            }
-        }
-        return menuModel;
-    }
 
     public static MealMenuModel fromGraphQL(List<AllEateriesQuery.Menu> menuList) {
         MealMenuModel menuModel = new MealMenuModel();

@@ -30,7 +30,6 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 public final class NetworkUtilities {
-    private static final String DINING_URI = "https://now.dining.cornell.edu/api/1.0/dining/eateries.json";
     private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
     private static List<AllEateriesQuery.Eatery> eateries;
     private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
@@ -43,29 +42,6 @@ public final class NetworkUtilities {
                 .serverUrl(GRAPHQL_URL)
                 .okHttpClient(okHttpClient)
                 .build();
-    }
-
-    public static String getJSON() {
-        try {
-            URL url = new URL(DINING_URI);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            InputStream stream = connection.getInputStream();
-            InputStreamReader isw = new InputStreamReader(stream);
-            BufferedReader reader = new BufferedReader(isw);
-            StringBuffer buffer = new StringBuffer();
-
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-            return buffer.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public static void getEateries(Activity activity, MainListFragment mainFragment) {
