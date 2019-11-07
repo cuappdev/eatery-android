@@ -32,10 +32,7 @@
         be stored safely on this device.
     </string>
     <string name="privacy_description_2">Your netid and password will never leave your device, and
-        will never be stored on our servers or viewed by anyone on our team
-    </string>
-    <string name="privacy_description_3">You may uncheck auto login to erase all of your account
-        information from this device
+        will never be stored on our servers or viewed by anyone on our team.
     </string>
     <string name="login_label">Login</string>
     <string name="logout_label">Logout</string>
