@@ -67,7 +67,7 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         mMenuPresenter = new MenuPresenter(mCafeData);
         String cafeName = mCafeData.getNickName();
-        String imageUrl = EateryBaseModel.getImageURL(mCafeData.getNickName());
+        String imageUrl = mCafeData.getImageURL();
 
         // Load image animation
         Picasso.get()

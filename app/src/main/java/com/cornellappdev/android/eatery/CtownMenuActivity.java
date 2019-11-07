@@ -77,7 +77,7 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         Intent intent = getIntent();
         mCafeData = (CollegeTownModel) intent.getSerializableExtra("cafeInfo");
         String cafeName = mCafeData.getNickName();
-        String imageUrl = ((CollegeTownModel) mCafeData).getImageUrl();
+        String imageUrl = mCafeData.getImageURL();
 
         // Load image animation
         Picasso.get()

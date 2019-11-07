@@ -7,6 +7,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
+import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.squareup.picasso.Picasso;
 
@@ -88,16 +90,9 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (input_holder.getItemViewType()) {
             case IMAGE:
                 ListAdapterViewHolder holder = (ListAdapterViewHolder) input_holder;
-
                 holder.cafeName.setText(eateryModel.getNickName());
-                String imageLocation;
-                if (!eateryModel.isCtEatery()) {
-                    imageLocation = EateryBaseModel.getImageURL(eateryModel.getNickName());
-                } else {
-                    imageLocation = ((CollegeTownModel) eateryModel).getImageUrl();
-                }
+                String imageLocation = eateryModel.getImageURL();
                 Uri uri = Uri.parse(imageLocation);
-                holder.cafeDrawee.setImageURI(uri);
                 Picasso.get()
                         .load(uri)
                         .noFade()

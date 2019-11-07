@@ -3,6 +3,7 @@ query AllEateries {
         id
         name
         nameShort
+	imageUrl
         slug
         eateryType
         about

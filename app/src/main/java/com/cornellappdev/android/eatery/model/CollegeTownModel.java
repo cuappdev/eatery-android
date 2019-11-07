@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CollegeTownModel extends EateryBaseModel implements Serializable {
-    protected String mImageUrl, mPrice, mRating, mYelpUrl;
+    protected String mPrice, mRating, mYelpUrl;
     private List<Category> mCategoryList;
     private List<String> mCategories;
     private List<String> mCtEateryMenu; // To be populated upon menu addition to backend
@@ -48,10 +48,6 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
 
     public List<Category> getCategoryList() {
         return mCategoryList;
-    }
-
-    public String getImageUrl() {
-        return mImageUrl;
     }
 
     public String getPrice() {
@@ -143,7 +139,6 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
     public void parseCtEatery(Context context, AllCtEateriesQuery.CollegetownEatery ctEatery) {
         super.parseCtEatery(context, ctEatery);
         mCategories = ctEatery.categories();
-        mImageUrl = ctEatery.imageUrl();
         mPrice = ctEatery.price();
         mRating = ctEatery.rating();
         mYelpUrl = ctEatery.url();

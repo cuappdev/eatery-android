@@ -39,6 +39,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     protected boolean mOpenPastMidnight = false;
     protected String mBuildingLocation, mName, mNickName, mPhoneNumber, mEateryType;
     protected int mId;
+    protected String mImageUrl;
     private ArrayList<String> mSearchedItems;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
@@ -47,25 +48,8 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     private Double mLatitude, mLongitude;
     private List<PaymentMethod> mPayMethods;
 
-    public static String getImageURL(String cafeName) {
-        return GITHUB_URL + EateryBaseModel.convertName(cafeName);
-    }
-
-    private static String convertName(String str) {
-        if (str.equals("104West!")) return "104-West.jpg";
-        if (str.equals("McCormick's")) return "mccormicks.jpg";
-        if (str.equals("Franny's")) return "frannys.jpg";
-        if (str.equals("Ice Cream Cart")) return "icecreamcart.jpg";
-        if (str.equals("Risley Dining Room")) return "Risley-Dining.jpg";
-        if (str.equals("Martha's Express")) return "Marthas-Cafe.jpg";
-        if (str.equals("Bus Stop Bagels")) return "Bug-Stop-Bagels.jpg";
-        if (str.equals("Straight from the Market")) return "StraightMarket.jpg";
-        if (str.equals("Temple of Zeus")) return "Zeus.jpg";
-        str = str.replaceAll("!", "");
-        str = str.replaceAll("[&\']", "");
-        str = str.replaceAll(" ", "-");
-        str = str.replaceAll("é", "e");
-        return String.format("%s.jpg", str);
+    public String getImageURL() {
+        return mImageUrl;
     }
 
     // Implemented Getters
@@ -160,6 +144,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLongitude = eatery.coordinates().longitude();
         mPhoneNumber = eatery.phone();
         mEateryType = eatery.eateryType();
+        mImageUrl = eatery.imageUrl();
         isCtEatery = false;
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
@@ -195,6 +180,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mId = ctEatery.id();
         mPhoneNumber = ctEatery.phone();
         mEateryType = ctEatery.eateryType();
+        mImageUrl = ctEatery.imageUrl();
         isCtEatery = true;
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
