@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.HistoryObjectModel;
 import com.cornellappdev.android.eatery.util.MoneyUtil;
@@ -50,11 +52,18 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
             } else {
                 holder = (ViewHolder) historyItemView.getTag();
             }
-
+            String displayText;
+            if(mHistory.get(position).isPositive()) {
+               displayText = "+" + MoneyUtil.toMoneyString(mHistory.get(position).getAmount());
+               holder.displayAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
+            }
+            else {
+                displayText = "-" + MoneyUtil.toMoneyString(mHistory.get(position).getAmount());
+                holder.displayAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+            }
+            holder.displayAmount.setText(displayText);
             holder.displayName.setText(mHistory.get(position).getName());
             holder.displayTimestamp.setText(mHistory.get(position).getTimestamp());
-            holder.displayAmount.setText(
-                    "- " + MoneyUtil.toMoneyString(mHistory.get(position).getAmount()));
 
         } catch (Exception e) {
             e.printStackTrace();
