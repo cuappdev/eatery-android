@@ -107,8 +107,8 @@ public class BarChartRoundedRenderer extends BarLineScatterCandleBubbleRenderer 
             final float barWidth = barData.getBarWidth();
             final float barWidthHalf = barWidth / 2.0f;
             float x;
-            for (int i = 0, count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
-                    i < count; i++) {
+            int count = count = Math.min((int)(Math.ceil((float)(dataSet.getEntryCount()) * phaseX)), dataSet.getEntryCount());
+            for (int i = 0; i < count; i++) {
                 BarEntry e = dataSet.getEntryForIndex(i);
                 x = e.getX();
                 mBarShadowRectBuffer.left = x - barWidthHalf;
