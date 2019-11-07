@@ -53,12 +53,13 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
                 holder = (ViewHolder) historyItemView.getTag();
             }
             String displayText;
+            String amount = MoneyUtil.toMoneyString(mHistory.get(position).getAmount());
             if(mHistory.get(position).isPositive()) {
-               displayText = "+" + MoneyUtil.toMoneyString(mHistory.get(position).getAmount());
+               displayText = String.format("+%s", amount);
                holder.displayAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.green));
             }
             else {
-                displayText = "-" + MoneyUtil.toMoneyString(mHistory.get(position).getAmount());
+                displayText = String.format("-%s", amount);
                 holder.displayAmount.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
             }
             holder.displayAmount.setText(displayText);
