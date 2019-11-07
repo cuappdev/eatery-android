@@ -99,9 +99,9 @@
                     android:layout_below="@id/ind_cafe_name"
                     android:layout_toRightOf="@id/ind_open"
                     android:fontFamily="sans-serif-regular"
+                    android:layout_marginStart="2dp"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryTime"
-                    android:layout_marginLeft="16dp"
                     android:text="Time"
                     android:textColor="@color/secondary"
                     android:textSize="14sp"/>

@@ -79,7 +79,7 @@
                         android:transitionName="eateryName"
                         android:text="Name"
                         android:textColor="@color/primary"
-                        android:textSize="16sp"/>
+                        android:textSize="18sp"/>
 
                     <RatingBar
                         android:id="@+id/cafe_rating"
@@ -87,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="4.5dp"
+                        android:layout_marginTop="3.5dp"
                         android:isIndicator="true"
                         android:max="5"
                         android:rating="2.5"
@@ -104,7 +104,7 @@
                     android:transitionName="eateryOpen"
                     android:text="Open?"
                     android:textColor="@color/primary"
-                    android:textSize="15sp"/>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/ind_time"
@@ -118,7 +118,7 @@
                     android:transitionName="eateryTime"
                     android:text="Time"
                     android:textColor="@color/secondary"
-                    android:textSize="15sp"/>
+                    android:textSize="14sp"/>
 
                 <RelativeLayout android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

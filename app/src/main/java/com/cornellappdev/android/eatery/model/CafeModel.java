@@ -3,45 +3,22 @@ package com.cornellappdev.android.eatery.model;
 import android.content.Context;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
-import com.cornellappdev.android.eatery.util.TimeUtil;
 
 import java.io.Serializable;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 public class CafeModel extends CampusModel implements Serializable {
-    private static Set<String> HARDCODED_CAFE_ITEMS = new HashSet<>(
-            Arrays.asList("Starbucks Coffees",
-                    "Pepsi Beverages",
-                    "Breakfast Menu",
-                    "Salads",
-                    "Soup",
-                    "Chili",
-                    "Personal Pizzas",
-                    "Burgers",
-                    "Chicken Tenders",
-                    "Quesadillas",
-                    "Burritos",
-                    "Tacos",
-                    "Hot Wraps",
-                    "Bok Choy",
-                    "Fried Rice",
-                    "Lo Mein",
-                    "Baked Goods"));
     private List<String> mCafeMenu;
     private Map<LocalDate, List<Interval>> mHours;
     private List<LocalDate> mSortedDates;
@@ -91,7 +68,7 @@ public class CafeModel extends CampusModel implements Serializable {
     @Override
     public LocalDateTime getChangeTime() {
         if (getCurrentStatus() == Status.OPEN) {
-            List<Interval> intervalList = mHours.get(LocalDate.now());
+            List<Interval> intervalList = getCurrentIntervalList();
             if (intervalList != null) {
                 for (Interval interval : intervalList) {
                     if (interval.containsTime(LocalDateTime.now())) {
