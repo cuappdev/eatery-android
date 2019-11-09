@@ -56,4 +56,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/onboarding_button_text_size"
         android:textStyle="bold" />
+
 </LinearLayout>
