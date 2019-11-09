@@ -38,6 +38,14 @@ public class OnboardingInfoFragment extends Fragment {
 
         mTitle.setText(title);
         mDescription.setText(description);
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
+                (onboardingFragment).getNextOnboardingPagerItem();
+            }
+        });
         return view;
     }
 }
