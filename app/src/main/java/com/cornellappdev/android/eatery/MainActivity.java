@@ -1,9 +1,9 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebView;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
@@ -12,8 +12,10 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
 import com.cornellappdev.android.eatery.onboarding.OnboardingInfoFragment;
 import com.cornellappdev.android.eatery.onboarding.OnboardingLoginFragment;
+import com.cornellappdev.android.eatery.onboarding.OnboardingScrollView;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,7 +29,12 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
-    private OnboardingLoginFragment onboardingLoginFragment;
-    private OnboardingInfoFragment onboardingInfoFragment;
+    private OnboardingActivity onboardingActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
-        onboardingLoginFragment = new OnboardingLoginFragment();
-        onboardingInfoFragment = new OnboardingInfoFragment("Menus","See what’s being served at any campus eatery.");
+        onboardingActivity = new OnboardingActivity();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sLoginWebView = findViewById(R.id.login_webview);
@@ -105,9 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
                 mainListFragment).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_relative_layout,
-                onboardingInfoFragment).commit();
-        toggleFullscreen(true);
+        startOnboarding();
 
 
         // Try pulling data from GraphQL
@@ -125,14 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void toggleFullscreen(boolean fullscreen) {
-        if (fullscreen) {
-            bnv.setVisibility(View.GONE);
-            getSupportActionBar().hide();
-        } else {
-            bnv.setVisibility(View.VISIBLE);
-            getSupportActionBar().show();
-        }
+    public void startOnboarding() {
+        Intent intent = new Intent(this, OnboardingActivity.class);
+        startActivity(intent);
     }
 
     public void setLoginInstance(LoginFragment instance) {
