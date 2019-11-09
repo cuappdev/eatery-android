@@ -5,31 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.cornellappdev.android.eatery.BrbInfoQuery;
-import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.loginviews.AccountInfoFragment;
-import com.cornellappdev.android.eatery.loginviews.LoginFragment;
-import com.cornellappdev.android.eatery.loginviews.PrivacyFragment;
-import com.cornellappdev.android.eatery.model.BrbInfoModel;
-import com.cornellappdev.android.eatery.model.enums.CacheType;
-import com.cornellappdev.android.eatery.network.GetLoginUtilities;
-import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
-import com.cornellappdev.android.eatery.util.InternalStorage;
-
-import java.io.IOException;
 
 public class OnboardingLoginFragment extends Fragment {
     private EditText mNetID;
@@ -44,7 +29,6 @@ public class OnboardingLoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Context currContext = getContext();
         View view = inflater.inflate(R.layout.fragment_onboarding_login, container, false);
 
         mDescriptionText = view.findViewById(R.id.onboarding_description);

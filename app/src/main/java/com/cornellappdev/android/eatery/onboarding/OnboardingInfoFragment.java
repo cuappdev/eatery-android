@@ -29,23 +29,25 @@ public class OnboardingInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Context currContext = getContext();
         View view = inflater.inflate(R.layout.fragment_onboarding_info, container, false);
         mTitle = view.findViewById(R.id.onboarding_info_title);
         mDescription = view.findViewById(R.id.onboarding_info_description);
         mImageView = view.findViewById(R.id.onboarding_info_image_view);
         mButton = view.findViewById(R.id.onboarding_info_button);
 
+        // TODO (yanlam): Add dynamic rendering for animation.
         mTitle.setText(title);
         mDescription.setText(description);
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Moves to next onboarding item when "NEXT" button clicked.
                 OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
                 (onboardingFragment).getNextOnboardingPagerItem();
             }
         });
+
         return view;
     }
 }

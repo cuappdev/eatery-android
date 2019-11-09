@@ -2,6 +2,7 @@ package com.cornellappdev.android.eatery;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
                 mainListFragment).commit();
 
+        // TODO (yanlam): Check if onboarding has occurred, and skip this.
         startOnboarding();
 
         // Try pulling data from GraphQL
@@ -121,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
     public void startOnboarding() {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_relative_layout,
                 onboardingFragment).commit();
+        getSupportActionBar().hide();
+        bnv.setVisibility(View.GONE);
     }
 
     public void setLoginInstance(LoginFragment instance) {
