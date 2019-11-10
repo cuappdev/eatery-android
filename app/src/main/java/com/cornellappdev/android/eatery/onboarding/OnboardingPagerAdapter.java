@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
+
 public class OnboardingPagerAdapter extends FragmentPagerAdapter {
     private static int NUM_ITEMS = 4;
 
@@ -15,13 +17,13 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new OnboardingInfoFragment("Menus", "See what’s being served at any campus eatery.");
+                return new OnboardingInfoFragment(OnboardingPageType.MENUS);
             case 1:
-                return new OnboardingInfoFragment("Collegetown", "Find info about your favorite Collegetown spots.");
+                return new OnboardingInfoFragment(OnboardingPageType.COLLEGETOWN);
             case 2:
-                return new OnboardingInfoFragment("Transactions", "Track your swipes, BRBs, meal history, and more.");
+                return new OnboardingInfoFragment(OnboardingPageType.TRANSACTIONS);
             case 3:
-                return new OnboardingLoginFragment();
+                return new OnboardingInfoFragment(OnboardingPageType.LOGIN);
             default:
                 return null;
         }

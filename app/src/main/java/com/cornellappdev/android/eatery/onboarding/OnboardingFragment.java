@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cornellappdev.android.eatery.R;
+import com.google.android.material.tabs.TabLayout;
 
 public class OnboardingFragment extends Fragment {
     private ViewPager mViewPager;
+    private TabLayout mOnboardingPageIndicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,6 +24,10 @@ public class OnboardingFragment extends Fragment {
         mViewPager = view.findViewById(R.id.onboarding_viewpager);
         mViewPager.setAdapter(new OnboardingPagerAdapter(getChildFragmentManager()));
         mViewPager.setCurrentItem(0);
+
+        mOnboardingPageIndicator = view.findViewById(R.id.onboarding_page_indicator);
+        mOnboardingPageIndicator.setTabRippleColor(null);
+        mOnboardingPageIndicator.setupWithViewPager(mViewPager);
 
         return view;
     }

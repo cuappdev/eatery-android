@@ -1,29 +1,28 @@
 package com.cornellappdev.android.eatery.onboarding;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
 public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
     private TextView mDescription;
-    private ImageView mImageView;
+    private OnboardingLoginFragment mOnboardingLoginFragment;
     private Button mButton;
-    private String title;
-    private String description;
+    private Button mSecondaryButton;
+    private OnboardingPageType onboardingPageType;
 
-    public OnboardingInfoFragment(String title, String description) {
-       this.title = title;
-       this.description = description;
+    public OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
+        this.onboardingPageType = onboardingPageType;
     }
 
     @Override
@@ -32,13 +31,45 @@ public class OnboardingInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_onboarding_info, container, false);
         mTitle = view.findViewById(R.id.onboarding_info_title);
         mDescription = view.findViewById(R.id.onboarding_info_description);
-        mImageView = view.findViewById(R.id.onboarding_info_image_view);
         mButton = view.findViewById(R.id.onboarding_info_button);
+        mSecondaryButton = view.findViewById(R.id.onboarding_secondary_button);
 
-        // TODO (yanlam): Add dynamic rendering for animation.
-        mTitle.setText(title);
-        mDescription.setText(description);
+        mTitle.setText(onboardingPageType.getTitle());
+        mDescription.setText(onboardingPageType.getDescription());
 
+        setupContent();
+        if (onboardingPageType == OnboardingPageType.LOGIN) {
+            setupSkipButton();
+            setupLoginButton();
+        } else {
+            mSecondaryButton.setVisibility(View.GONE);
+            setupNextButton();
+        }
+
+        return view;
+    }
+
+    public void setupContent() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        switch (onboardingPageType) {
+            // TODO (yanlam): Add dynamic rendering for animation.
+            case MENUS:
+                break;
+            case COLLEGETOWN:
+                break;
+            case TRANSACTIONS:
+                break;
+            case LOGIN:
+                // Set up login inputs.
+                mOnboardingLoginFragment = new OnboardingLoginFragment();
+                transaction.replace(R.id.onboarding_frame_layout,
+                        mOnboardingLoginFragment).commit();
+                break;
+        }
+    }
+
+    public void setupNextButton() {
+        mButton.setText("NEXT");
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +78,26 @@ public class OnboardingInfoFragment extends Fragment {
                 (onboardingFragment).getNextOnboardingPagerItem();
             }
         });
+    }
 
-        return view;
+    public void setupLoginButton() {
+        mButton.setText("LOGIN");
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: add login funcitonality.
+            }
+        });
+    }
+
+    public void setupSkipButton() {
+        mSecondaryButton.setText("SKIP");
+        mSecondaryButton.setVisibility(View.VISIBLE);
+        mSecondaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: add login skip functionality.
+            }
+        });
     }
 }
