@@ -75,7 +75,7 @@ public class OnboardingInfoFragment extends Fragment {
             public void onClick(View v) {
                 // Moves to next onboarding item when "NEXT" button clicked.
                 OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                (onboardingFragment).getNextOnboardingPagerItem();
+                onboardingFragment.getNextOnboardingPagerItem();
             }
         });
     }

@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
-    private OnboardingFragment onboardingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
-        onboardingFragment = new OnboardingFragment();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sLoginWebView = findViewById(R.id.login_webview);
@@ -121,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startOnboarding() {
+        OnboardingFragment onboardingFragment = new OnboardingFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_relative_layout,
                 onboardingFragment).commit();
         getSupportActionBar().hide();

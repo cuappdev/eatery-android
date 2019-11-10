@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 /**
  * This fragment is the page reached upon clicking the gear icon in the upper right of
- * AccountInfoFragment. Upon clicking logout, it redirects the user to OnboardingLoginFragment, and
+ * AccountInfoFragment. Upon clicking logout, it redirects the user to LoginFragment, and
  * also has a redirect to an about page (AboutFragment)
  */
 public class LogoutFragment extends Fragment {
