@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -42,5 +43,9 @@ public class OnboardingFragment extends Fragment {
             pageIndex ++;
         }
         mViewPager.setCurrentItem(pageIndex);
+    }
+
+    public void endOnboarding() {
+        ((MainActivity) getActivity()).endOnboarding();
     }
 }

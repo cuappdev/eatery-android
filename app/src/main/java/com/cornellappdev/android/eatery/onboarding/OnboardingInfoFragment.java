@@ -86,6 +86,8 @@ public class OnboardingInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: add login funcitonality.
+                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
+                onboardingFragment.endOnboarding();
             }
         });
     }
@@ -96,7 +98,8 @@ public class OnboardingInfoFragment extends Fragment {
         mSecondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add login skip functionality.
+                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
+                onboardingFragment.endOnboarding();
             }
         });
     }
