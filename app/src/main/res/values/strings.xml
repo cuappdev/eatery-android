@@ -21,6 +21,9 @@
     </string>
     <string name="description_text_3">To get the most out of Eatery, log in with your netID.
     </string>
+    <string name="onboarding_button_next">NEXT</string>
+    <string name="onboarding_button_login">LOGIN</string>
+    <string name="onboarding_button_skip">SKIP</string>
     <string name="feedback_header">Feedback</string>
     <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for
         new features.

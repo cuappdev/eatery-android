@@ -69,7 +69,7 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     public void setupNextButton() {
-        mButton.setText("NEXT");
+        mButton.setText(R.string.onboarding_button_next);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     public void setupLoginButton() {
-        mButton.setText("LOGIN");
+        mButton.setText(R.string.onboarding_button_login);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     public void setupSkipButton() {
-        mSecondaryButton.setText("SKIP");
+        mSecondaryButton.setText(R.string.onboarding_button_skip);
         mSecondaryButton.setVisibility(View.VISIBLE);
         mSecondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
