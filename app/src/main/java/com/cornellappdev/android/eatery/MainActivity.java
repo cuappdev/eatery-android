@@ -2,7 +2,10 @@ package com.cornellappdev.android.eatery;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
@@ -10,6 +13,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.onboarding.OnboardingFragment;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -95,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                mainListFragment).commit();
+        // TODO (yanlam): Check if onboarding has occurred, and skip this.
+        startOnboarding();
 
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
@@ -111,6 +115,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void startOnboarding() {
+        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
+        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
+        frameLayoutParams.setMargins(0, 0, 0, 0);
+        frameLayout.setLayoutParams(frameLayoutParams);
+        frameLayout.requestLayout();
+
+        OnboardingFragment onboardingFragment = new OnboardingFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
+                onboardingFragment).commit();
+        getSupportActionBar().hide();
+        bnv.setVisibility(View.GONE);
+    }
+
+    public void endOnboarding() {
+        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
+        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
+        frameLayoutParams.setMargins(0, 0, 0, bnv.getMinimumHeight());
+        frameLayout.setLayoutParams(frameLayoutParams);
+        frameLayout.requestLayout();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
+                mainListFragment).commit();
+        getSupportActionBar().show();
+        bnv.setVisibility(View.VISIBLE);
     }
 
     public void setLoginInstance(LoginFragment instance) {

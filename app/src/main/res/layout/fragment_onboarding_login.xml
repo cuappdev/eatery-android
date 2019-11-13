@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/onboarding_netid_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingBottom="10dp"
+        android:text="@string/netid"
+        android:textColor="@color/white"
+        android:textSize="@dimen/onboarding_label_text_size" />
+
+    <EditText
+        android:id="@+id/onboarding_netid_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="@string/netid_hint"
+        android:inputType="textPersonName"
+        android:paddingTop="15dp"
+        android:paddingBottom="20dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/account_info_attributes_text_size"
+        android:backgroundTint="@color/white"
+        android:textColorHint="@color/inactive" />
+
+    <TextView
+        android:id="@+id/onboarding_password_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="42dp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingTop="15dp"
+        android:text="@string/password"
+        android:textColor="@color/white"
+        android:textSize="@dimen/onboarding_label_text_size" />
+
+    <EditText
+        android:id="@+id/onboarding_password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="@string/password_hint"
+        android:imeOptions="actionDone"
+        android:inputType="textPassword"
+        android:paddingTop="15dp"
+        android:paddingBottom="20dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/account_info_attributes_text_size"
+        android:backgroundTint="@color/white"
+        android:textColorHint="@color/inactive" />
+</LinearLayout>
+

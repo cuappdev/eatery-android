@@ -20,8 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 /**
- * This class is the redirected page after LoginFragment, and displays a user's account info along
- * with a list of past purchases
+ * This class is the redirected page after LoginFragment and OnboardingLoginFragment, and displays
+ * a user's account info along with a list of past purchases
  */
 public class AccountInfoFragment extends Fragment {
 
