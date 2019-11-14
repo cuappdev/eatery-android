@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
@@ -29,6 +28,7 @@ public class MainListPresenter {
     private HashSet<CampusArea> mAreaSet;
     private HashSet<Category> mCategorySet;
     private String mQuery;
+    private LocationManager mLocationManager;
 
     private Repository rInstance = Repository.getInstance();
 
@@ -97,14 +97,24 @@ public class MainListPresenter {
     }
 
     public void sortNearestFirst(Context context) {
-        // It's fine to have this code in presenter right?
+        // It's fine to have this code in presenter, right?
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+            // getLastKnownLocation should be accurate enough for this situation
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mCurrentList.sort(new Comparator<EateryBaseModel>() {
                 @Override
                 public int compare(EateryBaseModel o1, EateryBaseModel o2) {
+                    // Ensure all open eateries come before all closed eateries
+                    if(o1.isOpen() && !o2.isOpen()) {
+                        return -1;
+                    }
+                    if(!o1.isOpen() && o2.isOpen()) {
+                        return 1;
+                    }
+
+                    // If they are either both open or both closed, sort based on distance
                     double dist1 = Math.pow(o1.getLatitude() - location.getLatitude(), 2) +
                             Math.pow(o1.getLongitude() - location.getLongitude(), 2);
                     double dist2 = Math.pow(o2.getLatitude() - location.getLatitude(), 2) +

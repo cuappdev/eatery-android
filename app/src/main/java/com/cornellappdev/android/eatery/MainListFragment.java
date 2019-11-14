@@ -87,6 +87,7 @@ public class MainListFragment extends Fragment
         mPaymentButtonsPressed = new HashSet<>();
         mCategoryButtonsPressed = new HashSet<>();
         mNearestFirstButtonPressed = false;
+        mPillHolder.bringToFront();
 
         // Set up recyclerView and corresponding listAdapter
         mRecyclerView.setHasFixedSize(true);
@@ -157,6 +158,7 @@ public class MainListFragment extends Fragment
 
     private void initializeCollegeTownEateryButtons(View rootView) {
         int[] viewIds = {
+                R.id.nearestFirstButton,
                 R.id.american,
                 R.id.coffee,
                 R.id.chinese,
