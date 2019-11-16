@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 
 public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
@@ -20,6 +21,7 @@ public class OnboardingInfoFragment extends Fragment {
     private Button mButton;
     private Button mSecondaryButton;
     private OnboardingPageType onboardingPageType;
+    private AccountPresenter mAccountPresenter;
 
     public OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
         this.onboardingPageType = onboardingPageType;
@@ -36,6 +38,8 @@ public class OnboardingInfoFragment extends Fragment {
 
         mTitle.setText(onboardingPageType.getTitle());
         mDescription.setText(onboardingPageType.getDescription());
+
+        mAccountPresenter = new AccountPresenter();
 
         setupContent();
         if (onboardingPageType == OnboardingPageType.LOGIN) {
@@ -85,7 +89,7 @@ public class OnboardingInfoFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add login funcitonality.
+                mOnboardingLoginFragment.login();
                 OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
                 onboardingFragment.endOnboarding();
             }

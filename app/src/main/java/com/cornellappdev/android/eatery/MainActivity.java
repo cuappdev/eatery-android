@@ -14,6 +14,7 @@ import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.onboarding.OnboardingFragment;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
+
+    private AccountPresenter mAccountPresenter = new AccountPresenter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean isAccountPresenterLoggedIn() {
+        return mAccountPresenter.isLoggedIn();
+    }
+
+    public boolean isAccountPresenterLoggingIn() {
+        return mAccountPresenter.isLoggingIn();
+    }
+
+    public String[] getLoginInfo() {
+        String[] loginInfo = mAccountPresenter.readSavedCredentials(getApplicationContext());
+        return loginInfo;
+    }
+
+    public void setAccountPresenterLoggingIn(boolean b) {
+        mAccountPresenter.setLoggingIn(b);
+    }
+
+    public void setAccountPresenterBrbInfo(BrbInfoModel model) {
+        mAccountPresenter.setBrbModel(model);
+    }
+
+    public void setAccountPresenterFields(String netId, String password) {
+        mAccountPresenter.setNetID(netId);
+        mAccountPresenter.setPassword(password);
+    }
+
+    public void resetAccountPresenterJS() {
+        mAccountPresenter.resetLoginJS();
+    }
+
+    public void outputAccountPresenterCredentialsToFile() {
+        mAccountPresenter.outputCredentialsToFile(getApplicationContext());
     }
 
     public void startOnboarding() {

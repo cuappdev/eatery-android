@@ -63,5 +63,21 @@
         android:textSize="@dimen/account_info_attributes_text_size"
         android:backgroundTint="@color/white"
         android:textColorHint="@color/inactive" />
+
+    <TextView
+        android:id="@+id/onboarding_login_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:lineSpacingExtra="3sp"
+        android:paddingStart="25dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
+        android:paddingEnd="25dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="@dimen/account_info_attributes_text_size"
+        android:textStyle="bold"/>
 </LinearLayout>
 
