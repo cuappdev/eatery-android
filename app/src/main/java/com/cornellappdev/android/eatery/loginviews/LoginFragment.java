@@ -152,14 +152,8 @@ public class LoginFragment extends Fragment {
             });
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mFirebaseAnalytics.logEvent("user_brb_login", null);
-                    mainActivity.setAccountPresenterLoggingIn(true);
+                    mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
                     loadingGUI();
-                    mainActivity.setAccountPresenterFields(mNetID.getText().toString(), mPassword.getText().toString());
-                    // change the login javascript to have the correct username and password
-                    mainActivity.resetAccountPresenterJS();
-
-                    MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
                 }
             });
         }

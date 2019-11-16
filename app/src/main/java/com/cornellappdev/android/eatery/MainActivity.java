@@ -4,15 +4,18 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
+import com.cornellappdev.android.eatery.loginviews.PrivacyFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
+import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.onboarding.OnboardingFragment;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
@@ -141,21 +144,24 @@ public class MainActivity extends AppCompatActivity {
         mAccountPresenter.setBrbModel(model);
     }
 
-    public void setAccountPresenterFields(String netId, String password) {
-        mAccountPresenter.setNetID(netId);
-        mAccountPresenter.setPassword(password);
-    }
-
-    public void resetAccountPresenterJS() {
-        mAccountPresenter.resetLoginJS();
-    }
-
     public void outputAccountPresenterCredentialsToFile() {
         mAccountPresenter.outputCredentialsToFile(getApplicationContext());
     }
 
     public void eraseAccountPresenterJS() {
         mAccountPresenter.eraseSavedCredentials(getApplicationContext());
+    }
+
+    public void login(String netId, String password) {
+        mFirebaseAnalytics.logEvent("user_brb_login", null);
+        setAccountPresenterLoggingIn(true);
+        mAccountPresenter.setNetID(netId);
+        mAccountPresenter.setPassword(password);
+
+        // change the login javascript to have the correct username and password
+        mAccountPresenter.resetLoginJS();
+        
+        MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
     }
 
     public void startOnboarding() {
@@ -188,5 +194,4 @@ public class MainActivity extends AppCompatActivity {
     public void setLoginInstance(LoginFragment instance) {
         loginFragment = instance;
     }
-
 }

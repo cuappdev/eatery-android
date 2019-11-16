@@ -53,6 +53,16 @@ public class OnboardingInfoFragment extends Fragment {
         return view;
     }
 
+    public void disableInteraction() {
+        mButton.setEnabled(false);
+        mSecondaryButton.setEnabled(false);
+    }
+
+    public void enableInteraction() {
+        mButton.setEnabled(true);
+        mSecondaryButton.setEnabled(true);
+    }
+
     public void setupContent() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         switch (onboardingPageType) {

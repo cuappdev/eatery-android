@@ -20,18 +20,16 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 
 public class OnboardingLoginFragment extends Fragment {
     private EditText mNetID;
     private EditText mPassword;
-    private FirebaseAnalytics mFirebaseAnalytics;
     private TextView mDescriptionText;
 
+    OnboardingInfoFragment onboardingInfoFragment;
     private MainActivity mainActivity;
 
     @Override
@@ -42,10 +40,10 @@ public class OnboardingLoginFragment extends Fragment {
 
         mNetID = view.findViewById(R.id.onboarding_netid_input);
         mPassword = view.findViewById(R.id.onboarding_password_input);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(currContext);
         mDescriptionText = view.findViewById(R.id.onboarding_login_description);
 
         mainActivity = (MainActivity) getActivity();
+        onboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
 
         if (mainActivity.isAccountPresenterLoggedIn()) {
             String[] loginInfo = mainActivity.getLoginInfo();
@@ -54,16 +52,18 @@ public class OnboardingLoginFragment extends Fragment {
                 // to the values found in the files
                 mNetID.setText(loginInfo[0]);
                 mPassword.setText(loginInfo[1]);
+                endOnboarding();
             }
         } else {
+            resumeGUI();
             GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
                 @Override
                 public void failedLogin() {
                     // If the user is still viewing this fragment
                     if (getFragmentManager() != null) {
                         mDescriptionText.setText("Incorrect netid and/or password\n");
-                        mDescriptionText.setTextColor(getResources().getColor(R.color.red));
                         mainActivity.setAccountPresenterLoggingIn(false);
+                        resumeGUI();
                     }
                 }
 
@@ -78,13 +78,13 @@ public class OnboardingLoginFragment extends Fragment {
                     }
                     if (model == null) {
                         mDescriptionText.setText("Internal Error\n");
-                        mDescriptionText.setTextColor(getResources().getColor(R.color.red));
                         mainActivity.setAccountPresenterLoggingIn(false);
+                        resumeGUI();
                     } else {
                         mainActivity.setAccountPresenterBrbInfo(model);
                         mainActivity.setAccountPresenterLoggingIn(false);
+                        endOnboarding();
                     }
-                    endOnboarding();
                 }
             };
             MainActivity.sLoginWebView.getSettings().setJavaScriptEnabled(true);
@@ -101,27 +101,25 @@ public class OnboardingLoginFragment extends Fragment {
         return view;
     }
 
+    private void resumeGUI() {
+        onboardingInfoFragment.enableInteraction();
+        mNetID.setEnabled(true);
+        mPassword.setEnabled(true);
+    }
+
     private void loadingGUI() {
-        mDescriptionText.setTextColor(getResources().getColor(R.color.white));
+        onboardingInfoFragment.disableInteraction();
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
     }
 
     public void login() {
-        mFirebaseAnalytics.logEvent("user_brb_login", null);
-        mainActivity.setAccountPresenterLoggingIn(true);
-        mainActivity.setAccountPresenterFields(mNetID.getText().toString(), mPassword.getText().toString());
+        mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
         loadingGUI();
-
-        // change the login javascript to have the correct username and password
-        mainActivity.resetAccountPresenterJS();
-
-        MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
     }
 
     private void endOnboarding() {
-        OnboardingInfoFragment onboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
-        onboardingInfoFragment.endOnboarding();
+       onboardingInfoFragment.endOnboarding();
     }
 }

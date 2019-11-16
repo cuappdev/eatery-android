@@ -73,7 +73,7 @@
         android:lineSpacingExtra="3sp"
         android:paddingStart="25dp"
         android:paddingTop="10dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="5dp"
         android:paddingEnd="25dp"
         android:text=""
         android:textColor="@color/white"
