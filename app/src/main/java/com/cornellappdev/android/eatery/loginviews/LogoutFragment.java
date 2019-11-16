@@ -30,18 +30,19 @@ public class LogoutFragment extends Fragment {
     private Button mLogoutButton;
     private RelativeLayout mAboutArea;
     // re-using the same kind of presenter
-    private AccountPresenter mAccountPresenter = new AccountPresenter();
+    private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_logout, container, false);
         mLogoutButton = rootView.findViewById(R.id.logout);
+        mainActivity = (MainActivity) getActivity();
 
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mAccountPresenter.setBrbModel(null);
-                mAccountPresenter.eraseSavedCredentials(getContext());
+                mainActivity.setAccountPresenterBrbInfo(null);
+                mainActivity.eraseAccountPresenterJS();
                 try {
                     InternalStorage.writeObject(getContext(), CacheType.BRB, null);
                 } catch (IOException e) {

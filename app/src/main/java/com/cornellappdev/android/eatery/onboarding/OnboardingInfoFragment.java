@@ -90,10 +90,13 @@ public class OnboardingInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mOnboardingLoginFragment.login();
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.endOnboarding();
             }
         });
+    }
+
+    public void endOnboarding() {
+        OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
+        onboardingFragment.endOnboarding();
     }
 
     public void setupSkipButton() {

@@ -154,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
         mAccountPresenter.outputCredentialsToFile(getApplicationContext());
     }
 
+    public void eraseAccountPresenterJS() {
+        mAccountPresenter.eraseSavedCredentials(getApplicationContext());
+    }
+
     public void startOnboarding() {
         FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
         RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();

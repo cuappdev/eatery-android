@@ -84,6 +84,7 @@ public class OnboardingLoginFragment extends Fragment {
                         mainActivity.setAccountPresenterBrbInfo(model);
                         mainActivity.setAccountPresenterLoggingIn(false);
                     }
+                    endOnboarding();
                 }
             };
             MainActivity.sLoginWebView.getSettings().setJavaScriptEnabled(true);
@@ -117,5 +118,10 @@ public class OnboardingLoginFragment extends Fragment {
         mainActivity.resetAccountPresenterJS();
 
         MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
+    }
+
+    private void endOnboarding() {
+        OnboardingInfoFragment onboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
+        onboardingInfoFragment.endOnboarding();
     }
 }
