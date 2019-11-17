@@ -25,7 +25,6 @@ import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -88,6 +87,7 @@ public class MainListFragment extends Fragment
         mPaymentButtonsPressed = new HashSet<>();
         mCategoryButtonsPressed = new HashSet<>();
         mNearestFirstButtonPressed = false;
+        mPillHolder.bringToFront();
 
         // Set up recyclerView and corresponding listAdapter
         mRecyclerView.setHasFixedSize(true);
@@ -142,8 +142,7 @@ public class MainListFragment extends Fragment
 
     private void initializeCampusEateryButtons(View rootView) {
         int[] viewIds = {
-//                TODO: Add nearest first button back when functionality is implemented.
-//                R.id.nearestFirstButton,
+                R.id.nearestFirstButton,
                 R.id.northButton,
                 R.id.westButton,
                 R.id.centralButton,
@@ -159,6 +158,7 @@ public class MainListFragment extends Fragment
 
     private void initializeCollegeTownEateryButtons(View rootView) {
         int[] viewIds = {
+                R.id.nearestFirstButton,
                 R.id.american,
                 R.id.coffee,
                 R.id.chinese,
@@ -338,8 +338,10 @@ public class MainListFragment extends Fragment
     private void handleNearestFirstButtonPress(Button button) {
         if (mNearestFirstButtonPressed) {
             changeButtonColor(R.color.white, R.color.blue, button);
+            mListPresenter.sortNearestFirst(getContext());
         } else {
             changeButtonColor(R.color.blue, R.color.wash, button);
+            mListPresenter.sortAlphabetical();
         }
         mListPresenter.filterImageList();
     }
@@ -387,19 +389,16 @@ public class MainListFragment extends Fragment
 
     private void updateListAdapter() {
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
-        Collections.sort(cafesToDisplay);
         mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
     }
 
     @Override
     public void onClick(View view) {
-//        TODO: Add nearest first button back when functionality is implemented.
-//        if (view.getId() == R.id.nearestFirstButton) {
-//            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
-//            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;
-//            handleNearestFirstButtonPress(mCampusButtons.get(view.getId()));
-//        }
-        if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
+        if (view.getId() == R.id.nearestFirstButton) {
+            mFirebaseAnalytics.logEvent("nearest_first_filter_press", null);
+            mNearestFirstButtonPressed = !mNearestFirstButtonPressed;
+            handleNearestFirstButtonPress(mCampusButtons.get(view.getId()));
+        } else if (view.getId() == R.id.northButton || view.getId() == R.id.centralButton
                 || view.getId() == R.id.westButton) {
             if (view.getId() == R.id.northButton) {
                 mFirebaseAnalytics.logEvent("north_filter_press", null);
