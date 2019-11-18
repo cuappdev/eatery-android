@@ -20,9 +20,7 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 
@@ -43,7 +41,6 @@ public class LoginFragment extends Fragment {
     private Button mLoginButton;
     private ProgressBar mProgressBar;
     private AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
-    private FirebaseAnalytics mFirebaseAnalytics;
     private MainActivity mainActivity;
 
     @Override
@@ -71,7 +68,6 @@ public class LoginFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(currContext);
 
         if (mainActivity.isAccountPresenterLoggedIn()) {
             // If the user has already logged in in this session of the app, just load the

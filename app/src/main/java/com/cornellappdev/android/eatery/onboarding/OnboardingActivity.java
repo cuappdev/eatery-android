@@ -43,6 +43,11 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setCurrentItem(pageIndex);
     }
 
+    protected void setPagerEnabled(boolean enabled) {
+        mViewPager.setEnabled(enabled);
+    }
+
+
     public void endOnboarding() {
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         preferences.edit().putBoolean("onboarding_complete",true).apply();

@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
+                mainListFragment).commit();
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
         NetworkUtilities.getCtEateries(this);
@@ -156,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
         mAccountPresenter.eraseSavedCredentials(getApplicationContext());
     }
 
+    // Called from LoginFragment. Needs to be in MainActivity so the WebView does not get
+    // destroyed while trying to log in
     public void login(String netId, String password) {
         mFirebaseAnalytics.logEvent("user_brb_login", null);
         setAccountPresenterLoggingIn(true);
@@ -169,30 +173,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startOnboarding() {
-        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
-        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
-        frameLayoutParams.setMargins(0, 0, 0, 0);
-        frameLayout.setLayoutParams(frameLayoutParams);
-        frameLayout.requestLayout();
-
         Intent intent = new Intent(getApplicationContext(), OnboardingActivity.class);
         startActivity(intent);
-
-        getSupportActionBar().hide();
-        bnv.setVisibility(View.GONE);
-    }
-
-    public void endOnboarding() {
-        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
-        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
-        frameLayoutParams.setMargins(0, 0, 0, bnv.getMinimumHeight());
-        frameLayout.setLayoutParams(frameLayoutParams);
-        frameLayout.requestLayout();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                mainListFragment).commit();
-        getSupportActionBar().show();
-        bnv.setVisibility(View.VISIBLE);
     }
 
     public void setLoginInstance(LoginFragment instance) {

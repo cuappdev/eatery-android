@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
-import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
@@ -31,7 +29,6 @@ public class OnboardingLoginFragment extends Fragment {
     private EditText mPassword;
     private TextView mDescriptionText;
     private WebView mWebView;
-    private ProgressBar mProgressBar;
 
     OnboardingInfoFragment onboardingInfoFragment;
 
@@ -97,13 +94,13 @@ public class OnboardingLoginFragment extends Fragment {
     }
 
     private void resumeGUI() {
-        onboardingInfoFragment.enableInteraction();
+        onboardingInfoFragment.resumeLoginGUI();
         mNetID.setEnabled(true);
         mPassword.setEnabled(true);
     }
 
     private void loadingGUI() {
-        onboardingInfoFragment.disableInteraction();
+        onboardingInfoFragment.loggingIn();
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
