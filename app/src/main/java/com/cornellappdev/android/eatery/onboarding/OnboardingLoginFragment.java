@@ -2,12 +2,14 @@ package com.cornellappdev.android.eatery.onboarding;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -28,9 +30,10 @@ public class OnboardingLoginFragment extends Fragment {
     private EditText mNetID;
     private EditText mPassword;
     private TextView mDescriptionText;
+    private WebView mWebView;
+    private ProgressBar mProgressBar;
 
     OnboardingInfoFragment onboardingInfoFragment;
-    private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,62 +44,54 @@ public class OnboardingLoginFragment extends Fragment {
         mNetID = view.findViewById(R.id.onboarding_netid_input);
         mPassword = view.findViewById(R.id.onboarding_password_input);
         mDescriptionText = view.findViewById(R.id.onboarding_login_description);
-
-        mainActivity = (MainActivity) getActivity();
         onboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
+        mWebView = view.findViewById(R.id.login_webview);
 
-        if (mainActivity.isAccountPresenterLoggedIn()) {
-            String[] loginInfo = mainActivity.getLoginInfo();
-            if (loginInfo != null) {
-                // This is not null upon auto-logging in on app launch. Thus, set the textfields
-                // to the values found in the files
-                mNetID.setText(loginInfo[0]);
-                mPassword.setText(loginInfo[1]);
-                endOnboarding();
+        GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
+            @Override
+            public void failedLogin() {
+                // If the user is still viewing this fragment
+                if (getFragmentManager() != null) {
+                    Log.i("qwerty", "Failed login");
+                    mDescriptionText.setText("Incorrect netid and/or password\n");
+                    mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                    resumeGUI();
+                }
             }
-        } else {
-            resumeGUI();
-            GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
-                @Override
-                public void failedLogin() {
-                    // If the user is still viewing this fragment
+
+            @Override
+            public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
+                Log.i("qwerty", "Success login");
+                Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
+                BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
+                try {
+                    InternalStorage.writeObject(currContext, CacheType.BRB, model);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (model == null) {
+                    mDescriptionText.setText("Internal Error\n");
+                    mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                    resumeGUI();
+                } else {
+                    Repository.getInstance().setBrbInfoModel(model);
+                    // If user is still viewing this fragment
                     if (getFragmentManager() != null) {
-                        mDescriptionText.setText("Incorrect netid and/or password\n");
-                        mainActivity.setAccountPresenterLoggingIn(false);
-                        resumeGUI();
+                        onboardingInfoFragment.endOnboarding();
                     }
                 }
+            }
+        };
 
-                @Override
-                public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                    Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
-                    BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
-                    try {
-                        InternalStorage.writeObject(currContext, CacheType.BRB, model);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (model == null) {
-                        mDescriptionText.setText("Internal Error\n");
-                        mainActivity.setAccountPresenterLoggingIn(false);
-                        resumeGUI();
-                    } else {
-                        mainActivity.setAccountPresenterBrbInfo(model);
-                        mainActivity.setAccountPresenterLoggingIn(false);
-                        endOnboarding();
-                    }
-                }
-            };
-            MainActivity.sLoginWebView.getSettings().setJavaScriptEnabled(true);
-            MainActivity.sLoginWebView.setWebViewClient(new WebViewClient() {
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new WebViewClient() {
 
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    // Gets called on every page redirect - initial redirect is loadurl(...)
-                    GetLoginUtilities.webLogin(url, view, callback);
-                }
-            });
-        }
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                // Gets called on every page redirect - initial redirect is loadurl(...)
+                GetLoginUtilities.webLogin(url, view, callback);
+            }
+        });
 
         return view;
     }
@@ -115,11 +110,9 @@ public class OnboardingLoginFragment extends Fragment {
     }
 
     public void login() {
-        mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
         loadingGUI();
-    }
-
-    private void endOnboarding() {
-       onboardingInfoFragment.endOnboarding();
+        GetLoginUtilities.resetLoginAbility(mNetID.getText().toString(),
+                mPassword.getText().toString());
+        mWebView.loadUrl(getString(R.string.getlogin_url));
     }
 }

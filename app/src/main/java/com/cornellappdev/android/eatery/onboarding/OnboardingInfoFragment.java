@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
@@ -23,7 +23,7 @@ public class OnboardingInfoFragment extends Fragment {
     private OnboardingPageType onboardingPageType;
     private AccountPresenter mAccountPresenter;
 
-    public OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
+    protected OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
         this.onboardingPageType = onboardingPageType;
     }
 
@@ -53,17 +53,17 @@ public class OnboardingInfoFragment extends Fragment {
         return view;
     }
 
-    public void disableInteraction() {
+    protected void disableInteraction() {
         mButton.setEnabled(false);
-        mSecondaryButton.setEnabled(false);
+        //mSecondaryButton.setEnabled(false);
     }
 
-    public void enableInteraction() {
+    protected void enableInteraction() {
         mButton.setEnabled(true);
-        mSecondaryButton.setEnabled(true);
+        //mSecondaryButton.setEnabled(true);
     }
 
-    public void setupContent() {
+    private void setupContent() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         switch (onboardingPageType) {
             // TODO (yanlam): Add dynamic rendering for animation.
@@ -82,19 +82,18 @@ public class OnboardingInfoFragment extends Fragment {
         }
     }
 
-    public void setupNextButton() {
+    private void setupNextButton() {
         mButton.setText(R.string.onboarding_button_next);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Moves to next onboarding item when "NEXT" button clicked.
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.getNextOnboardingPagerItem();
+                ((OnboardingActivity) getActivity()).getNextOnboardingPagerItem();
             }
         });
     }
 
-    public void setupLoginButton() {
+    private void setupLoginButton() {
         mButton.setText(R.string.onboarding_button_login);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,19 +103,17 @@ public class OnboardingInfoFragment extends Fragment {
         });
     }
 
-    public void endOnboarding() {
-        OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-        onboardingFragment.endOnboarding();
+    protected void endOnboarding() {
+        ((OnboardingActivity) getActivity()).endOnboarding();
     }
 
-    public void setupSkipButton() {
+    private void setupSkipButton() {
         mSecondaryButton.setText(R.string.onboarding_button_skip);
         mSecondaryButton.setVisibility(View.VISIBLE);
         mSecondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.endOnboarding();
+                endOnboarding();
             }
         });
     }

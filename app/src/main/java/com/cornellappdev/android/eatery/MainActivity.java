@@ -1,5 +1,7 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +18,7 @@ import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
-import com.cornellappdev.android.eatery.onboarding.OnboardingFragment;
+import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
@@ -105,12 +107,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        // TODO (yanlam): Check if onboarding has occurred, and skip this.
-        startOnboarding();
-
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
         NetworkUtilities.getCtEateries(this);
+
+        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
+        if(!preferences.getBoolean("onboarding_complete",false)) { // Start the
+            startOnboarding();
+        }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
@@ -171,9 +175,9 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.setLayoutParams(frameLayoutParams);
         frameLayout.requestLayout();
 
-        OnboardingFragment onboardingFragment = new OnboardingFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                onboardingFragment).commit();
+        Intent intent = new Intent(getApplicationContext(), OnboardingActivity.class);
+        startActivity(intent);
+
         getSupportActionBar().hide();
         bnv.setVisibility(View.GONE);
     }
