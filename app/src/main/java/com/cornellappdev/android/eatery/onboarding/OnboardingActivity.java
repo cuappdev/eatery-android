@@ -1,36 +1,34 @@
 package com.cornellappdev.android.eatery.onboarding;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class OnboardingFragment extends Fragment {
+public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private TabLayout mOnboardingPageIndicator;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_onboarding, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_onboarding);
 
         // Initiate viewPager, which holds the fragments to scroll between.
-        mViewPager = view.findViewById(R.id.onboarding_viewpager);
-        mViewPager.setAdapter(new OnboardingPagerAdapter(getChildFragmentManager()));
+        mViewPager = findViewById(R.id.onboarding_viewpager);
+        mViewPager.setAdapter(new OnboardingPagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(0);
 
-        mOnboardingPageIndicator = view.findViewById(R.id.onboarding_page_indicator);
+        mOnboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
         mOnboardingPageIndicator.setTabRippleColor(null);
         mOnboardingPageIndicator.setupWithViewPager(mViewPager);
-
-        return view;
     }
 
     /**
@@ -45,7 +43,15 @@ public class OnboardingFragment extends Fragment {
         mViewPager.setCurrentItem(pageIndex);
     }
 
+    protected void setPagerEnabled(boolean enabled) {
+        mViewPager.setEnabled(enabled);
+    }
+
+
     public void endOnboarding() {
-        ((MainActivity) getActivity()).endOnboarding();
+        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
+        preferences.edit().putBoolean("onboarding_complete",true).apply();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

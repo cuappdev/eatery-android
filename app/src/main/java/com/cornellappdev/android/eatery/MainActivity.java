@@ -1,19 +1,25 @@
 package com.cornellappdev.android.eatery;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
+import com.cornellappdev.android.eatery.loginviews.PrivacyFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
-import com.cornellappdev.android.eatery.onboarding.OnboardingFragment;
+import com.cornellappdev.android.eatery.network.QueryUtilities;
+import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
+
+    private AccountPresenter mAccountPresenter = new AccountPresenter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +107,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        // TODO (yanlam): Check if onboarding has occurred, and skip this.
-        startOnboarding();
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
+                mainListFragment).commit();
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
         NetworkUtilities.getCtEateries(this);
+
+        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
+        if(!preferences.getBoolean("onboarding_complete",false)) { // Start the
+            startOnboarding();
+        }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
@@ -117,35 +129,55 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void startOnboarding() {
-        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
-        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
-        frameLayoutParams.setMargins(0, 0, 0, 0);
-        frameLayout.setLayoutParams(frameLayoutParams);
-        frameLayout.requestLayout();
-
-        OnboardingFragment onboardingFragment = new OnboardingFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                onboardingFragment).commit();
-        getSupportActionBar().hide();
-        bnv.setVisibility(View.GONE);
+    public boolean isAccountPresenterLoggedIn() {
+        return mAccountPresenter.isLoggedIn();
     }
 
-    public void endOnboarding() {
-        FrameLayout frameLayout = findViewById(R.id.frame_fragment_holder);
-        RelativeLayout.LayoutParams frameLayoutParams = (RelativeLayout.LayoutParams)frameLayout.getLayoutParams();
-        frameLayoutParams.setMargins(0, 0, 0, bnv.getMinimumHeight());
-        frameLayout.setLayoutParams(frameLayoutParams);
-        frameLayout.requestLayout();
+    public boolean isAccountPresenterLoggingIn() {
+        return mAccountPresenter.isLoggingIn();
+    }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
-                mainListFragment).commit();
-        getSupportActionBar().show();
-        bnv.setVisibility(View.VISIBLE);
+    public String[] getLoginInfo() {
+        String[] loginInfo = mAccountPresenter.readSavedCredentials(getApplicationContext());
+        return loginInfo;
+    }
+
+    public void setAccountPresenterLoggingIn(boolean b) {
+        mAccountPresenter.setLoggingIn(b);
+    }
+
+    public void setAccountPresenterBrbInfo(BrbInfoModel model) {
+        mAccountPresenter.setBrbModel(model);
+    }
+
+    public void outputAccountPresenterCredentialsToFile() {
+        mAccountPresenter.outputCredentialsToFile(getApplicationContext());
+    }
+
+    public void eraseAccountPresenterJS() {
+        mAccountPresenter.eraseSavedCredentials(getApplicationContext());
+    }
+
+    // Called from LoginFragment. Needs to be in MainActivity so the WebView does not get
+    // destroyed while trying to log in
+    public void login(String netId, String password) {
+        mFirebaseAnalytics.logEvent("user_brb_login", null);
+        setAccountPresenterLoggingIn(true);
+        mAccountPresenter.setNetID(netId);
+        mAccountPresenter.setPassword(password);
+
+        // change the login javascript to have the correct username and password
+        mAccountPresenter.resetLoginJS();
+        
+        MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
+    }
+
+    public void startOnboarding() {
+        Intent intent = new Intent(getApplicationContext(), OnboardingActivity.class);
+        startActivity(intent);
     }
 
     public void setLoginInstance(LoginFragment instance) {
         loginFragment = instance;
     }
-
 }

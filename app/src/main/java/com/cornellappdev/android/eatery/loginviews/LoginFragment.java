@@ -20,9 +20,7 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 
@@ -43,8 +41,7 @@ public class LoginFragment extends Fragment {
     private Button mLoginButton;
     private ProgressBar mProgressBar;
     private AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
-    private AccountPresenter mAccountPresenter = new AccountPresenter();
-    private FirebaseAnalytics mFirebaseAnalytics;
+    private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,12 +56,9 @@ public class LoginFragment extends Fragment {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         }
-        if (mAccountPresenter.isLoggedIn()) {
-            // If the user has already logged in in this session of the app, just load the
-            // accountInfo page and don't require another login
-            loadAccountPage(true);
-            return rootView;
-        }
+
+        mainActivity = (MainActivity) getActivity();
+
         mPrivacy = rootView.findViewById(R.id.privacyStatement);
         mDescriptionText = rootView.findViewById(R.id.descriptionText);
         mLoginButton = rootView.findViewById(R.id.login);
@@ -74,10 +68,16 @@ public class LoginFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(currContext);
 
-        if (mAccountPresenter.isLoggingIn()) {
-            String[] loginInfo = mAccountPresenter.readSavedCredentials(getContext());
+        if (mainActivity.isAccountPresenterLoggedIn()) {
+            // If the user has already logged in in this session of the app, just load the
+            // accountInfo page and don't require another login
+            loadAccountPage(true);
+            return rootView;
+        }
+
+        if (mainActivity.isAccountPresenterLoggingIn()) {
+            String[] loginInfo = mainActivity.getLoginInfo();
             if (loginInfo != null) {
                 // This is not null upon auto-logging in on app launch. Thus, set the textfields
                 // to the values found in the files
@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment {
                     if (getFragmentManager() != null) {
                         mDescriptionText.setText("Incorrect netid and/or password\n");
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
-                        mAccountPresenter.setLoggingIn(false);
+                        mainActivity.setAccountPresenterLoggingIn(false);
                         resumeGUI();
                     }
                 }
@@ -122,11 +122,11 @@ public class LoginFragment extends Fragment {
                     if (model == null) {
                         mDescriptionText.setText("Internal Error\n");
                         mDescriptionText.setTextColor(getResources().getColor(R.color.red));
-                        mAccountPresenter.setLoggingIn(false);
+                        mainActivity.setAccountPresenterLoggingIn(false);
                         resumeGUI();
                     } else {
-                        mAccountPresenter.setBrbModel(model);
-                        mAccountPresenter.setLoggingIn(false);
+                        mainActivity.setAccountPresenterBrbInfo(model);
+                        mainActivity.setAccountPresenterLoggingIn(false);
                         // If user is still viewing this fragment
                         if (getFragmentManager() != null) {
                             loadAccountPage(false);
@@ -148,15 +148,8 @@ public class LoginFragment extends Fragment {
             });
             mLoginButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    mFirebaseAnalytics.logEvent("user_brb_login", null);
-                    mAccountPresenter.setLoggingIn(true);
+                    mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
                     loadingGUI();
-                    mAccountPresenter.setNetID(mNetID.getText().toString());
-                    mAccountPresenter.setPassword(mPassword.getText().toString());
-                    // change the login javascript to have the correct username and password
-                    mAccountPresenter.resetLoginJS();
-
-                    MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
                 }
             });
         }
@@ -172,7 +165,7 @@ public class LoginFragment extends Fragment {
         mProgressBar.setVisibility(View.VISIBLE);
         mLoginButton.setBackgroundColor(getResources().getColor(R.color.fadedBlue));
         mLoginButton.setText("");
-        mDescriptionText.setTextColor(getResources().getColor(R.color.closed));
+        mDescriptionText.setTextColor(getResources().getColor(R.color.primary));
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
@@ -210,7 +203,7 @@ public class LoginFragment extends Fragment {
                 R.id.frame_fragment_holder) instanceof LoginFragment) {
             if (!alreadyLoggedIn) {
                 // If the user clicked login, then save credentials
-                mAccountPresenter.outputCredentialsToFile(getContext());
+                mainActivity.outputAccountPresenterCredentialsToFile();
             }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_fragment_holder, accountInfoFragment).commit();

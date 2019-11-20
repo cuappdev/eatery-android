@@ -14,10 +14,19 @@ import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
 
+/*
+General flow of how get login works on Eatery:
+
+1) Call resetLoginAbility with the user's username and password, which will update loginJS
+2) Load Get Login's URL in a hidden webview within the app
+3) After that page loads once, use the JS to log in (set mEvaluatedJS to true)
+4) After the page loads again, parse the sessionID from URL and use that to query the backend
+ */
 public class GetLoginUtilities {
     private static boolean mEvaluatedJS = false;
     private static String loginJS;
 
+    // Must call this before navigating to the GET site in the first place
     public static void resetLoginAbility(String netid, String password) {
         mEvaluatedJS = false;
         loginJS = "document.getElementById('netid').value = '" + netid + "';" +
