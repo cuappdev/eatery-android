@@ -5,13 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
@@ -20,8 +23,9 @@ public class OnboardingInfoFragment extends Fragment {
     private Button mButton;
     private Button mSecondaryButton;
     private OnboardingPageType onboardingPageType;
+    private ProgressBar mProgressBar;
 
-    public OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
+    protected OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
         this.onboardingPageType = onboardingPageType;
     }
 
@@ -36,6 +40,10 @@ public class OnboardingInfoFragment extends Fragment {
 
         mTitle.setText(onboardingPageType.getTitle());
         mDescription.setText(onboardingPageType.getDescription());
+        mProgressBar = view.findViewById(R.id.progress_loader);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
+                android.graphics.PorterDuff.Mode.MULTIPLY);
 
         setupContent();
         if (onboardingPageType == OnboardingPageType.LOGIN) {
@@ -49,7 +57,27 @@ public class OnboardingInfoFragment extends Fragment {
         return view;
     }
 
-    public void setupContent() {
+    protected void loggingIn() {
+        ((OnboardingActivity) getActivity()).setPagerEnabled(false);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mButton.setEnabled(false);
+        mButton.setText("");
+        mButton.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.fadedBlue));
+        //mSecondaryButton.setEnabled(false);
+    }
+
+    protected void resumeLoginGUI() {
+        ((OnboardingActivity) getActivity()).setPagerEnabled(true);
+        mButton.setEnabled(true);
+        mButton.setText(R.string.login_label);
+        mButton.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.bordered_button));
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
+                android.graphics.PorterDuff.Mode.MULTIPLY);
+        //mSecondaryButton.setEnabled(true);
+    }
+
+    private void setupContent() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         switch (onboardingPageType) {
             // TODO (yanlam): Add dynamic rendering for animation.
@@ -68,38 +96,38 @@ public class OnboardingInfoFragment extends Fragment {
         }
     }
 
-    public void setupNextButton() {
+    private void setupNextButton() {
         mButton.setText(R.string.onboarding_button_next);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Moves to next onboarding item when "NEXT" button clicked.
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.getNextOnboardingPagerItem();
+                ((OnboardingActivity) getActivity()).getNextOnboardingPagerItem();
             }
         });
     }
 
-    public void setupLoginButton() {
+    private void setupLoginButton() {
         mButton.setText(R.string.onboarding_button_login);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add login funcitonality.
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.endOnboarding();
+                mOnboardingLoginFragment.login();
             }
         });
     }
 
-    public void setupSkipButton() {
+    protected void endOnboarding() {
+        ((OnboardingActivity) getActivity()).endOnboarding();
+    }
+
+    private void setupSkipButton() {
         mSecondaryButton.setText(R.string.onboarding_button_skip);
         mSecondaryButton.setVisibility(View.VISIBLE);
         mSecondaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OnboardingFragment onboardingFragment = (OnboardingFragment) getParentFragment();
-                onboardingFragment.endOnboarding();
+                endOnboarding();
             }
         });
     }
