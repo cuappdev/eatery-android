@@ -2,7 +2,6 @@ package com.cornellappdev.android.eatery.onboarding;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,6 @@ public class OnboardingLoginFragment extends Fragment {
             public void failedLogin() {
                 // If the user is still viewing this fragment
                 if (getFragmentManager() != null) {
-                    Log.i("qwerty", "Failed login");
                     mDescriptionText.setText("Incorrect netid and/or password\n");
                     mDescriptionText.setTextColor(getResources().getColor(R.color.red));
                     resumeGUI();
@@ -58,7 +56,6 @@ public class OnboardingLoginFragment extends Fragment {
 
             @Override
             public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                Log.i("qwerty", "Success login");
                 Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
                 BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                 try {
