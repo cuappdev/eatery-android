@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
