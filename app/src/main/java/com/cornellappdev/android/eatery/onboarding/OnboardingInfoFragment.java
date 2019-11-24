@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
     private TextView mDescription;
     private OnboardingLoginFragment mOnboardingLoginFragment;
+    private ImageView mLottieAnimationView;
     private Button mButton;
     private Button mSecondaryButton;
     private OnboardingPageType onboardingPageType;
@@ -44,6 +46,8 @@ public class OnboardingInfoFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
+
+        mLottieAnimationView = view.findViewById(R.id.onboarding_animation);
 
         setupContent();
         if (onboardingPageType == OnboardingPageType.LOGIN) {
@@ -82,13 +86,17 @@ public class OnboardingInfoFragment extends Fragment {
         switch (onboardingPageType) {
             // TODO (yanlam): Add dynamic rendering for animation.
             case MENUS:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case COLLEGETOWN:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case TRANSACTIONS:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case LOGIN:
                 // Set up login inputs.
+                mLottieAnimationView.setVisibility(View.GONE);
                 mOnboardingLoginFragment = new OnboardingLoginFragment();
                 transaction.replace(R.id.onboarding_frame_layout,
                         mOnboardingLoginFragment).commit();
