@@ -6,6 +6,21 @@ public enum OnboardingPageType {
     TRANSACTIONS,
     LOGIN;
 
+    public String getAnimationRaw() {
+        switch (this) {
+            case MENUS:
+                return "@raw/lottie";
+            case COLLEGETOWN:
+                return "@raw/lottie2";
+            case TRANSACTIONS:
+                return "@raw/lottie";
+            case LOGIN:
+                return "@raw/lottie";
+            default:
+                return "@raw/lottie";
+        }
+    }
+
     public String getTitle() {
         switch (this) {
             case MENUS:
