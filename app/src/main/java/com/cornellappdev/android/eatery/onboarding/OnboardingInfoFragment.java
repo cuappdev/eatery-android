@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
@@ -20,7 +21,7 @@ public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
     private TextView mDescription;
     private OnboardingLoginFragment mOnboardingLoginFragment;
-    private ImageView mLottieAnimationView;
+    private LottieAnimationView mLottieAnimationView;
     private Button mButton;
     private Button mSecondaryButton;
     private OnboardingPageType onboardingPageType;
@@ -58,6 +59,10 @@ public class OnboardingInfoFragment extends Fragment {
         }
 
         return view;
+    }
+
+    public void reloadAnimation() {
+        mLottieAnimationView.playAnimation();
     }
 
     protected void loggingIn() {
