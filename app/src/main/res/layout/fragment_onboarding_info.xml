@@ -62,6 +62,7 @@
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/onboarding_animation"
                 android:layout_width="wrap_content"
+                android:gravity="center"
                 android:layout_height="124dp"
                 android:scaleType="centerInside"
                 app:lottie_rawRes="@raw/lottie"

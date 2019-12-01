@@ -48,6 +48,7 @@ public class OnboardingInfoFragment extends Fragment {
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
         mLottieAnimationView = view.findViewById(R.id.onboarding_animation);
+        mLottieAnimationView.setAnimation(onboardingPageType.getAnimationRaw());
 
         setupContent();
         if (onboardingPageType == OnboardingPageType.LOGIN) {
