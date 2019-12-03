@@ -3,11 +3,16 @@ package com.cornellappdev.android.eatery.components;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
@@ -22,10 +27,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 
 public class WaitTimesComponent {
     private WaitTimesChart mWaitTimesChart;
@@ -34,6 +37,10 @@ public class WaitTimesComponent {
     private View mWaitTimesXAxisLine;
     private LinearLayout mWaitTimesXAxisTicks;
     private LinearLayout mWaitTimesXAxisLabels;
+    private TextView mPromptTextView;
+    private TextView mLowButton;
+    private TextView mMediumButton;
+    private TextView mHighButton;
 
     /**
      * mSwipeData -
@@ -46,6 +53,7 @@ public class WaitTimesComponent {
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
+    private boolean mShowWaitTimesPrompt;
     private float mLastY;
     private float mLastX;
     private boolean mVerticalScrolling;
@@ -65,6 +73,7 @@ public class WaitTimesComponent {
         View view = View.inflate(context, R.layout.wait_times, holder);
 
         mShowWaitTimes = true;
+        mShowWaitTimesPrompt = true;
         mLastEntry = null;
 
         mWaitTimesButton = view.findViewById(R.id.wait_time_show_button);
@@ -116,6 +125,26 @@ public class WaitTimesComponent {
         mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
 
+        mPromptTextView = view.findViewById(R.id.prompt_text_view);
+        mLowButton = view.findViewById(R.id.low_button);
+        mMediumButton = view.findViewById(R.id.medium_button);
+        mHighButton = view.findViewById(R.id.high_button);
+
+        View.OnClickListener waitTimesResponseClicked = clickedView -> {
+            if (clickedView instanceof TextView) {
+                TextView button = (TextView) clickedView;
+                ViewCompat.setBackgroundTintList(button, ContextCompat.getColorStateList(context, R.color.blue));
+                button.setTextColor(ContextCompat.getColor(context, R.color.white));
+            }
+
+            new Handler().postDelayed(() -> {
+                setShowWaitTimesPrompt(false);
+            }, 500);
+        };
+        mLowButton.setOnClickListener(waitTimesResponseClicked);
+        mMediumButton.setOnClickListener(waitTimesResponseClicked);
+        mHighButton.setOnClickListener(waitTimesResponseClicked);
+
         if (mSwipeData.size() == 0) {
             mShowWaitTimes = false;
             toggleShowWaitTimesChart();
@@ -138,6 +167,8 @@ public class WaitTimesComponent {
             mWaitTimesXAxisTicks.setVisibility(View.GONE);
             mWaitTimesXAxisLabels.setVisibility(View.GONE);
         }
+
+        setShowWaitTimesPrompt(mShowWaitTimes);
     }
 
     private void highlightCurrentHour() {
@@ -236,5 +267,12 @@ public class WaitTimesComponent {
         XAxis xAxis = mWaitTimesChart.getXAxis();
         xAxis.setEnabled(false);
         xAxis.setAxisMaximum(21);
+    }
+
+    private void setShowWaitTimesPrompt(boolean showWaitTimesPrompt) {
+        mShowWaitTimesPrompt = showWaitTimesPrompt;
+
+        List<View> waitTimesViews = Arrays.asList(mPromptTextView, mLowButton, mMediumButton, mHighButton);
+        waitTimesViews.forEach(view -> view.setVisibility(mShowWaitTimesPrompt ? View.VISIBLE : View.GONE));
     }
 }
