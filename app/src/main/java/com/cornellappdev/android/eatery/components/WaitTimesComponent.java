@@ -32,12 +32,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WaitTimesComponent {
+
+    private enum PromptState {
+        COLLAPSED, PARTIALLY_EXPANDED, FULLY_EXPANDED
+    }
+    
     private WaitTimesChart mWaitTimesChart;
     private TextView mWaitTimesButton;
     private WaitTimesMarkerView mWaitTimesMarkerView;
     private View mWaitTimesXAxisLine;
     private LinearLayout mWaitTimesXAxisTicks;
     private LinearLayout mWaitTimesXAxisLabels;
+    private Button mCallToActionButton;
     private TextView mPromptTextView;
     private Button mLowButton;
     private Button mMediumButton;
@@ -54,7 +60,7 @@ public class WaitTimesComponent {
     private List<Swipe> mSwipeData;
     private Entry mLastEntry;
     private boolean mShowWaitTimes;
-    private boolean mShowWaitTimesPrompt;
+    private PromptState mPromptState;
     private float mLastY;
     private float mLastX;
     private boolean mVerticalScrolling;
@@ -74,7 +80,7 @@ public class WaitTimesComponent {
         View view = View.inflate(context, R.layout.wait_times, holder);
 
         mShowWaitTimes = true;
-        mShowWaitTimesPrompt = true;
+        mPromptState = PromptState.PARTIALLY_EXPANDED;
         mLastEntry = null;
 
         mWaitTimesButton = view.findViewById(R.id.wait_time_show_button);
@@ -126,10 +132,13 @@ public class WaitTimesComponent {
         mWaitTimesXAxisTicks = view.findViewById(R.id.wait_time_x_axis_ticks);
         mWaitTimesXAxisLabels = view.findViewById(R.id.wait_time_x_axis_labels);
 
+        mCallToActionButton = view.findViewById(R.id.call_to_action_button);
         mPromptTextView = view.findViewById(R.id.prompt_text_view);
         mLowButton = view.findViewById(R.id.low_button);
         mMediumButton = view.findViewById(R.id.medium_button);
         mHighButton = view.findViewById(R.id.high_button);
+
+        mCallToActionButton.setOnClickListener(button -> setWaitTimesPromptState(PromptState.FULLY_EXPANDED));
 
         View.OnClickListener waitTimesResponseClicked = clickedView -> {
             if (clickedView instanceof Button) {
@@ -141,7 +150,7 @@ public class WaitTimesComponent {
             }
 
             // hide wait times prompt after 0.5 seconds
-            new Handler().postDelayed(() -> setShowWaitTimesPrompt(false), 500);
+            new Handler().postDelayed(() -> setWaitTimesPromptState(PromptState.COLLAPSED), 500);
         };
         mLowButton.setOnClickListener(waitTimesResponseClicked);
         mMediumButton.setOnClickListener(waitTimesResponseClicked);
@@ -153,6 +162,8 @@ public class WaitTimesComponent {
         } else {
             this.setupWaitTimesChart(context);
         }
+
+        setWaitTimesPromptState(PromptState.PARTIALLY_EXPANDED);
     }
 
     private void toggleShowWaitTimesChart() {
@@ -170,7 +181,7 @@ public class WaitTimesComponent {
             mWaitTimesXAxisLabels.setVisibility(View.GONE);
         }
 
-        setShowWaitTimesPrompt(mShowWaitTimes);
+        setWaitTimesPromptState(mShowWaitTimes ? PromptState.PARTIALLY_EXPANDED : PromptState.COLLAPSED);
     }
 
     private void highlightCurrentHour() {
@@ -271,10 +282,12 @@ public class WaitTimesComponent {
         xAxis.setAxisMaximum(21);
     }
 
-    private void setShowWaitTimesPrompt(boolean showWaitTimesPrompt) {
-        mShowWaitTimesPrompt = showWaitTimesPrompt;
+    private void setWaitTimesPromptState(PromptState state) {
+        mPromptState = state;
 
-        List<View> waitTimesViews = Arrays.asList(mPromptTextView, mLowButton, mMediumButton, mHighButton);
-        waitTimesViews.forEach(view -> view.setVisibility(mShowWaitTimesPrompt ? View.VISIBLE : View.GONE));
+        Arrays.asList(mPromptTextView, mLowButton, mMediumButton, mHighButton)
+                .forEach(view -> view.setVisibility(mPromptState == PromptState.FULLY_EXPANDED ? View.VISIBLE : View.GONE));
+
+        mCallToActionButton.setVisibility(mPromptState == PromptState.PARTIALLY_EXPANDED ? View.VISIBLE : View.GONE);
     }
 }
