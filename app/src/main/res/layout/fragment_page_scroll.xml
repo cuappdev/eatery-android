@@ -3,10 +3,10 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:id="@+id/onboarding_info_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/blue"
         android:orientation="vertical"
         android:gravity="center">
@@ -56,7 +56,7 @@
             android:background="@drawable/bordered_button"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="NEXT"
+            android:text="@string/onboarding_button_next"
             android:textColor="@color/white"
             android:textSize="@dimen/onboarding_button_text_size"
             android:textStyle="bold" />

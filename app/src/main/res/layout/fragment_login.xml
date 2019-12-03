@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:id="@+id/login_frame_layout"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".loginviews.LoginFragment">
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:context=".loginviews.LoginFragment">
 
         <TextView
             android:id="@+id/descriptionText"
@@ -40,6 +37,7 @@
 
         <EditText
             android:id="@+id/net_id_input"
+            android:autofillHints="@string/netid_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
@@ -58,6 +56,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:paddingStart="20dp"
+            android:paddingEnd="0dp"
             android:paddingTop="15dp"
             android:text="@string/password"
             android:textColor="@color/primary"
@@ -73,6 +72,7 @@
             android:ems="10"
             android:fontFamily="sans-serif"
             android:hint="@string/password_hint"
+            android:autofillHints=""
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:paddingTop="15dp"
@@ -117,6 +117,3 @@
             android:textColor="@color/blue"
             android:textSize="@dimen/account_info_attributes_text_size"/>
     </LinearLayout>
-
-
-</FrameLayout>

@@ -9,6 +9,62 @@
     <string name="google_form">Send Feedback</string>
     <string name="open_at">Opening at</string>
     <string name="close_at">Closes at</string>
+
+    <string name="eatery_content_description">Eatery Image</string>
+    <string name="icon_content_description">Icon</string>
+    <string name="campus_content_description">Campus</string>
+    <string name="ctown_content_description">Collegetown</string>
+    <string name="map_icon_content_description">Icon</string>
+    <string name="splash_screen_content_description">AppDev</string>
+
+    <string name="eatery_name_filler">Name</string>
+    <string name="eatery_status_filler">Closed</string>
+    <string name="eatery_time_filler">Time</string>
+    <string name="eatery_location_filler">Location</string>
+    <string name="eatery_items_filler">Items</string>
+
+    <string name="nearest_first_filter">Nearest First</string>
+    <string name="north_filter">North</string>
+    <string name="west_filter">West</string>
+    <string name="central_filter">Central</string>
+    <string name="swipes_filter">Swipes</string>
+    <string name="brb_filter">BRB</string>
+
+    <string name="american_filter">American</string>
+    <string name="chinese_filter">Chinese</string>
+    <string name="coffee_filter">Coffee</string>
+    <string name="desserts_filter">Desserts</string>
+    <string name="grocery_filter">Grocery</string>
+    <string name="indian_filter">Indian</string>
+    <string name="italian_filter">Italian</string>
+    <string name="japanese_filter">Japanese</string>
+    <string name="korean_filter">Korean</string>
+    <string name="mediterranean_filter">Mediterranean</string>
+    <string name="thai_filter">Thai</string>
+    <string name="vietnamese_filter">Vietnamese</string>
+
+
+    <string name="eatery_menu_label">Menu</string>
+    <string name="breakfast_label">Breakfast</string>
+    <string name="lunch_label">Lunch</string>
+    <string name="dinner_label">Dinner</string>
+    <string name="settings_label">Settings</string>
+    <string name="west_campus_label">West Campus</string>
+    <string name="north_campus_label">North Campus</string>
+    <string name="central_campus_label">Central Campus</string>
+    <string name="closing_time_label">Closing Time</string>
+    <string name="popular_times_label">Popular Times</string>
+    <string name="hide_label">Hide</string>
+
+    <string name="time_12am_label">12a</string>
+    <string name="time_3am_label">3a</string>
+    <string name="time_6am_label">6a</string>
+    <string name="time_9am_label">9a</string>
+    <string name="time_12pm_label">12p</string>
+    <string name="time_3pm_label">3p</string>
+    <string name="time_6pm_label">6p</string>
+    <string name="time_9pm_label">9p</string>
+
     <string name="info_page_description">Eatery is made by Cornell App Development, an engineering
         project team at Cornell University.
     </string>
@@ -21,6 +77,8 @@
     </string>
     <string name="description_text_3">To get the most out of Eatery, log in with your netID.
     </string>
+    <string name="dollar_sign">$</string>
+    <string name="get_directions">Get Directions</string>
     <string name="onboarding_button_next">NEXT</string>
     <string name="onboarding_button_login">LOGIN</string>
     <string name="onboarding_button_skip">SKIP</string>

@@ -23,10 +23,10 @@
                 android:id="@+id/searchview_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Eatery Name"
+                android:text="@string/eatery_name_filler"
                 android:textColor="@color/primary"
                 android:textSize="20sp"
                 android:textStyle="normal"/>
@@ -37,8 +37,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchview_name"
                 android:fontFamily="sans-serif-medium"
-                android:paddingLeft="16dp"
-                android:text="Closed"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
+                android:text="@string/eatery_status_filler"
                 android:textColor="@color/blue"
                 android:textSize="12sp"
                 android:textStyle="normal"/>
@@ -48,11 +49,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/searchview_name"
-                android:layout_toRightOf="@id/searchview_open"
+                android:layout_toEndOf="@id/searchview_open"
                 android:fontFamily="sans-serif"
-                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="0dp"
                 android:paddingBottom="4dp"
-                android:text="Time"
+                android:text="@string/eatery_time_filler"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
                 android:textStyle="normal"/>
@@ -78,7 +80,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
-                android:text="Items"
+                android:text="@string/eatery_items_filler"
                 android:textSize="14sp"/>
 
         </RelativeLayout>

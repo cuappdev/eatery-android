@@ -3,10 +3,9 @@
 <RelativeLayout android:id="@+id/wait_time_graph"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/wait_time_horizontal_divider"
         android:background="@color/white"
         android:layout_width="fill_parent"
@@ -15,12 +14,12 @@
         android:paddingRight="16dp"
         android:paddingLeft="16dp">
 
-        <ImageView
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/inactive"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/wait_time_box"
@@ -40,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="Popular Times"
+            android:text="@string/popular_times_label"
             android:textColor="@color/primary"
             android:textSize="18sp"/>
 
@@ -50,9 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/wait_time_label"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:fontFamily="sans-serif-medium"
-            android:text="Hide"
+            android:text="@string/hide_label"
             android:textColor="@color/secondary"
             android:textSize="18sp"/>
 
@@ -83,8 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="8dp">
             <View
                 android:id="@+id/wait_time_tick_6a"
                 android:layout_width="2dp"
@@ -165,71 +164,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="8dp">
             <TextView
-                android:text="6a"
+                android:text="@string/time_6am_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="9a"
+                android:text="@string/time_9am_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="12p"
+                android:text="@string/time_12pm_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="3p"
+                android:text="@string/time_3pm_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="6p"
+                android:text="@string/time_6pm_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="9p"
+                android:text="@string/time_9pm_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="12a"
+                android:text="@string/time_12am_label"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
             <TextView
-                android:text="3a"
+                android:text="@string/time_3am_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
     </RelativeLayout>

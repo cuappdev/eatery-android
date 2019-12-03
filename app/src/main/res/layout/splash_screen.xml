@@ -14,6 +14,7 @@
 
     <ImageView
         android:id="@+id/splash_image"
+        android:contentDescription="@string/splash_screen_content_description"
         android:layout_width="match_parent"
         android:layout_height="193dp"
         android:layout_above="@id/anchor"
@@ -23,6 +24,7 @@
 
     <ImageView
         android:id="@+id/appdev_image"
+        android:contentDescription="@string/splash_screen_content_description"
         android:layout_width="47dp"
         android:layout_height="62dp"
         android:layout_alignParentBottom="true"

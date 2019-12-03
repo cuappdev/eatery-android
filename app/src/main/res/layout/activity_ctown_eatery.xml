@@ -27,6 +27,7 @@
 
             <ImageView
                 android:id="@+id/ind_image"
+                android:contentDescription="@string/eatery_content_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
@@ -59,10 +60,10 @@
                 android:id="@+id/infobox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ind_image"
                 android:background="@color/white"
                 android:elevation="1dp"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="10dp">
 
@@ -77,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
                         android:transitionName="eateryName"
-                        android:text="Name"
+                        android:text="@string/eatery_name_filler"
                         android:textColor="@color/primary"
                         android:textSize="18sp"/>
 
@@ -102,7 +103,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryOpen"
-                    android:text="Open?"
+                    android:text="@string/eatery_status_filler"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
 
@@ -111,12 +112,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_cafe_holder"
-                    android:layout_toRightOf="@id/ind_open"
+                    android:layout_toEndOf="@id/ind_open"
                     android:fontFamily="sans-serif-regular"
                     android:layout_marginStart="4dp"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryTime"
-                    android:text="Time"
+                    android:text="@string/eatery_time_filler"
                     android:textColor="@color/secondary"
                     android:textSize="14sp"/>
 
@@ -129,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
                         android:paddingTop="4dp"
-                        android:text="Location"
+                        android:text="@string/eatery_location_filler"
                         android:textColor="@color/secondary"
                         android:textSize="15sp"/>
 
@@ -142,7 +143,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-black"
-                            android:text="$"
+                            android:text="@string/dollar_sign"
                             android:textColor="@color/secondary"
                             android:textSize="19sp"/>
                         <TextView
@@ -151,7 +152,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginStart="2dp"
-                            android:text="$"
+                            android:text="@string/dollar_sign"
                             android:textColor="@color/secondary"
                             android:textSize="19sp"/>
                         <TextView
@@ -160,7 +161,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-black"
                             android:layout_marginStart="2dp"
-                            android:text="$"
+                            android:text="@string/dollar_sign"
                             android:textColor="@color/secondary"
                             android:textSize="19sp"/>
                     </LinearLayout>
@@ -169,10 +170,11 @@
 
                 <ImageView
                     android:id="@+id/dollar_icon"
+                    android:contentDescription="@string/icon_content_description"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
                     android:src="@drawable/dollar_icon"
                     android:transitionName="eateryDollarIcon"
                     android:visibility="visible"/>
@@ -189,10 +191,11 @@
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
                     android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
-                    android:text="Get Directions"
+                    android:text="@string/get_directions"
                     android:textColor="@color/blue"
                     android:textSize="16sp"/>
 
@@ -203,7 +206,8 @@
                     android:layout_marginTop="1dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:textColor="@color/blue"
@@ -216,7 +220,8 @@
                     android:layout_marginTop="1dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:fontFamily="sans-serif-medium"
-                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:textColor="@color/blue"

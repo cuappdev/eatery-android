@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/relative_layout_background">
@@ -22,7 +22,7 @@
                 android:paddingTop="12dp"
                 android:paddingRight="12dp"
                 android:paddingBottom="2dp"
-                android:text="Cafe Name"
+                android:text="@string/eatery_name_filler"
                 android:textColor="@color/primary"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
@@ -32,9 +32,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/info_cafe_name"
-                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="0dp"
                 android:paddingBottom="12dp"
-                android:text="Open"
+                android:text="@string/eatery_status_filler"
                 android:textSize="12sp"
                 android:textStyle="bold"/>
 
@@ -43,30 +44,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/info_cafe_name"
-                android:layout_toRightOf="@id/info_cafe_open"
-                android:paddingLeft="4dp"
-                android:paddingRight="12dp"
+                android:layout_toEndOf="@id/info_cafe_open"
+                android:paddingStart="4dp"
+                android:paddingEnd="12dp"
                 android:paddingBottom="12dp"
-                android:text="Closing Time"
+                android:text="@string/closing_time_label"
                 android:textSize="12sp"/>
         </RelativeLayout>
 
         <ImageView
             android:id="@+id/map_arrow"
+            android:contentDescription="@string/map_icon_content_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cafe_image"
             android:layout_centerVertical="true"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/info_text_container"
             android:src="@drawable/map_arrow"/>
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/carrot"
+        android:contentDescription="@string/map_icon_content_description"
         android:layout_width="35dp"
         android:layout_height="25dp"
-        android:layout_below="@id/info_cafe_desc"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="-5dp"
         android:src="@drawable/carrot"/>
