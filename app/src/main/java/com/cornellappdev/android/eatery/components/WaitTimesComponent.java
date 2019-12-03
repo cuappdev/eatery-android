@@ -133,14 +133,15 @@ public class WaitTimesComponent {
 
         View.OnClickListener waitTimesResponseClicked = clickedView -> {
             if (clickedView instanceof Button) {
+                // set the background color to blue (while keeping rounded rect shape)
+                // and text to white
                 Button button = (Button) clickedView;
                 ViewCompat.setBackgroundTintList(button, ContextCompat.getColorStateList(context, R.color.blue));
                 button.setTextColor(ContextCompat.getColor(context, R.color.white));
             }
 
-            new Handler().postDelayed(() -> {
-                setShowWaitTimesPrompt(false);
-            }, 500);
+            // hide wait times prompt after 0.5 seconds
+            new Handler().postDelayed(() -> setShowWaitTimesPrompt(false), 500);
         };
         mLowButton.setOnClickListener(waitTimesResponseClicked);
         mMediumButton.setOnClickListener(waitTimesResponseClicked);
