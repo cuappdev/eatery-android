@@ -262,7 +262,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/wait_time_box"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="10dp"
         android:animateLayoutChanges="true"
         android:background="@color/white">
 
@@ -271,7 +271,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="How long did you wait?" />
+            android:text="How long did you wait?"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"

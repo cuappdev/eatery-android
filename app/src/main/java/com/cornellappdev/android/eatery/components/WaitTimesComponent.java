@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,9 +39,9 @@ public class WaitTimesComponent {
     private LinearLayout mWaitTimesXAxisTicks;
     private LinearLayout mWaitTimesXAxisLabels;
     private TextView mPromptTextView;
-    private TextView mLowButton;
-    private TextView mMediumButton;
-    private TextView mHighButton;
+    private Button mLowButton;
+    private Button mMediumButton;
+    private Button mHighButton;
 
     /**
      * mSwipeData -
@@ -131,8 +132,8 @@ public class WaitTimesComponent {
         mHighButton = view.findViewById(R.id.high_button);
 
         View.OnClickListener waitTimesResponseClicked = clickedView -> {
-            if (clickedView instanceof TextView) {
-                TextView button = (TextView) clickedView;
+            if (clickedView instanceof Button) {
+                Button button = (Button) clickedView;
                 ViewCompat.setBackgroundTintList(button, ContextCompat.getColorStateList(context, R.color.blue));
                 button.setTextColor(ContextCompat.getColor(context, R.color.white));
             }

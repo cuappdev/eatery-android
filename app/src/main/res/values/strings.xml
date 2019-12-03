@@ -56,7 +56,4 @@
     <string name="encryption_key">hi</string>
     <string name="encryption_salt">you</string>
     <string name="google_maps_key">guys!</string>
-    <string name="wait_times_button_low"><![CDATA[<5m]]></string>
-    <string name="wait_times_button_medium">5-10m</string>
-    <string name="wait_times_button_high"><![CDATA[>10m]]></string>
 </resources>
