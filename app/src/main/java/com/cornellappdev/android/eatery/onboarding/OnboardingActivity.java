@@ -22,6 +22,20 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager = findViewById(R.id.onboarding_viewpager);
         mViewPager.setAdapter(new OnboardingPagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(0);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Intentionally empty, must be overridden to compile.
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Intentionally empty, must be overridden to compile.
+            }
+            @Override
+            public void onPageSelected(int position) {
+                ((OnboardingPagerAdapter)mViewPager.getAdapter()).onPageSelected(position);
+            }
+        });
 
         TabLayout onboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
         onboardingPageIndicator.setTabRippleColor(null);

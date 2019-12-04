@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +20,7 @@ import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
 public class OnboardingInfoFragment extends Fragment {
     private OnboardingLoginFragment mOnboardingLoginFragment;
+    private LottieAnimationView mLottieAnimationView;
     private Button mButton;
     private Button mSecondaryButton;
     private OnboardingPageType onboardingPageType;
@@ -42,6 +46,9 @@ public class OnboardingInfoFragment extends Fragment {
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
 
+        mLottieAnimationView = view.findViewById(R.id.onboarding_animation);
+        mLottieAnimationView.setAnimation(onboardingPageType.getAnimationRaw());
+
         setupContent();
         if (onboardingPageType == OnboardingPageType.LOGIN) {
             setupSkipButton();
@@ -54,14 +61,18 @@ public class OnboardingInfoFragment extends Fragment {
         return view;
     }
 
+    void reloadAnimation() {
+        mLottieAnimationView.playAnimation();
+    }
+
     void loggingIn() {
         if (getActivity() != null && getContext() != null) {
             ((OnboardingActivity) getActivity()).setPagerEnabled(false);
             mProgressBar.setVisibility(View.VISIBLE);
             mButton.setEnabled(false);
-            mSecondaryButton.setEnabled(false);
             mButton.setText("");
             mButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.fadedBlue));
+            //mSecondaryButton.setEnabled(false);
         }
     }
 
@@ -84,13 +95,17 @@ public class OnboardingInfoFragment extends Fragment {
         switch (onboardingPageType) {
             // TODO (yanlam): Add dynamic rendering for animation.
             case MENUS:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case COLLEGETOWN:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case TRANSACTIONS:
+                mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case LOGIN:
                 // Set up login inputs.
+                mLottieAnimationView.setVisibility(View.GONE);
                 mOnboardingLoginFragment = new OnboardingLoginFragment();
                 transaction.replace(R.id.onboarding_frame_layout,
                         mOnboardingLoginFragment).commit();
