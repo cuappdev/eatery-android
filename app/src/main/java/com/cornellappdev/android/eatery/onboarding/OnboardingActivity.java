@@ -28,11 +28,11 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Must be overridden.
+                // Intentionally empty, must be overridden to compile.
             }
             @Override
             public void onPageScrollStateChanged(int state) {
-                // Must be overridden.
+                // Intentionally empty, must be overridden to compile.
             }
             @Override
             public void onPageSelected(int position) {
