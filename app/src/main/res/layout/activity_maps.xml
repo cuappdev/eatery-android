@@ -1,24 +1,22 @@
 <android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                               xmlns:app="http://schemas.android.com/apk/res-auto"
-                               xmlns:tools="http://schemas.android.com/tools"
-                               android:id="@+id/maps_activity"
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent"
-                               android:focusableInTouchMode="true"
-                               tools:context="com.cornellappdev.android.eatery.MapsActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/maps_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    tools:context="com.cornellappdev.android.eatery.MapsActivity">
 
     <FrameLayout
         android:id="@+id/frame_fragment_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:tools="http://schemas.android.com/tools"
-                  android:id="@+id/map"
-                  android:name="com.google.android.gms.maps.SupportMapFragment"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  tools:context="com.cornellappdev.android.eatery.MapsActivity"/>
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.cornellappdev.android.eatery.MapsActivity" />
 
     </FrameLayout>
 
