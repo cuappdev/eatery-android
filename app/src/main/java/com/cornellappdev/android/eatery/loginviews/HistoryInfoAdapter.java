@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.cornellappdev.android.eatery.R;
@@ -24,14 +25,15 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
     private static int mLayout;
     private static List<HistoryObjectModel> mHistory;
 
-    public HistoryInfoAdapter(Context context, int layout, List<HistoryObjectModel> objects) {
+    HistoryInfoAdapter(Context context, int layout, List<HistoryObjectModel> objects) {
         super(context, layout, objects);
         sInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mLayout = layout;
         mHistory = objects;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View historyItemView = convertView;
         final ViewHolder holder;
         try {
@@ -74,7 +76,7 @@ public class HistoryInfoAdapter extends ArrayAdapter<HistoryObjectModel> {
     }
 
     // Each cell of the list has a name, a timestamp, and an amount of the purchase
-    public static class ViewHolder {
+    private static class ViewHolder {
         private TextView displayAmount;
         private TextView displayName;
         private TextView displayTimestamp;

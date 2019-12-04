@@ -6,19 +6,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 /**
  * This fragment is the page reached upon clicking the gear icon in the upper right of
@@ -27,56 +27,67 @@ import androidx.fragment.app.FragmentTransaction;
  */
 public class LogoutFragment extends Fragment {
 
-    private Button mLogoutButton;
-    private RelativeLayout mAboutArea;
     // re-using the same kind of presenter
     private MainActivity mainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_logout, container, false);
-        mLogoutButton = rootView.findViewById(R.id.logout);
+        Button logoutButton = rootView.findViewById(R.id.logout);
         mainActivity = (MainActivity) getActivity();
 
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mainActivity.setAccountPresenterBrbInfo(null);
-                mainActivity.eraseAccountPresenterJS();
-                try {
+        logoutButton.setOnClickListener((View v) -> {
+            mainActivity.setAccountPresenterBrbInfo(null);
+            mainActivity.eraseAccountPresenterJS();
+            try {
+                if (getContext() != null) {
                     InternalStorage.writeObject(getContext(), CacheType.BRB, null);
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (getFragmentManager() != null) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 LoginFragment loginFragment = new LoginFragment();
-                // Reset the current login instance of MainActivity so upon navigating back so it
-                // doesn't have filled in text inputs
-                ((MainActivity) getActivity()).setLoginInstance(loginFragment);
+                // Reset the current login instance of MainActivity so upon navigating back
+                // so it doesn't have filled in text inputs
+                if (getActivity() != null) {
+                    ((MainActivity) getActivity()).setLoginInstance(loginFragment);
+                }
                 transaction.replace(R.id.frame_fragment_holder, loginFragment).commit();
             }
         });
-        mAboutArea = rootView.findViewById(R.id.about_segway);
-        mAboutArea.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // About area has been clicked, navigate to the AboutFragment page
+        Button aboutArea = rootView.findViewById(R.id.about_segway);
+        aboutArea.setOnClickListener((View v) -> {
+            // About area has been clicked, navigate to the AboutFragment page
+            if (getFragmentManager() != null) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 AboutFragment aboutFragment = new AboutFragment();
-                transaction.replace(R.id.frame_fragment_holder, aboutFragment).addToBackStack(null)
+                transaction.replace(R.id.frame_fragment_holder, aboutFragment).addToBackStack(
+                        null)
                         .commit();
             }
         });
 
         setHasOptionsMenu(true);
-        getActivity().setTitle("Account Info");
-        // Enable the back button in the actionbar menu
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActivity() != null) {
+            getActivity().setTitle("Account Info");
+            ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (bar != null) {
+                // Enable the back button in the actionbar menu
+                bar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
         return rootView;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        getActivity().onBackPressed();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(getActivity() != null) {
+            getActivity().onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 }
