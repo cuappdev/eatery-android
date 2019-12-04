@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_text"
@@ -29,7 +29,7 @@
                 android:text="@string/eatery_name_filler"
                 android:textColor="@color/primary"
                 android:textSize="20sp"
-                android:textStyle="normal"/>
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/searchview_open"
@@ -42,7 +42,7 @@
                 android:text="@string/eatery_status_filler"
                 android:textColor="@color/blue"
                 android:textSize="12sp"
-                android:textStyle="normal"/>
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/searchview_opentime"
@@ -57,19 +57,7 @@
                 android:text="@string/eatery_time_filler"
                 android:textColor="@color/primary"
                 android:textSize="12sp"
-                android:textStyle="normal"/>
-
-            <View
-                android:id="@+id/searchview_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/searchview_opentime"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="#19000000"/>
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/searchview_items"
@@ -81,7 +69,19 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/eatery_items_filler"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/searchview_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/searchview_opentime"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="#19000000" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
