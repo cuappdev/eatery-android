@@ -4,23 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
-import com.cornellappdev.android.eatery.loginviews.PrivacyFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
-import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
-import com.cornellappdev.android.eatery.presenter.MainPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -42,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavigationView bnv;
     private FirebaseAnalytics mFirebaseAnalytics;
     private LoginFragment loginFragment;
-    private MainPresenter presenter;
     private MainListFragment mainListFragment;
     private WeeklyMenuFragment weeklyMenuFragment;
 
@@ -52,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter = new MainPresenter();
         mainListFragment = new MainListFragment();
         weeklyMenuFragment = new WeeklyMenuFragment();
         loginFragment = new LoginFragment();
@@ -61,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         sLoginWebView = findViewById(R.id.login_webview);
         GetLoginUtilities.autoLogin(getApplicationContext(), sLoginWebView);
 
-        presenter = new MainPresenter();
         bnv = findViewById(R.id.bottom_navigation);
         // Add functionality to bottom nav bar
 

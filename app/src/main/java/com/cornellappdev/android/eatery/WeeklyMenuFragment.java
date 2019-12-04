@@ -62,7 +62,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_weekly_menu, container, false);
-        mPresenter = new WeeklyPresenter(rootView);
+        mPresenter = new WeeklyPresenter();
         mAppContext = getActivity().getApplicationContext();
         mBreakfastText = rootView.findViewById(R.id.breakfast);
         mLunchText = rootView.findViewById(R.id.lunch);

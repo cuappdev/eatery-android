@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -58,7 +59,7 @@ public class LogoutFragment extends Fragment {
                 transaction.replace(R.id.frame_fragment_holder, loginFragment).commit();
             }
         });
-        Button aboutArea = rootView.findViewById(R.id.about_segway);
+        RelativeLayout aboutArea = rootView.findViewById(R.id.about_segway);
         aboutArea.setOnClickListener((View v) -> {
             // About area has been clicked, navigate to the AboutFragment page
             if (getFragmentManager() != null) {

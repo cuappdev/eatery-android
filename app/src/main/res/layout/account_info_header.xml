@@ -6,6 +6,20 @@
     android:orientation="vertical"
     tools:context=".loginviews.AccountInfoFragment">
 
+    <TextView
+        android:id="@+id/accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/wash"
+        android:paddingStart="15dp"
+        android:paddingTop="28dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="12dp"
+        android:text="@string/accounts"
+        android:textColor="@color/primary"
+        android:textSize="@dimen/account_info_header_text_size"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,20 +135,6 @@
             android:textColor="@color/secondary"
             android:textSize="@dimen/account_info_attributes_text_size" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/accounts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/wash"
-        android:paddingStart="15dp"
-        android:paddingTop="28dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="12dp"
-        android:text="@string/accounts"
-        android:textColor="@color/primary"
-        android:textSize="@dimen/account_info_header_text_size"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/history"
