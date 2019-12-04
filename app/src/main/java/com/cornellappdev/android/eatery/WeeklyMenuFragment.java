@@ -86,7 +86,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 
         getActivity().setTitle("Upcoming Menus");
         ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if(bar != null) {
+        if (bar != null) {
             bar.setDisplayHomeAsUpEnabled(false);
         }
 
