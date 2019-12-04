@@ -26,7 +26,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
     private List<LocalDate> mSortedDates;
 
     public static DiningHallModel fromEatery(Context context, boolean hardcoded,
-                                             AllEateriesQuery.Eatery eatery) {
+            AllEateriesQuery.Eatery eatery) {
         DiningHallModel model = new DiningHallModel();
         model.parseEatery(context, hardcoded, eatery);
         return model;
@@ -37,18 +37,25 @@ public class DiningHallModel extends CampusModel implements Serializable {
      * time intervals.
      */
     private HashMap<MealType, Interval> getMealIntervals() {
-        HashMap<MealType, Interval> mealIntervalMap = new HashMap<MealType, Interval>();
-        for (MealModel mealModel: getCurrentDayMenu().getAllMeals()) {
+        HashMap<MealType, Interval> mealIntervalMap = new HashMap<>();
+        for (MealModel mealModel : getCurrentDayMenu().getAllMeals()) {
             mealIntervalMap.put(mealModel.getType(), mealModel.getInterval());
         }
         return mealIntervalMap;
     }
 
     /**
-     * isBeforeMealType returns true if the current time comes before mealType. Otherwise, returns false.
+     * isBeforeMealType returns true if the current time comes before mealType. Otherwise, returns
+     * false.
      */
-    public boolean isBeforeMealType(MealType mealType, Set<MealType> set, HashMap<MealType, Interval> map) {
-        return set.contains(mealType) && LocalDateTime.now().compareTo(map.get(mealType).getEnd()) < 0;
+    private boolean isBeforeMealType(MealType mealType, Set<MealType> set,
+            HashMap<MealType, Interval> map) {
+        boolean hasMeal = set.contains(mealType);
+        Interval interval = map.get(mealType);
+        if (hasMeal && interval != null) {
+            return LocalDateTime.now().compareTo(interval.getEnd()) < 0;
+        }
+        return false;
     }
 
     /**
@@ -108,10 +115,13 @@ public class DiningHallModel extends CampusModel implements Serializable {
         sortDates();
         for (LocalDate date : mSortedDates) {
             if (date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) {
-                ArrayList<MealModel> mealsForDate = mWeeklyMenu.get(date).getAllMeals();
-                for (MealModel meal : mealsForDate) {
-                    if (meal.afterTime(LocalDateTime.now())) {
-                        return meal.getStart();
+                DailyMenuModel dailyMenu = mWeeklyMenu.get(date);
+                if (dailyMenu != null) {
+                    ArrayList<MealModel> mealsForDate = dailyMenu.getAllMeals();
+                    for (MealModel meal : mealsForDate) {
+                        if (meal.afterTime(LocalDateTime.now())) {
+                            return meal.getStart();
+                        }
                     }
                 }
             }
@@ -122,14 +132,16 @@ public class DiningHallModel extends CampusModel implements Serializable {
     public MealMenuModel getMealByDateAndType(LocalDate date, MealType mealType) {
         if (mWeeklyMenu.keySet().contains(date)) {
             DailyMenuModel daysMeals = mWeeklyMenu.get(date);
-            MealModel mealModel = daysMeals.getMeal(mealType);
-            // If there is no meal that matches BREAKFAST, LUNCH, or DINNER, try BRUNCH
-            if (mealModel == null) {
-                mealModel = daysMeals.getMeal(MealType.BRUNCH);
-            }
-            // If mealModel is not null, return the menu
-            if (mealModel != null) {
-                return mealModel.getMenu();
+            if (daysMeals != null) {
+                MealModel mealModel = daysMeals.getMeal(mealType);
+                // If there is no meal that matches BREAKFAST, LUNCH, or DINNER, try BRUNCH
+                if (mealModel == null) {
+                    mealModel = daysMeals.getMeal(MealType.BRUNCH);
+                }
+                // If mealModel is not null, return the menu
+                if (mealModel != null) {
+                    return mealModel.getMenu();
+                }
             }
         }
         return null;
@@ -138,12 +150,14 @@ public class DiningHallModel extends CampusModel implements Serializable {
     public Interval getIntervalByDateAndType(LocalDate date, MealType mealType) {
         if (mWeeklyMenu.keySet().contains(date)) {
             DailyMenuModel daysMeals = mWeeklyMenu.get(date);
-            MealModel mealModel = daysMeals.getMeal(mealType);
-            if (mealModel == null) {
-                mealModel = daysMeals.getMeal(MealType.BRUNCH);
-            }
-            if (mealModel != null) {
-                return mealModel.getInterval();
+            if (daysMeals != null) {
+                MealModel mealModel = daysMeals.getMeal(mealType);
+                if (mealModel == null) {
+                    mealModel = daysMeals.getMeal(MealType.BRUNCH);
+                }
+                if (mealModel != null) {
+                    return mealModel.getInterval();
+                }
             }
         }
         return null;
@@ -162,7 +176,10 @@ public class DiningHallModel extends CampusModel implements Serializable {
     public LocalDateTime getChangeTime() {
         if (getCurrentStatus() == Status.CLOSINGSOON || getCurrentStatus() == Status.OPEN) {
             MealModel currentMeal = getCurrentMeal();
-            return currentMeal.getEnd();
+            if (currentMeal != null) {
+                return currentMeal.getEnd();
+            }
+            return null;
         } else {
             return findNextOpen();
         }
@@ -173,12 +190,14 @@ public class DiningHallModel extends CampusModel implements Serializable {
     }
 
     public HashSet<String> getMealItems() {
-        HashSet<String> items = new HashSet<String>();
+        HashSet<String> items = new HashSet<>();
         if (getCurrentStatus() == Status.CLOSED) {
             return items;
         }
         MealModel current = getCurrentMeal();
-        items.addAll(current.getMenu().getAllItems());
+        if (current != null) {
+            items.addAll(current.getMenu().getAllItems());
+        }
         return items;
     }
 
@@ -197,7 +216,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
             DailyMenuModel dailyMenuModel = new DailyMenuModel();
             LocalDate localDate = LocalDate.parse(operatingHour.date().toUpperCase());
             for (AllEateriesQuery.Event event : operatingHour.events()) {
-                LocalDateTime start = null, end = null;
+                LocalDateTime start, end;
                 start = LocalTime.parse(event.startTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
                 end = LocalTime.parse(event.endTime().toUpperCase().substring(11),

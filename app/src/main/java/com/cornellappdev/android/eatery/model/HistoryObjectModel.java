@@ -11,14 +11,14 @@ public class HistoryObjectModel implements Serializable {
     private float mAmount;
     private boolean mPositive;
 
-    public HistoryObjectModel(String name, String timestamp, float amount, boolean positive) {
+    private HistoryObjectModel(String name, String timestamp, float amount, boolean positive) {
         this.mName = name;
         this.mTimestamp = timestamp;
         this.mAmount = amount;
         this.mPositive = positive;
     }
 
-    public static HistoryObjectModel parseHistoryObject(BrbInfoQuery.History historyInfo) {
+    static HistoryObjectModel parseHistoryObject(BrbInfoQuery.History historyInfo) {
         String name = historyInfo.name();
         String timestamp = historyInfo.timestamp();
         float amount = Float.parseFloat(historyInfo.amount());
@@ -29,6 +29,7 @@ public class HistoryObjectModel implements Serializable {
     public boolean isPositive() {
         return mPositive;
     }
+
     public String getName() {
         return mName;
     }

@@ -23,7 +23,7 @@ public class CafeModel extends CampusModel implements Serializable {
     private Map<LocalDate, List<Interval>> mHours;
     private List<LocalDate> mSortedDates;
 
-    public CafeModel() {
+    private CafeModel() {
         this.mCafeMenu = new ArrayList<>();
         this.mHours = new HashMap<>();
         this.mSortedDates = new ArrayList<>();
@@ -55,9 +55,11 @@ public class CafeModel extends CampusModel implements Serializable {
         for (LocalDate date : mSortedDates) {
             if (date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) {
                 List<Interval> intervalList = mHours.get(date);
-                for (Interval interval : intervalList) {
-                    if (interval.afterTime(LocalDateTime.now())) {
-                        return interval.getStart();
+                if (intervalList != null) {
+                    for (Interval interval : intervalList) {
+                        if (interval.afterTime(LocalDateTime.now())) {
+                            return interval.getStart();
+                        }
                     }
                 }
             }
@@ -105,7 +107,7 @@ public class CafeModel extends CampusModel implements Serializable {
         return Status.CLOSED;
     }
 
-    public void setHours(LocalDate date, List<Interval> hours) {
+    private void setHours(LocalDate date, List<Interval> hours) {
         List<Interval> sortedHours = new ArrayList<>(hours);
         Collections.sort(sortedHours, Interval::compareTo);
         this.mHours.put(date, sortedHours);
@@ -125,9 +127,7 @@ public class CafeModel extends CampusModel implements Serializable {
                 .toFormatter(Locale.US);
 
         for (AllEateriesQuery.OperatingHour operatingHour : cafe.operatingHours()) {
-            List<LocalDate> localDates = new ArrayList<>();
             LocalDate localDate = LocalDate.parse(operatingHour.date(), dateFormatter);
-            localDates.add(localDate);
             for (AllEateriesQuery.Event event : operatingHour.events()) {
                 List<Interval> dailyHours = new ArrayList<>();
                 for (AllEateriesQuery.Menu menu : event.menu()) {
@@ -135,7 +135,7 @@ public class CafeModel extends CampusModel implements Serializable {
                         if (!cafeItems.contains(item.item())) cafeItems.add(item.item());
                     }
                 }
-                LocalDateTime start = null, end = null;
+                LocalDateTime start, end;
                 start = LocalTime.parse(event.startTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
                 end = LocalTime.parse(event.endTime().toUpperCase().substring(11),

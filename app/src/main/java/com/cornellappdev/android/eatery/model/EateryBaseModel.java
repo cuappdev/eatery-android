@@ -10,7 +10,6 @@ import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,24 +17,10 @@ import androidx.annotation.NonNull;
 
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
-    private final static String GITHUB_URL =
-            "https://raw.githubusercontent.com/cuappdev/assets/master/eatery/eatery-images/";
-    public static Comparator<EateryBaseModel> cafeNameComparator = (s1, s2) -> {
-        String str1 = s1.getNickName();
-        String str2 = s2.getNickName();
-        if (str1.startsWith("1")) {
-            return -1;
-        }
-        if (str2.startsWith("1")) {
-            return 1;
-        }
-        // ascending order
-        return str1.compareToIgnoreCase(str2);
-    };
-    protected boolean mOpenPastMidnight = false;
-    protected String mBuildingLocation, mName, mNickName, mPhoneNumber, mEateryType;
-    protected int mId;
-    protected String mImageUrl;
+    boolean mOpenPastMidnight = false;
+    int mId;
+    private String mBuildingLocation, mName, mNickName, mPhoneNumber;
+    private String mImageUrl;
     private ArrayList<String> mSearchedItems;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
@@ -59,10 +44,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
 
     public String getPhoneNumber() {
         return mPhoneNumber;
-    }
-
-    public String getEateryType() {
-        return mEateryType;
     }
 
     public CampusArea getArea() {
@@ -139,7 +120,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLatitude = eatery.coordinates().latitude();
         mLongitude = eatery.coordinates().longitude();
         mPhoneNumber = eatery.phone();
-        mEateryType = eatery.eateryType();
         mImageUrl = eatery.imageUrl();
         isCtEatery = false;
 
@@ -175,7 +155,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLongitude = ctEatery.coordinates().longitude();
         mId = ctEatery.id();
         mPhoneNumber = ctEatery.phone();
-        mEateryType = ctEatery.eateryType();
         mImageUrl = ctEatery.imageUrl();
         isCtEatery = true;
 
@@ -225,7 +204,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
             this.displayName = displayName;
         }
 
-        @Override
+        @Override @NonNull
         public String toString() {
             return displayName;
         }

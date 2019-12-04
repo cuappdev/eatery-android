@@ -12,7 +12,7 @@ public class BrbInfoModel implements Serializable {
     private int mMealSwipes;
     private ArrayList<HistoryObjectModel> mHistory;
 
-    public BrbInfoModel(float cityBucks, float laundry, float brbs,
+    private BrbInfoModel(float cityBucks, float laundry, float brbs,
                         int mealSwipes, ArrayList<HistoryObjectModel> history) {
         this.mCityBucks = cityBucks;
         this.mLaundry = laundry;
@@ -32,9 +32,9 @@ public class BrbInfoModel implements Serializable {
         try {
             mealSwipes = Integer.parseInt(brbInfo.swipes());
         } catch (NumberFormatException ex) {
-
+            ex.printStackTrace();
         }
-        ArrayList<HistoryObjectModel> history = new ArrayList<HistoryObjectModel>();
+        ArrayList<HistoryObjectModel> history = new ArrayList<>();
         for (BrbInfoQuery.History hist : brbInfo.history()) {
             HistoryObjectModel to_add = HistoryObjectModel.parseHistoryObject(hist);
             history.add(to_add);
