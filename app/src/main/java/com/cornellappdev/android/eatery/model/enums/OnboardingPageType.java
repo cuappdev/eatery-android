@@ -1,10 +1,25 @@
 package com.cornellappdev.android.eatery.model.enums;
 
+import com.cornellappdev.android.eatery.R;
+
 public enum OnboardingPageType {
     MENUS,
     COLLEGETOWN,
     TRANSACTIONS,
     LOGIN;
+
+    public int getAnimationRaw() {
+        switch (this) {
+            case COLLEGETOWN:
+                return R.raw.collegetown_animation;
+            case TRANSACTIONS:
+                return R.raw.transactions_animation;
+            case MENUS:
+            case LOGIN:
+            default:
+                return R.raw.menu_animation;
+        }
+    }
 
     public String getTitle() {
         switch (this) {
