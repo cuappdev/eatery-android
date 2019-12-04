@@ -23,7 +23,8 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  *
  * We extended the two methods where rectangles (and highlights) are drawn, more information on this
  * class can be found at:
- * https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartLib/src/main/java/com/github/mikephil/charting/renderer/BarChartRenderer.java
+ * https://github.com/PhilJay/MPAndroidChart/blob/master/MPChartLib/src/main/java/com/github
+ * /mikephil/charting/renderer/BarChartRenderer.java
  *
  * More information on the open-sourced repo used here as a whole can be found at:
  * https://github.com/PhilJay/MPAndroidChart
@@ -36,14 +37,14 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
         super(chart, animator, viewPortHandler);
     }
 
-    private void drawRectHelper(Canvas c, float left, float top, float right, float bottom, Paint p) {
+    private void drawRectHelper(Canvas c, float left, float top, float right, float bottom,
+            Paint p) {
         if (bottom - top >= CORNER_RADIUS) {
             c.drawRoundRect(left, top, right, bottom, CORNER_RADIUS, CORNER_RADIUS, p);
-            c.drawRect(left, top+CORNER_RADIUS, right, bottom, p);
-        }
-        else {
+            c.drawRect(left, top + CORNER_RADIUS, right, bottom, p);
+        } else {
             c.drawRoundRect(left, top, right, bottom, CORNER_RADIUS, CORNER_RADIUS, p);
-            c.drawRect(left, top + (bottom - top)*3/4, right, bottom, p);
+            c.drawRect(left, top + (bottom - top) * 3 / 4, right, bottom, p);
         }
     }
 
@@ -120,12 +121,12 @@ public class BarChartRoundedRenderer extends BarChartRenderer {
             Transformer trans = mChart.getTransformer(set.getAxisDependency());
             mHighlightPaint.setColor(set.getHighLightColor());
             mHighlightPaint.setAlpha(set.getHighLightAlpha());
-            boolean isStack = (high.getStackIndex() >= 0  && e.isStacked());
+            boolean isStack = (high.getStackIndex() >= 0 && e.isStacked());
             final float y1;
             final float y2;
 
             if (isStack) {
-                if(mChart.isHighlightFullBarEnabled()) {
+                if (mChart.isHighlightFullBarEnabled()) {
                     y1 = e.getPositiveSum();
                     y2 = -e.getNegativeSum();
                 } else {

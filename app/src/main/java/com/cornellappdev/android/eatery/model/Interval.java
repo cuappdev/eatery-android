@@ -1,9 +1,9 @@
 package com.cornellappdev.android.eatery.model;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import androidx.annotation.NonNull;
 
 /**
  * Helper class to represent serving time interval for each meal
@@ -13,7 +13,7 @@ public class Interval implements Serializable, Comparable<Interval> {
     @NonNull
     private final LocalDateTime start, end;
 
-    public Interval(@NonNull LocalDateTime start, @NonNull LocalDateTime end) {
+    Interval(@NonNull LocalDateTime start, @NonNull LocalDateTime end) {
         this.start = start;
         this.end = end;
     }
@@ -28,13 +28,11 @@ public class Interval implements Serializable, Comparable<Interval> {
         return end;
     }
 
-    @NonNull
     public boolean containsTime(LocalDateTime time) {
         return start.isBefore(time) && end.isAfter(time);
     }
 
-    @NonNull
-    public boolean afterTime(LocalDateTime time) {
+    boolean afterTime(LocalDateTime time) {
         return start.isAfter(time);
     }
 

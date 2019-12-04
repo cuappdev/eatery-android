@@ -9,6 +9,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
 import com.github.mikephil.charting.components.XAxis;
@@ -23,9 +26,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 
 public class WaitTimesComponent {
     private WaitTimesChart mWaitTimesChart;
@@ -63,53 +63,46 @@ public class WaitTimesComponent {
     public void inflateView(Context context, FrameLayout holder, NestedScrollView scrollView) {
 
         View view = View.inflate(context, R.layout.wait_times, holder);
-
         mShowWaitTimes = true;
         mLastEntry = null;
 
         mWaitTimesButton = view.findViewById(R.id.wait_time_show_button);
-        mWaitTimesButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mShowWaitTimes = !mShowWaitTimes;
-                toggleShowWaitTimesChart();
-            }
+        mWaitTimesButton.setOnClickListener((View v) -> {
+            mShowWaitTimes = !mShowWaitTimes;
+            toggleShowWaitTimesChart(context);
         });
         mWaitTimesChart = view.findViewById(R.id.wait_time_chart);
         mWaitTimesChart.setNoDataText("");
-
-        mWaitTimesChart.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (mFingerJustTapped) {
-                    // Measure the yDiff directly after the tap, high y diff means motion was a
-                    // vertical swipe
-                    float yDiff = Math.abs(event.getY() - mLastY);
-                    float xDiff = Math.abs(event.getX() - mLastX);
-                    // If it was not a vertical swipe
-                    if (xDiff > yDiff) {
-                        scrollView.requestDisallowInterceptTouchEvent(true);
-                        mVerticalScrolling = false;
-                    } else {
-                        // This variable (when true) is used below in onValueSelected
-                        // to prevent interaction with the mWaitTimesChart. I couldn't find
-                        // a cleaner way of disabling interaction with the chart
-                        mVerticalScrolling = true;
-                    }
-                    mFingerJustTapped = false;
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mFingerJustTapped = true;
-                    mLastY = event.getY();
-                    mLastX = event.getX();
-                    v.performClick();
-                } else if (event.getAction() == MotionEvent.ACTION_UP
-                        || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    mFingerJustTapped = false;
+        mWaitTimesChart.setOnTouchListener((View v, MotionEvent event) -> {
+            if (mFingerJustTapped) {
+                // Measure the yDiff directly after the tap, high y diff means motion was a
+                // vertical swipe
+                float yDiff = Math.abs(event.getY() - mLastY);
+                float xDiff = Math.abs(event.getX() - mLastX);
+                // If it was not a vertical swipe
+                if (xDiff > yDiff) {
+                    scrollView.requestDisallowInterceptTouchEvent(true);
                     mVerticalScrolling = false;
+                } else {
+                    // This variable (when true) is used below in onValueSelected
+                    // to prevent interaction with the mWaitTimesChart. I couldn't find
+                    // a cleaner way of disabling interaction with the chart
+                    mVerticalScrolling = true;
                 }
-                return false;
+                mFingerJustTapped = false;
             }
+
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                mFingerJustTapped = true;
+                mLastY = event.getY();
+                mLastX = event.getX();
+                v.performClick();
+            } else if (event.getAction() == MotionEvent.ACTION_UP
+                    || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                mFingerJustTapped = false;
+                mVerticalScrolling = false;
+            }
+            return false;
         });
 
         mWaitTimesXAxisLine = view.findViewById(R.id.wait_time_x_axis_line);
@@ -118,21 +111,21 @@ public class WaitTimesComponent {
 
         if (mSwipeData.size() == 0) {
             mShowWaitTimes = false;
-            toggleShowWaitTimesChart();
+            toggleShowWaitTimesChart(context);
         } else {
             this.setupWaitTimesChart(context);
         }
     }
 
-    private void toggleShowWaitTimesChart() {
+    private void toggleShowWaitTimesChart(Context context) {
         if (mShowWaitTimes) {
-            mWaitTimesButton.setText("Hide");
+            mWaitTimesButton.setText(context.getResources().getString(R.string.hide_label));
             mWaitTimesChart.setVisibility(View.VISIBLE);
             mWaitTimesXAxisLine.setVisibility(View.VISIBLE);
             mWaitTimesXAxisTicks.setVisibility(View.VISIBLE);
             mWaitTimesXAxisLabels.setVisibility(View.VISIBLE);
         } else {
-            mWaitTimesButton.setText("Show");
+            mWaitTimesButton.setText(context.getResources().getString(R.string.show_label));
             mWaitTimesChart.setVisibility(View.GONE);
             mWaitTimesXAxisLine.setVisibility(View.GONE);
             mWaitTimesXAxisTicks.setVisibility(View.GONE);
@@ -215,7 +208,7 @@ public class WaitTimesComponent {
         BarDataSet set = new BarDataSet(entries, "BarDataSet");
         set.setColors(ContextCompat.getColor(context, R.color.lightBlue));
         set.setValueTypeface(Typeface.SANS_SERIF);
-        set.setHighLightColor(context.getResources().getColor(R.color.blue));
+        set.setHighLightColor(ContextCompat.getColor(context, R.color.blue));
         set.setHighLightAlpha(255);
         BarData barData = new BarData(set);
         barData.setDrawValues(false);

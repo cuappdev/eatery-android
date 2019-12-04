@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.onboarding;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
@@ -23,13 +25,13 @@ import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class OnboardingLoginFragment extends Fragment {
     private EditText mNetID;
     private EditText mPassword;
     private TextView mDescriptionText;
     private WebView mWebView;
-
-    OnboardingInfoFragment onboardingInfoFragment;
+    private OnboardingInfoFragment onboardingInfoFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,9 +49,9 @@ public class OnboardingLoginFragment extends Fragment {
             @Override
             public void failedLogin() {
                 // If the user is still viewing this fragment
-                if (getFragmentManager() != null) {
+                if (getFragmentManager() != null && currContext != null) {
                     mDescriptionText.setText("Incorrect netid and/or password\n");
-                    mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                    mDescriptionText.setTextColor(ContextCompat.getColor(currContext, R.color.red));
                     resumeGUI();
                 }
             }
@@ -59,13 +61,18 @@ public class OnboardingLoginFragment extends Fragment {
                 Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
                 BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                 try {
-                    InternalStorage.writeObject(currContext, CacheType.BRB, model);
+                    if (currContext != null) {
+                        InternalStorage.writeObject(currContext, CacheType.BRB, model);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (model == null) {
                     mDescriptionText.setText("Internal Error\n");
-                    mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                    if (currContext != null) {
+                        mDescriptionText.setTextColor(
+                                ContextCompat.getColor(currContext, R.color.red));
+                    }
                     resumeGUI();
                 } else {
                     Repository.getInstance().setBrbInfoModel(model);

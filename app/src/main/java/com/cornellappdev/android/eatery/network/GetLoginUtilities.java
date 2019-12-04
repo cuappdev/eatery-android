@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.network;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -22,6 +23,8 @@ General flow of how get login works on Eatery:
 3) After that page loads once, use the JS to log in (set mEvaluatedJS to true)
 4) After the page loads again, parse the sessionID from URL and use that to query the backend
  */
+
+@SuppressLint("SetJavaScriptEnabled")
 public class GetLoginUtilities {
     private static boolean mEvaluatedJS = false;
     private static String loginJS;
@@ -45,7 +48,8 @@ public class GetLoginUtilities {
             }
 
             @Override
-            public void successLogin(com.cornellappdev.android.eatery.BrbInfoQuery.AccountInfo accountInfo) {
+            public void successLogin(
+                    com.cornellappdev.android.eatery.BrbInfoQuery.AccountInfo accountInfo) {
                 BrbInfoModel model = QueryUtilities.parseBrbInfo(accountInfo);
                 Repository.getInstance().setBrbInfoModel(model);
                 try {
@@ -75,20 +79,13 @@ public class GetLoginUtilities {
     }
 
     public static void webLogin(String url, WebView loadedPage,
-                                GetLoginUtilities.getLoginCallback callback) {
+            GetLoginUtilities.getLoginCallback callback) {
         if (!mEvaluatedJS) {
-            loadedPage.evaluateJavascript(loginJS, (String s) -> {
-                mEvaluatedJS = true;
-            });
+            loadedPage.evaluateJavascript(loginJS, (String s) -> mEvaluatedJS = true);
         } else {
             if (url.contains("sessionId=")) {
                 String sessionId = url.substring(url.indexOf("sessionId=") + "sessionId=".length());
-                NetworkUtilities.getBrbInfo(sessionId, new NetworkUtilities.BRBAccountCallback() {
-                    @Override
-                    public void retrievedAccountInfo(BrbInfoQuery.AccountInfo accountInfo) {
-                        callback.successLogin(accountInfo);
-                    }
-                });
+                NetworkUtilities.getBrbInfo(sessionId, callback::successLogin);
             } else {
                 String checkJS = "(function() { var element = document.getElementById('netid'); " +
                         "if(element) return 'LOGINFAIL'; else return 'LOGINSUCCESS'; })()";

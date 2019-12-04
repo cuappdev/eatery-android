@@ -18,14 +18,14 @@ import java.util.List;
 
 public final class QueryUtilities {
 
-    public final static HashSet<Integer> DINING_HALL_IDS =
+    private final static HashSet<Integer> DINING_HALL_IDS =
             new HashSet<>(Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30));
 
-    public static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
+    static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
                                                            Context mainContext) {
-        ArrayList<EateryBaseModel> eateryList = new ArrayList<EateryBaseModel>();
+        ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
         for (AllEateriesQuery.Eatery eatery : eateries) {
-            EateryBaseModel model = null;
+            EateryBaseModel model;
             if (DINING_HALL_IDS.contains(eatery.id())) {
                 model = DiningHallModel.fromEatery(mainContext, false, eatery);
             } else {
@@ -40,11 +40,10 @@ public final class QueryUtilities {
     }
 
     public static BrbInfoModel parseBrbInfo(BrbInfoQuery.AccountInfo brbInfo) {
-        BrbInfoModel model = BrbInfoModel.loadFromInfo(brbInfo);
-        return model;
+        return BrbInfoModel.loadFromInfo(brbInfo);
     }
 
-    public static ArrayList<EateryBaseModel> parseCtEateries(Context context,
+    static ArrayList<EateryBaseModel> parseCtEateries(Context context,
                                                              List<AllCtEateriesQuery.CollegetownEatery> collegetowntEateries) {
         ArrayList<EateryBaseModel> collegetownEateryList = new ArrayList<>();
         for (AllCtEateriesQuery.CollegetownEatery eatery : collegetowntEateries) {

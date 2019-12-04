@@ -1,9 +1,11 @@
 package com.cornellappdev.android.eatery;
 
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
+import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -13,6 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
@@ -21,13 +29,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSED;
-import static com.cornellappdev.android.eatery.model.EateryBaseModel.Status.CLOSINGSOON;
 
 public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final Context mContext;
@@ -50,7 +51,7 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         cafeListFiltered = list;
     }
 
-    protected void setList(ArrayList<EateryBaseModel> list, int count, String query) {
+    void setList(ArrayList<EateryBaseModel> list, int count, String query) {
         mQuery = query;
         mCount = count;
         cafeListFiltered = list;
@@ -60,23 +61,21 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     /**
      * Set view to layout of CardView
      */
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final View view;
         final int layoutId;
-        RecyclerView.ViewHolder viewHolder = null;
-        switch (viewType) {
-            case IMAGE:
-                layoutId = R.layout.card_item;
-                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
-                view.setFocusable(true);
-                viewHolder = new ListAdapterViewHolder(view);
-                break;
-            case TEXT:
-                layoutId = R.layout.card_text;
-                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
-                viewHolder = new TextAdapterViewHolder(view);
-                break;
+        RecyclerView.ViewHolder viewHolder;
+        if (viewType == IMAGE) {
+            layoutId = R.layout.card_item;
+            view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+            view.setFocusable(true);
+            viewHolder = new ListAdapterViewHolder(view);
+        } else {
+            layoutId = R.layout.card_text;
+            view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+            viewHolder = new TextAdapterViewHolder(view);
         }
         return viewHolder;
     }
@@ -139,7 +138,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             eateryModel.getChangeTime())));
                 } else if (eateryModel.getCurrentStatus() == CLOSINGSOON) {
                     holder2.cafe_time.setText(R.string.closing_soon);
-                    holder2.cafe_time.setTextColor(ContextCompat.getColor(mContext, R.color.yellow));
+                    holder2.cafe_time.setTextColor(
+                            ContextCompat.getColor(mContext, R.color.yellow));
                     holder2.cafe_time_info.setText((TimeUtil.format(eateryModel.getCurrentStatus(),
                             eateryModel.getChangeTime())));
                 } else {
@@ -175,7 +175,8 @@ public class MainListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
 
-                holder2.cafe_items.setText(Html.fromHtml(items.replace(", ", "<br/>")));
+                holder2.cafe_items.setText(HtmlCompat.fromHtml(items.replace(", ", "<br/>"),
+                        HtmlCompat.FROM_HTML_MODE_LEGACY));
                 break;
         }
     }

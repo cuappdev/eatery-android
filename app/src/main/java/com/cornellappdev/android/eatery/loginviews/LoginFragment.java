@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.loginviews;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.MainActivity;
@@ -24,15 +31,13 @@ import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 /**
  * This fragment is the login page reached from the bottomnavbar, and is the screen where users
  * input their netid and password to view their account information. Upon a successful login,
  * redirect to AccountInfoFragment
  */
+
+@SuppressLint("SetJavaScriptEnabled")
 public class LoginFragment extends Fragment {
     private EditText mNetID;
     private EditText mPassword;
@@ -45,15 +50,16 @@ public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         Context currContext = getContext();
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
         if (getActivity() != null) {
             getActivity().setTitle("Login");
-            if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (bar != null) {
                 // Disable the back button
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                bar.setDisplayHomeAsUpEnabled(false);
             }
         }
 
@@ -86,15 +92,16 @@ public class LoginFragment extends Fragment {
             }
             // Always display animation whether logging in automatically or after
             // manually clicking logging in and renavigating to this page
-            loadingGUI();
+            loadingGUI(currContext);
         } else {
-            resumeGUI();
-            mPrivacy.setOnClickListener(new View.OnClickListener() {
+            resumeGUI(currContext);
+            mPrivacy.setOnClickListener((View v) -> {
                 // On privacy statement clicked
-                public void onClick(View v) {
+                if (getFragmentManager() != null) {
                     PrivacyFragment privacyFragment = new PrivacyFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame_fragment_holder, privacyFragment).addToBackStack(
+                    transaction.replace(R.id.frame_fragment_holder,
+                            privacyFragment).addToBackStack(
                             null).commit();
                 }
             });
@@ -104,26 +111,35 @@ public class LoginFragment extends Fragment {
                     // If the user is still viewing this fragment
                     if (getFragmentManager() != null) {
                         mDescriptionText.setText("Incorrect netid and/or password\n");
-                        mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                        if (currContext != null) {
+                            mDescriptionText.setTextColor(
+                                    ContextCompat.getColor(currContext, R.color.red));
+                        }
                         mainActivity.setAccountPresenterLoggingIn(false);
-                        resumeGUI();
+                        resumeGUI(currContext);
                     }
                 }
 
                 @Override
                 public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                    Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
+                    Repository.getInstance().setBrbInfoModel(
+                            QueryUtilities.parseBrbInfo(accountInfo));
                     BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                     try {
-                        InternalStorage.writeObject(currContext, CacheType.BRB, model);
+                        if (currContext != null) {
+                            InternalStorage.writeObject(currContext, CacheType.BRB, model);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     if (model == null) {
                         mDescriptionText.setText("Internal Error\n");
-                        mDescriptionText.setTextColor(getResources().getColor(R.color.red));
+                        if (currContext != null) {
+                            mDescriptionText.setTextColor(
+                                    ContextCompat.getColor(currContext, R.color.red));
+                        }
                         mainActivity.setAccountPresenterLoggingIn(false);
-                        resumeGUI();
+                        resumeGUI(currContext);
                     } else {
                         mainActivity.setAccountPresenterBrbInfo(model);
                         mainActivity.setAccountPresenterLoggingIn(false);
@@ -146,11 +162,9 @@ public class LoginFragment extends Fragment {
                     GetLoginUtilities.webLogin(url, view, callback);
                 }
             });
-            mLoginButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
-                    loadingGUI();
-                }
+            mLoginButton.setOnClickListener((View v) -> {
+                mainActivity.login(mNetID.getText().toString(), mPassword.getText().toString());
+                loadingGUI(currContext);
             });
         }
         return rootView;
@@ -161,11 +175,11 @@ public class LoginFragment extends Fragment {
      * in with get, loadingGUI is called. This method disables all textInputs and displays the
      * loading progress bar
      */
-    private void loadingGUI() {
+    private void loadingGUI(Context context) {
         mProgressBar.setVisibility(View.VISIBLE);
-        mLoginButton.setBackgroundColor(getResources().getColor(R.color.fadedBlue));
+        mLoginButton.setBackgroundColor(ContextCompat.getColor(context, R.color.fadedBlue));
         mLoginButton.setText("");
-        mDescriptionText.setTextColor(getResources().getColor(R.color.primary));
+        mDescriptionText.setTextColor(ContextCompat.getColor(context, R.color.primary));
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
@@ -177,18 +191,17 @@ public class LoginFragment extends Fragment {
      * interact with. Called once if the page is not loading anyone, and called once if the
      * user failed to log in
      */
-    private void resumeGUI() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+    private void resumeGUI(Context context) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
                 mProgressBar.setVisibility(View.INVISIBLE);
-                mLoginButton.setBackgroundColor(getResources().getColor(R.color.blue));
+                mLoginButton.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
                 mLoginButton.setText(R.string.login_label);
                 mNetID.setEnabled(true);
                 mPassword.setEnabled(true);
                 mPrivacy.setEnabled(true);
-            }
-        });
+            });
+        }
     }
 
     /*
@@ -199,7 +212,7 @@ public class LoginFragment extends Fragment {
      * This method loads the accountInfoPage
      */
     private void loadAccountPage(boolean alreadyLoggedIn) {
-        if (getFragmentManager().findFragmentById(
+        if (getFragmentManager() != null && getFragmentManager().findFragmentById(
                 R.id.frame_fragment_holder) instanceof LoginFragment) {
             if (!alreadyLoggedIn) {
                 // If the user clicked login, then save credentials

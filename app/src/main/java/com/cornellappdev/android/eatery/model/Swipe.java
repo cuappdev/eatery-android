@@ -23,7 +23,7 @@ public class Swipe implements Serializable {
         this.waitTimeHigh = 0;
     }
 
-    public Swipe(@NonNull LocalTime start, @NonNull LocalTime end, double swipeDensity,
+    Swipe(@NonNull LocalTime start, @NonNull LocalTime end, double swipeDensity,
                  int waitTimeLow, int waitTimeHigh) {
         this.start = start;
         this.end = end;

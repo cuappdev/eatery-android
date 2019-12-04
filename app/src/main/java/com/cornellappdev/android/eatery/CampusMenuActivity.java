@@ -10,6 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+
 import com.cornellappdev.android.eatery.components.CustomPager;
 import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CafeModel;
@@ -26,17 +35,8 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -52,9 +52,6 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     NestedScrollView mScrollView;
     private TabLayout mTabLayout;
-    private CustomPager mCustomPager;
-    private WaitTimesComponent mWaitTimesComponent;
-    private FrameLayout mWaitTimesHolder;
     private MenuPresenter mMenuPresenter;
 
     @Override
@@ -77,17 +74,13 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishAfterTransition();
-            }
-
-        });
+        mToolbar.setNavigationOnClickListener((View v) -> finishAfterTransition());
 
         mCafeText = findViewById(R.id.ind_cafe_name);
         mCafeText.setText(cafeName);
@@ -122,7 +115,8 @@ public class CampusMenuActivity extends AppCompatActivity {
         EateryBaseModel.Status currentStatus = mCafeData.getCurrentStatus();
         mCafeIsOpen.setText(currentStatus.toString());
         if (currentStatus == EateryBaseModel.Status.OPEN) {
-            mCafeIsOpen.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+            mCafeIsOpen.setTextColor(
+                    ContextCompat.getColor(getApplicationContext(), R.color.green));
         } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
             mCafeIsOpen.setTextColor(
                     ContextCompat.getColor(getApplicationContext(), R.color.yellow));
@@ -147,7 +141,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         }
 
         mScrollView = findViewById(R.id.controlled_scroll_view);
-        mCustomPager = findViewById(R.id.pager);
+        CustomPager customPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
 
@@ -155,7 +149,7 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         // Formatting for when eatery is a cafe
         if (mCafeData instanceof CafeModel) {
-            mCustomPager.setVisibility(View.GONE);
+            customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
             mLinLayout.setVisibility(View.VISIBLE);
 
@@ -197,7 +191,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Formatting for when eatery is a dining hall and has a menu
         else if (mCafeData instanceof DiningHallModel) {
             mMenuText = findViewById(R.id.ind_menu);
-            mCustomPager.setVisibility(View.GONE);
+            customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
             ArrayList<MealModel> mm =
                     ((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals();
@@ -211,11 +205,11 @@ public class CampusMenuActivity extends AppCompatActivity {
                 mMenuText.setGravity(Gravity.CENTER_HORIZONTAL);
             } else {
                 mMenuText.setVisibility(View.GONE);
-                mCustomPager.setVisibility(View.VISIBLE);
+                customPager.setVisibility(View.VISIBLE);
                 mTabLayout.setVisibility(View.VISIBLE);
                 mLinLayout.setVisibility(View.GONE);
-                setupViewPager(mCustomPager);
-                mTabLayout.setupWithViewPager(mCustomPager);
+                setupViewPager(customPager);
+                mTabLayout.setupWithViewPager(customPager);
                 mTabLayout.setTabTextColors(
                         ContextCompat.getColor(getApplicationContext(), R.color.primary),
                         ContextCompat.getColor(getApplicationContext(), R.color.blue));
@@ -232,9 +226,9 @@ public class CampusMenuActivity extends AppCompatActivity {
         List<Swipe> waitTimes = mMenuPresenter.getWaitTimes();
         if (waitTimes == null) return;
         // Create and load wait times chart.
-        mWaitTimesComponent = new WaitTimesComponent(waitTimes);
-        mWaitTimesHolder = findViewById(R.id.wait_times_frame);
-        mWaitTimesComponent.inflateView(getApplicationContext(), mWaitTimesHolder, mScrollView);
+        WaitTimesComponent waitTimesComponent = new WaitTimesComponent(waitTimes);
+        FrameLayout waitTimesHolder = findViewById(R.id.wait_times_frame);
+        waitTimesComponent.inflateView(getApplicationContext(), waitTimesHolder, mScrollView);
     }
 
     // Set up default tab / menu for dining halls.
@@ -243,7 +237,9 @@ public class CampusMenuActivity extends AppCompatActivity {
             DiningHallModel dhm = (DiningHallModel) mCafeData;
             int tabIndex = dhm.getCurrentMealTypeTabIndex();
             TabLayout.Tab defaultTab = mTabLayout.getTabAt(tabIndex);
-            defaultTab.select();
+            if (defaultTab != null) {
+                defaultTab.select();
+            }
         }
     }
 
@@ -257,13 +253,14 @@ public class CampusMenuActivity extends AppCompatActivity {
         DiningHallModel dhm = (DiningHallModel) mCafeData;
         private int mCurrentPosition = -1;
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         // Set menu fragment to first MealModel object
         @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        public void setPrimaryItem(@NonNull ViewGroup container, int position,
+                @NonNull Object object) {
             super.setPrimaryItem(container, position, object);
             if (position != mCurrentPosition) {
                 if (mCurrentPosition == -1) {
@@ -271,13 +268,14 @@ public class CampusMenuActivity extends AppCompatActivity {
                 }
                 Fragment fragment = (Fragment) object;
                 CustomPager pager = (CustomPager) container;
-                if (fragment != null && fragment.getView() != null) {
+                if (fragment.getView() != null) {
                     mCurrentPosition = position;
                     pager.measureCurrentView(fragment.getView());
                 }
             }
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             Bundle b = new Bundle();

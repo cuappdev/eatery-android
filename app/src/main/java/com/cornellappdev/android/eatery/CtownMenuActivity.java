@@ -16,6 +16,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.util.TimeUtil;
@@ -33,11 +38,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCallback {
     TextView mCafeDirections;
@@ -64,18 +64,15 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishAfterTransition();
-            }
-        });
+        mToolbar.setNavigationOnClickListener((View v) -> finishAfterTransition());
 
-        Intent intent = getIntent();
-        mCafeData = (CollegeTownModel) intent.getSerializableExtra("cafeInfo");
+        Intent fromIntent = getIntent();
+        mCafeData = (CollegeTownModel) fromIntent.getSerializableExtra("cafeInfo");
         String cafeName = mCafeData.getNickName();
         String imageUrl = mCafeData.getImageURL();
 
@@ -150,16 +147,13 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
         mCafeRating.setRating(Float.parseFloat(((CollegeTownModel) mCafeData).getRating()));
 
         mCafeDirections = findViewById(R.id.cafe_directions);
-        mCafeDirections.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Opening up google maps with the latitude and longitude on click
-                String uri = String.format(Locale.ENGLISH,
-                        "http://maps.google.com/maps?daddr=%f,%f",
-                        mCafeData.getLatitude(), mCafeData.getLongitude());
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
-            }
+        mCafeDirections.setOnClickListener((View v) -> {
+            // Opening up google maps with the latitude and longitude on click
+            String uri = String.format(Locale.ENGLISH,
+                    "http://maps.google.com/maps?daddr=%f,%f",
+                    mCafeData.getLatitude(), mCafeData.getLongitude());
+            Intent directionsIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+            startActivity(directionsIntent);
         });
 
         mCafePhoneNumber = findViewById(R.id.cafe_phone);
@@ -169,27 +163,21 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
                 displayPhoneNumber.substring(0, 3),
                 displayPhoneNumber.substring(3, 6),
                 displayPhoneNumber.substring(6, 10)));
-        mCafePhoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Calling the number on click
-                Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                callIntent.setData(Uri.parse(String.format("tel: %s", mCafeData.getPhoneNumber())));
-                startActivity(callIntent);
-            }
+        mCafePhoneNumber.setOnClickListener((View v) -> {
+            // Calling the number on click
+            Intent callIntent = new Intent(Intent.ACTION_DIAL);
+            callIntent.setData(Uri.parse(String.format("tel: %s", mCafeData.getPhoneNumber())));
+            startActivity(callIntent);
         });
 
         mCafeWebsite = findViewById(R.id.cafe_website);
         mCafeWebsite.setText(String.format("Visit %s", mCafeData.getNickName()));
-        mCafeWebsite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Opening up the website on click
-                Uri uri = Uri.parse(((CollegeTownModel) mCafeData).getYelpUrl());
-                // missing 'http://' will cause crashed
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
+        mCafeWebsite.setOnClickListener((View v) -> {
+            // Opening up the website on click
+            Uri uri = Uri.parse(((CollegeTownModel) mCafeData).getYelpUrl());
+            // missing 'http://' will cause crashed
+            Intent websiteIntent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(websiteIntent);
         });
 
         mMapView = findViewById(R.id.cafe_map);
@@ -266,20 +254,17 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             Location myLocation = getMyLocation();
             builder.include(cafeMarker.getPosition());
-            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            mMap.setOnMapLoadedCallback(() -> {
                 // When map loads, zoom out to see user position on the map as well
-                @Override
-                public void onMapLoaded() {
-                    int padding = 230; // offset from edges of the map in pixels
-                    if (myLocation != null) {
-                        // Only display current location if within a specified range of the eatery
-                        builder.include(
-                                new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-                        LatLngBounds bounds = builder.build();
-                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                        mMap.animateCamera(cu);
+                int padding = 230; // offset from edges of the map in pixels
+                if (myLocation != null) {
+                    // Only display current location if within a specified range of the eatery
+                    builder.include(
+                            new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+                    LatLngBounds bounds = builder.build();
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    mMap.animateCamera(cu);
 
-                    }
                 }
             });
         }

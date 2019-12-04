@@ -22,7 +22,7 @@ public class MenuPresenter {
         }
 
         // Data for wait times chart.
-        List<Swipe> swipeData = new ArrayList<Swipe>();
+        List<Swipe> swipeData = new ArrayList<>();
 
         // Wait times chart must have 21 elements for each hour within 6am - 3am.
         // i represents the hour, with 0 being 6am - 7am.

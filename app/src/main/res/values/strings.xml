@@ -57,6 +57,7 @@
     <string name="closing_time_label">Closing Time</string>
     <string name="popular_times_label">Popular Times</string>
     <string name="hide_label">Hide</string>
+    <string name="show_label">Show</string>
     <string name="description_header">Description</string>
     <string name="feedback_header">Feedback</string>
     <string name="privacy_statement">Privacy Statement</string>
