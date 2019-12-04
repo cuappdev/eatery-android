@@ -1,5 +1,6 @@
 package com.cornellappdev.android.eatery.onboarding;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -7,14 +8,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
 public class OnboardingPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 4;
     private OnboardingInfoFragment menusFragment;
     private OnboardingInfoFragment collegetownFragment;
     private OnboardingInfoFragment transactionsFragment;
     private OnboardingInfoFragment loginFragment;
 
-    public OnboardingPagerAdapter(FragmentManager fm) {
-        super(fm);
+    OnboardingPagerAdapter(FragmentManager fm) {
+        super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         menusFragment = new OnboardingInfoFragment(OnboardingPageType.MENUS);
         collegetownFragment = new OnboardingInfoFragment(OnboardingPageType.COLLEGETOWN);
         transactionsFragment = new OnboardingInfoFragment(OnboardingPageType.TRANSACTIONS);
@@ -22,6 +22,7 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    @NonNull
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
@@ -33,12 +34,12 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 return loginFragment;
             default:
-                return null;
+                return menusFragment;
         }
     }
 
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return 4;
     }
 }

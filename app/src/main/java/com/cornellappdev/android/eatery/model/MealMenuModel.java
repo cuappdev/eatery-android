@@ -65,4 +65,12 @@ public class MealMenuModel implements Serializable {
     public int getNumberOfCategories() {
         return menu.keySet().size();
     }
+
+    List<String> getAllItems() {
+        List<String> items = new ArrayList<>();
+        for (List<String> val : menu.values()) {
+            items.addAll(val);
+        }
+        return items;
+    }
 }

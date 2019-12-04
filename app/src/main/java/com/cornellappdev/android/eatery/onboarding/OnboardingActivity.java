@@ -1,19 +1,16 @@
 package com.cornellappdev.android.eatery.onboarding;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
-    private TabLayout mOnboardingPageIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +23,9 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setAdapter(new OnboardingPagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(0);
 
-        mOnboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
-        mOnboardingPageIndicator.setTabRippleColor(null);
-        mOnboardingPageIndicator.setupWithViewPager(mViewPager);
+        TabLayout onboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
+        onboardingPageIndicator.setTabRippleColor(null);
+        onboardingPageIndicator.setupWithViewPager(mViewPager);
     }
 
     /**
