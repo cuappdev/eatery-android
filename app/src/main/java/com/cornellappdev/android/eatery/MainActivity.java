@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -17,16 +21,11 @@ import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         // Add functionality to bottom nav bar
 
         try {
-            BrbInfoModel brbModel = (BrbInfoModel) InternalStorage.readObject(getApplicationContext(), CacheType.BRB);
+            BrbInfoModel brbModel = (BrbInfoModel) InternalStorage.readObject(
+                    getApplicationContext(), CacheType.BRB);
             Repository.getInstance().setBrbInfoModel(brbModel);
             ArrayList<EateryBaseModel> campusEateries = (ArrayList<EateryBaseModel>) InternalStorage
                     .readObject(getApplicationContext(), CacheType.CAMPUS_EATERY);
@@ -68,33 +68,30 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         bnv.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        FragmentTransaction transaction =
-                                getSupportFragmentManager().beginTransaction();
-                        switch (item.getItemId()) {
-                            case R.id.action_home:
-                                mFirebaseAnalytics.logEvent("eatery_tab_press", null);
-                                transaction
-                                        .replace(R.id.frame_fragment_holder, mainListFragment)
-                                        .commit();
-                                break;
-                            case R.id.action_week:
-                                mFirebaseAnalytics.logEvent("lookahead_tab_press", null);
-                                transaction
-                                        .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
-                                        .commit();
-                                break;
-                            case R.id.action_brb:
-                                mFirebaseAnalytics.logEvent("brb_tab_press", null);
-                                transaction
-                                        .replace(R.id.frame_fragment_holder, loginFragment)
-                                        .commit();
-                                break;
-                        }
-                        return true;
+                (@NonNull MenuItem item) -> {
+                    FragmentTransaction transaction =
+                            getSupportFragmentManager().beginTransaction();
+                    switch (item.getItemId()) {
+                        case R.id.action_home:
+                            mFirebaseAnalytics.logEvent("eatery_tab_press", null);
+                            transaction
+                                    .replace(R.id.frame_fragment_holder, mainListFragment)
+                                    .commit();
+                            break;
+                        case R.id.action_week:
+                            mFirebaseAnalytics.logEvent("lookahead_tab_press", null);
+                            transaction
+                                    .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
+                                    .commit();
+                            break;
+                        case R.id.action_brb:
+                            mFirebaseAnalytics.logEvent("brb_tab_press", null);
+                            transaction
+                                    .replace(R.id.frame_fragment_holder, loginFragment)
+                                    .commit();
+                            break;
                     }
+                    return true;
                 });
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_fragment_holder,
@@ -104,19 +101,15 @@ public class MainActivity extends AppCompatActivity {
         NetworkUtilities.getCtEateries(this);
 
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        if(!preferences.getBoolean("onboarding_complete",false)) { // Start the
+        if (!preferences.getBoolean("onboarding_complete", false)) { // Start the
             startOnboarding();
         }
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
         MapView mDummyMapInitializer = findViewById(R.id.dummy_map);
-        mDummyMapInitializer.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-            }
+        mDummyMapInitializer.getMapAsync((GoogleMap googleMap) -> {
         });
-
     }
 
     public boolean isAccountPresenterLoggedIn() {
@@ -128,8 +121,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String[] getLoginInfo() {
-        String[] loginInfo = mAccountPresenter.readSavedCredentials(getApplicationContext());
-        return loginInfo;
+        return mAccountPresenter.readSavedCredentials(getApplicationContext());
     }
 
     public void setAccountPresenterLoggingIn(boolean b) {
@@ -158,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         // change the login javascript to have the correct username and password
         mAccountPresenter.resetLoginJS();
-        
+
         MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
     }
 
