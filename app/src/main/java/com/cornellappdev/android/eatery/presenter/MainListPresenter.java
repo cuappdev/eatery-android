@@ -46,10 +46,6 @@ public class MainListPresenter {
         return rInstance.getCtEateryList();
     }
 
-    public void setDisplayCTown(boolean displayCTown) {
-        rInstance.setDisplayCTown(displayCTown);
-    }
-
     public void setPaymentSet(HashSet<PaymentMethod> paymentSet) {
         mPaymentSet = paymentSet;
     }

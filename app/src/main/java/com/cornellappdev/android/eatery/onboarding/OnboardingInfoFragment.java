@@ -59,6 +59,7 @@ public class OnboardingInfoFragment extends Fragment {
             ((OnboardingActivity) getActivity()).setPagerEnabled(false);
             mProgressBar.setVisibility(View.VISIBLE);
             mButton.setEnabled(false);
+            mSecondaryButton.setEnabled(false);
             mButton.setText("");
             mButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.fadedBlue));
         }
@@ -71,6 +72,7 @@ public class OnboardingInfoFragment extends Fragment {
             mButton.setText(R.string.login_label);
             mButton.setBackground(
                     ContextCompat.getDrawable(getContext(), R.drawable.bordered_button));
+            mSecondaryButton.setEnabled(true);
             mProgressBar.setVisibility(View.INVISIBLE);
             mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                     android.graphics.PorterDuff.Mode.MULTIPLY);

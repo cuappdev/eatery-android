@@ -309,7 +309,6 @@ public class MainListFragment extends Fragment
 
     private void handleCollegetownPillPress() {
         mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
-        mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
@@ -321,7 +320,6 @@ public class MainListFragment extends Fragment
 
     private void handleCampusPillPress() {
         mFirebaseAnalytics.logEvent("campus_pill_press", null);
-        mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
