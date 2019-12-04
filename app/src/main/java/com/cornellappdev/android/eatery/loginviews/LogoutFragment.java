@@ -86,7 +86,7 @@ public class LogoutFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             getActivity().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
