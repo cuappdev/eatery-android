@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".loginviews.AccountInfoFragment">
-
     <TextView
         android:id="@+id/accounts"
         android:layout_width="match_parent"
