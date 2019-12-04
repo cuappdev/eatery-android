@@ -65,7 +65,7 @@
                 android:gravity="center"
                 android:layout_height="124dp"
                 android:scaleType="centerInside"
-                app:lottie_rawRes="@raw/lottie"
+                app:lottie_rawRes="@raw/menu_animation"
                 app:lottie_loop="false"
                 app:lottie_autoPlay="true" />
         </FrameLayout>
