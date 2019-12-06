@@ -76,7 +76,7 @@ public class OnboardingActivity extends FragmentActivity {
 
     public void endOnboarding() {
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        preferences.edit().putBoolean("onboarding_complete",true).apply();
+        preferences.edit().putBoolean("onboarding_complete", true).apply();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();

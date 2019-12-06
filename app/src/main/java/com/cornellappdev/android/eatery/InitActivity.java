@@ -15,10 +15,9 @@ public class InitActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        if(!preferences.getBoolean("onboarding_complete",false)) {
+        if (!preferences.getBoolean("onboarding_complete", false)) {
             startOnboarding();
-        }
-        else {
+        } else {
             startMain();
         }
         finish();
