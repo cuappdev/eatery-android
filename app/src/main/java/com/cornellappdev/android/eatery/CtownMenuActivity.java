@@ -209,12 +209,7 @@ public class CtownMenuActivity extends AppCompatActivity implements OnMapReadyCa
 
         // Location wasn't found, check the next most accurate place for the current location
         if (myLocation == null) {
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-            // Finds a provider that matches the criteria
-            String provider = lm.getBestProvider(criteria, true);
-            // Use the provider to get the last known location
-            myLocation = lm.getLastKnownLocation(provider);
+            myLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
         }
 
         return myLocation;
