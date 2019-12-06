@@ -2,14 +2,37 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:id="@+id/onboarding_info_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/blue"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/onboarding_info_button"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bordered_button"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/onboarding_button_next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/onboarding_button_text_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/onboarding_info_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="124dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginEnd="42dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="40dp" />
 
         <TextView
             android:id="@+id/onboarding_info_title"
@@ -38,27 +61,5 @@
             android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/onboarding_description_text_size" />
-
-        <ImageView
-            android:id="@+id/onboarding_info_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="124dp"
-            android:layout_marginStart="42dp"
-            android:layout_marginEnd="42dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="40dp"/>
-
-        <Button
-            android:id="@+id/onboarding_info_button"
-            android:layout_width="240dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:background="@drawable/bordered_button"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="NEXT"
-            android:textColor="@color/white"
-            android:textSize="@dimen/onboarding_button_text_size"
-            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

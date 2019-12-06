@@ -47,7 +47,6 @@ public class OnboardingLoginFragment extends Fragment {
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
             public void failedLogin() {
-                Log.i("qwerty", "failure!");
                 // If the user is still viewing this fragment
                 if (getFragmentManager() != null) {
                     mDescriptionText.setText("Incorrect netid and/or password\n");
@@ -58,7 +57,6 @@ public class OnboardingLoginFragment extends Fragment {
 
             @Override
             public void successLogin(BrbInfoQuery.AccountInfo accountInfo) {
-                Log.i("qwerty", "Success!");
                 Repository.getInstance().setBrbInfoModel(QueryUtilities.parseBrbInfo(accountInfo));
                 BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                 try {

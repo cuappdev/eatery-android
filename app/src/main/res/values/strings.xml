@@ -9,10 +9,77 @@
     <string name="google_form">Send Feedback</string>
     <string name="open_at">Opening at</string>
     <string name="close_at">Closes at</string>
+    <string name="no_menu_text">No menu information 😮</string>
+    <string name="get_directions">Get Directions</string>
+    <string name="dollar_sign">$</string>
+
+    <string name="eatery_content_description">Eatery Image</string>
+    <string name="icon_content_description">Icon</string>
+    <string name="campus_content_description">Campus</string>
+    <string name="ctown_content_description">Collegetown</string>
+    <string name="map_icon_content_description">Icon</string>
+    <string name="splash_screen_content_description">AppDev</string>
+
+    <string name="eatery_name_filler">Name</string>
+    <string name="eatery_status_filler">Closed</string>
+    <string name="eatery_time_filler">Time</string>
+    <string name="eatery_location_filler">Location</string>
+    <string name="eatery_items_filler">Items</string>
+
+    <string name="nearest_first_filter">Nearest First</string>
+    <string name="north_filter">North</string>
+    <string name="west_filter">West</string>
+    <string name="central_filter">Central</string>
+    <string name="swipes_filter">Swipes</string>
+    <string name="brb_filter">BRB</string>
+
+    <string name="american_filter">American</string>
+    <string name="chinese_filter">Chinese</string>
+    <string name="coffee_filter">Coffee</string>
+    <string name="desserts_filter">Desserts</string>
+    <string name="grocery_filter">Grocery</string>
+    <string name="indian_filter">Indian</string>
+    <string name="italian_filter">Italian</string>
+    <string name="japanese_filter">Japanese</string>
+    <string name="korean_filter">Korean</string>
+    <string name="mediterranean_filter">Mediterranean</string>
+    <string name="thai_filter">Thai</string>
+    <string name="vietnamese_filter">Vietnamese</string>
+
+    <string name="eatery_menu_label">Menu</string>
+    <string name="breakfast_label">Breakfast</string>
+    <string name="lunch_label">Lunch</string>
+    <string name="dinner_label">Dinner</string>
+    <string name="settings_label">Settings</string>
+    <string name="west_campus_label">West Campus</string>
+    <string name="north_campus_label">North Campus</string>
+    <string name="central_campus_label">Central Campus</string>
+    <string name="closing_time_label">Closing Time</string>
+    <string name="popular_times_label">Popular Times</string>
+    <string name="hide_label">Hide</string>
+    <string name="description_header">Description</string>
+    <string name="feedback_header">Feedback</string>
+    <string name="privacy_statement">Privacy Statement</string>
+
+    <string name="time_12am_label">12a</string>
+    <string name="time_3am_label">3a</string>
+    <string name="time_6am_label">6a</string>
+    <string name="time_9am_label">9a</string>
+    <string name="time_12pm_label">12p</string>
+    <string name="time_3pm_label">3p</string>
+    <string name="time_6pm_label">6p</string>
+    <string name="time_9pm_label">9p</string>
+
+    <string name="eatery_icon_title">Eateries</string>
+    <string name="weekly_icon_title">Weekly Menu</string>
+    <string name="account_icon_title">Account</string>
+    <string name="settings_icon_title">Settings</string>
+    <string name="map_icon_title">Map</string>
+    <string name="search_icon_title">Search</string>
+
     <string name="info_page_description">Eatery is made by Cornell App Development, an engineering
         project team at Cornell University.
     </string>
-    <string name="description_header">Description</string>
     <string name="description_text_1">Looking for somewhere to eat around Cornell University? Eatery
         has your back.
     </string>
@@ -21,17 +88,6 @@
     </string>
     <string name="description_text_3">To get the most out of Eatery, log in with your netID.
     </string>
-    <string name="onboarding_button_next">NEXT</string>
-    <string name="onboarding_button_login">LOGIN</string>
-    <string name="onboarding_button_skip">SKIP</string>
-    <string name="feedback_header">Feedback</string>
-    <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for
-        new features.
-    </string>
-    <string name="no_menu_text">No menu information 😮</string>
-    <string name="cornell_website_url">https://www.cornellappdev.com/</string>
-    <string name="feedback_form_url">https://goo.gl/forms/g8v6CbN2lrQtY4tH2</string>
-    <string name="privacy_statement">Privacy Statement</string>
     <string name="privacy_description_1">When you log in using our system, we will use your
         credentials solely to fetch your account information on your behalf. Your credentials will
         be stored safely on this device.
@@ -39,12 +95,24 @@
     <string name="privacy_description_2">Your netid and password will never leave your device, and
         will never be stored on our servers or viewed by anyone on our team.
     </string>
+    <string name="feedback_text">Let us know what you think! Send us feedback or give us ideas for
+        new features.
+    </string>
+
+    <string name="cornell_website_url">https://www.cornellappdev.com/</string>
+    <string name="feedback_form_url">https://goo.gl/forms/g8v6CbN2lrQtY4tH2</string>
+    <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
+
+    <string name="onboarding_button_next">NEXT</string>
+    <string name="onboarding_button_login">LOGIN</string>
+    <string name="onboarding_button_skip">SKIP</string>
     <string name="login_label">Login</string>
     <string name="logout_label">Logout</string>
     <string name="password">Password</string>
     <string name="netid">NetID</string>
     <string name="password_hint">Type your password</string>
     <string name="netid_hint">Type your netid (e.g. abc123)</string>
+
     <string name="about">About</string>`
     <string name="accounts">Accounts</string>
     <string name="meal_swipes">Meal Swipes</string>
@@ -52,7 +120,8 @@
     <string name="city_bucks">City Bucks</string>
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
-    <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
+
+    <!-- Below values need to be updated before each launch -->
     <string name="encryption_key">hi</string>
     <string name="encryption_salt">you</string>
     <string name="google_maps_key">guys!</string>

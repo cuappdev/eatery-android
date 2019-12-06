@@ -27,6 +27,7 @@
 
             <ImageView
                 android:id="@+id/ind_image"
+                android:contentDescription="@string/eatery_content_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
@@ -60,7 +61,6 @@
                 android:id="@+id/infobox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ind_image"
                 android:background="@color/white"
                 android:elevation="1dp"
                 android:paddingTop="12dp"
@@ -73,8 +73,8 @@
                     android:fontFamily="sans-serif-medium"
                     android:paddingBottom="2dp"
                     android:transitionName="eateryName"
-                    android:layout_marginLeft="16dp"
-                    android:text="Name"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/eatery_name_filler"
                     android:textColor="@color/primary"
                     android:textSize="18sp"/>
 
@@ -85,10 +85,10 @@
                     android:layout_below="@id/ind_cafe_name"
                     android:fontFamily="sans-serif-medium"
                     android:layout_marginBottom="9dp"
-                    android:layout_marginRight="4dp"
+                    android:layout_marginStart="16dp"
                     android:transitionName="eateryOpen"
-                    android:layout_marginLeft="16dp"
-                    android:text="Open?"
+                    android:layout_marginEnd="0dp"
+                    android:text="@string/eatery_status_filler"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
 
@@ -97,12 +97,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_cafe_name"
-                    android:layout_toRightOf="@id/ind_open"
+                    android:layout_toEndOf="@id/ind_open"
                     android:fontFamily="sans-serif-regular"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginBottom="9dp"
                     android:transitionName="eateryTime"
-                    android:text="Time"
+                    android:text="@string/eatery_time_filler"
                     android:textColor="@color/secondary"
                     android:textSize="14sp"/>
 
@@ -111,37 +111,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ind_open"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif-medium"
                     android:textColor="@color/primary"
                     android:textSize="14sp"/>
 
                 <ImageView
                     android:id="@+id/dollar_icon"
+                    android:contentDescription="@string/icon_content_description"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
                     android:transitionName="eateryDollarIcon"
                     android:src="@drawable/dollar_icon"
                     android:visibility="visible"/>
 
                 <ImageView
                     android:id="@+id/brb_icon"
+                    android:contentDescription="@string/icon_content_description"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="42dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="42dp"
                     android:transitionName="eateryBrbIcon"
                     android:src="@drawable/brb_icon"
                     android:visibility="invisible"/>
 
                 <ImageView
                     android:id="@+id/swipe_icon"
+                    android:contentDescription="@string/icon_content_description"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="68dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="68dp"
                     android:transitionName="eaterySwipeIcon"
                     android:src="@drawable/swipe_icon"
                     android:visibility="invisible"/>
@@ -158,15 +161,15 @@
                 android:id="@+id/ind_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/wait_times_frame"
                 android:layout_marginTop="12dp"
                 android:background="@color/white"
                 android:fontFamily="sans-serif-medium"
                 android:lineSpacingExtra="2dp"
-                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="Menu"
+                android:text="@string/eatery_menu_label"
                 android:textColor="@color/primary"
                 android:textSize="16sp"/>
 
@@ -174,7 +177,6 @@
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ind_menu"
                 android:background="@color/white"
                 android:orientation="vertical"/>
 
@@ -182,7 +184,6 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ind_menu"
                 android:layout_marginTop="12dp"
                 android:background="@color/white"
                 app:tabIndicatorColor="@color/blue"
@@ -192,7 +193,6 @@
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tabs"
                 android:background="@color/white"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
