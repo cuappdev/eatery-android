@@ -11,15 +11,15 @@ public enum OnboardingPageType {
     public int getAnimationRaw() {
         switch (this) {
             case MENUS:
-                return R.raw.lottie;
+                return R.raw.menus;
             case COLLEGETOWN:
-                return  R.raw.lottie2;
+                return R.raw.ctown;
             case TRANSACTIONS:
-                return  R.raw.lottie3;
+                return R.raw.transactions;
             case LOGIN:
-                return  R.raw.lottie;
+                return R.raw.menus;
             default:
-                return  R.raw.lottie;
+                return R.raw.menus;
         }
     }
 

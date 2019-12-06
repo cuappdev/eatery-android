@@ -61,11 +61,20 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setEnabled(enabled);
     }
 
-
     public void endOnboarding() {
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         preferences.edit().putBoolean("onboarding_complete",true).apply();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    public void onBackPressed(){
+        // Return to home screen
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

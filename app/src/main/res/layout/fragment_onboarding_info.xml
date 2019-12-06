@@ -49,7 +49,7 @@
             android:paddingStart="36dp"
             android:paddingTop="20dp"
             android:paddingEnd="36dp"
-            android:paddingBottom="20dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/white"
             android:textSize="@dimen/onboarding_description_text_size" />
 
@@ -57,15 +57,16 @@
             android:id="@+id/onboarding_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:paddingBottom="40dp">
+            android:paddingTop="15dp"
+            android:paddingBottom="20dp">
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/onboarding_animation"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_height="124dp"
                 android:scaleType="centerInside"
-                app:lottie_rawRes="@raw/lottie"
+                app:lottie_rawRes="@raw/menus"
                 app:lottie_loop="false"
                 app:lottie_autoPlay="true" />
         </FrameLayout>

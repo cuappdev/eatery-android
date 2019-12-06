@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieDrawable;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
@@ -89,14 +89,16 @@ public class OnboardingInfoFragment extends Fragment {
     private void setupContent() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         switch (onboardingPageType) {
-            // TODO (yanlam): Add dynamic rendering for animation.
             case MENUS:
+                mLottieAnimationView.setScale(0.25f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case COLLEGETOWN:
+                mLottieAnimationView.setScale(0.232f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case TRANSACTIONS:
+                mLottieAnimationView.setScale(0.232f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case LOGIN:
