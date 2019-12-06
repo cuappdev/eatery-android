@@ -63,6 +63,7 @@
                 android:id="@+id/onboarding_animation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="230dp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:scaleType="centerInside"

@@ -8,14 +8,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.airbnb.lottie.LottieDrawable;
-import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
-
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
 public class OnboardingInfoFragment extends Fragment {
     private TextView mTitle;
@@ -27,13 +26,13 @@ public class OnboardingInfoFragment extends Fragment {
     private OnboardingPageType onboardingPageType;
     private ProgressBar mProgressBar;
 
-    protected OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
+    OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
         this.onboardingPageType = onboardingPageType;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_info, container, false);
         mTitle = view.findViewById(R.id.onboarding_info_title);
         mDescription = view.findViewById(R.id.onboarding_info_description);
@@ -54,6 +53,9 @@ public class OnboardingInfoFragment extends Fragment {
         if (onboardingPageType == OnboardingPageType.LOGIN) {
             setupSkipButton();
             setupLoginButton();
+            if (((OnboardingActivity) getActivity()).getLoggingIn()) {
+                this.loggingIn();
+            }
         } else {
             mSecondaryButton.setVisibility(View.GONE);
             setupNextButton();
@@ -62,24 +64,37 @@ public class OnboardingInfoFragment extends Fragment {
         return view;
     }
 
-    public void reloadAnimation() {
+    void reloadAnimation() {
         mLottieAnimationView.playAnimation();
     }
 
-    protected void loggingIn() {
-        ((OnboardingActivity) getActivity()).setPagerEnabled(false);
+    void loggingIn() {
+        OnboardingActivity parent = ((OnboardingActivity) getActivity());
+        if (parent != null) {
+            parent.setLoggingIn(true);
+        }
         mProgressBar.setVisibility(View.VISIBLE);
         mButton.setEnabled(false);
+        mSecondaryButton.setEnabled(false);
         mButton.setText("");
-        mButton.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.fadedBlue));
+        if (getContext() != null) {
+            mButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.fadedBlue));
+        }
         //mSecondaryButton.setEnabled(false);
     }
 
-    protected void resumeLoginGUI() {
-        ((OnboardingActivity) getActivity()).setPagerEnabled(true);
+    void resumeLoginGUI() {
+        OnboardingActivity parent = ((OnboardingActivity) getActivity());
+        if (parent != null) {
+            parent.setLoggingIn(false);
+        }
         mButton.setEnabled(true);
         mButton.setText(R.string.login_label);
-        mButton.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.bordered_button));
+        mSecondaryButton.setEnabled(true);
+        if (getContext() != null) {
+            mButton.setBackground(
+                    ContextCompat.getDrawable(getContext(), R.drawable.bordered_button));
+        }
         mProgressBar.setVisibility(View.INVISIBLE);
         mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
                 android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -113,37 +128,30 @@ public class OnboardingInfoFragment extends Fragment {
 
     private void setupNextButton() {
         mButton.setText(R.string.onboarding_button_next);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Moves to next onboarding item when "NEXT" button clicked.
-                ((OnboardingActivity) getActivity()).getNextOnboardingPagerItem();
+        mButton.setOnClickListener((View v) -> {
+            // Moves to next onboarding item when "NEXT" button clicked.
+            OnboardingActivity parent = ((OnboardingActivity) getActivity());
+            if (parent != null) {
+                parent.getNextOnboardingPagerItem();
             }
         });
     }
 
     private void setupLoginButton() {
         mButton.setText(R.string.onboarding_button_login);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnboardingLoginFragment.login();
-            }
-        });
+        mButton.setOnClickListener((View v) -> mOnboardingLoginFragment.login());
     }
 
-    protected void endOnboarding() {
-        ((OnboardingActivity) getActivity()).endOnboarding();
+    void endOnboarding() {
+        OnboardingActivity parent = ((OnboardingActivity) getActivity());
+        if (parent != null) {
+            parent.endOnboarding();
+        }
     }
 
     private void setupSkipButton() {
         mSecondaryButton.setText(R.string.onboarding_button_skip);
         mSecondaryButton.setVisibility(View.VISIBLE);
-        mSecondaryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                endOnboarding();
-            }
-        });
+        mSecondaryButton.setOnClickListener((View v) -> endOnboarding());
     }
 }

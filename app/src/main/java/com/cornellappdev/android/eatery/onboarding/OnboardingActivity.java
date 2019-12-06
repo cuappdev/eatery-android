@@ -3,6 +3,8 @@ package com.cornellappdev.android.eatery.onboarding;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -14,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private TabLayout mOnboardingPageIndicator;
+    private boolean isLoggingIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager = findViewById(R.id.onboarding_viewpager);
         mViewPager.setAdapter(new OnboardingPagerAdapter(getSupportFragmentManager()));
         mViewPager.setCurrentItem(0);
+
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -57,24 +61,20 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setCurrentItem(pageIndex);
     }
 
-    protected void setPagerEnabled(boolean enabled) {
-        mViewPager.setEnabled(enabled);
-    }
-
     public void endOnboarding() {
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         preferences.edit().putBoolean("onboarding_complete",true).apply();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
-
-    @Override
-    public void onBackPressed(){
-        // Return to home screen
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);
+    public void setLoggingIn(boolean loggingIn) {
+        this.isLoggingIn = loggingIn;
     }
+
+    public boolean getLoggingIn() {
+        return this.isLoggingIn;
+    }
+
 }

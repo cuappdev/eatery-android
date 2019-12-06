@@ -11,13 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.cornellappdev.android.eatery.loginviews.LoginFragment;
-import com.cornellappdev.android.eatery.loginviews.PrivacyFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
-import com.cornellappdev.android.eatery.network.QueryUtilities;
 import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.presenter.MainPresenter;
@@ -113,11 +111,6 @@ public class MainActivity extends AppCompatActivity {
         NetworkUtilities.getEateries(this, mainListFragment);
         NetworkUtilities.getCtEateries(this);
 
-        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        if(!preferences.getBoolean("onboarding_complete",false)) { // Start the
-            startOnboarding();
-        }
-
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
         MapView mDummyMapInitializer = findViewById(R.id.dummy_map);
@@ -170,11 +163,6 @@ public class MainActivity extends AppCompatActivity {
         mAccountPresenter.resetLoginJS();
         
         MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
-    }
-
-    public void startOnboarding() {
-        Intent intent = new Intent(getApplicationContext(), OnboardingActivity.class);
-        startActivity(intent);
     }
 
     public void setLoginInstance(LoginFragment instance) {

@@ -13,7 +13,7 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
     private OnboardingInfoFragment transactionsFragment;
     private OnboardingInfoFragment loginFragment;
 
-    public OnboardingPagerAdapter(FragmentManager fm) {
+    OnboardingPagerAdapter(FragmentManager fm) {
         super(fm);
         menusFragment = new OnboardingInfoFragment(OnboardingPageType.MENUS);
         collegetownFragment = new OnboardingInfoFragment(OnboardingPageType.COLLEGETOWN);
@@ -21,7 +21,7 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
         loginFragment = new OnboardingInfoFragment(OnboardingPageType.LOGIN);
     }
 
-    public void onPageSelected(int position) {
+    void onPageSelected(int position) {
         switch (position) {
             case 0: menusFragment.reloadAnimation(); return;
             case 1: collegetownFragment.reloadAnimation(); return;
