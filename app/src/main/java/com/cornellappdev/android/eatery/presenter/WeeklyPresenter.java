@@ -1,7 +1,5 @@
 package com.cornellappdev.android.eatery.presenter;
 
-import android.view.View;
-
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -13,13 +11,11 @@ import java.util.HashMap;
 
 public class WeeklyPresenter {
 
-    private View view;
     private ArrayList<EateryBaseModel> mEateryList;
     private LocalDate mSelectedDate;
-    private Repository rInstance = Repository.getInstance();
 
-    public WeeklyPresenter(View view) {
-        this.view = view;
+    public WeeklyPresenter() {
+        Repository rInstance = Repository.getInstance();
         mEateryList = rInstance.getEateryList();
         mSelectedDate = LocalDate.now();
     }
@@ -36,7 +32,7 @@ public class WeeklyPresenter {
         mSelectedDate = selectedDate;
     }
 
-    public ArrayList<DiningHallModel> getDiningHallList() {
+    private ArrayList<DiningHallModel> getDiningHallList() {
         ArrayList<DiningHallModel> diningHallList = new ArrayList<>();
         for (EateryBaseModel m : mEateryList) {
             if (m instanceof DiningHallModel) {
@@ -47,7 +43,7 @@ public class WeeklyPresenter {
     }
 
     public HashMap<String, ArrayList<DiningHallModel>> generateAreaLists(MealType mealType,
-                                                                         LocalDate date) {
+            LocalDate date) {
         ArrayList<DiningHallModel> westList = new ArrayList<>();
         ArrayList<DiningHallModel> northList = new ArrayList<>();
         ArrayList<DiningHallModel> centralList = new ArrayList<>();

@@ -20,17 +20,15 @@ import java.util.Locale;
 import java.util.Map;
 
 public class CollegeTownModel extends EateryBaseModel implements Serializable {
-    protected String mPrice, mRating, mYelpUrl;
+    private String mPrice, mRating, mYelpUrl;
     private List<Category> mCategoryList;
     private List<String> mCategories;
-    private List<String> mCtEateryMenu; // To be populated upon menu addition to backend
     private Map<LocalDate, List<Interval>> mHours;
     private List<LocalDate> mSortedDates;
 
-    public CollegeTownModel() {
+    private CollegeTownModel() {
         mCategories = new ArrayList<>();
         mCategoryList = new ArrayList<>();
-        mCtEateryMenu = new ArrayList<>();
         mHours = new HashMap<>();
         mSortedDates = new ArrayList<>();
     }
@@ -40,14 +38,6 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
         CollegeTownModel model = new CollegeTownModel();
         model.parseCtEatery(context, ctEatery);
         return model;
-    }
-
-    public List<String> getCategories() {
-        return mCategories;
-    }
-
-    public List<Category> getCategoryList() {
-        return mCategoryList;
     }
 
     public String getPrice() {
@@ -91,9 +81,11 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
         for (LocalDate date : mSortedDates) {
             if (date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) {
                 List<Interval> intervalList = mHours.get(date);
-                for (Interval interval : intervalList) {
-                    if (interval.afterTime(LocalDateTime.now())) {
-                        return interval.getStart();
+                if (intervalList != null) {
+                    for (Interval interval : intervalList) {
+                        if (interval.afterTime(LocalDateTime.now())) {
+                            return interval.getStart();
+                        }
                     }
                 }
             }
@@ -116,7 +108,8 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
 
     @Override
     public HashSet<String> getMealItems() {
-        return new HashSet<>(mCtEateryMenu);
+        // There are no ctown menus for now
+        return new HashSet<>(new ArrayList<>());
     }
 
     @Override
@@ -158,12 +151,10 @@ public class CollegeTownModel extends EateryBaseModel implements Serializable {
                 .toFormatter(Locale.US);
 
         for (AllCtEateriesQuery.OperatingHour operatingHour : ctEatery.operatingHours()) {
-            List<LocalDate> localDates = new ArrayList<>();
             LocalDate localDate = LocalDate.parse(operatingHour.date(), dateFormatter);
-            localDates.add(localDate);
             for (AllCtEateriesQuery.Event event : operatingHour.events()) {
                 List<Interval> dailyHours = new ArrayList<>();
-                LocalDateTime start = null, end = null;
+                LocalDateTime start, end;
                 start = LocalTime.parse(event.startTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
                 end = LocalTime.parse(event.endTime().toUpperCase().substring(11),

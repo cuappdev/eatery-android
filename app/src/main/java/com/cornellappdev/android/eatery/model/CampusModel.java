@@ -21,14 +21,14 @@ public abstract class CampusModel extends EateryBaseModel implements Serializabl
         mSwipeDataList = parseSwipeData(eatery.swipeData());
     }
 
-    protected static List<Swipe> parseSwipeData(List<AllEateriesQuery.SwipeDatum> swipeData) {
-        List<Swipe> swipes = new ArrayList<Swipe>();
+    private static List<Swipe> parseSwipeData(List<AllEateriesQuery.SwipeDatum> swipeData) {
+        List<Swipe> swipes = new ArrayList<>();
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
                 .appendPattern("h:mma")
                 .toFormatter(Locale.US);
         for (AllEateriesQuery.SwipeDatum swipeDatum : swipeData) {
-            LocalTime start = null, end = null;
+            LocalTime start, end;
             start = LocalTime.parse(swipeDatum.startTime().toUpperCase().substring(11),
                     timeFormatter);
             end = LocalTime.parse(swipeDatum.endTime().toUpperCase().substring(11),

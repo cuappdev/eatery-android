@@ -1,5 +1,9 @@
 package com.cornellappdev.android.eatery;
 
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
+import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
@@ -16,6 +20,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
@@ -30,37 +46,20 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
-import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
-
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
     private MainListPresenter mListPresenter;
     private MainListAdapter mListAdapter;
     private Map<Integer, Button> mCampusButtons;
     private Map<Integer, Button> mCollegetownButtons;
-    private RecyclerView mRecyclerView;
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
     private Set<Button> mCategoryButtonsPressed;
     private boolean mNearestFirstButtonPressed;
     private ImageView mCampusPill;
     private ImageView mCollegetownPill;
-    private LinearLayout mCampusPillHolder;
-    private LinearLayout mCtownPillHolder;
     private LinearLayout mPillHolder;
-    public SearchView searchView;
+    private SearchView searchView;
     private boolean mCurrentlyAnimating;
     private boolean mEateryClickable = true;
     private boolean mPillVisible = true;
@@ -68,18 +67,24 @@ public class MainListFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
         setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        mRecyclerView = rootView.findViewById(R.id.cafe_list);
+        if (getActivity() != null) {
+            ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            if (bar != null) {
+                bar.setDisplayHomeAsUpEnabled(false);
+            }
+        }
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.cafe_list);
         mCampusPill = rootView.findViewById(R.id.pill_campus);
         mCollegetownPill = rootView.findViewById(R.id.pill_collegetown);
-        mCampusPillHolder = rootView.findViewById(R.id.pill_campus_holder);
-        mCtownPillHolder = rootView.findViewById(R.id.pill_ctown_holder);
+        LinearLayout campusPillHolder = rootView.findViewById(R.id.pill_campus_holder);
+        LinearLayout ctownPillHolder = rootView.findViewById(R.id.pill_ctown_holder);
         mPillHolder = rootView.findViewById(R.id.pill_holder);
 
         mListPresenter = new MainListPresenter();
@@ -90,17 +95,17 @@ public class MainListFragment extends Fragment
         mPillHolder.bringToFront();
 
         // Set up recyclerView and corresponding listAdapter
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         mListAdapter = new MainListAdapter(getContext(), this, mListPresenter
                 .getEateryList().size(), mListPresenter.getEateryList());
-        mRecyclerView.setAdapter(mListAdapter);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.setAdapter(mListAdapter);
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 // On scroll, if scrolling down at a rate then make the pill invisible, if scrolling
                 // up make the pill visiible
                 super.onScrolled(recyclerView, dx, dy);
@@ -117,19 +122,8 @@ public class MainListFragment extends Fragment
         initializeCampusEateryButtons(rootView);
         initializeCollegeTownEateryButtons(rootView);
 
-        mCampusPillHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleCampusPillPress();
-            }
-        });
-        mCtownPillHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleCollegetownPillPress();
-            }
-        });
-
+        campusPillHolder.setOnClickListener((View v) -> handleCampusPillPress());
+        ctownPillHolder.setOnClickListener((View v) -> handleCollegetownPillPress());
         return rootView;
     }
 
@@ -201,11 +195,13 @@ public class MainListFragment extends Fragment
     }
 
     private void changeButtonColor(int textColor, int backgroundColor, Button button) {
-        button.setTextColor(
-                ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
-        GradientDrawable bgShape = (GradientDrawable) button.getBackground();
-        bgShape.setColor(
-                ContextCompat.getColor(getActivity().getApplicationContext(), backgroundColor));
+        if (getActivity() != null) {
+            button.setTextColor(
+                    ContextCompat.getColor(getActivity().getApplicationContext(), textColor));
+            GradientDrawable bgShape = (GradientDrawable) button.getBackground();
+            bgShape.setColor(
+                    ContextCompat.getColor(getActivity().getApplicationContext(), backgroundColor));
+        }
     }
 
     private void getCurrentAreas() {
@@ -313,7 +309,6 @@ public class MainListFragment extends Fragment
 
     private void handleCollegetownPillPress() {
         mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
-        mListPresenter.setDisplayCTown(true);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
         changeButtonVisbility(true);
@@ -325,7 +320,6 @@ public class MainListFragment extends Fragment
 
     private void handleCampusPillPress() {
         mFirebaseAnalytics.logEvent("campus_pill_press", null);
-        mListPresenter.setDisplayCTown(false);
         mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
         mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
         changeButtonVisbility(false);
@@ -454,80 +448,99 @@ public class MainListFragment extends Fragment
             View sharedSwipeIcon = viewHolder.findViewById(R.id.card_swipe);
             View sharedBrbIcon = viewHolder.findViewById(R.id.card_brb);
 
-            Pair<View, String> imageTransition = Pair.create(sharedCafeImage, ViewCompat.getTransitionName(sharedCafeImage));
-            Pair<View, String> nameTransition = Pair.create(sharedCafeName, ViewCompat.getTransitionName(sharedCafeName));
-            Pair<View, String> openTransition = Pair.create(sharedCafeOpen, ViewCompat.getTransitionName(sharedCafeOpen));
-            Pair<View, String> timeTransition = Pair.create(sharedCafeTime, ViewCompat.getTransitionName(sharedCafeTime));
+            Pair<View, String> imageTransition = Pair.create(sharedCafeImage,
+                    ViewCompat.getTransitionName(sharedCafeImage));
+            Pair<View, String> nameTransition = Pair.create(sharedCafeName,
+                    ViewCompat.getTransitionName(sharedCafeName));
+            Pair<View, String> openTransition = Pair.create(sharedCafeOpen,
+                    ViewCompat.getTransitionName(sharedCafeOpen));
+            Pair<View, String> timeTransition = Pair.create(sharedCafeTime,
+                    ViewCompat.getTransitionName(sharedCafeTime));
 
-            Pair<View, String> dollarTransition = Pair.create(sharedDollarIcon, ViewCompat.getTransitionName(sharedDollarIcon));
-            Pair<View, String> brbTransition;
-            Pair<View, String> swipeTransition;
+            Pair<View, String> dollarTransition = Pair.create(sharedDollarIcon,
+                    ViewCompat.getTransitionName(sharedDollarIcon));
+            Pair<View, String> brbTransition = null;
+            Pair<View, String> swipeTransition = null;
 
-            if (sharedSwipeIcon != null && sharedSwipeIcon.getVisibility() == View.INVISIBLE) {
-                // If the icon isn't visible, don't animate it
-                swipeTransition = Pair.create(sharedCafeName, "");
-            } else {
-                swipeTransition = Pair.create(sharedSwipeIcon, ViewCompat.getTransitionName(sharedSwipeIcon));
+            if (sharedSwipeIcon != null) {
+                if (sharedSwipeIcon.getVisibility() == View.INVISIBLE) {
+                    // If the icon isn't visible, don't animate it
+                    swipeTransition = Pair.create(sharedCafeName, "");
+                } else {
+                    swipeTransition = Pair.create(sharedSwipeIcon,
+                            ViewCompat.getTransitionName(sharedSwipeIcon));
+                }
             }
 
-            if (sharedBrbIcon != null && sharedBrbIcon.getVisibility() == View.INVISIBLE)
-                brbTransition = Pair.create(sharedCafeName, "");
-            else {
-                brbTransition = Pair.create(sharedBrbIcon, ViewCompat.getTransitionName(sharedBrbIcon));
+            if (sharedBrbIcon != null) {
+                if (sharedBrbIcon.getVisibility() == View.INVISIBLE) {
+                    brbTransition = Pair.create(sharedCafeName, "");
+                } else {
+                    brbTransition = Pair.create(sharedBrbIcon,
+                            ViewCompat.getTransitionName(sharedBrbIcon));
+                }
             }
-
-            // Adds transitions for all the elements Pair<View, String> specified above
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    getActivity(),
-                    imageTransition, nameTransition, openTransition, timeTransition,
-                    swipeTransition, dollarTransition, brbTransition);
-            startActivity(intent, options.toBundle());
+            if (getActivity() != null) {
+                // Adds transitions for all the elements Pair<View, String> specified above
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        getActivity(),
+                        imageTransition, nameTransition, openTransition, timeTransition,
+                        swipeTransition, dollarTransition, brbTransition);
+                startActivity(intent, options.toBundle());
+            }
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_map:
-                mFirebaseAnalytics.logEvent("homescreen_map_press", null);
-                Intent intent = new Intent(getActivity().getApplicationContext(),
-                        MapsActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                // The user's action was not recognized, and invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
+        if (getActivity() == null) {
+            return false;
+        }
+        if (item.getItemId() == R.id.action_map) {
+            mFirebaseAnalytics.logEvent("homescreen_map_press", null);
+            Intent intent = new Intent(getActivity().getApplicationContext(),
+                    MapsActivity.class);
+            startActivity(intent);
+            return true;
+        } else {
+            // The user's action was not recognized, and invoke the superclass to handle it.
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) searchItem.getActionView();
-        getActivity().setTitle("Eatery");
-        AutoCompleteTextView searchTextView =
-                searchView.findViewById(R.id.search_src_text);
-        searchView.setMaxWidth(2000);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                searchView.clearFocus();
-                return true;
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if (getActivity() != null) {
+            getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+            final MenuItem searchItem = menu.findItem(R.id.action_search);
+            searchView = (SearchView) searchItem.getActionView();
+            getActivity().setTitle("Eatery");
+            AutoCompleteTextView searchTextView =
+                    searchView.findViewById(R.id.search_src_text);
+            searchView.setMaxWidth(2000);
+            if (getContext() != null) {
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
             }
 
-            @Override
-            public boolean onQueryTextChange(String query) {
-                mListPresenter.setIsSearchPressed(query.length() > 0);
-                mListPresenter.setQuery(query);
-                mListPresenter.filterSearchList();
-                ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCurrentList();
-                mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query);
-                return true;
-            }
-        });
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    searchView.clearFocus();
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    mListPresenter.setIsSearchPressed(query.length() > 0);
+                    mListPresenter.setQuery(query);
+                    mListPresenter.filterSearchList();
+                    ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCurrentList();
+                    mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), query);
+                    return true;
+                }
+            });
+        }
+
     }
 
     @Override

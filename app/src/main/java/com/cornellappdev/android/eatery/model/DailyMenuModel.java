@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 public class DailyMenuModel implements Iterable<MealType>, Serializable {
     private Map<MealType, MealModel> mMenu = new HashMap<>();
 
-    public MealModel getMeal(MealType type) {
+    MealModel getMeal(MealType type) {
         return mMenu.get(type);
     }
 
@@ -34,7 +34,7 @@ public class DailyMenuModel implements Iterable<MealType>, Serializable {
         return sortedAllMeals;
     }
 
-    public void addMeal(MealType type, MealModel model) {
+    void addMeal(MealType type, MealModel model) {
         mMenu.put(type, model);
     }
 

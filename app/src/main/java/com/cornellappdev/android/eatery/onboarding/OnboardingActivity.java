@@ -3,8 +3,6 @@ package com.cornellappdev.android.eatery.onboarding;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -17,6 +15,7 @@ public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private TabLayout mOnboardingPageIndicator;
     private boolean isLoggingIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

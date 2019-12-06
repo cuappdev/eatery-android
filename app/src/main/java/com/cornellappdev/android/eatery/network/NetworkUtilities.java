@@ -47,35 +47,39 @@ public final class NetworkUtilities {
         eateryCall.enqueue(new ApolloCall.Callback<AllEateriesQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
-                eateries = response.data().eateries();
-                ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(eateries,
-                        activity);
-                Collections.sort(eateryList);
-                try {
-                    InternalStorage.writeObject(activity.getApplicationContext(), CacheType.CAMPUS_EATERY, eateryList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                rInstance.setEateryList(eateryList);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                if (response.data() != null) {
+                    eateries = response.data().eateries();
+                    if (eateries != null) {
+                        ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(
+                                eateries,
+                                activity);
+                        Collections.sort(eateryList);
                         try {
-                            mainFragment.initializeEateries();
-                        } catch (Exception e) {
+                            InternalStorage.writeObject(activity.getApplicationContext(),
+                                    CacheType.CAMPUS_EATERY, eateryList);
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        rInstance.setEateryList(eateryList);
+                        activity.runOnUiThread(() -> {
+                            try {
+                                mainFragment.initializeEateries();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
                     }
-                });
+                }
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
             }
         });
     }
 
-    public static void getBrbInfo(String session_id, BRBAccountCallback callback) {
+    static void getBrbInfo(String session_id, BRBAccountCallback callback) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
@@ -88,7 +92,9 @@ public final class NetworkUtilities {
         brbCall.enqueue(new ApolloCall.Callback<BrbInfoQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<BrbInfoQuery.Data> response) {
-                callback.retrievedAccountInfo(response.data().accountInfo());
+                if (response.data() != null) {
+                    callback.retrievedAccountInfo(response.data().accountInfo());
+                }
             }
 
             @Override
@@ -105,21 +111,27 @@ public final class NetworkUtilities {
         ctEateryCall.enqueue(new ApolloCall.Callback<AllCtEateriesQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
-                collegetownEateries = response.data().collegetownEateries();
-                ArrayList<EateryBaseModel> collegetownEateryList = QueryUtilities.parseCtEateries(
-                        activity, collegetownEateries);
-                try {
-                    InternalStorage.writeObject(activity.getApplicationContext(),
-                            CacheType.CTOWN_EATERY, collegetownEateryList);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (response.data() != null) {
+                    collegetownEateries = response.data().collegetownEateries();
+                    if (collegetownEateries != null) {
+                        ArrayList<EateryBaseModel> collegetownEateryList =
+                                QueryUtilities.parseCtEateries(
+                                        activity, collegetownEateries);
+                        try {
+                            InternalStorage.writeObject(activity.getApplicationContext(),
+                                    CacheType.CTOWN_EATERY, collegetownEateryList);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Collections.sort(collegetownEateryList);
+                        rInstance.setCtEateryList(collegetownEateryList);
+                    }
                 }
-                Collections.sort(collegetownEateryList);
-                rInstance.setCtEateryList(collegetownEateryList);
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
             }
         });
     }

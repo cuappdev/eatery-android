@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.cornellappdev.android.eatery.components.NonScrollExpandableListView;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.enums.MealType;
@@ -25,17 +30,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class WeeklyMenuFragment extends Fragment implements View.OnClickListener {
-    private ExpandableListAdapter mListAdapterWest;
-    private ExpandableListAdapter mListAdapterNorth;
-    private ExpandableListAdapter mListAdapterCentral;
     private NonScrollExpandableListView mExpListViewWest;
     private NonScrollExpandableListView mExpListViewNorth;
     private NonScrollExpandableListView mExpListViewCentral;
@@ -46,7 +44,6 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     private TextView mBreakfastText;
     private TextView mLunchText;
     private TextView mDinnerText;
-    private LinearLayout mLinDate;
     private ArrayList<TextView> dateTvList;
     private WeeklyPresenter mPresenter;
     private int mLastExpandedPosition;
@@ -59,15 +56,17 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_weekly_menu, container, false);
-        mPresenter = new WeeklyPresenter(rootView);
-        mAppContext = getActivity().getApplicationContext();
+        LinearLayout mLinDate = rootView.findViewById(R.id.lin_date);
+        mPresenter = new WeeklyPresenter();
+        if (getActivity() != null) {
+            mAppContext = getActivity().getApplicationContext();
+        }
         mBreakfastText = rootView.findViewById(R.id.breakfast);
         mLunchText = rootView.findViewById(R.id.lunch);
         mDinnerText = rootView.findViewById(R.id.dinner);
-        mLinDate = rootView.findViewById(R.id.lin_date);
         mExpListViewWest = rootView.findViewById(R.id.expandablelistview_west);
         mExpListViewNorth = rootView.findViewById(R.id.expandablelistview_north);
         mExpListViewCentral = rootView.findViewById(R.id.expandablelistview_central);
@@ -86,7 +85,10 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         }
 
         getActivity().setTitle("Upcoming Menus");
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ActionBar bar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (bar != null) {
+            bar.setDisplayHomeAsUpEnabled(false);
+        }
 
         DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -99,61 +101,45 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         mLastExpandedPosition = -1;
         mLastClickedListView = null;
 
-        mExpListViewCentral.setOnGroupExpandListener(
-                new NonScrollExpandableListView.OnGroupExpandListener() {
-                    @Override
-                    public void onGroupExpand(int index) {
-                        if (mLastClickedListView != null
-                                && mLastExpandedPosition != -1
-                                && index != mLastExpandedPosition) {
-                            mLastClickedListView.collapseGroup(mLastExpandedPosition);
-                        }
-                        mLastExpandedPosition = index;
-                        mLastClickedListView = mExpListViewCentral;
-                    }
-                });
+        mExpListViewCentral.setOnGroupExpandListener((int index) -> {
+            if (mLastClickedListView != null
+                    && mLastExpandedPosition != -1
+                    && index != mLastExpandedPosition) {
+                mLastClickedListView.collapseGroup(mLastExpandedPosition);
+            }
+            mLastExpandedPosition = index;
+            mLastClickedListView = mExpListViewCentral;
+        });
 
-        mExpListViewWest.setOnGroupExpandListener(
-                new NonScrollExpandableListView.OnGroupExpandListener() {
-                    @Override
-                    public void onGroupExpand(int index) {
-                        if (mLastClickedListView != null
-                                && mLastExpandedPosition != -1
-                                && index != mLastExpandedPosition) {
-                            mLastClickedListView.collapseGroup(mLastExpandedPosition);
-                        }
-                        mLastExpandedPosition = index;
-                        mLastClickedListView = mExpListViewWest;
-                    }
-                });
+        mExpListViewWest.setOnGroupExpandListener((int index) -> {
+            if (mLastClickedListView != null
+                    && mLastExpandedPosition != -1
+                    && index != mLastExpandedPosition) {
+                mLastClickedListView.collapseGroup(mLastExpandedPosition);
+            }
+            mLastExpandedPosition = index;
+            mLastClickedListView = mExpListViewWest;
+        });
 
-        mExpListViewNorth.setOnGroupExpandListener(
-                new NonScrollExpandableListView.OnGroupExpandListener() {
-                    @Override
-                    public void onGroupExpand(int index) {
-                        if (mLastClickedListView != null
-                                && mLastExpandedPosition != -1
-                                && index != mLastExpandedPosition) {
-                            mLastClickedListView.collapseGroup(mLastExpandedPosition);
-                        }
-                        mLastExpandedPosition = index;
-                        mLastClickedListView = mExpListViewNorth;
-                    }
-                });
+        mExpListViewNorth.setOnGroupExpandListener((int index) -> {
+            if (mLastClickedListView != null
+                    && mLastExpandedPosition != -1
+                    && index != mLastExpandedPosition) {
+                mLastClickedListView.collapseGroup(mLastExpandedPosition);
+            }
+            mLastExpandedPosition = index;
+            mLastClickedListView = mExpListViewNorth;
+        });
 
         // When changing date, highlight Breakfast textview
-        mLinDate.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mBreakfastText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.blue));
-                        mLunchText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                        mDinnerText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                    }
-                });
+        mLinDate.setOnClickListener((View v) -> {
+            mBreakfastText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.blue));
+            mLunchText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+        });
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(now);
@@ -174,51 +160,39 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
 
-        mBreakfastText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mBreakfastText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.blue));
-                        mLunchText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                        mDinnerText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
+        mBreakfastText.setOnClickListener((View v) -> {
+            mBreakfastText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.blue));
+            mLunchText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
 
-                        mMealType = MealType.BREAKFAST;
-                        changeListAdapter(mMealType, mPresenter.getSelectedDate());
-                    }
-                });
+            mMealType = MealType.BREAKFAST;
+            changeListAdapter(mMealType, mPresenter.getSelectedDate());
+        });
 
-        mLunchText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mBreakfastText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                        mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
-                        mDinnerText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
+        mLunchText.setOnClickListener((View v) -> {
+            mBreakfastText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+            mLunchText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+            mDinnerText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
 
-                        mMealType = MealType.LUNCH;
-                        changeListAdapter(mMealType, mPresenter.getSelectedDate());
-                    }
-                });
+            mMealType = MealType.LUNCH;
+            changeListAdapter(mMealType, mPresenter.getSelectedDate());
+        });
 
-        mDinnerText.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mBreakfastText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                        mLunchText.setTextColor(
-                                ContextCompat.getColor(mAppContext, R.color.secondary));
-                        mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
+        mDinnerText.setOnClickListener((View v) -> {
+            mBreakfastText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+            mLunchText.setTextColor(
+                    ContextCompat.getColor(mAppContext, R.color.secondary));
+            mDinnerText.setTextColor(ContextCompat.getColor(mAppContext, R.color.blue));
 
-                        mMealType = MealType.DINNER;
-                        changeListAdapter(mMealType, mPresenter.getSelectedDate());
-                    }
-                });
+            mMealType = MealType.DINNER;
+            changeListAdapter(mMealType, mPresenter.getSelectedDate());
+        });
 
         LocalDateTime currentTime = LocalDateTime.now();
 
@@ -270,7 +244,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     /**
      * Changes the text color to grey if the date is not selected
      */
-    public void changeDateColor(TextView selectedDate) {
+    private void changeDateColor(TextView selectedDate) {
         for (TextView textView : dateTvList) {
             if (!textView.equals(selectedDate)) {
                 textView.setTextColor(ContextCompat.getColor(mAppContext, R.color.secondary));
@@ -281,7 +255,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
     /**
      * Updates the list of dining halls and menus that is displayed
      */
-    public void changeListAdapter(MealType mMealType, LocalDate date) {
+    private void changeListAdapter(MealType mMealType, LocalDate date) {
         HashMap<String, ArrayList<DiningHallModel>> finalList = mPresenter.generateAreaLists(
                 mMealType, date);
         ArrayList<DiningHallModel> westList = finalList.get("West");
@@ -295,8 +269,8 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         } else {
             mWestText.setVisibility(View.VISIBLE);
             mExpListViewWest.setVisibility(View.VISIBLE);
-            mListAdapterWest =
-                    new ExpandableListAdapter(getContext(), date, mMealType, westList);
+            ExpandableListAdapter mListAdapterWest = new ExpandableListAdapter(getContext(), date,
+                    mMealType, westList);
             mExpListViewWest.setAdapter(mListAdapterWest);
         }
         if (northList != null && northList.size() == 0) {
@@ -305,7 +279,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         } else {
             mNorthText.setVisibility(View.VISIBLE);
             mExpListViewNorth.setVisibility(View.VISIBLE);
-            mListAdapterNorth =
+            ExpandableListAdapter mListAdapterNorth =
                     new ExpandableListAdapter(getContext(), date, mMealType, northList);
             mExpListViewNorth.setAdapter(mListAdapterNorth);
         }
@@ -315,7 +289,7 @@ public class WeeklyMenuFragment extends Fragment implements View.OnClickListener
         } else {
             mCentralText.setVisibility(View.VISIBLE);
             mExpListViewCentral.setVisibility(View.VISIBLE);
-            mListAdapterCentral =
+            ExpandableListAdapter mListAdapterCentral =
                     new ExpandableListAdapter(getContext(), date, mMealType, centralList);
             mExpListViewCentral.setAdapter(mListAdapterCentral);
         }

@@ -9,10 +9,8 @@ public class Repository {
     private static final Repository sRepoInstance = new Repository();
     private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
     private ArrayList<EateryBaseModel> mCollegetownEateryList = new ArrayList<>();
-    private ArrayList<EateryBaseModel> mSearchList = new ArrayList<>();
     private BrbInfoModel mCurrentModel;
     private boolean mIsSearchPressed = false;
-    private boolean mDisplayingCTown;
 
     public static Repository getInstance() {
         return sRepoInstance;
@@ -34,23 +32,7 @@ public class Repository {
         return mCollegetownEateryList;
     }
 
-    public void setSearchList(ArrayList<EateryBaseModel> searchList) {
-        this.mSearchList = searchList;
-    }
-
-    public void setDisplayCTown(boolean displayCTown) {
-        this.mDisplayingCTown = displayCTown;
-    }
-
-    public ArrayList<EateryBaseModel> getSearchList() {
-        return mSearchList;
-    }
-
-    public boolean getDisplayCTown() {
-        return mDisplayingCTown;
-    }
-
-    public boolean getIsSearchPressed() {
+    boolean getIsSearchPressed() {
         return mIsSearchPressed;
     }
 

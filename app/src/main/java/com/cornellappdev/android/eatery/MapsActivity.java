@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.util.TimeUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,11 +30,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -49,11 +49,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
         cafeData = repositoryInstance.getEateryList();
     }
 
@@ -64,8 +68,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng cornell = new LatLng(42.451092, -76.482654);
         for (int i = 0; i < cafeData.size(); i++) {
             EateryBaseModel cafe = cafeData.get(i);
-            Double lat = cafe.getLatitude();
-            Double lng = cafe.getLongitude();
+            double lat = cafe.getLatitude();
+            double lng = cafe.getLongitude();
             LatLng latLng = new LatLng(lat, lng);
             String name = cafe.getNickName();
             String isOpenedStr = cafe.getCurrentStatus().toString();
@@ -73,45 +77,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Marker cafeMarker = mMap.addMarker(new MarkerOptions().position(latLng).title(name));
             cafeMarker.setSnippet(isOpenedStr + " " + loc);
 
+            Bitmap bitmap;
             if (cafe.getCurrentStatus() == EateryBaseModel.Status.CLOSED) {
-                cafeMarker.setIcon(
-                        BitmapDescriptorFactory.fromBitmap(
-                                Bitmap.createScaledBitmap(
-                                        bitmapDescriptorFromVector(this, R.drawable.gray_pin), 72,
-                                        96, false)));
+                bitmap = bitmapDescriptorFromVector(this, R.drawable.gray_pin);
+
             } else if (cafe.getCurrentStatus() == EateryBaseModel.Status.OPEN) {
-                cafeMarker.setIcon(
-                        BitmapDescriptorFactory.fromBitmap(
-                                Bitmap.createScaledBitmap(
-                                        bitmapDescriptorFromVector(this, R.drawable.blue_pin), 72,
-                                        96, false)));
+                bitmap = bitmapDescriptorFromVector(this, R.drawable.blue_pin);
             } else {
-                cafeMarker.setIcon(
-                        BitmapDescriptorFactory.fromBitmap(
-                                Bitmap.createScaledBitmap(
-                                        bitmapDescriptorFromVector(this, R.drawable.blue_pin), 72,
-                                        96, false)));
+                bitmap = bitmapDescriptorFromVector(this, R.drawable.blue_pin);
+            }
+            if (bitmap != null) {
+                cafeMarker.setIcon(BitmapDescriptorFactory.fromBitmap(
+                        Bitmap.createScaledBitmap(bitmap, 72, 96, false)));
             }
         }
 
         // Clicking on an eatery icon on the map takes the user to the MenuActivity of that eatery
-        mMap.setOnInfoWindowClickListener(
-                new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(getApplicationContext(), CampusMenuActivity.class);
-                        String markerName = marker.getTitle();
-                        int position = 0;
-                        for (int i = 0; i < cafeData.size(); i++) {
-                            if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
-                                position = i;
-                            }
-                        }
-                        intent.putExtra("cafeInfo", cafeData.get(position));
-                        intent.putExtra("locName", cafeData.get(position).getNickName());
-                        startActivity(intent);
-                    }
-                });
+        mMap.setOnInfoWindowClickListener((Marker marker) -> {
+            Intent intent = new Intent(getApplicationContext(), CampusMenuActivity.class);
+            String markerName = marker.getTitle();
+            int position = 0;
+            for (int i = 0; i < cafeData.size(); i++) {
+                if (cafeData.get(i).getNickName().equalsIgnoreCase(markerName)) {
+                    position = i;
+                }
+            }
+            intent.putExtra("cafeInfo", cafeData.get(position));
+            intent.putExtra("locName", cafeData.get(position).getNickName());
+            startActivity(intent);
+        });
 
         mMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
         mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
@@ -156,28 +150,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    enableMyLocationIfPermitted();
-                } else {
-                    showDefaultLocation();
-                }
-                return;
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                enableMyLocationIfPermitted();
+            } else {
+                showDefaultLocation();
             }
         }
     }
 
     private Bitmap bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        if (vectorDrawable == null) {
+            return null;
+        }
         vectorDrawable.setBounds(
                 0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap =
-                Bitmap.createBitmap(
-                        vectorDrawable.getIntrinsicWidth(),
-                        vectorDrawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(
+                vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return bitmap;

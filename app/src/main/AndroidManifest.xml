@@ -13,7 +13,7 @@
     <application
         android:name=".EateryApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/eaterywintericon"
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         android:label="Eatery"

@@ -31,7 +31,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private LocalDate mDate;
     private MealType mMealType;
 
-    public ExpandableListAdapter(
+    ExpandableListAdapter(
             Context context,
             LocalDate date,
             MealType mealType,
@@ -137,7 +137,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tv = view.findViewById(R.id.menu_title);
 
         if (str == null) {
-            tv.setText("No menu information");
+            tv.setText(mContext.getResources().getString(R.string.no_menu_text));
             tv.setTextColor(ContextCompat.getColor(mContext, R.color.primary));
             tv.setTextSize(18);
             tv.setGravity(Gravity.CENTER_HORIZONTAL);

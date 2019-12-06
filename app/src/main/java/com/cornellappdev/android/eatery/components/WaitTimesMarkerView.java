@@ -3,8 +3,10 @@ package com.cornellappdev.android.eatery.components;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.text.Html;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.Swipe;
@@ -31,7 +33,7 @@ public class WaitTimesMarkerView extends MarkerView {
         float eY = 0f;
 
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.inactive));
+        paint.setColor(ContextCompat.getColor(getContext(), R.color.inactive));
         paint.setStrokeWidth(4f);
 
         // Draw vertical line from label to bar.
@@ -64,11 +66,13 @@ public class WaitTimesMarkerView extends MarkerView {
 
         // If there is no data, return the text 'No Estimate'
         if (hasNoData) {
-            return "<font color=\"" + getResources().getColor(R.color.gray) + "\" face=\"sans-serif-medium\">"
+            return "<font color=\"" + ContextCompat.getColor(getContext(), R.color.gray)
+                    + "\" face=\"sans-serif-medium\">"
                     + "No Estimate</font>";
         }
         return " <font face=\"sans-serif-medium\">" + timeString + "</font>"
-                + "<font color=\"" + getResources().getColor(R.color.blue) + "\" face=\"sans-serif-medium\">"
+                + "<font color=\"" + ContextCompat.getColor(getContext(), R.color.blue)
+                + "\" face=\"sans-serif-medium\">"
                 + waitTime
                 + "</font> <font face=\"sans-serif-medium\"> wait </font>";
     }
@@ -77,14 +81,14 @@ public class WaitTimesMarkerView extends MarkerView {
     public void updateMarkerLabel(Entry e, Swipe s) {
         entry = e;
         String waitTimeHtml = formatMarkerLabel(e.getX(), s);
-        waitTimeLabel.setText(Html.fromHtml(waitTimeHtml));
+        waitTimeLabel.setText(HtmlCompat.fromHtml(waitTimeHtml, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
     public double getXOffset(float xpos) {
         // Adjust label position to keep it from going offscreen.
         double d = xpos <= 4 ? (0.96 * Math.pow((xpos - 4), 2) + 3.2)
                 : xpos >= 16 ? (0.08 * Math.pow((xpos - 19.5), 2) + 1.11)
-                : 2.0;
+                        : 2.0;
         return -(getWidth() / d);
     }
 }

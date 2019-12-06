@@ -1,9 +1,13 @@
 package com.cornellappdev.android.eatery.presenter;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+
+import androidx.core.content.ContextCompat;
 
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
@@ -17,10 +21,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
-import androidx.core.content.ContextCompat;
-
-import static android.content.Context.LOCATION_SERVICE;
-
 public class MainListPresenter {
 
     private ArrayList<EateryBaseModel> mCurrentList;
@@ -28,7 +28,6 @@ public class MainListPresenter {
     private HashSet<CampusArea> mAreaSet;
     private HashSet<Category> mCategorySet;
     private String mQuery;
-    private LocationManager mLocationManager;
 
     private Repository rInstance = Repository.getInstance();
 
@@ -40,20 +39,12 @@ public class MainListPresenter {
         mQuery = "";
     }
 
-    public boolean getDisplayCTown() {
-        return rInstance.getDisplayCTown();
-    }
-
     public ArrayList<EateryBaseModel> getEateryList() {
         return rInstance.getEateryList();
     }
 
     public ArrayList<EateryBaseModel> getCtEateryList() {
         return rInstance.getCtEateryList();
-    }
-
-    public void setDisplayCTown(boolean displayCTown) {
-        rInstance.setDisplayCTown(displayCTown);
     }
 
     public void setPaymentSet(HashSet<PaymentMethod> paymentSet) {
@@ -98,15 +89,14 @@ public class MainListPresenter {
 
     public void sortNearestFirst(Context context) {
         // It's fine to have this code in presenter, right?
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ContextCompat.checkSelfPermission(context,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             // getLastKnownLocation should be accurate enough for this situation
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {
-                mCurrentList.sort(new Comparator<EateryBaseModel>() {
-                    @Override
-                    public int compare(EateryBaseModel o1, EateryBaseModel o2) {
+                mCurrentList.sort((EateryBaseModel o1, EateryBaseModel o2) -> {
                         // Ensure all open eateries come before all closed eateries
                         if (o1.isOpen() && !o2.isOpen()) {
                             return -1;
@@ -121,7 +111,6 @@ public class MainListPresenter {
                         double dist2 = Math.pow(o2.getLatitude() - location.getLatitude(), 2) +
                                 Math.pow(o2.getLongitude() - location.getLongitude(), 2);
                         return Double.compare(dist1, dist2);
-                    }
                 });
             }
         }
