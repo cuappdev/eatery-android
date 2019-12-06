@@ -1,16 +1,21 @@
 package com.cornellappdev.android.eatery.onboarding;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
+    private TabLayout mOnboardingPageIndicator;
+    private boolean isLoggingIn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,24 @@ public class OnboardingActivity extends FragmentActivity {
             }
         });
 
-        TabLayout onboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
-        onboardingPageIndicator.setTabRippleColor(null);
-        onboardingPageIndicator.setupWithViewPager(mViewPager);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Must be overridden.
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Must be overridden.
+            }
+            @Override
+            public void onPageSelected(int position) {
+                ((OnboardingPagerAdapter)mViewPager.getAdapter()).onPageSelected(position);
+            }
+        });
+
+        mOnboardingPageIndicator = findViewById(R.id.onboarding_page_indicator);
+        mOnboardingPageIndicator.setTabRippleColor(null);
+        mOnboardingPageIndicator.setupWithViewPager(mViewPager);
     }
 
     /**
@@ -54,14 +74,20 @@ public class OnboardingActivity extends FragmentActivity {
         mViewPager.setCurrentItem(pageIndex);
     }
 
-    protected void setPagerEnabled(boolean enabled) {
-        mViewPager.setEnabled(enabled);
-    }
-
-
     public void endOnboarding() {
         SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        preferences.edit().putBoolean("onboarding_complete",true).apply();
+        preferences.edit().putBoolean("onboarding_complete", true).apply();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
         finish();
     }
+
+    public void setLoggingIn(boolean loggingIn) {
+        this.isLoggingIn = loggingIn;
+    }
+
+    public boolean getLoggingIn() {
+        return this.isLoggingIn;
+    }
+
 }

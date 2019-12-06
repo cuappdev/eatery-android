@@ -100,11 +100,6 @@ public class MainActivity extends AppCompatActivity {
         NetworkUtilities.getEateries(this, mainListFragment);
         NetworkUtilities.getCtEateries(this);
 
-        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        if (!preferences.getBoolean("onboarding_complete", false)) { // Start the
-            startOnboarding();
-        }
-
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app
         MapView mDummyMapInitializer = findViewById(R.id.dummy_map);
@@ -152,11 +147,6 @@ public class MainActivity extends AppCompatActivity {
         mAccountPresenter.resetLoginJS();
 
         MainActivity.sLoginWebView.loadUrl(getString(R.string.getlogin_url));
-    }
-
-    public void startOnboarding() {
-        Intent intent = new Intent(getApplicationContext(), OnboardingActivity.class);
-        startActivity(intent);
     }
 
     public void setLoginInstance(LoginFragment instance) {

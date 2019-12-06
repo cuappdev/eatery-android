@@ -21,7 +21,7 @@ public class OnboardingPagerAdapter extends FragmentPagerAdapter {
         loginFragment = new OnboardingInfoFragment(OnboardingPageType.LOGIN);
     }
 
-    public void onPageSelected(int position) {
+    void onPageSelected(int position) {
         switch (position) {
             case 0: menusFragment.reloadAnimation(); return;
             case 1: collegetownFragment.reloadAnimation(); return;

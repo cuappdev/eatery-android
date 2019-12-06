@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery.onboarding;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,7 @@ public class OnboardingLoginFragment extends Fragment {
                 } else {
                     Repository.getInstance().setBrbInfoModel(model);
                     // If user is still viewing this fragment
-                    if (getFragmentManager() != null) {
-                        onboardingInfoFragment.endOnboarding();
-                    }
+                    onboardingInfoFragment.endOnboarding();
                 }
             }
         };

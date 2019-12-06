@@ -13,7 +13,7 @@
     <application
         android:name=".EateryApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/eaterywintericon"
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         android:label="Eatery"
@@ -22,15 +22,21 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
         <activity
+            android:name=".InitActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan"
-        >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            android:windowSoftInputMode="adjustPan">
         </activity>
 
         <meta-data

@@ -8,8 +8,5 @@ public class EateryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        SharedPreferences preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
-        preferences.edit().putBoolean("onboarding_complete",false).apply();
-
     }
 }

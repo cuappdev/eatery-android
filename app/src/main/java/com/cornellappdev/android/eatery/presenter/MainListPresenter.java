@@ -27,6 +27,7 @@ public class MainListPresenter {
     private HashSet<CampusArea> mAreaSet;
     private HashSet<Category> mCategorySet;
     private String mQuery;
+    private Location mLocation;
 
     private Repository rInstance = Repository.getInstance();
 
@@ -93,23 +94,28 @@ public class MainListPresenter {
                 == PackageManager.PERMISSION_GRANTED) {
             LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
             // getLastKnownLocation should be accurate enough for this situation
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            mCurrentList.sort((EateryBaseModel o1, EateryBaseModel o2) -> {
-                // Ensure all open eateries come before all closed eateries
-                if (o1.isOpen() && !o2.isOpen()) {
-                    return -1;
-                }
-                if (!o1.isOpen() && o2.isOpen()) {
-                    return 1;
-                }
+            mLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (mLocation == null) {
+                mLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            }
+            if (mLocation != null) {
+                mCurrentList.sort((EateryBaseModel o1, EateryBaseModel o2) -> {
+                        // Ensure all open eateries come before all closed eateries
+                        if (o1.isOpen() && !o2.isOpen()) {
+                            return -1;
+                        }
+                        if (!o1.isOpen() && o2.isOpen()) {
+                            return 1;
+                        }
 
-                // If they are either both open or both closed, sort based on distance
-                double dist1 = Math.pow(o1.getLatitude() - location.getLatitude(), 2) +
-                        Math.pow(o1.getLongitude() - location.getLongitude(), 2);
-                double dist2 = Math.pow(o2.getLatitude() - location.getLatitude(), 2) +
-                        Math.pow(o2.getLongitude() - location.getLongitude(), 2);
-                return Double.compare(dist1, dist2);
-            });
+                        // If they are either both open or both closed, sort based on distance
+                        double dist1 = Math.pow(o1.getLatitude() - mLocation.getLatitude(), 2) +
+                                Math.pow(o1.getLongitude() - mLocation.getLongitude(), 2);
+                        double dist2 = Math.pow(o2.getLatitude() - mLocation.getLatitude(), 2) +
+                                Math.pow(o2.getLongitude() - mLocation.getLongitude(), 2);
+                        return Double.compare(dist1, dist2);
+                });
+            }
         }
     }
 

@@ -8,13 +8,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.cornellappdev.android.eatery.R;
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
@@ -53,6 +51,11 @@ public class OnboardingInfoFragment extends Fragment {
         if (onboardingPageType == OnboardingPageType.LOGIN) {
             setupSkipButton();
             setupLoginButton();
+            if (getActivity() != null) {
+                if (((OnboardingActivity) getActivity()).getLoggingIn()) {
+                    this.loggingIn();
+                }
+            }
         } else {
             mSecondaryButton.setVisibility(View.GONE);
             setupNextButton();
@@ -67,7 +70,7 @@ public class OnboardingInfoFragment extends Fragment {
 
     void loggingIn() {
         if (getActivity() != null && getContext() != null) {
-            ((OnboardingActivity) getActivity()).setPagerEnabled(false);
+            ((OnboardingActivity) getActivity()).setLoggingIn(true);
             mProgressBar.setVisibility(View.VISIBLE);
             mButton.setEnabled(false);
             mButton.setText("");
@@ -78,7 +81,7 @@ public class OnboardingInfoFragment extends Fragment {
 
     void resumeLoginGUI() {
         if (getActivity() != null && getContext() != null) {
-            ((OnboardingActivity) getActivity()).setPagerEnabled(true);
+            ((OnboardingActivity) getActivity()).setLoggingIn(false);
             mButton.setEnabled(true);
             mButton.setText(R.string.login_label);
             mButton.setBackground(
@@ -93,14 +96,16 @@ public class OnboardingInfoFragment extends Fragment {
     private void setupContent() {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         switch (onboardingPageType) {
-            // TODO (yanlam): Add dynamic rendering for animation.
             case MENUS:
+                mLottieAnimationView.setScale(0.25f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case COLLEGETOWN:
+                mLottieAnimationView.setScale(0.232f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case TRANSACTIONS:
+                mLottieAnimationView.setScale(0.232f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
             case LOGIN:
