@@ -2,13 +2,17 @@ package com.cornellappdev.android.eatery.presenter;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 
+import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.Repository;
 import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
@@ -28,6 +32,7 @@ public class MainListPresenter {
     private HashSet<Category> mCategorySet;
     private String mQuery;
     private Location mLocation;
+    private LocationListener mLocationListener;
 
     private Repository rInstance = Repository.getInstance();
 
@@ -37,6 +42,35 @@ public class MainListPresenter {
         mAreaSet = new HashSet<>();
         mCategorySet = new HashSet<>();
         mQuery = "";
+    }
+
+    public void initializeLocationListener(Context c) {
+        mLocationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(final Location location) {
+                mLocation = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };
+
+        LocationManager locationManager = (LocationManager) c.getSystemService(LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(c, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,
+                mLocationListener);
     }
 
     public ArrayList<EateryBaseModel> getEateryList() {
@@ -86,36 +120,40 @@ public class MainListPresenter {
         }
         return cafesToDisplay;
     }
-
-    public void sortNearestFirst(Context context) {
+    // Returns whether sorting by nearest first was successful or not
+    public boolean sortNearestFirst(Context context, MainListFragment mainListFragment) {
         // It's fine to have this code in presenter, right?
         if (ContextCompat.checkSelfPermission(context,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
-            // getLastKnownLocation should be accurate enough for this situation
-            mLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (mLocation == null) {
-                mLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            }
-            if (mLocation != null) {
-                mCurrentList.sort((EateryBaseModel o1, EateryBaseModel o2) -> {
-                        // Ensure all open eateries come before all closed eateries
-                        if (o1.isOpen() && !o2.isOpen()) {
-                            return -1;
-                        }
-                        if (!o1.isOpen() && o2.isOpen()) {
-                            return 1;
-                        }
+                != PackageManager.PERMISSION_GRANTED) {
+            mainListFragment.requestLocationPermissions();
+            return false;
+        }
+        LocationManager lm = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        if (mLocation == null) {
+            mLocation = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        }
+        if (mLocation != null) {
+            mCurrentList.sort((EateryBaseModel o1, EateryBaseModel o2) -> {
+                // Ensure all open eateries come before all closed eateries
+                if (o1.isOpen() && !o2.isOpen()) {
+                    return -1;
+                }
+                if (!o1.isOpen() && o2.isOpen()) {
+                    return 1;
+                }
 
-                        // If they are either both open or both closed, sort based on distance
-                        double dist1 = Math.pow(o1.getLatitude() - mLocation.getLatitude(), 2) +
-                                Math.pow(o1.getLongitude() - mLocation.getLongitude(), 2);
-                        double dist2 = Math.pow(o2.getLatitude() - mLocation.getLatitude(), 2) +
-                                Math.pow(o2.getLongitude() - mLocation.getLongitude(), 2);
-                        return Double.compare(dist1, dist2);
-                });
-            }
+                // If they are either both open or both closed, sort based on distance
+                double dist1 = Math.pow(o1.getLatitude() - mLocation.getLatitude(), 2) +
+                        Math.pow(o1.getLongitude() - mLocation.getLongitude(), 2);
+                double dist2 = Math.pow(o2.getLatitude() - mLocation.getLatitude(), 2) +
+                        Math.pow(o2.getLongitude() - mLocation.getLongitude(), 2);
+                return Double.compare(dist1, dist2);
+            });
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
