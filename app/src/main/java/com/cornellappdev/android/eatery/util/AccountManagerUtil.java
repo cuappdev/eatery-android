@@ -7,7 +7,6 @@ import com.cornellappdev.android.eatery.R;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;

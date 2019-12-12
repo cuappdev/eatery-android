@@ -27,6 +27,7 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
@@ -168,6 +169,10 @@ public class LoginFragment extends Fragment {
             });
         }
         return rootView;
+    }
+
+    public void setAccountFetchData(boolean fetching) {
+        accountInfoFragment.setProgressBarVisibility(fetching);
     }
 
     /**

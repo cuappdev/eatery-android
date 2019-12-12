@@ -51,6 +51,7 @@
     <string name="lunch_label">Lunch</string>
     <string name="dinner_label">Dinner</string>
     <string name="settings_label">Settings</string>
+    <string name="fetching_label">Fetching</string>
     <string name="west_campus_label">West Campus</string>
     <string name="north_campus_label">North Campus</string>
     <string name="central_campus_label">Central Campus</string>
