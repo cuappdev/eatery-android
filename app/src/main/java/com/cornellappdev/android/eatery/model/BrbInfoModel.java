@@ -51,6 +51,10 @@ public class BrbInfoModel implements Serializable {
         return this.mLaundry;
     }
 
+    public void setBRBS(float brbs) {
+        this.mBRBs = brbs;
+    }
+
     public int getSwipes() {
         return this.mMealSwipes;
     }

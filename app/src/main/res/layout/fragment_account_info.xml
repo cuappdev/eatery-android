@@ -4,6 +4,13 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".loginviews.AccountInfoFragment">
+    <ProgressBar
+        android:id="@+id/progress_loader"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:translationZ="10dp"/>
     <ListView
         android:id="@+id/purchase_history"
         android:layout_width="match_parent"

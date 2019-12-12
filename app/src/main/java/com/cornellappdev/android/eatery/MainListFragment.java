@@ -4,6 +4,7 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.CENTRAL;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
@@ -64,6 +66,7 @@ public class MainListFragment extends Fragment
     private boolean mEateryClickable = true;
     private boolean mPillVisible = true;
     private FirebaseAnalytics mFirebaseAnalytics;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +91,9 @@ public class MainListFragment extends Fragment
         mPillHolder = rootView.findViewById(R.id.pill_holder);
 
         mListPresenter = new MainListPresenter();
+        if(getContext() != null) {
+            mListPresenter.initializeLocationListener(getContext());
+        }
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
         mCategoryButtonsPressed = new HashSet<>();
@@ -185,12 +191,19 @@ public class MainListFragment extends Fragment
             }
 
         } else {
-            for (Button button : mCampusButtons.values()) {
-                button.setVisibility(View.VISIBLE);
-            }
             for (Button button : mCollegetownButtons.values()) {
                 button.setVisibility(View.GONE);
             }
+            for (Button button : mCampusButtons.values()) {
+                button.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    public void requestLocationPermissions() {
+        if (getActivity() != null) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
         }
     }
 
@@ -331,8 +344,13 @@ public class MainListFragment extends Fragment
 
     private void handleNearestFirstButtonPress(Button button) {
         if (mNearestFirstButtonPressed) {
-            changeButtonColor(R.color.white, R.color.blue, button);
-            mListPresenter.sortNearestFirst(getContext());
+            boolean successful = mListPresenter.sortNearestFirst(getContext(), this);
+            if (successful) {
+                changeButtonColor(R.color.white, R.color.blue, button);
+            }
+            else {
+                mNearestFirstButtonPressed = false;
+            }
         } else {
             changeButtonColor(R.color.blue, R.color.wash, button);
             mListPresenter.sortAlphabetical();

@@ -1,7 +1,5 @@
 package com.cornellappdev.android.eatery;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -16,7 +14,6 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.NetworkUtilities;
-import com.cornellappdev.android.eatery.onboarding.OnboardingActivity;
 import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sLoginWebView = findViewById(R.id.login_webview);
-        GetLoginUtilities.autoLogin(getApplicationContext(), sLoginWebView);
+        GetLoginUtilities.autoLogin(this, getApplicationContext(), sLoginWebView, loginFragment);
 
         bnv = findViewById(R.id.bottom_navigation);
         // Add functionality to bottom nav bar
