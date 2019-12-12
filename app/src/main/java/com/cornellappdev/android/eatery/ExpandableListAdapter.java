@@ -111,6 +111,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         EateryBaseModel.Status currentStatus = dm.getCurrentStatus();
         openText.setText(currentStatus.toString());
         openText.setPadding(0, 0, 8, 0);
+
         if (currentStatus == EateryBaseModel.Status.OPEN) {
             openText.setTextColor(
                     ContextCompat.getColor(mContext, R.color.green));
