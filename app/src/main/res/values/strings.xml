@@ -124,7 +124,7 @@
     <string name="history">History</string>
 
     <!-- Below values need to be updated before each launch -->
-    <string name="encryption_key">hi</string>
-    <string name="encryption_salt">you</string>
-    <string name="google_maps_key">guys!</string>
+    <string name="encryption_key">AppDev_Android</string>
+    <string name="encryption_salt">Salt</string>
+    <string name="google_maps_key">AIzaSyBDjzqiK5_DVoZ-6nCSZNFwEYM9dr1q7MI</string>
 </resources>

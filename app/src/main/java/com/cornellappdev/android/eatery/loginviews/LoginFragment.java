@@ -142,6 +142,7 @@ public class LoginFragment extends Fragment {
                         mainActivity.setAccountPresenterLoggingIn(false);
                         resumeGUI(currContext);
                     } else {
+                        mainActivity.outputAccountPresenterCredentialsToFile();
                         mainActivity.setAccountPresenterBrbInfo(model);
                         mainActivity.setAccountPresenterLoggingIn(false);
                         // If user is still viewing this fragment
@@ -219,10 +220,6 @@ public class LoginFragment extends Fragment {
     private void loadAccountPage(boolean alreadyLoggedIn) {
         if (getFragmentManager() != null && getFragmentManager().findFragmentById(
                 R.id.frame_fragment_holder) instanceof LoginFragment) {
-            if (!alreadyLoggedIn) {
-                // If the user clicked login, then save credentials
-                mainActivity.outputAccountPresenterCredentialsToFile();
-            }
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_fragment_holder, accountInfoFragment).commit();
         }

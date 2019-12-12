@@ -19,7 +19,7 @@ import java.util.List;
 public final class QueryUtilities {
 
     private final static HashSet<Integer> DINING_HALL_IDS =
-            new HashSet<>(Arrays.asList(31, 25, 26, 27, 29, 3, 20, 4, 5, 30));
+            new HashSet<>(Arrays.asList(1, 5, 10, 18, 20, 24, 25, 26, 27, 28));
 
     static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
                                                            Context mainContext) {

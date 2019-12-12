@@ -11,6 +11,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.cornellappdev.android.eatery.model.DiningHallModel;
+import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.Interval;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 import com.cornellappdev.android.eatery.util.TimeUtil;
@@ -106,14 +107,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         openText.setText("");
         openText.setPadding(0, 0, 0, 0);
-        if (interval.getStart().toLocalDate().equals(LocalDate.now())) {
-            openText.setPadding(0, 0, 8, 0);
-            openText.setText(R.string.closed);
+
+        EateryBaseModel.Status currentStatus = dm.getCurrentStatus();
+        openText.setText(currentStatus.toString());
+        openText.setPadding(0, 0, 8, 0);
+        if (currentStatus == EateryBaseModel.Status.OPEN) {
+            openText.setTextColor(
+                    ContextCompat.getColor(mContext, R.color.green));
+        } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
+            openText.setTextColor(
+                    ContextCompat.getColor(mContext, R.color.yellow));
+        } else {
             openText.setTextColor(ContextCompat.getColor(mContext, R.color.red));
-            if (interval.containsTime(currentTime)) {
-                openText.setText(R.string.open);
-                openText.setTextColor(ContextCompat.getColor(mContext, R.color.green));
-            }
         }
         timeText.setText((TimeUtil.format(dm.getCurrentStatus(),
                 dm.getIntervalByDateAndType(mDate, mMealType), dm.getChangeTime())));

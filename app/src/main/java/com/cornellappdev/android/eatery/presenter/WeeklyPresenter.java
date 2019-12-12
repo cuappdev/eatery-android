@@ -49,6 +49,7 @@ public class WeeklyPresenter {
         ArrayList<DiningHallModel> centralList = new ArrayList<>();
         for (DiningHallModel dhm : getDiningHallList()) {
             boolean hasMeal = dhm.getMealByDateAndType(date, mealType) != null;
+            //Log.i("qwerty", dhm.getName()+" "+hasMeal);
             boolean hasBrunch = mealType == MealType.LUNCH && dhm.getMealByDateAndType(date,
                     MealType.BRUNCH)
                     != null;
