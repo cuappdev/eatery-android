@@ -31,8 +31,7 @@
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             android:text="@string/eatery_status_filler"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/weekly_time"
