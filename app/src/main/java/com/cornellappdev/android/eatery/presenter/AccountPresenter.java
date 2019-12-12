@@ -3,6 +3,8 @@ package com.cornellappdev.android.eatery.presenter;
 import android.content.Context;
 
 import com.cornellappdev.android.eatery.Repository;
+import com.cornellappdev.android.eatery.loginviews.AccountInfoFragment;
+import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.util.AccountManagerUtil;
@@ -13,7 +15,6 @@ public class AccountPresenter {
     private boolean isLoggingIn;
     private String mNetID = "";
     private String mPassword = "";
-
     public void setNetID(String netid) {
         this.mNetID = netid;
     }

@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.network;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -8,6 +9,7 @@ import android.webkit.WebViewClient;
 
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.Repository;
+import com.cornellappdev.android.eatery.loginviews.LoginFragment;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.util.AccountManagerUtil;
@@ -39,11 +41,15 @@ public class GetLoginUtilities {
         CookieManager.getInstance().flush();
     }
 
-    public static void autoLogin(Context c, WebView sLoginWebView) {
+    public static void autoLogin(Activity activity, Context c, WebView sLoginWebView,
+            LoginFragment loginFragment) {
         // Callback for successful autologin on launch
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
             public void failedLogin() {
+                activity.runOnUiThread(() -> {
+                    loginFragment.setAccountFetchData(false);
+                });
                 // Don't do anything on auto login fail
             }
 
@@ -58,14 +64,28 @@ public class GetLoginUtilities {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                activity.runOnUiThread(() -> {
+                    loginFragment.setAccountFetchData(false);
+                });
             }
         };
 
         sLoginWebView.getSettings().setJavaScriptEnabled(true);
         String[] fileData = AccountManagerUtil.readSavedCredentials(c);
-        if (fileData != null) { // Automatically log into user's account if file exists
+        if (fileData == null) {
+            // clear the cached data if the users account is null
+            try {
+                InternalStorage.writeObject(c, CacheType.BRB, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else { // Automatically log into user's account if file exists
             // A nonexistent file (fileData == null) means that the user has specified they do not
             // want to save data
+            activity.runOnUiThread(() -> {
+                loginFragment.setAccountFetchData(true);
+            });
             GetLoginUtilities.resetLoginAbility(fileData[0], fileData[1]);
             sLoginWebView.setWebViewClient(new WebViewClient() {
                 @Override
