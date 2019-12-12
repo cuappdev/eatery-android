@@ -3,6 +3,7 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,19 +109,30 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         openText.setText("");
         openText.setPadding(0, 0, 0, 0);
 
-        EateryBaseModel.Status currentStatus = dm.getCurrentStatus();
-        openText.setText(currentStatus.toString());
-        openText.setPadding(0, 0, 8, 0);
+        if (interval.getStart().toLocalDate().equals(LocalDate.now())) {
+            openText.setPadding(0, 0, 8, 0);
+            EateryBaseModel.Status currentStatus = dm.getCurrentStatus();
+            if (interval.containsTime(currentTime)) {
+                openText.setText(currentStatus.toString());
+                if (currentStatus == EateryBaseModel.Status.OPEN) {
+                    openText.setText(currentStatus.toString());
+                    openText.setTextColor(
+                            ContextCompat.getColor(mContext, R.color.green));
+                } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
+                    openText.setTextColor(
+                            ContextCompat.getColor(mContext, R.color.yellow));
+                } else {
+                    openText.setText(R.string.closed);
+                    openText.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+                }
+            }
+            else {
+                openText.setText(R.string.closed);
+                openText.setTextColor(ContextCompat.getColor(mContext, R.color.red));
 
-        if (currentStatus == EateryBaseModel.Status.OPEN) {
-            openText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.green));
-        } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
-            openText.setTextColor(
-                    ContextCompat.getColor(mContext, R.color.yellow));
-        } else {
-            openText.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+            }
         }
+
         timeText.setText((TimeUtil.format(dm.getCurrentStatus(),
                 dm.getIntervalByDateAndType(mDate, mMealType), dm.getChangeTime())));
         return view;
