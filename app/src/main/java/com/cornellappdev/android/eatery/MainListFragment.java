@@ -91,7 +91,7 @@ public class MainListFragment extends Fragment
         mPillHolder = rootView.findViewById(R.id.pill_holder);
 
         mListPresenter = new MainListPresenter();
-        if(getContext() != null) {
+        if (getContext() != null) {
             mListPresenter.initializeLocationListener(getContext());
         }
         mAreaButtonsPressed = new HashSet<>();
