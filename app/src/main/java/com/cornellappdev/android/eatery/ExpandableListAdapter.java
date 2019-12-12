@@ -3,7 +3,6 @@ package com.cornellappdev.android.eatery;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,14 +114,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             if (interval.containsTime(currentTime)) {
                 openText.setText(currentStatus.toString());
                 if (currentStatus == EateryBaseModel.Status.OPEN) {
-                    openText.setText(currentStatus.toString());
                     openText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.green));
                 } else if (currentStatus == EateryBaseModel.Status.CLOSINGSOON) {
                     openText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.yellow));
                 } else {
-                    openText.setText(R.string.closed);
                     openText.setTextColor(ContextCompat.getColor(mContext, R.color.red));
                 }
             }
