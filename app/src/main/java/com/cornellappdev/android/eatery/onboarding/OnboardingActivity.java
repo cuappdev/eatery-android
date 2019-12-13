@@ -9,13 +9,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.google.android.material.tabs.TabLayout;
 
 public class OnboardingActivity extends FragmentActivity {
     private ViewPager mViewPager;
     private TabLayout mOnboardingPageIndicator;
     private boolean isLoggingIn;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
