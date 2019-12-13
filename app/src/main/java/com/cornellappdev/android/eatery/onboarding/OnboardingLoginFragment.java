@@ -21,6 +21,7 @@ import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.enums.CacheType;
 import com.cornellappdev.android.eatery.network.GetLoginUtilities;
 import com.cornellappdev.android.eatery.network.QueryUtilities;
+import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.cornellappdev.android.eatery.util.InternalStorage;
 
 import java.io.IOException;
@@ -31,7 +32,9 @@ public class OnboardingLoginFragment extends Fragment {
     private EditText mPassword;
     private TextView mDescriptionText;
     private WebView mWebView;
-    private OnboardingInfoFragment onboardingInfoFragment;
+    private OnboardingInfoFragment mOnboardingInfoFragment;
+
+    private AccountPresenter mAccountPresenter = new AccountPresenter();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +45,7 @@ public class OnboardingLoginFragment extends Fragment {
         mNetID = view.findViewById(R.id.onboarding_netid_input);
         mPassword = view.findViewById(R.id.onboarding_password_input);
         mDescriptionText = view.findViewById(R.id.onboarding_login_description);
-        onboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
+        mOnboardingInfoFragment = (OnboardingInfoFragment) getParentFragment();
         mWebView = view.findViewById(R.id.login_webview);
 
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
@@ -62,6 +65,7 @@ public class OnboardingLoginFragment extends Fragment {
                 BrbInfoModel model = Repository.getInstance().getBrbInfoModel();
                 try {
                     if (currContext != null) {
+                        mAccountPresenter.outputCredentialsToFile(currContext);
                         InternalStorage.writeObject(currContext, CacheType.BRB, model);
                     }
                 } catch (IOException e) {
@@ -77,7 +81,7 @@ public class OnboardingLoginFragment extends Fragment {
                 } else {
                     Repository.getInstance().setBrbInfoModel(model);
                     // If user is still viewing this fragment
-                    onboardingInfoFragment.endOnboarding();
+                    mOnboardingInfoFragment.endOnboarding();
                 }
             }
         };
@@ -96,13 +100,13 @@ public class OnboardingLoginFragment extends Fragment {
     }
 
     private void resumeGUI() {
-        onboardingInfoFragment.resumeLoginGUI();
+        mOnboardingInfoFragment.resumeLoginGUI();
         mNetID.setEnabled(true);
         mPassword.setEnabled(true);
     }
 
     private void loadingGUI() {
-        onboardingInfoFragment.loggingIn();
+        mOnboardingInfoFragment.loggingIn();
         mDescriptionText.setText("Logging in. This may take a minute ...\n");
         mNetID.setEnabled(false);
         mPassword.setEnabled(false);
@@ -110,8 +114,10 @@ public class OnboardingLoginFragment extends Fragment {
 
     public void login() {
         loadingGUI();
-        GetLoginUtilities.resetLoginAbility(mNetID.getText().toString(),
-                mPassword.getText().toString());
+        mAccountPresenter.setNetID(mNetID.getText().toString());
+        mAccountPresenter.setPassword(mPassword.getText().toString());
+        // change the login javascript to have the correct username and password
+        mAccountPresenter.resetLoginJS();
         mWebView.loadUrl(getString(R.string.getlogin_url));
     }
 }
