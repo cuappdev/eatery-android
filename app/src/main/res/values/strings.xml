@@ -122,9 +122,4 @@
     <string name="city_bucks">City Bucks</string>
     <string name="laundry">Laundry</string>
     <string name="history">History</string>
-
-    <!-- Below values need to be updated before each launch -->
-    <string name="encryption_key">a</string>
-    <string name="encryption_salt">a</string>
-    <string name="google_maps_key">a</string>
 </resources>
