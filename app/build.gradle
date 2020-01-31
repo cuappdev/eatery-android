@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
 
+def keyFile = file('../keys.properties')
+def keyProperties = new Properties()
+keyProperties.load(new FileInputStream(keyFile))
 
 android {
     compileSdkVersion 28
@@ -11,6 +14,9 @@ android {
         versionCode 38
         versionName "2.5.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue 'string', "google_maps_key", keyProperties["googleMapApiKey"]
+        resValue 'string', "encryption_key", keyProperties['encryptionKey']
+        resValue 'string', "encryption_salt", keyProperties['encryptionSalt']
     }
     buildTypes {
         release {
