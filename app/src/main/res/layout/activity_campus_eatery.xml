@@ -25,15 +25,93 @@
             app:expandedTitleMarginTop="64dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <ImageView
-                android:id="@+id/ind_image"
-                android:contentDescription="@string/eatery_content_description"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:fitsSystemWindows="true"
-                android:transitionName="eateryImage"
-                android:scaleType="centerCrop"/>
+                android:animateLayoutChanges="true">
+
+                <ImageView
+                    android:id="@+id/ind_image"
+                    android:contentDescription="@string/eatery_content_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:fitsSystemWindows="true"
+                    android:transitionName="eateryImage"
+                    android:scaleType="centerCrop"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient"/>
+
+                <ImageView
+                    android:id="@+id/exception_image"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/cash_exception"
+                    android:layout_marginBottom="61dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="bottom"
+                    android:visibility="invisible"
+                    />
+
+                <TextView
+                    android:id="@+id/ind_cafe_name"
+                    android:layout_height="57dp"
+                    android:layout_width="match_parent"
+                    android:fontFamily="sans-serif-medium"
+                    android:paddingBottom="16dp"
+                    android:transitionName="eateryName"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="130sp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/eatery_name_filler"
+                    android:textColor="@color/white"
+                    app:autoSizeMinTextSize="22sp"
+                    app:autoSizeStepGranularity="1sp"
+                    app:autoSizeTextType="uniform"
+                    />
+
+                <ImageView
+                    android:id="@+id/dollar_icon"
+                    android:contentDescription="@string/icon_content_description"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="26dp"
+                    android:transitionName="eateryDollarIcon"
+                    android:src="@drawable/dollar_icon"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/brb_icon"
+                    android:contentDescription="@string/icon_content_description"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="42dp"
+                    android:layout_marginBottom="26dp"
+                    android:transitionName="eateryBrbIcon"
+                    android:src="@drawable/brb_icon"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:id="@+id/swipe_icon"
+                    android:contentDescription="@string/icon_content_description"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="68dp"
+                    android:layout_marginBottom="26dp"
+                    android:transitionName="eaterySwipeIcon"
+                    android:src="@drawable/swipe_icon"
+                    android:visibility="invisible"/>
+
+            </FrameLayout>
+
+
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -66,17 +144,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp">
 
-                <TextView
-                    android:id="@+id/ind_cafe_name"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:paddingBottom="2dp"
-                    android:transitionName="eateryName"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/eatery_name_filler"
-                    android:textColor="@color/primary"
-                    android:textSize="18sp"/>
+
 
                 <TextView
                     android:id="@+id/ind_open"
@@ -113,41 +181,8 @@
                     android:layout_below="@id/ind_open"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/secondary"
                     android:textSize="14sp"/>
-
-                <ImageView
-                    android:id="@+id/dollar_icon"
-                    android:contentDescription="@string/icon_content_description"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="16dp"
-                    android:transitionName="eateryDollarIcon"
-                    android:src="@drawable/dollar_icon"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/brb_icon"
-                    android:contentDescription="@string/icon_content_description"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="42dp"
-                    android:transitionName="eateryBrbIcon"
-                    android:src="@drawable/brb_icon"
-                    android:visibility="invisible"/>
-
-                <ImageView
-                    android:id="@+id/swipe_icon"
-                    android:contentDescription="@string/icon_content_description"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="68dp"
-                    android:transitionName="eaterySwipeIcon"
-                    android:src="@drawable/swipe_icon"
-                    android:visibility="invisible"/>
 
                 <FrameLayout
                     android:id="@+id/wait_times_frame"
