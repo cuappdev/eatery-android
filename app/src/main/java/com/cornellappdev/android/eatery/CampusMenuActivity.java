@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeLoc;
     TextView mCafeIsOpen;
     TextView mMenuText;
+    ImageView mExceptionImage;
     ImageView mSwipeIcon;
     ImageView mBrbIcon;
     LinearLayout mLinLayout;
@@ -81,6 +84,20 @@ public class CampusMenuActivity extends AppCompatActivity {
 
 
         mToolbar.setNavigationOnClickListener((View v) -> finishAfterTransition());
+
+        mExceptionImage = findViewById(R.id.exception_image);
+        Animation fadein = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        List<String> exceptions = mCafeData.getExceptions();
+        if (exceptions.size() != 0) {
+            if (exceptions.get(0).equals("Mobile Order Only")) {
+                mExceptionImage.setImageResource(R.drawable.mobile_exception);
+            }
+            if (mCafeData.getCurrentStatus().toString().equals("Closed")){
+                mExceptionImage.setAlpha((float) 0.72);
+            }
+            mExceptionImage.setVisibility(View.VISIBLE);
+            mExceptionImage.startAnimation(fadein);
+        }
 
         mCafeText = findViewById(R.id.ind_cafe_name);
         mCafeText.setText(cafeName);

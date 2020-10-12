@@ -3,7 +3,8 @@ query AllEateries {
         id
         name
         nameShort
-	imageUrl
+        exceptions
+        imageUrl
         slug
         eateryType
         about
@@ -49,4 +50,3 @@ query AllEateries {
         }
     }
 }
-
