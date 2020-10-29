@@ -18,7 +18,7 @@ public final class QueryUtilities {
 
     // These were manually set as the dining hall IDs based on the IDs returned with graphQL
     private final static HashSet<Integer> DINING_HALL_IDS =
-            new HashSet<>(Arrays.asList(1, 5, 10, 18, 20, 24, 25, 26, 27, 28));
+            new HashSet<>(Arrays.asList(1, 7, 12, 21, 23, 27, 29, 30, 31, 32));
 
     static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
                                                            Context mainContext) {
