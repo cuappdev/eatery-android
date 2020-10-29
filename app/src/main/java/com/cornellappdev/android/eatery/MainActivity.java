@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<EateryBaseModel> campusEateries = (ArrayList<EateryBaseModel>) InternalStorage
                     .readObject(getApplicationContext(), CacheType.CAMPUS_EATERY);
             Repository.getInstance().setEateryList(campusEateries);
-            ArrayList<EateryBaseModel> ctownEateries = (ArrayList<EateryBaseModel>) InternalStorage
-                    .readObject(getApplicationContext(), CacheType.CTOWN_EATERY);
-            Repository.getInstance().setCtEateryList(ctownEateries);
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
             e.printStackTrace();
         }
@@ -95,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 mainListFragment).commit();
         // Try pulling data from GraphQL
         NetworkUtilities.getEateries(this, mainListFragment);
-        NetworkUtilities.getCtEateries(this);
 
         // The first time a map is loaded in the app, the app automatically takes time to initialize
         // google play services apis. We load it here at the beginning of the app

@@ -100,10 +100,6 @@ public class OnboardingInfoFragment extends Fragment {
                 mLottieAnimationView.setScale(0.25f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);
                 break;
-            case COLLEGETOWN:
-                mLottieAnimationView.setScale(0.232f);
-                mLottieAnimationView.setVisibility(View.VISIBLE);
-                break;
             case TRANSACTIONS:
                 mLottieAnimationView.setScale(0.232f);
                 mLottieAnimationView.setVisibility(View.VISIBLE);

@@ -6,7 +6,6 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.MainListFragment;
@@ -27,7 +26,6 @@ import okhttp3.OkHttpClient;
 public final class NetworkUtilities {
     private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
     private static List<AllEateriesQuery.Eatery> eateries;
-    private static List<AllCtEateriesQuery.CollegetownEatery> collegetownEateries;
     private static ApolloClient apolloClient;
     private static Repository rInstance = Repository.getInstance();
 
@@ -99,39 +97,6 @@ public final class NetworkUtilities {
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-            }
-        });
-    }
-
-    public static void getCtEateries(Activity activity) {
-        buildApolloClient();
-
-        final AllCtEateriesQuery ctEateriesQuery = AllCtEateriesQuery.builder().build();
-        ApolloCall<AllCtEateriesQuery.Data> ctEateryCall = apolloClient.query(ctEateriesQuery);
-        ctEateryCall.enqueue(new ApolloCall.Callback<AllCtEateriesQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<AllCtEateriesQuery.Data> response) {
-                if (response.data() != null) {
-                    collegetownEateries = response.data().collegetownEateries();
-                    if (collegetownEateries != null) {
-                        ArrayList<EateryBaseModel> collegetownEateryList =
-                                QueryUtilities.parseCtEateries(
-                                        activity, collegetownEateries);
-                        try {
-                            InternalStorage.writeObject(activity.getApplicationContext(),
-                                    CacheType.CTOWN_EATERY, collegetownEateryList);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Collections.sort(collegetownEateryList);
-                        rInstance.setCtEateryList(collegetownEateryList);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
             }
         });
     }
