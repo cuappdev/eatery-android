@@ -2,7 +2,6 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 
-import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
@@ -25,7 +24,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     private List<String> mExceptions;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
-    private boolean isCtEatery = false;
     private CampusArea mArea;
     private Double mLatitude, mLongitude;
     private List<PaymentMethod> mPayMethods;
@@ -110,10 +108,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         return status == Status.OPEN || status == Status.CLOSINGSOON;
     }
 
-    public boolean isCtEatery() {
-        return isCtEatery;
-    }
-
     public boolean hasPaymentMethod(PaymentMethod method) {
         return mPayMethods.contains(method);
     }
@@ -126,7 +120,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLongitude = eatery.coordinates().longitude();
         mPhoneNumber = eatery.phone();
         mImageUrl = eatery.imageUrl();
-        isCtEatery = false;
         mExceptions = eatery.exceptions();
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
@@ -151,39 +144,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mPayMethods = paymentMethods;
 
         mArea = CampusArea.fromShortDescription(eatery.campusArea().descriptionShort());
-    }
-
-    public void parseCtEatery(Context context, AllCtEateriesQuery.CollegetownEatery ctEatery) {
-        mName = ctEatery.name();
-        mNickName = ctEatery.name();
-        mBuildingLocation = ctEatery.address();
-        mLatitude = ctEatery.coordinates().latitude();
-        mLongitude = ctEatery.coordinates().longitude();
-        mId = ctEatery.id();
-        mPhoneNumber = ctEatery.phone();
-        mImageUrl = ctEatery.imageUrl();
-        isCtEatery = true;
-
-        List<PaymentMethod> paymentMethods = new ArrayList<>();
-        if (ctEatery.paymentMethods().brbs()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("debit"));
-        }
-        if (ctEatery.paymentMethods().cash()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("cash"));
-        }
-        if (ctEatery.paymentMethods().cornellCard()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("cornellcard"));
-        }
-        if (ctEatery.paymentMethods().credit()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("credit"));
-        }
-        if (ctEatery.paymentMethods().mobile()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("mobile"));
-        }
-        if (ctEatery.paymentMethods().swipes()) {
-            paymentMethods.add(PaymentMethod.fromShortDescription("swipes"));
-        }
-        mPayMethods = paymentMethods;
     }
 
     /**

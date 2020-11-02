@@ -2,12 +2,10 @@ package com.cornellappdev.android.eatery.network;
 
 import android.content.Context;
 
-import com.cornellappdev.android.eatery.AllCtEateriesQuery;
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.BrbInfoQuery;
 import com.cornellappdev.android.eatery.model.BrbInfoModel;
 import com.cornellappdev.android.eatery.model.CafeModel;
-import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
@@ -20,7 +18,7 @@ public final class QueryUtilities {
 
     // These were manually set as the dining hall IDs based on the IDs returned with graphQL
     private final static HashSet<Integer> DINING_HALL_IDS =
-            new HashSet<>(Arrays.asList(1, 5, 10, 18, 20, 24, 25, 26, 27, 28));
+            new HashSet<>(Arrays.asList(1, 7, 12, 21, 23, 27, 29, 30, 31, 32));
 
     static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
                                                            Context mainContext) {
@@ -44,15 +42,4 @@ public final class QueryUtilities {
         return BrbInfoModel.loadFromInfo(brbInfo);
     }
 
-    static ArrayList<EateryBaseModel> parseCtEateries(Context context,
-                                                             List<AllCtEateriesQuery.CollegetownEatery> collegetowntEateries) {
-        ArrayList<EateryBaseModel> collegetownEateryList = new ArrayList<>();
-        for (AllCtEateriesQuery.CollegetownEatery eatery : collegetowntEateries) {
-            EateryBaseModel model = CollegeTownModel.fromEatery(context, eatery);
-            if (model != null) {
-                collegetownEateryList.add(model);
-            }
-        }
-        return collegetownEateryList;
-    }
 }

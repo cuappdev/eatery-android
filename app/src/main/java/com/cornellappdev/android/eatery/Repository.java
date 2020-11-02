@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Repository {
     private static final Repository sRepoInstance = new Repository();
     private ArrayList<EateryBaseModel> mEateryList = new ArrayList<>();
-    private ArrayList<EateryBaseModel> mCollegetownEateryList = new ArrayList<>();
     private BrbInfoModel mCurrentModel;
     private boolean mIsSearchPressed = false;
 
@@ -22,14 +21,6 @@ public class Repository {
 
     public void setEateryList(ArrayList<EateryBaseModel> eateryList) {
         this.mEateryList = eateryList;
-    }
-
-    public void setCtEateryList(ArrayList<EateryBaseModel> ctEateryList) {
-        this.mCollegetownEateryList = ctEateryList;
-    }
-
-    public ArrayList<EateryBaseModel> getCtEateryList() {
-        return mCollegetownEateryList;
     }
 
     boolean getIsSearchPressed() {

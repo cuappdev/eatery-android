@@ -51,10 +51,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"/>
         <activity
-            android:name=".CtownMenuActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar"/>
-        <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait"

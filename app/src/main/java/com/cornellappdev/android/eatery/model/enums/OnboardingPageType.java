@@ -4,7 +4,6 @@ import com.cornellappdev.android.eatery.R;
 
 public enum OnboardingPageType {
     MENUS,
-    COLLEGETOWN,
     TRANSACTIONS,
     LOGIN;
 
@@ -12,8 +11,6 @@ public enum OnboardingPageType {
         switch (this) {
             case MENUS:
                 return R.raw.menus;
-            case COLLEGETOWN:
-                return R.raw.ctown;
             case TRANSACTIONS:
                 return R.raw.transactions;
             case LOGIN:
@@ -27,8 +24,6 @@ public enum OnboardingPageType {
         switch (this) {
             case MENUS:
                 return "Menus";
-            case COLLEGETOWN:
-                return "Collegetown";
             case TRANSACTIONS:
                 return "Transactions";
             case LOGIN:
@@ -42,8 +37,6 @@ public enum OnboardingPageType {
         switch (this) {
             case MENUS:
                 return "See what’s being served at any campus eatery.";
-            case COLLEGETOWN:
-                return "Find info about your favorite Collegetown spots.";
             case TRANSACTIONS:
                 return "Track your swipes, BRBs, meal history, and more.";
             case LOGIN:

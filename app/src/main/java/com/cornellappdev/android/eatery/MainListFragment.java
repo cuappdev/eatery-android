@@ -18,9 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +34,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
-import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -53,18 +49,11 @@ public class MainListFragment extends Fragment
     private MainListPresenter mListPresenter;
     private MainListAdapter mListAdapter;
     private Map<Integer, Button> mCampusButtons;
-    private Map<Integer, Button> mCollegetownButtons;
     private Set<Button> mAreaButtonsPressed;
     private Set<Button> mPaymentButtonsPressed;
-    private Set<Button> mCategoryButtonsPressed;
     private boolean mNearestFirstButtonPressed;
-    private ImageView mCampusPill;
-    private ImageView mCollegetownPill;
-    private LinearLayout mPillHolder;
     private SearchView searchView;
-    private boolean mCurrentlyAnimating;
     private boolean mEateryClickable = true;
-    private boolean mPillVisible = true;
     private FirebaseAnalytics mFirebaseAnalytics;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
@@ -84,11 +73,6 @@ public class MainListFragment extends Fragment
         }
 
         RecyclerView recyclerView = rootView.findViewById(R.id.cafe_list);
-        mCampusPill = rootView.findViewById(R.id.pill_campus);
-        mCollegetownPill = rootView.findViewById(R.id.pill_collegetown);
-        LinearLayout campusPillHolder = rootView.findViewById(R.id.pill_campus_holder);
-        LinearLayout ctownPillHolder = rootView.findViewById(R.id.pill_ctown_holder);
-        mPillHolder = rootView.findViewById(R.id.pill_holder);
 
         mListPresenter = new MainListPresenter();
         if (getContext() != null) {
@@ -96,9 +80,7 @@ public class MainListFragment extends Fragment
         }
         mAreaButtonsPressed = new HashSet<>();
         mPaymentButtonsPressed = new HashSet<>();
-        mCategoryButtonsPressed = new HashSet<>();
         mNearestFirstButtonPressed = false;
-        mPillHolder.bringToFront();
 
         // Set up recyclerView and corresponding listAdapter
         recyclerView.setHasFixedSize(true);
@@ -109,27 +91,9 @@ public class MainListFragment extends Fragment
                 .getEateryList().size(), mListPresenter.getEateryList());
         recyclerView.setAdapter(mListAdapter);
         recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                // On scroll, if scrolling down at a rate then make the pill invisible, if scrolling
-                // up make the pill visiible
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 25) {
-                    animatePillInvisible();
-                } else if (dy < 0) {
-                    animatePillVisible();
-                }
-
-            }
-        });
         mCampusButtons = new HashMap<>();
-        mCollegetownButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
-        initializeCollegeTownEateryButtons(rootView);
 
-        campusPillHolder.setOnClickListener((View v) -> handleCampusPillPress());
-        ctownPillHolder.setOnClickListener((View v) -> handleCollegetownPillPress());
         return rootView;
     }
 
@@ -156,49 +120,6 @@ public class MainListFragment extends Fragment
         }
     }
 
-    private void initializeCollegeTownEateryButtons(View rootView) {
-        int[] viewIds = {
-                R.id.nearestFirstButton,
-                R.id.american,
-                R.id.coffee,
-                R.id.chinese,
-                R.id.desserts,
-                R.id.grocery,
-                R.id.italian,
-                R.id.indian,
-                R.id.japanese,
-                R.id.korean,
-                R.id.mediterranean,
-                R.id.thai,
-                R.id.vietnamese
-        };
-
-        for (int id : viewIds) {
-            Button tempButton = rootView.findViewById(id);
-            mCollegetownButtons.put(id, tempButton);
-            tempButton.setOnClickListener(this);
-            changeButtonColor(R.color.blue, R.color.wash, tempButton);
-        }
-    }
-
-    private void changeButtonVisbility(boolean setCTownButtonVisible) {
-        if (setCTownButtonVisible) {
-            for (Button button : mCampusButtons.values()) {
-                button.setVisibility(View.GONE);
-            }
-            for (Button button : mCollegetownButtons.values()) {
-                button.setVisibility(View.VISIBLE);
-            }
-
-        } else {
-            for (Button button : mCollegetownButtons.values()) {
-                button.setVisibility(View.GONE);
-            }
-            for (Button button : mCampusButtons.values()) {
-                button.setVisibility(View.VISIBLE);
-            }
-        }
-    }
     public void requestLocationPermissions() {
         if (getActivity() != null) {
             ActivityCompat.requestPermissions(getActivity(),
@@ -243,104 +164,6 @@ public class MainListFragment extends Fragment
         mListPresenter.setPaymentSet(paymentSet);
     }
 
-    private void animatePillInvisible() {
-        if (!mCurrentlyAnimating && mPillVisible) {
-            mCurrentlyAnimating = true;
-            mPillHolder.animate().translationY(300).setDuration(500).setListener(
-                    new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mCurrentlyAnimating = false;
-                            mPillVisible = false;
-                        }
-                    });
-        }
-    }
-
-    private void animatePillVisible() {
-        if (!mCurrentlyAnimating && !mPillVisible) {
-            mCurrentlyAnimating = true;
-            mPillHolder.animate().translationY(0).setDuration(500).setListener(
-                    new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mCurrentlyAnimating = false;
-                            mPillVisible = true;
-                        }
-                    });
-        }
-    }
-
-    private void getCurrentCategory() {
-        HashSet<Category> categorySet = new HashSet<>();
-        for (Button button : mCategoryButtonsPressed) {
-            switch (button.getId()) {
-                case R.id.american:
-                    categorySet.add(Category.American);
-                    break;
-                case R.id.coffee:
-                    categorySet.add(Category.Coffee);
-                    break;
-                case R.id.chinese:
-                    categorySet.add(Category.Chinese);
-                    break;
-                case R.id.desserts:
-                    categorySet.add(Category.Desserts);
-                    break;
-                case R.id.grocery:
-                    categorySet.add(Category.Grocery);
-                    break;
-                case R.id.italian:
-                    categorySet.add(Category.Italian);
-                    break;
-                case R.id.indian:
-                    categorySet.add(Category.Indian);
-                    break;
-                case R.id.japanese:
-                    categorySet.add(Category.Japanese);
-                    break;
-                case R.id.korean:
-                    categorySet.add(Category.Korean);
-                    break;
-                case R.id.mediterranean:
-                    categorySet.add(Category.Mediterranean);
-                    break;
-                case R.id.thai:
-                    categorySet.add(Category.Thai);
-                    break;
-                case R.id.vietnamese:
-                    categorySet.add(Category.Vietnamese);
-                    break;
-                default:
-                    break;
-            }
-        }
-        mListPresenter.setCategorySet(categorySet);
-    }
-
-    private void handleCollegetownPillPress() {
-        mFirebaseAnalytics.logEvent("collegetown_pill_press", null);
-        mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_active);
-        mCampusPill.setBackgroundResource(R.drawable.pill_campus_inactive);
-        changeButtonVisbility(true);
-        mListPresenter.setCurrentList(mListPresenter.getCtEateryList());
-        searchView.setQuery("", false);
-        mListPresenter.filterImageList();
-        updateListAdapter();
-    }
-
-    private void handleCampusPillPress() {
-        mFirebaseAnalytics.logEvent("campus_pill_press", null);
-        mCollegetownPill.setBackgroundResource(R.drawable.pill_ct_inactive);
-        mCampusPill.setBackgroundResource(R.drawable.pill_campus_active);
-        changeButtonVisbility(false);
-        mListPresenter.setCurrentList(mListPresenter.getEateryList());
-        searchView.setQuery("", false);
-        mListPresenter.filterImageList();
-        updateListAdapter();
-    }
 
     private void handleNearestFirstButtonPress(Button button) {
         if (mNearestFirstButtonPressed) {
@@ -382,18 +205,6 @@ public class MainListFragment extends Fragment
         mListPresenter.filterImageList();
     }
 
-    private void handleCategoryButtonPress(Button button) {
-        if (mCategoryButtonsPressed.contains(button)) {
-            changeButtonColor(R.color.blue, R.color.wash, button);
-            mCategoryButtonsPressed.remove(button);
-        } else {
-            changeButtonColor(R.color.white, R.color.blue, button);
-            mCategoryButtonsPressed.add(button);
-        }
-        getCurrentCategory();
-        mListPresenter.filterImageList();
-    }
-
     public void initializeEateries() {
         mListPresenter.setCurrentList(mListPresenter.getEateryList());
         updateListAdapter();
@@ -427,9 +238,6 @@ public class MainListFragment extends Fragment
                 mFirebaseAnalytics.logEvent("swipes_filter_press", null);
             }
             handlePaymentButtonPress(mCampusButtons.get(view.getId()));
-        } else {
-            mFirebaseAnalytics.logEvent("collegetown_filters_press", null);
-            handleCategoryButtonPress(mCollegetownButtons.get(view.getId()));
         }
         updateListAdapter();
     }
@@ -441,17 +249,12 @@ public class MainListFragment extends Fragment
         Intent intent;
         if (this.mEateryClickable) {
             this.mEateryClickable = false;
-            if (model.isCtEatery()) {
-                mFirebaseAnalytics.logEvent("collegetown_eatery_press", null);
-                intent = new Intent(getActivity(), CtownMenuActivity.class);
+            if (model instanceof DiningHallModel) {
+                mFirebaseAnalytics.logEvent("campus_dining_hall_press", null);
             } else {
-                if (model instanceof DiningHallModel) {
-                    mFirebaseAnalytics.logEvent("campus_dining_hall_press", null);
-                } else {
-                    mFirebaseAnalytics.logEvent("campus_cafe_press", null);
-                }
-                intent = new Intent(getActivity(), CampusMenuActivity.class);
+                mFirebaseAnalytics.logEvent("campus_cafe_press", null);
             }
+            intent = new Intent(getActivity(), CampusMenuActivity.class);
             intent.putExtra("cafeInfo", model);
 
             if (viewHolder == null) {

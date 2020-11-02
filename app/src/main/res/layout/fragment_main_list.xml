@@ -402,45 +402,6 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <LinearLayout
-        android:id="@+id/pill_holder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/pill_bg"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/pill_campus_holder"
-            android:layout_width="162dp"
-            android:layout_height="40dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/pill_campus"
-                android:contentDescription="@string/campus_content_description"
-                android:layout_width="74dp"
-                android:layout_height="17dp"
-                android:background="@drawable/pill_campus_active" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/pill_ctown_holder"
-            android:layout_width="162dp"
-            android:layout_height="40dp"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/pill_collegetown"
-                android:contentDescription="@string/ctown_content_description"
-                android:layout_width="101dp"
-                android:layout_height="17dp"
-                android:background="@drawable/pill_ct_inactive" />
-        </LinearLayout>
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cafe_list"

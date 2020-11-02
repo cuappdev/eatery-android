@@ -14,10 +14,8 @@ import androidx.core.content.ContextCompat;
 
 import com.cornellappdev.android.eatery.MainListFragment;
 import com.cornellappdev.android.eatery.Repository;
-import com.cornellappdev.android.eatery.model.CollegeTownModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
-import com.cornellappdev.android.eatery.model.enums.Category;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 
 import java.util.ArrayList;
@@ -29,7 +27,6 @@ public class MainListPresenter {
     private ArrayList<EateryBaseModel> mCurrentList;
     private HashSet<PaymentMethod> mPaymentSet;
     private HashSet<CampusArea> mAreaSet;
-    private HashSet<Category> mCategorySet;
     private String mQuery;
     private Location mLocation;
     private LocationListener mLocationListener;
@@ -40,7 +37,6 @@ public class MainListPresenter {
         mCurrentList = rInstance.getEateryList();
         mPaymentSet = new HashSet<>();
         mAreaSet = new HashSet<>();
-        mCategorySet = new HashSet<>();
         mQuery = "";
     }
 
@@ -77,10 +73,6 @@ public class MainListPresenter {
         return rInstance.getEateryList();
     }
 
-    public ArrayList<EateryBaseModel> getCtEateryList() {
-        return rInstance.getCtEateryList();
-    }
-
     public void setPaymentSet(HashSet<PaymentMethod> paymentSet) {
         mPaymentSet = paymentSet;
     }
@@ -89,22 +81,9 @@ public class MainListPresenter {
         mAreaSet = areaSet;
     }
 
-    public void setCategorySet(HashSet<Category> categorySet) {
-        mCategorySet = categorySet;
-    }
-
     private boolean hasPaymentMethod(EateryBaseModel model) {
         for (PaymentMethod method : mPaymentSet) {
             if (model.hasPaymentMethod(method)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isUnderCategory(EateryBaseModel model) {
-        for (Category category : mCategorySet) {
-            if (((CollegeTownModel) model).isUnderCategory(category)) {
                 return true;
             }
         }
@@ -169,13 +148,7 @@ public class MainListPresenter {
             boolean paymentFuzzyMatches =
                     mPaymentSet.isEmpty() || hasPaymentMethod(model);
 
-            // only used for ctown eateries
-            boolean categoryFuzzyMatches = mCategorySet.isEmpty()
-                    || (model instanceof CollegeTownModel && isUnderCategory(model));
-
-            if (!model.isCtEatery() && areaFuzzyMatches && paymentFuzzyMatches) {
-                model.setMatchesFilter(true);
-            } else if (model.isCtEatery() && categoryFuzzyMatches) {
+            if (areaFuzzyMatches && paymentFuzzyMatches) {
                 model.setMatchesFilter(true);
             } else {
                 model.setMatchesFilter(false);
