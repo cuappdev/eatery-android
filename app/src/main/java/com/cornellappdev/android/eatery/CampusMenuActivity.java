@@ -1,12 +1,15 @@
 package com.cornellappdev.android.eatery;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,6 +51,8 @@ public class CampusMenuActivity extends AppCompatActivity {
     ImageView mExceptionImage;
     ImageView mSwipeIcon;
     ImageView mBrbIcon;
+    Button mBottomButton;
+    FrameLayout mButtonFrame;
     LinearLayout mLinLayout;
     EateryBaseModel mCafeData;
     Toolbar mToolbar;
@@ -98,6 +103,63 @@ public class CampusMenuActivity extends AppCompatActivity {
             mExceptionImage.setVisibility(View.VISIBLE);
             mExceptionImage.startAnimation(fadein);
         }
+
+        mBottomButton = findViewById(R.id.bottom_button);
+        mButtonFrame = findViewById(R.id.button_frame);
+        if (mCafeData.getIsGet()) {
+            mButtonFrame.setVisibility(View.VISIBLE);
+            mBottomButton.setVisibility(View.VISIBLE);
+            mBottomButton.setText("Order on GET ");
+        } else if (mCafeData.getReserveUrl() != null) {
+            mButtonFrame.setVisibility(View.VISIBLE);
+            mBottomButton.setVisibility(View.VISIBLE);
+            mBottomButton.setText("Reserve on OpenTable ");
+        }
+        mBottomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCafeData.getIsGet()){
+                    try {
+                        Intent i;
+                        PackageManager managerclock = getPackageManager();
+                        i = managerclock.getLaunchIntentForPackage("com.cbord.get");
+                        i.addCategory(Intent.CATEGORY_LAUNCHER);
+                        startActivity(i);
+                    } catch(Exception e) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://get.cbord.com/cornell/full/food_home.php"));
+                        startActivity(intent);
+                    }
+                } else if(mCafeData.getReserveUrl() != null) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(mCafeData.getReserveUrl()));
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mButtonFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCafeData.getIsGet()){
+                    Intent i;
+                    PackageManager managerclock = getPackageManager();
+                    i = managerclock.getLaunchIntentForPackage("com.cbord.get");
+                    i.addCategory(Intent.CATEGORY_LAUNCHER);
+                    startActivity(i);
+                } else if(mCafeData.getReserveUrl() != null) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                    intent.setData(Uri.parse(mCafeData.getReserveUrl()));
+                    startActivity(intent);
+                }
+            }
+        });
 
         mCafeText = findViewById(R.id.ind_cafe_name);
         mCafeText.setText(cafeName);
@@ -158,6 +220,20 @@ public class CampusMenuActivity extends AppCompatActivity {
         }
 
         mScrollView = findViewById(R.id.controlled_scroll_view);
+        mScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY && mButtonFrame.getVisibility() == View.VISIBLE) {
+                    mButtonFrame.setVisibility(View.GONE);
+                    mBottomButton.setVisibility(View.GONE);
+                }
+                if (scrollY < oldScrollY && mButtonFrame.getVisibility() == View.GONE) {
+                    mButtonFrame.setVisibility(View.VISIBLE);
+                    mBottomButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         CustomPager customPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
         mLinLayout = findViewById(R.id.linear);
