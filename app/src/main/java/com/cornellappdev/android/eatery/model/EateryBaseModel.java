@@ -20,10 +20,12 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     int mId;
     private String mBuildingLocation, mName, mNickName, mPhoneNumber;
     private String mImageUrl;
+    private String mReserveUrl;
     private ArrayList<String> mSearchedItems;
     private List<String> mExceptions;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
+    private boolean mIsGet = false;
     private CampusArea mArea;
     private Double mLatitude, mLongitude;
     private List<PaymentMethod> mPayMethods;
@@ -68,6 +70,10 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     public List<String> getExceptions() {
         return mExceptions;
     }
+
+    public String getReserveUrl() {return mReserveUrl;}
+
+    public boolean getIsGet() {return mIsGet;}
 
     public void setSearchedItems(ArrayList<String> searchedItems) {
         this.mSearchedItems = searchedItems;
@@ -120,6 +126,8 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mLongitude = eatery.coordinates().longitude();
         mPhoneNumber = eatery.phone();
         mImageUrl = eatery.imageUrl();
+        mReserveUrl = eatery.reserveUrl();
+        mIsGet = eatery.isGet();
         mExceptions = eatery.exceptions();
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();

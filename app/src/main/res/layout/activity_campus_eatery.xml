@@ -231,4 +231,27 @@
                 android:background="@color/white"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <FrameLayout
+        android:id="@+id/button_frame"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/button_outline"
+        android:visibility="invisible"
+        android:layout_gravity="bottom">
+    <Button
+        android:id="@+id/bottom_button"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text=""
+        android:textSize="15sp"
+        android:background="@null"
+        android:textColor="@color/white"
+        android:minHeight="0dp"
+        android:minWidth="0dp"
+        android:visibility="invisible"
+        android:drawableRight="@drawable/link_icon"
+        android:layout_gravity="center"/>
+    </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

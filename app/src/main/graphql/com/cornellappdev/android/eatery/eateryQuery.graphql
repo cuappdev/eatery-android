@@ -3,13 +3,15 @@ query AllEateries {
         id
         name
         nameShort
-        exceptions
         imageUrl
         slug
+        exceptions
         eateryType
         about
         phone
         location
+        reserveUrl
+        isGet
         campusArea {
             descriptionShort
         }
