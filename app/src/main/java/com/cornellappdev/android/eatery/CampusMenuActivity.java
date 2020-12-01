@@ -103,7 +103,7 @@ public class CampusMenuActivity extends AppCompatActivity {
             mExceptionImage.setVisibility(View.VISIBLE);
             mExceptionImage.startAnimation(fadein);
         }
-
+      
         // Floating button is implemented as transparent button in a Frame Layout for design reasons
         mBottomButton = findViewById(R.id.bottom_button);
         mButtonFrame = findViewById(R.id.button_frame);
