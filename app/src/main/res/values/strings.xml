@@ -12,6 +12,8 @@
     <string name="no_menu_text">No menu information 😮</string>
     <string name="get_directions">Get Directions</string>
     <string name="dollar_sign">$</string>
+    <string name="get_button">Order on GET </string>
+    <string name="opentable_button">Reserve on OpenTable </string>
 
     <string name="eatery_content_description">Eatery Image</string>
     <string name="icon_content_description">Icon</string>
