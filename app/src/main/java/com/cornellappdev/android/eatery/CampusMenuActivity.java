@@ -104,21 +104,22 @@ public class CampusMenuActivity extends AppCompatActivity {
             mExceptionImage.startAnimation(fadein);
         }
 
+        // Floating button is implemented as transparent button in a Frame Layout for design reasons
         mBottomButton = findViewById(R.id.bottom_button);
         mButtonFrame = findViewById(R.id.button_frame);
         if (mCafeData.getIsGet()) {
             mButtonFrame.setVisibility(View.VISIBLE);
             mBottomButton.setVisibility(View.VISIBLE);
-            mBottomButton.setText("Order on GET ");
+            mBottomButton.setText(getString(R.string.get_button));
         } else if (mCafeData.getReserveUrl() != null) {
             mButtonFrame.setVisibility(View.VISIBLE);
             mBottomButton.setVisibility(View.VISIBLE);
-            mBottomButton.setText("Reserve on OpenTable ");
+            mBottomButton.setText(getString(R.string.opentable_button));
         }
         mBottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCafeData.getIsGet()){
+                if(mCafeData.getIsGet()) {
                     try {
                         Intent i;
                         PackageManager managerclock = getPackageManager();
@@ -145,7 +146,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         mButtonFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCafeData.getIsGet()){
+                if(mCafeData.getIsGet()) {
                     Intent i;
                     PackageManager managerclock = getPackageManager();
                     i = managerclock.getLaunchIntentForPackage("com.cbord.get");
