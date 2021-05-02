@@ -216,6 +216,16 @@
                 android:orientation="vertical"/>
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/expandedTabs"
+                android:layout_width="wrap_content"
+                app:tabMode="scrollable"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                app:tabIndicatorColor="@color/blue"
+                app:tabTextAppearance="@style/tabLayoutText"/>
+
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

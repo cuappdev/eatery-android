@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -60,6 +63,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     CollapsingToolbarLayout mCollapsingToolbar;
     NestedScrollView mScrollView;
     private TabLayout mTabLayout;
+    private TabLayout mExpandedTabLayout;
     private MenuPresenter mMenuPresenter;
 
     @Override
@@ -237,6 +241,7 @@ public class CampusMenuActivity extends AppCompatActivity {
 
         CustomPager customPager = findViewById(R.id.pager);
         mTabLayout = findViewById(R.id.tabs);
+        mExpandedTabLayout = findViewById(R.id.expandedTabs);
         mLinLayout = findViewById(R.id.linear);
 
         float scale = getResources().getDisplayMetrics().density;
@@ -245,6 +250,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         if (mCafeData instanceof CafeModel) {
             customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
+            mExpandedTabLayout.setVisibility(View.VISIBLE);
             mLinLayout.setVisibility(View.VISIBLE);
 
             View blank = new View(this);
@@ -255,10 +261,18 @@ public class CampusMenuActivity extends AppCompatActivity {
             blank.setElevation(-1);
             mLinLayout.addView(blank);
 
-            List<String> menu = ((CafeModel) mCafeData).getCafeMenu();
-            for (int i = 0; i < menu.size(); i++) {
+            mExpandedTabLayout.setupWithViewPager(customPager);
+            mExpandedTabLayout.setTabTextColors(
+                    ContextCompat.getColor(getApplicationContext(), R.color.primary),
+                    ContextCompat.getColor(getApplicationContext(), R.color.blue));
+
+            HashMap<String, String> menu = ((CafeModel) mCafeData).getExpandedMenuItems();
+            HashMap<String, Integer> categories = ((CafeModel) mCafeData).getExpandedMenuStations();
+            for (Map.Entry<String, String> entry : menu.entrySet()) {
+                String name = entry.getKey();
+                String price = entry.getValue();
                 TextView mealItemText = new TextView(this);
-                mealItemText.setText(menu.get(i));
+                mealItemText.setText(name);
                 mealItemText.setTextSize(14);
                 mealItemText.setTextColor(
                         ContextCompat.getColor(getApplicationContext(), R.color.primary));
@@ -267,26 +281,27 @@ public class CampusMenuActivity extends AppCompatActivity {
                         (int) (8 * scale + 0.5f));
                 mLinLayout.addView(mealItemText);
 
-                // Add divider if text is not the last item in list
-                if (i != menu.size() - 1) {
-                    View divider = new View(this);
-                    divider.setBackgroundColor(
-                            ContextCompat.getColor(getApplicationContext(), R.color.wash));
-                    LinearLayout.LayoutParams dividerParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    1);
-                    dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
-                    divider.setElevation(-1);
-                    divider.setLayoutParams(dividerParams);
-                    mLinLayout.addView(divider);
-                }
+//                // Add divider if text is not the last item in list
+//                if (i != menu.size() - 1) {
+//                    View divider = new View(this);
+//                    divider.setBackgroundColor(
+//                            ContextCompat.getColor(getApplicationContext(), R.color.wash));
+//                    LinearLayout.LayoutParams dividerParams =
+//                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                                    1);
+//                    dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
+//                    divider.setElevation(-1);
+//                    divider.setLayoutParams(dividerParams);
+//                    mLinLayout.addView(divider);
             }
+
         }
         // Formatting for when eatery is a dining hall and has a menu
         else if (mCafeData instanceof DiningHallModel) {
             mMenuText = findViewById(R.id.ind_menu);
             customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
+            mExpandedTabLayout.setVisibility(View.GONE);
             ArrayList<MealModel> mm =
                     ((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals();
 

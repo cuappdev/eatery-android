@@ -1,6 +1,9 @@
 package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 
@@ -20,17 +23,21 @@ import java.util.Map;
 
 public class CafeModel extends CampusModel implements Serializable {
     private List<String> mCafeMenu;
+    private HashMap<String, String> mExpandedMenuItems;
+    private HashMap<String, Integer> mExpandedMenuStations;
     private Map<LocalDate, List<Interval>> mHours;
     private List<LocalDate> mSortedDates;
 
     private CafeModel() {
         this.mCafeMenu = new ArrayList<>();
+        this.mExpandedMenuItems = new HashMap<>();
+        this.mExpandedMenuStations = new HashMap<>();
         this.mHours = new HashMap<>();
         this.mSortedDates = new ArrayList<>();
     }
 
     public static CafeModel fromEatery(Context context, boolean hardcoded,
-                                       AllEateriesQuery.Eatery cafe) {
+                                       AllEateriesQuery.Eatery cafe)  {
         CafeModel model = new CafeModel();
         model.parseEatery(context, hardcoded, cafe);
         return model;
@@ -87,11 +94,18 @@ public class CafeModel extends CampusModel implements Serializable {
     @Override
     public HashSet<String> getMealItems() {
         return new HashSet<>(mCafeMenu);
-
     }
 
     public List<String> getCafeMenu() {
         return mCafeMenu;
+    }
+
+    public HashMap<String, String> getExpandedMenuItems() {
+        return mExpandedMenuItems;
+    }
+
+    public HashMap<String, Integer> getExpandedMenuStations() {
+        return mExpandedMenuStations;
     }
 
     @Override
@@ -116,6 +130,8 @@ public class CafeModel extends CampusModel implements Serializable {
     public void parseEatery(Context context, boolean hardcoded, AllEateriesQuery.Eatery cafe) {
         super.parseEatery(context, hardcoded, cafe);
         List<String> cafeItems = new ArrayList<>();
+        HashMap<String, String> expandedMenu = new HashMap();
+        HashMap<String, Integer> expandedStations = new HashMap();
 
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
@@ -126,15 +142,29 @@ public class CafeModel extends CampusModel implements Serializable {
                 .appendPattern("yyyy-MM-dd")
                 .toFormatter(Locale.US);
 
+        for (AllEateriesQuery.ExpandedMenu expanded : cafe.expandedMenu()) {
+            for (AllEateriesQuery.Station station : expanded.stations()) {
+                int stationSize = 0;
+                for (AllEateriesQuery.Item items : station.items()) {
+                    if (!expandedMenu.containsKey(items.item())){
+                        expandedMenu.put(items.item(), items.price());
+                        stationSize ++;
+                    }
+                }
+                // add station name and size
+                //expandedStations.put(expanded.category(), stationSize);
+            }
+        }
+
         for (AllEateriesQuery.OperatingHour operatingHour : cafe.operatingHours()) {
             LocalDate localDate = LocalDate.parse(operatingHour.date(), dateFormatter);
             for (AllEateriesQuery.Event event : operatingHour.events()) {
-                List<Interval> dailyHours = new ArrayList<>();
                 for (AllEateriesQuery.Menu menu : event.menu()) {
-                    for (AllEateriesQuery.Item item : menu.items()) {
+                    for (AllEateriesQuery.Item1 item : menu.items()) {
                         if (!cafeItems.contains(item.item())) cafeItems.add(item.item());
                     }
                 }
+                List<Interval> dailyHours = new ArrayList<>();
                 LocalDateTime start, end;
                 start = LocalTime.parse(event.startTime().toUpperCase().substring(11),
                         timeFormatter).atDate(localDate);
@@ -152,6 +182,8 @@ public class CafeModel extends CampusModel implements Serializable {
                 setHours(localDate, dailyHours);
             }
         }
-        mCafeMenu = cafeItems;
+        mExpandedMenuItems = expandedMenu;
+        mExpandedMenuStations = expandedStations;
     }
+
 }
