@@ -1,13 +1,18 @@
 package com.cornellappdev.android.eatery;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -18,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -57,6 +63,7 @@ public class CampusMenuActivity extends AppCompatActivity {
     Button mBottomButton;
     FrameLayout mButtonFrame;
     LinearLayout mLinLayout;
+    LinearLayout mLinearMaster;
     EateryBaseModel mCafeData;
     Toolbar mToolbar;
     AppBarLayout mAppbar;
@@ -77,6 +84,9 @@ public class CampusMenuActivity extends AppCompatActivity {
         mMenuPresenter = new MenuPresenter(mCafeData);
         String cafeName = mCafeData.getNickName();
         String imageUrl = mCafeData.getImageURL();
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        mLinearMaster = findViewById(R.id.master_container);
 
         // Load image animation
         Picasso.get()
@@ -250,7 +260,6 @@ public class CampusMenuActivity extends AppCompatActivity {
         if (mCafeData instanceof CafeModel) {
             customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
-            mExpandedTabLayout.setVisibility(View.VISIBLE);
             mLinLayout.setVisibility(View.VISIBLE);
 
             View blank = new View(this);
@@ -261,40 +270,147 @@ public class CampusMenuActivity extends AppCompatActivity {
             blank.setElevation(-1);
             mLinLayout.addView(blank);
 
-            mExpandedTabLayout.setupWithViewPager(customPager);
-            mExpandedTabLayout.setTabTextColors(
-                    ContextCompat.getColor(getApplicationContext(), R.color.primary),
-                    ContextCompat.getColor(getApplicationContext(), R.color.blue));
 
-            HashMap<String, String> menu = ((CafeModel) mCafeData).getExpandedMenuItems();
-            HashMap<String, Integer> categories = ((CafeModel) mCafeData).getExpandedMenuStations();
-            for (Map.Entry<String, String> entry : menu.entrySet()) {
-                String name = entry.getKey();
-                String price = entry.getValue();
-                TextView mealItemText = new TextView(this);
-                mealItemText.setText(name);
-                mealItemText.setTextSize(14);
-                mealItemText.setTextColor(
-                        ContextCompat.getColor(getApplicationContext(), R.color.primary));
-                mealItemText.setPadding(
-                        (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
-                        (int) (8 * scale + 0.5f));
-                mLinLayout.addView(mealItemText);
+            // Expanded menu
+            List<String> menu = ((CafeModel) mCafeData).getExpandedMenuItems();
+            List<String> prices = ((CafeModel) mCafeData).getExpandedMenuPrices();
+            List<String> stations = ((CafeModel) mCafeData).getExpandedMenuStations();
+            List<Integer> sizes = ((CafeModel) mCafeData).getStationSizes();
 
-//                // Add divider if text is not the last item in list
-//                if (i != menu.size() - 1) {
-//                    View divider = new View(this);
-//                    divider.setBackgroundColor(
-//                            ContextCompat.getColor(getApplicationContext(), R.color.wash));
-//                    LinearLayout.LayoutParams dividerParams =
-//                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                                    1);
-//                    dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
-//                    divider.setElevation(-1);
-//                    divider.setLayoutParams(dividerParams);
-//                    mLinLayout.addView(divider);
+            // if it has an expanded menu
+            if (menu.size() != 0) {
+                mExpandedTabLayout.setVisibility(View.VISIBLE);
+                mExpandedTabLayout.setupWithViewPager(customPager);
+                mExpandedTabLayout.setTabTextColors(
+                        ContextCompat.getColor(getApplicationContext(), R.color.primary),
+                        ContextCompat.getColor(getApplicationContext(), R.color.blue));
+
+                for (String station : stations) {
+                    mExpandedTabLayout.addTab(mExpandedTabLayout.newTab().setText(station));
+                }
+
+                mExpandedTabLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        DisplayMetrics displayMetrics = new DisplayMetrics();
+                        ((Activity) CampusMenuActivity.this).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                        int widthS = displayMetrics.widthPixels;
+                        mExpandedTabLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                        int widthT = mExpandedTabLayout.getMeasuredWidth();
+                        if (widthS > widthT) {
+                            mExpandedTabLayout.setTabMode(TabLayout.MODE_FIXED);
+                            mExpandedTabLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                    }
+                }});
+
+                List<View> containers = new ArrayList<>();
+                for (int i = 0; i < menu.size(); i++) {
+                    String name = menu.get(i);
+                    String price = prices.get(i);
+
+                    LinearLayout container = new LinearLayout(getApplicationContext());
+
+                    container.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    container.setOrientation(LinearLayout.HORIZONTAL);
+
+                    // item text
+                    TextView mealItemText = new TextView(getApplicationContext());
+                    mealItemText.setText(name);
+                    mealItemText.setTextSize(14);
+                    mealItemText.setTextColor(
+                            ContextCompat.getColor(getApplicationContext(), R.color.primary));
+                    mealItemText.setPadding(
+                            (int) (18 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
+                            (int) (8 * scale + 0.5f));
+                    mealItemText.setGravity(Gravity.LEFT);
+
+                    // price text
+                    TextView priceText = new TextView(this);
+                    priceText.setText(price);
+                    priceText.setTextSize(14);
+                    priceText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.secondary));
+                    priceText.setPadding(
+                            0, (int) (8 * scale + 0.5f), 0, (int) (8 * scale + 0.5f));
+                    priceText.setGravity(Gravity.RIGHT);
+
+                    mealItemText.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            mealItemText.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(0,0, width - mealItemText.getMeasuredWidth() - priceText.getMeasuredWidth() - 100,0);
+                            mealItemText.setLayoutParams(params);
+                        }
+                    });
+
+                    container.addView(mealItemText);
+                    container.addView(priceText);
+                    containers.add(container);
+
+                    mLinLayout.addView(container);
+
+                    // Dividers
+                    View divider = new View(this);
+                    divider.setBackgroundColor(
+                            ContextCompat.getColor(getApplicationContext(), R.color.wash));
+                    LinearLayout.LayoutParams dividerParams =
+                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    4);
+                    dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, (int) (15.8 * scale + 0.5f), 0);
+                    divider.setElevation(-1);
+                    divider.setLayoutParams(dividerParams);
+                    mLinLayout.addView(divider);
+
+                    mExpandedTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                        @Override
+                        public void onTabSelected(TabLayout.Tab tab) {
+                            int acc = 0;
+                            for (int i = 0; i <= tab.getPosition(); i++) {
+                                acc += sizes.get(i);
+                            }
+                            View cell = containers.get(acc-1);
+                            cell.getParent().requestChildFocus(cell, cell);
+                        }
+
+                        @Override
+                        public void onTabUnselected(TabLayout.Tab tab) {
+                        }
+
+                        @Override
+                        public void onTabReselected(TabLayout.Tab tab) {
+                        }
+                    });
+                }
+            } else {
+                mLinearMaster.removeView(mExpandedTabLayout);
+                List<String> legacyMenu = ((CafeModel) mCafeData).getCafeMenu();
+                for (int i = 0; i < legacyMenu.size(); i++) {
+                    TextView mealItemText = new TextView(this);
+                    mealItemText.setText(legacyMenu.get(i));
+                    mealItemText.setTextSize(14);
+                    mealItemText.setTextColor(
+                            ContextCompat.getColor(getApplicationContext(), R.color.primary));
+                    mealItemText.setPadding(
+                            (int) (16 * scale + 0.5f), (int) (8 * scale + 0.5f), 0,
+                            (int) (8 * scale + 0.5f));
+                    mLinLayout.addView(mealItemText);
+
+                    // Add divider if text is not the last item in list
+                    if (i != legacyMenu.size() - 1) {
+                        View divider = new View(this);
+                        divider.setBackgroundColor(
+                                ContextCompat.getColor(getApplicationContext(), R.color.wash));
+                        LinearLayout.LayoutParams dividerParams =
+                                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                        1);
+                        dividerParams.setMargins((int) (15.8 * scale + 0.5f), 0, 0, 0);
+                        divider.setElevation(-1);
+                        divider.setLayoutParams(dividerParams);
+                        mLinLayout.addView(divider);
+                    }
             }
-
+            }
         }
         // Formatting for when eatery is a dining hall and has a menu
         else if (mCafeData instanceof DiningHallModel) {
@@ -302,6 +418,7 @@ public class CampusMenuActivity extends AppCompatActivity {
             customPager.setVisibility(View.GONE);
             mTabLayout.setVisibility(View.GONE);
             mExpandedTabLayout.setVisibility(View.GONE);
+
             ArrayList<MealModel> mm =
                     ((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals();
 
@@ -358,7 +475,8 @@ public class CampusMenuActivity extends AppCompatActivity {
         customPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    class ViewPagerAdapter extends FragmentPagerAdapter  {
+
         DiningHallModel dhm = (DiningHallModel) mCafeData;
         private int mCurrentPosition = -1;
 

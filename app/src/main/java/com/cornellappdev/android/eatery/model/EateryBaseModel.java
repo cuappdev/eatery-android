@@ -134,7 +134,6 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
         mReserveUrl = eatery.reserveUrl();
         mIsGet = eatery.isGet();
         mExceptions = eatery.exceptions();
-        mExpandedMenu = eatery.expandedMenu();
 
         List<PaymentMethod> paymentMethods = new ArrayList<>();
         if (eatery.paymentMethods().brbs()) {

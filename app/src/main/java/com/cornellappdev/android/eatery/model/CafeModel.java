@@ -21,17 +21,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class CafeModel extends CampusModel implements Serializable {
+public class CafeModel extends CampusModel implements Serializable  {
     private List<String> mCafeMenu;
-    private HashMap<String, String> mExpandedMenuItems;
-    private HashMap<String, Integer> mExpandedMenuStations;
+    private List<String> mExpandedMenuItems;
+    private List<String> mExpandedMenuPrices;
+    private List<String> mExpandedMenuStations;
+    private List<Integer> mStationSizes;
     private Map<LocalDate, List<Interval>> mHours;
     private List<LocalDate> mSortedDates;
 
     private CafeModel() {
         this.mCafeMenu = new ArrayList<>();
-        this.mExpandedMenuItems = new HashMap<>();
-        this.mExpandedMenuStations = new HashMap<>();
+        this.mExpandedMenuItems = new ArrayList<>();
+        this.mExpandedMenuPrices = new ArrayList<>();
+        this.mExpandedMenuStations = new ArrayList<>();
+        this.mStationSizes = new ArrayList<>();
         this.mHours = new HashMap<>();
         this.mSortedDates = new ArrayList<>();
     }
@@ -42,6 +46,7 @@ public class CafeModel extends CampusModel implements Serializable {
         model.parseEatery(context, hardcoded, cafe);
         return model;
     }
+
 
     private List<Interval> getCurrentIntervalList() {
         LocalDate today = LocalDate.now();
@@ -100,13 +105,17 @@ public class CafeModel extends CampusModel implements Serializable {
         return mCafeMenu;
     }
 
-    public HashMap<String, String> getExpandedMenuItems() {
+    public List<String> getExpandedMenuItems() {
         return mExpandedMenuItems;
     }
 
-    public HashMap<String, Integer> getExpandedMenuStations() {
+    public List<String> getExpandedMenuPrices() { return mExpandedMenuPrices;}
+
+    public List<String> getExpandedMenuStations() {
         return mExpandedMenuStations;
     }
+
+    public List<Integer> getStationSizes() {return mStationSizes;}
 
     @Override
     public Status getCurrentStatus() {
@@ -130,8 +139,10 @@ public class CafeModel extends CampusModel implements Serializable {
     public void parseEatery(Context context, boolean hardcoded, AllEateriesQuery.Eatery cafe) {
         super.parseEatery(context, hardcoded, cafe);
         List<String> cafeItems = new ArrayList<>();
-        HashMap<String, String> expandedMenu = new HashMap();
-        HashMap<String, Integer> expandedStations = new HashMap();
+        List<String> expandedItems = new ArrayList<>();
+        List<String> expandedPrices = new ArrayList<>();
+        List<String> expandedStations = new ArrayList<>();
+        List<Integer> stationSizes = new ArrayList<>();
 
         DateTimeFormatter timeFormatter = new DateTimeFormatterBuilder()
                 .parseCaseInsensitive()
@@ -146,13 +157,15 @@ public class CafeModel extends CampusModel implements Serializable {
             for (AllEateriesQuery.Station station : expanded.stations()) {
                 int stationSize = 0;
                 for (AllEateriesQuery.Item items : station.items()) {
-                    if (!expandedMenu.containsKey(items.item())){
-                        expandedMenu.put(items.item(), items.price());
+                    if (!expandedItems.contains(items.item())){
+                        expandedItems.add(items.item());
+                        expandedPrices.add(items.price());
                         stationSize ++;
                     }
                 }
                 // add station name and size
-                //expandedStations.put(expanded.category(), stationSize);
+                expandedStations.add(expanded.category());
+                stationSizes.add(stationSize);
             }
         }
 
@@ -182,8 +195,11 @@ public class CafeModel extends CampusModel implements Serializable {
                 setHours(localDate, dailyHours);
             }
         }
-        mExpandedMenuItems = expandedMenu;
+        mExpandedMenuItems = expandedItems;
+        mExpandedMenuPrices = expandedPrices;
         mExpandedMenuStations = expandedStations;
+        mStationSizes = stationSizes;
+        mCafeMenu = cafeItems;
     }
 
 }
