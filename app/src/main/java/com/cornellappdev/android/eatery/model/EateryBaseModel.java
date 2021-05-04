@@ -14,6 +14,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
+
 public abstract class EateryBaseModel implements Serializable, Comparable<EateryBaseModel> {
 
     boolean mOpenPastMidnight = false;
@@ -23,6 +25,7 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     private String mReserveUrl;
     private ArrayList<String> mSearchedItems;
     private List<String> mExceptions;
+    private @NotNull List<AllEateriesQuery.ExpandedMenu> mExpandedMenu;
     private boolean matchesFilter = true;
     private boolean mMatchesSearch = true;
     private boolean mIsGet = false;
@@ -74,6 +77,8 @@ public abstract class EateryBaseModel implements Serializable, Comparable<Eatery
     public String getReserveUrl() {return mReserveUrl;}
 
     public boolean getIsGet() {return mIsGet;}
+
+    public List<AllEateriesQuery.ExpandedMenu> getExpandedMenu() {return mExpandedMenu;}
 
     public void setSearchedItems(ArrayList<String> searchedItems) {
         this.mSearchedItems = searchedItems;

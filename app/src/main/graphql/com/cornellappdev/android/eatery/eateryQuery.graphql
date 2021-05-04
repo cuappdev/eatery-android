@@ -12,6 +12,22 @@ query AllEateries {
         location
         reserveUrl
         isGet
+        expandedMenu{
+            stations {
+                items {
+                    item,
+                    price,
+                    healthy,
+                    choices {
+                        options,
+                        label
+                    },
+                    favorite
+                },
+                category
+            }
+            category
+        }
         campusArea {
             descriptionShort
         }

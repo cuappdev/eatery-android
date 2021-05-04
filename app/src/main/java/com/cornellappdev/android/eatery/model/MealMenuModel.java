@@ -20,7 +20,7 @@ public class MealMenuModel implements Serializable {
     static MealMenuModel fromGraphQL(List<AllEateriesQuery.Menu> menuList) {
         MealMenuModel menuModel = new MealMenuModel();
         for (AllEateriesQuery.Menu menu : menuList) {
-            for (AllEateriesQuery.Item item : menu.items()) {
+            for (AllEateriesQuery.Item1 item : menu.items()) {
                 menuModel.addItem(menu.category(), item.item());
             }
         }
