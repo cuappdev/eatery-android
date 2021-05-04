@@ -7,9 +7,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,17 +18,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
 import com.cornellappdev.android.eatery.components.CustomPager;
 import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CafeModel;
@@ -48,9 +43,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CampusMenuActivity extends AppCompatActivity {
     TextView mCafeText;
@@ -301,8 +294,9 @@ public class CampusMenuActivity extends AppCompatActivity {
                             mExpandedTabLayout.setTabMode(TabLayout.MODE_FIXED);
                             mExpandedTabLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT));
+                        }
                     }
-                }});
+                });
 
                 List<View> containers = new ArrayList<>();
                 for (int i = 0; i < menu.size(); i++) {

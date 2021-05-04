@@ -14,7 +14,6 @@ import com.cornellappdev.android.eatery.model.MealModel;
 
 import java.util.ArrayList;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 

@@ -5,8 +5,6 @@ import static com.cornellappdev.android.eatery.model.enums.CampusArea.NORTH;
 import static com.cornellappdev.android.eatery.model.enums.CampusArea.WEST;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
