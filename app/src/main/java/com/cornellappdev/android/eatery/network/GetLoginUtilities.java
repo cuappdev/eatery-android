@@ -34,15 +34,15 @@ public class GetLoginUtilities {
     // Must call this before navigating to the GET site in the first place
     public static void resetLoginAbility(String netid, String password) {
         mEvaluatedJS = false;
-        loginJS = "document.getElementById('netid').value = '" + netid + "';" +
-                "document.getElementById('password').value = '" + password + "';" +
-                "document.getElementsByName('login')[0].submit();";
+        loginJS = "document.getElementsByName('j_username')[0].value = '" + netid + "';" +
+                "document.getElementsByName('j_password')[0].value = '" + password + "';" +
+                "document.getElementsByName('_eventId_proceed')[0].click();";
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
     }
 
     public static void autoLogin(Activity activity, Context c, WebView sLoginWebView,
-            LoginFragment loginFragment) {
+                                 LoginFragment loginFragment) {
         // Callback for successful autologin on launch
         GetLoginUtilities.getLoginCallback callback = new GetLoginUtilities.getLoginCallback() {
             @Override
@@ -99,7 +99,7 @@ public class GetLoginUtilities {
     }
 
     public static void webLogin(String url, WebView loadedPage,
-            GetLoginUtilities.getLoginCallback callback) {
+                                GetLoginUtilities.getLoginCallback callback) {
         if (!mEvaluatedJS) {
             loadedPage.evaluateJavascript(loginJS, (String s) -> mEvaluatedJS = true);
         } else {
