@@ -10,14 +10,12 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public final class QueryUtilities {
 
     static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
-                                                           Context mainContext) {
+                                                    Context mainContext) {
         ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
         for (AllEateriesQuery.Eatery eatery : eateries) {
             EateryBaseModel model;
