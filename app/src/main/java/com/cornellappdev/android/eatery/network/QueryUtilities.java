@@ -10,22 +10,16 @@ import com.cornellappdev.android.eatery.model.DiningHallModel;
 import com.cornellappdev.android.eatery.model.EateryBaseModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public final class QueryUtilities {
 
-    // These were manually set as the dining hall IDs based on the IDs returned with graphQL
-    private final static HashSet<Integer> DINING_HALL_IDS =
-            new HashSet<>(Arrays.asList(1, 7, 12, 21, 23, 27, 29, 30, 31, 32));
-
     static ArrayList<EateryBaseModel> parseEateries(List<AllEateriesQuery.Eatery> eateries,
-                                                           Context mainContext) {
+                                                    Context mainContext) {
         ArrayList<EateryBaseModel> eateryList = new ArrayList<>();
         for (AllEateriesQuery.Eatery eatery : eateries) {
             EateryBaseModel model;
-            if (DINING_HALL_IDS.contains(eatery.id())) {
+            if (eatery.eateryType().equals("Dining Room")) {
                 model = DiningHallModel.fromEatery(mainContext, false, eatery);
             } else {
                 model = CafeModel.fromEatery(mainContext, false, eatery);
