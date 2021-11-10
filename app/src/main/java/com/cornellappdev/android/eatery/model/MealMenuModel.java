@@ -73,4 +73,8 @@ public class MealMenuModel implements Serializable {
         }
         return items;
     }
+
+    public Map<String, List<String>> getMenuLinkedHashMap(){
+        return menu;
+    }
 }
