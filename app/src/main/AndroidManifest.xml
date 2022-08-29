@@ -25,6 +25,7 @@
             android:name=".InitActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

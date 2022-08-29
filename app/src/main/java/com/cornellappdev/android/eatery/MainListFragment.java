@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -210,6 +211,7 @@ public class MainListFragment extends Fragment
 
     private void updateListAdapter() {
         ArrayList<EateryBaseModel> cafesToDisplay = mListPresenter.getCafesToDisplay();
+        Log.d("hellooo", String.valueOf(cafesToDisplay.size()));
         mListAdapter.setList(cafesToDisplay, cafesToDisplay.size(), mListPresenter.getQuery());
     }
 
@@ -311,7 +313,7 @@ public class MainListFragment extends Fragment
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (getActivity() == null) {
             return false;
         }

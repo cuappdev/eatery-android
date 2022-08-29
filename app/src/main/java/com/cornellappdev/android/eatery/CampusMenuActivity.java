@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +27,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
 import com.cornellappdev.android.eatery.components.CustomPager;
 import com.cornellappdev.android.eatery.components.WaitTimesComponent;
 import com.cornellappdev.android.eatery.model.CafeModel;
@@ -104,13 +106,13 @@ public class CampusMenuActivity extends AppCompatActivity {
             if (exceptions.get(0).equals("Mobile Order Only")) {
                 mExceptionImage.setImageResource(R.drawable.mobile_exception);
             }
-            if (mCafeData.getCurrentStatus().toString().equals("Closed")){
+            if (mCafeData.getCurrentStatus().toString().equals("Closed")) {
                 mExceptionImage.setAlpha((float) 0.72);
             }
             mExceptionImage.setVisibility(View.VISIBLE);
             mExceptionImage.startAnimation(fadein);
         }
-      
+
         // Floating button is implemented as transparent button in a Frame Layout for design reasons
         mBottomButton = findViewById(R.id.bottom_button);
         mButtonFrame = findViewById(R.id.button_frame);
@@ -126,21 +128,21 @@ public class CampusMenuActivity extends AppCompatActivity {
         mBottomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCafeData.getIsGet()) {
+                if (mCafeData.getIsGet()) {
                     try {
                         Intent i;
                         PackageManager managerclock = getPackageManager();
                         i = managerclock.getLaunchIntentForPackage("com.cbord.get");
                         i.addCategory(Intent.CATEGORY_LAUNCHER);
                         startActivity(i);
-                    } catch(Exception e) {
+                    } catch (Exception e) {
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
                         intent.addCategory(Intent.CATEGORY_BROWSABLE);
                         intent.setData(Uri.parse("https://get.cbord.com/cornell/full/food_home.php"));
                         startActivity(intent);
                     }
-                } else if(mCafeData.getReserveUrl() != null) {
+                } else if (mCafeData.getReserveUrl() != null) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -153,13 +155,13 @@ public class CampusMenuActivity extends AppCompatActivity {
         mButtonFrame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mCafeData.getIsGet()) {
+                if (mCafeData.getIsGet()) {
                     Intent i;
                     PackageManager managerclock = getPackageManager();
                     i = managerclock.getLaunchIntentForPackage("com.cbord.get");
                     i.addCategory(Intent.CATEGORY_LAUNCHER);
                     startActivity(i);
-                } else if(mCafeData.getReserveUrl() != null) {
+                } else if (mCafeData.getReserveUrl() != null) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
                     intent.addCategory(Intent.CATEGORY_BROWSABLE);
@@ -333,7 +335,7 @@ public class CampusMenuActivity extends AppCompatActivity {
                         public void onGlobalLayout() {
                             mealItemText.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            params.setMargins(0,0, width - mealItemText.getMeasuredWidth() - priceText.getMeasuredWidth() - 100,0);
+                            params.setMargins(0, 0, width - mealItemText.getMeasuredWidth() - priceText.getMeasuredWidth() - 100, 0);
                             mealItemText.setLayoutParams(params);
                         }
                     });
@@ -363,7 +365,7 @@ public class CampusMenuActivity extends AppCompatActivity {
                             for (int i = 0; i <= tab.getPosition(); i++) {
                                 acc += sizes.get(i);
                             }
-                            View cell = containers.get(acc-1);
+                            View cell = containers.get(acc - 1);
                             cell.getParent().requestChildFocus(cell, cell);
                         }
 
@@ -403,7 +405,7 @@ public class CampusMenuActivity extends AppCompatActivity {
                         divider.setLayoutParams(dividerParams);
                         mLinLayout.addView(divider);
                     }
-            }
+                }
             }
         }
         // Formatting for when eatery is a dining hall and has a menu
@@ -413,8 +415,13 @@ public class CampusMenuActivity extends AppCompatActivity {
             mTabLayout.setVisibility(View.GONE);
             mExpandedTabLayout.setVisibility(View.GONE);
 
-            ArrayList<MealModel> mm =
-                    ((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals();
+
+            ArrayList<MealModel> mm = new ArrayList<>();
+            if ((DiningHallModel) mCafeData != null) {
+                mm.addAll(((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals());
+            } else {
+
+            }
 
             if (mm.isEmpty()) {
                 mMenuText.setText(R.string.no_menu_text);
@@ -469,7 +476,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         customPager.setAdapter(adapter);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter  {
+    class ViewPagerAdapter extends FragmentPagerAdapter {
 
         DiningHallModel dhm = (DiningHallModel) mCafeData;
         private int mCurrentPosition = -1;
@@ -481,7 +488,7 @@ public class CampusMenuActivity extends AppCompatActivity {
         // Set menu fragment to first MealModel object
         @Override
         public void setPrimaryItem(@NonNull ViewGroup container, int position,
-                @NonNull Object object) {
+                                   @NonNull Object object) {
             super.setPrimaryItem(container, position, object);
             if (position != mCurrentPosition) {
                 if (mCurrentPosition == -1) {

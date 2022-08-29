@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery.network;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
@@ -24,10 +25,10 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 
 public final class NetworkUtilities {
-    private static final String GRAPHQL_URL = "http://eatery-backend.cornellappdev.com/";
+    private static final String GRAPHQL_URL = "https://eatery-backend.cornellappdev.com/";
     private static List<AllEateriesQuery.Eatery> eateries;
     private static ApolloClient apolloClient;
-    private static Repository rInstance = Repository.getInstance();
+    private static final Repository rInstance = Repository.getInstance();
 
     private static void buildApolloClient() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
@@ -45,28 +46,26 @@ public final class NetworkUtilities {
         eateryCall.enqueue(new ApolloCall.Callback<AllEateriesQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<AllEateriesQuery.Data> response) {
-                if (response.data() != null) {
-                    eateries = response.data().eateries();
-                    if (eateries != null) {
-                        ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(
-                                eateries,
-                                activity);
-                        Collections.sort(eateryList);
+                if (response.getData() != null) {
+                    eateries = response.getData().eateries();
+                    ArrayList<EateryBaseModel> eateryList = QueryUtilities.parseEateries(
+                            eateries,
+                            activity);
+                    Collections.sort(eateryList);
+                    try {
+                        InternalStorage.writeObject(activity.getApplicationContext(),
+                                CacheType.CAMPUS_EATERY, eateryList);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    rInstance.setEateryList(eateryList);
+                    activity.runOnUiThread(() -> {
                         try {
-                            InternalStorage.writeObject(activity.getApplicationContext(),
-                                    CacheType.CAMPUS_EATERY, eateryList);
-                        } catch (IOException e) {
+                            mainFragment.initializeEateries();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        rInstance.setEateryList(eateryList);
-                        activity.runOnUiThread(() -> {
-                            try {
-                                mainFragment.initializeEateries();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    }
+                    });
                 }
             }
 
@@ -90,8 +89,8 @@ public final class NetworkUtilities {
         brbCall.enqueue(new ApolloCall.Callback<BrbInfoQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<BrbInfoQuery.Data> response) {
-                if (response.data() != null) {
-                    callback.retrievedAccountInfo(response.data().accountInfo());
+                if (response.getData() != null) {
+                    callback.retrievedAccountInfo(response.getData().accountInfo());
                 }
             }
 

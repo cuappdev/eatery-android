@@ -1,6 +1,7 @@
 package com.cornellappdev.android.eatery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 

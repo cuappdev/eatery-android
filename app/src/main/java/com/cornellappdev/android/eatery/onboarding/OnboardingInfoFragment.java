@@ -65,7 +65,9 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     void reloadAnimation() {
-        mLottieAnimationView.playAnimation();
+        if (mLottieAnimationView != null) {
+            mLottieAnimationView.playAnimation();
+        }
     }
 
     void loggingIn() {
