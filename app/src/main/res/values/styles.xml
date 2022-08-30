@@ -7,7 +7,7 @@
         <item name="actionMenuTextColor">@color/inactive</item>
         <item name="colorPrimary">@color/blue</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/red</item>
     </style>
 
@@ -30,7 +30,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/blue</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 

@@ -5,16 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cornellappdev.android.eatery.MainActivity;
 import com.cornellappdev.android.eatery.R;
-import com.cornellappdev.android.eatery.presenter.AccountPresenter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.Objects;
 
 public class OnboardingActivity extends FragmentActivity {
     private ViewPager2 mViewPager;
@@ -38,7 +34,9 @@ public class OnboardingActivity extends FragmentActivity {
 
             @Override
             public void onPageSelected(int position) {
-                ((OnboardingPagerAdapter) Objects.requireNonNull(mViewPager.getAdapter())).onPageSelected(position);
+                if (mViewPager.getAdapter() instanceof OnboardingPagerAdapter) {
+                    ((OnboardingPagerAdapter) mViewPager.getAdapter()).onPageSelected(position);
+                }
             }
 
             @Override

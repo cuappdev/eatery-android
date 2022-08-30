@@ -36,6 +36,10 @@ public class OnboardingLoginFragment extends Fragment {
 
     private AccountPresenter mAccountPresenter = new AccountPresenter();
 
+    public OnboardingLoginFragment() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

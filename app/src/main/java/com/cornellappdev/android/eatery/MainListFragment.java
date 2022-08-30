@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,7 +90,6 @@ public class MainListFragment extends Fragment
         mListAdapter = new MainListAdapter(getContext(), this, mListPresenter
                 .getEateryList().size(), mListPresenter.getEateryList());
         recyclerView.setAdapter(mListAdapter);
-        recyclerView.setVisibility(View.VISIBLE);
         mCampusButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
 

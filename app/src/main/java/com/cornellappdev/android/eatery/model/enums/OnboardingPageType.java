@@ -8,16 +8,10 @@ public enum OnboardingPageType {
     LOGIN;
 
     public int getAnimationRaw() {
-        switch (this) {
-            case MENUS:
-                return R.raw.menus;
-            case TRANSACTIONS:
-                return R.raw.transactions;
-            case LOGIN:
-                return R.raw.menus;
-            default:
-                return R.raw.menus;
+        if (this == OnboardingPageType.TRANSACTIONS) {
+            return R.raw.transactions;
         }
+        return R.raw.menus;
     }
 
     public String getTitle() {

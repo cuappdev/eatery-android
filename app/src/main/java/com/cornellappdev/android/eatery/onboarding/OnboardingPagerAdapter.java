@@ -3,22 +3,21 @@ package com.cornellappdev.android.eatery.onboarding;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.cornellappdev.android.eatery.model.enums.OnboardingPageType;
 
 public class OnboardingPagerAdapter extends FragmentStateAdapter {
-    private OnboardingInfoFragment menusFragment;
-    private OnboardingInfoFragment transactionsFragment;
-    private OnboardingInfoFragment loginFragment;
+    private final OnboardingInfoFragment menusFragment;
+    private final OnboardingInfoFragment transactionsFragment;
+    private final OnboardingInfoFragment loginFragment;
 
     OnboardingPagerAdapter(FragmentManager fm, Lifecycle lifecycle) {
         super(fm, lifecycle);
-        menusFragment = new OnboardingInfoFragment(OnboardingPageType.MENUS);
-        transactionsFragment = new OnboardingInfoFragment(OnboardingPageType.TRANSACTIONS);
-        loginFragment = new OnboardingInfoFragment(OnboardingPageType.LOGIN);
+        menusFragment = OnboardingInfoFragment.newInstance(OnboardingPageType.MENUS);
+        transactionsFragment = OnboardingInfoFragment.newInstance(OnboardingPageType.TRANSACTIONS);
+        loginFragment = OnboardingInfoFragment.newInstance(OnboardingPageType.LOGIN);
     }
 
     void onPageSelected(int position) {
@@ -29,9 +28,7 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
             case 1:
                 transactionsFragment.reloadAnimation();
                 return;
-            case 2:
-                return;
-            default: return;
+            default:
         }
     }
 

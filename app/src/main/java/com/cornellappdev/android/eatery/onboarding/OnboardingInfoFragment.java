@@ -21,16 +21,33 @@ public class OnboardingInfoFragment extends Fragment {
     private LottieAnimationView mLottieAnimationView;
     private Button mButton;
     private Button mSecondaryButton;
-    private OnboardingPageType onboardingPageType;
+    private static final String ARG_PARAM1 = "OnboardingPageType";
     private ProgressBar mProgressBar;
+    private OnboardingPageType onboardingPageType = OnboardingPageType.MENUS;
 
-    OnboardingInfoFragment(OnboardingPageType onboardingPageType) {
-        this.onboardingPageType = onboardingPageType;
+    public OnboardingInfoFragment() {
+
+    }
+
+    public static OnboardingInfoFragment newInstance(OnboardingPageType onboardingPageType) {
+        OnboardingInfoFragment fragment = new OnboardingInfoFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_PARAM1, onboardingPageType);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            onboardingPageType = (OnboardingPageType) getArguments().get(ARG_PARAM1);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_onboarding_info, container, false);
         TextView title = view.findViewById(R.id.onboarding_info_title);
         TextView description = view.findViewById(R.id.onboarding_info_description);
