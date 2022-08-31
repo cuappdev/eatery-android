@@ -2,6 +2,8 @@ package com.cornellappdev.android.eatery.model;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
+
 import com.cornellappdev.android.eatery.AllEateriesQuery;
 import com.cornellappdev.android.eatery.model.enums.MealType;
 
@@ -92,6 +94,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
         return mWeeklyMenu.get(today);
     }
 
+    @Nullable
     private MealModel getCurrentMeal() {
         DailyMenuModel todaysMenu = getCurrentDayMenu();
         if (todaysMenu == null) {
@@ -111,6 +114,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
         Collections.sort(mSortedDates);
     }
 
+    @Nullable
     private LocalDateTime findNextOpen() {
         sortDates();
         for (LocalDate date : mSortedDates) {
@@ -185,6 +189,7 @@ public class DiningHallModel extends CampusModel implements Serializable {
         }
     }
 
+    @Nullable
     public MealModel getMenu() {
         return getCurrentMeal();
     }

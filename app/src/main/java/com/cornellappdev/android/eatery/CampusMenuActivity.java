@@ -417,10 +417,8 @@ public class CampusMenuActivity extends AppCompatActivity {
 
 
             ArrayList<MealModel> mm = new ArrayList<>();
-            if ((DiningHallModel) mCafeData != null) {
+            if (mCafeData != null && ((DiningHallModel) mCafeData).getCurrentDayMenu() != null) {
                 mm.addAll(((DiningHallModel) mCafeData).getCurrentDayMenu().getAllMeals());
-            } else {
-
             }
 
             if (mm.isEmpty()) {
