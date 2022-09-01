@@ -2,7 +2,6 @@ package com.cornellappdev.android.eatery;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -96,7 +95,6 @@ public class CampusMenuActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-
         mToolbar.setNavigationOnClickListener((View v) -> finishAfterTransition());
 
         mExceptionImage = findViewById(R.id.exception_image);
@@ -125,49 +123,26 @@ public class CampusMenuActivity extends AppCompatActivity {
             mBottomButton.setVisibility(View.VISIBLE);
             mBottomButton.setText(getString(R.string.opentable_button));
         }
-        mBottomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCafeData.getIsGet()) {
-                    try {
-                        Intent i;
-                        PackageManager managerclock = getPackageManager();
-                        i = managerclock.getLaunchIntentForPackage("com.cbord.get");
-                        i.addCategory(Intent.CATEGORY_LAUNCHER);
-                        startActivity(i);
-                    } catch (Exception e) {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        intent.setData(Uri.parse("https://get.cbord.com/cornell/full/food_home.php"));
-                        startActivity(intent);
-                    }
-                } else if (mCafeData.getReserveUrl() != null) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(mCafeData.getReserveUrl()));
-                    startActivity(intent);
-                }
-            }
-        });
-
-        mButtonFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCafeData.getIsGet()) {
-                    Intent i;
-                    PackageManager managerclock = getPackageManager();
-                    i = managerclock.getLaunchIntentForPackage("com.cbord.get");
+        mBottomButton.setOnClickListener(v -> {
+            if (mCafeData.getIsGet()) {
+                try {
+                    Intent i = getPackageManager().getLaunchIntentForPackage("com.cbord.get");
                     i.addCategory(Intent.CATEGORY_LAUNCHER);
                     startActivity(i);
-                } else if (mCafeData.getReserveUrl() != null) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                    intent.setData(Uri.parse(mCafeData.getReserveUrl()));
-                    startActivity(intent);
+                } catch (Exception e) {
+                    // If the user doesn't have the app installed, opts for launching the webpage.
+                    Intent i = new Intent();
+                    i.setAction(Intent.ACTION_VIEW);
+                    i.addCategory(Intent.CATEGORY_BROWSABLE);
+                    i.setData(Uri.parse("https://get.cbord.com/cornell/full/food_home.php"));
+                    startActivity(i);
                 }
+            } else if (mCafeData.getReserveUrl() != null) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_VIEW);
+                i.addCategory(Intent.CATEGORY_BROWSABLE);
+                i.setData(Uri.parse(mCafeData.getReserveUrl()));
+                startActivity(i);
             }
         });
 
