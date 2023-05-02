@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -36,6 +37,7 @@ import com.cornellappdev.android.eatery.model.EateryBaseModel;
 import com.cornellappdev.android.eatery.model.enums.CampusArea;
 import com.cornellappdev.android.eatery.model.enums.PaymentMethod;
 import com.cornellappdev.android.eatery.presenter.MainListPresenter;
+import com.cornellappdev.android.eatery.util.PopUpClass;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 
 public class MainListFragment extends Fragment
         implements MainListAdapter.ListAdapterOnClickHandler, View.OnClickListener {
@@ -59,7 +62,7 @@ public class MainListFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_list, container, false);
@@ -92,6 +95,17 @@ public class MainListFragment extends Fragment
         recyclerView.setAdapter(mListAdapter);
         mCampusButtons = new HashMap<>();
         initializeCampusEateryButtons(rootView);
+
+        // set up popup icon in bottom right corner
+        ImageButton popupButton = rootView.findViewById(R.id.buttonPopUp);
+        popupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopUpClass popUpClass = new PopUpClass();
+                popUpClass.showPopupWindow(v);
+            }
+        });
 
         return rootView;
     }
@@ -169,8 +183,7 @@ public class MainListFragment extends Fragment
             boolean successful = mListPresenter.sortNearestFirst(getContext(), this);
             if (successful) {
                 changeButtonColor(R.color.white, R.color.blue, button);
-            }
-            else {
+            } else {
                 mNearestFirstButtonPressed = false;
             }
         } else {
