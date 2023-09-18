@@ -77,12 +77,12 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        <ProgressBar
-            android:id="@+id/progress_loader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:translationZ="10dp"/>
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progress_loader"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:translationZ="10dp"/>-->
         <Button
             android:id="@+id/onboarding_info_button"
             android:layout_width="240dp"

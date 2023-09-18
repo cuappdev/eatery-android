@@ -13,10 +13,4 @@
     android:icon="@drawable/ic_menu"
     android:title="@string/weekly_icon_title"
     app:showAsAction="ifRoom|withText" />
-  <item
-    android:id="@+id/action_brb"
-    android:enabled="true"
-    android:icon="@drawable/ic_user"
-    android:title="@string/account_icon_title"
-    app:showAsAction="ifRoom|withText" />
 </menu>

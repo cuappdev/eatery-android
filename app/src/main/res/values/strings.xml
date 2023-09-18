@@ -1,4 +1,4 @@
-<resources>
+ <resources>
     <string name="app_name">eatery-android</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">Eateries</string>
@@ -107,7 +107,8 @@
     <string name="getlogin_url">https://get.cbord.com/cornell/full/login.php?mobileapp=1</string>
 
     <string name="onboarding_button_next">NEXT</string>
-    <string name="onboarding_button_login">LOGIN</string>
+     <string name="onboarding_button_continue">CONTINUE</string>
+     <string name="onboarding_button_login">LOGIN</string>
     <string name="onboarding_button_skip">SKIP</string>
     <string name="login_label">Login</string>
     <string name="logout_label">Logout</string>

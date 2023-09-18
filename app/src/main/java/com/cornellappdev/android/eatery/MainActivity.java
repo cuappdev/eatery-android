@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
                                     .replace(R.id.frame_fragment_holder, weeklyMenuFragment)
                                     .commit();
                             break;
-                        case R.id.action_brb:
-                            mFirebaseAnalytics.logEvent("brb_tab_press", null);
-                            transaction
-                                    .replace(R.id.frame_fragment_holder, loginFragment)
-                                    .commit();
-                            break;
+//                        case R.id.action_brb:
+//                            mFirebaseAnalytics.logEvent("brb_tab_press", null);
+//                            transaction
+//                                    .replace(R.id.frame_fragment_holder, loginFragment)
+//                                    .commit();
+//                            break;
                     }
                     return true;
                 });
