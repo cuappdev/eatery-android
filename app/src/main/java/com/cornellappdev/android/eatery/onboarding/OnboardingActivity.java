@@ -59,7 +59,7 @@ public class OnboardingActivity extends FragmentActivity {
      */
     public void getNextOnboardingPagerItem() {
         int pageIndex = mViewPager.getCurrentItem();
-        if (pageIndex < 3) {
+        if (pageIndex < 1) {
             pageIndex ++;
         }
         mViewPager.setCurrentItem(pageIndex);

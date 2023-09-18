@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
         android:minHeight="?attr/actionBarSize"
         app:itemBackground="@color/white"
         app:itemIconTint="@color/bnv_tab_item_foreground"

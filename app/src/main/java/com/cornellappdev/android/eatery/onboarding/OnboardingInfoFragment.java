@@ -56,27 +56,28 @@ public class OnboardingInfoFragment extends Fragment {
 
         title.setText(onboardingPageType.getTitle());
         description.setText(onboardingPageType.getDescription());
-        mProgressBar = view.findViewById(R.id.progress_loader);
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
-                android.graphics.PorterDuff.Mode.MULTIPLY);
+//        mProgressBar = view.findViewById(R.id.progress_loader);
+//        mProgressBar.setVisibility(View.INVISIBLE);
+//        mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
+//                android.graphics.PorterDuff.Mode.MULTIPLY);
 
         mLottieAnimationView = view.findViewById(R.id.onboarding_animation);
         mLottieAnimationView.setAnimation(onboardingPageType.getAnimationRaw());
 
         setupContent();
-        if (onboardingPageType == OnboardingPageType.LOGIN) {
-            setupSkipButton();
-            setupLoginButton();
-            if (getActivity() != null) {
-                if (((OnboardingActivity) getActivity()).getLoggingIn()) {
-                    this.loggingIn();
-                }
-            }
-        } else {
-            mSecondaryButton.setVisibility(View.GONE);
-            setupNextButton();
-        }
+        setupNextButton();
+//        if (onboardingPageType == OnboardingPageType.MENUS) {
+//            setupSkipButton();
+//            setupLoginButton();
+//            if (getActivity() != null) {
+//                if (((OnboardingActivity) getActivity()).getLoggingIn()) {
+//                    this.loggingIn();
+//                }
+//            }
+//        } else {
+//            mSecondaryButton.setVisibility(View.GONE);
+//            setupNextButton();
+//        }
 
         return view;
     }
@@ -90,7 +91,7 @@ public class OnboardingInfoFragment extends Fragment {
     void loggingIn() {
         if (getActivity() != null && getContext() != null) {
             ((OnboardingActivity) getActivity()).setLoggingIn(true);
-            mProgressBar.setVisibility(View.VISIBLE);
+//            mProgressBar.setVisibility(View.VISIBLE);
             mButton.setEnabled(false);
             mButton.setText("");
             mButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.fadedBlue));
@@ -106,9 +107,9 @@ public class OnboardingInfoFragment extends Fragment {
             mButton.setBackground(
                     ContextCompat.getDrawable(getContext(), R.drawable.bordered_button));
             mSecondaryButton.setEnabled(true);
-            mProgressBar.setVisibility(View.INVISIBLE);
-            mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
+//            mProgressBar.setVisibility(View.INVISIBLE);
+//            mProgressBar.getIndeterminateDrawable().setColorFilter(0xffffffff,
+//                    android.graphics.PorterDuff.Mode.MULTIPLY);
         }
     }
 
@@ -134,13 +135,17 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     private void setupNextButton() {
-        mButton.setText(R.string.onboarding_button_next);
-        mButton.setOnClickListener((View v) -> {
-            if (getActivity() != null) {
-                // Moves to next onboarding item when "NEXT" button clicked.
-                ((OnboardingActivity) getActivity()).getNextOnboardingPagerItem();
-            }
-        });
+        mButton.setText("LET'S GO");
+        mButton.setOnClickListener((View v) -> endOnboarding());
+//        mProgressBar.setVisibility(View.INVISIBLE);
+
+//        mButton.setOnClickListener((View v) -> {
+//
+//            if (getActivity() != null) {
+//                // Moves to next onboarding item when "NEXT" button clicked.
+//                ((OnboardingActivity) getActivity()).getNextOnboardingPagerItem();
+//            }
+//        });
     }
 
     private void setupLoginButton() {
@@ -149,9 +154,11 @@ public class OnboardingInfoFragment extends Fragment {
     }
 
     void endOnboarding() {
-        if (getActivity() != null) {
-            ((OnboardingActivity) getActivity()).endOnboarding();
-        }
+//        if (getActivity() != null) {
+//            ((OnboardingActivity) getActivity()).endOnboarding();
+//        }
+        ((OnboardingActivity) getActivity()).endOnboarding();
+
     }
 
     private void setupSkipButton() {

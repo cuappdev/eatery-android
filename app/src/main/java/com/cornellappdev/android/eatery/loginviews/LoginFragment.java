@@ -182,7 +182,7 @@ public class LoginFragment extends Fragment {
      * loading progress bar
      */
     private void loadingGUI(Context context) {
-        mProgressBar.setVisibility(View.VISIBLE);
+//        mProgressBar.setVisibility(View.VISIBLE);
         mLoginButton.setBackgroundColor(ContextCompat.getColor(context, R.color.fadedBlue));
         mLoginButton.setText("");
         mDescriptionText.setTextColor(ContextCompat.getColor(context, R.color.primary));
