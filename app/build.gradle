@@ -12,10 +12,10 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.cornellappdev.android.eatery"
-        minSdkVersion 26
+        minSdkVersion 33
         targetSdkVersion 33
-        versionCode 51
-        versionName "2.7.5"
+        versionCode 54
+        versionName "2.7.8"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         resValue 'string', "google_maps_key", keyProperties["googleMapApiKey"]
         resValue 'string', "encryption_key", keyProperties['encryptionKey']
