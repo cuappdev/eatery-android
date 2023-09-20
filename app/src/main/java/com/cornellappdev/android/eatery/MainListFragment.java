@@ -97,15 +97,15 @@ public class MainListFragment extends Fragment
         initializeCampusEateryButtons(rootView);
 
         // set up popup icon in bottom right corner
-        ImageButton popupButton = rootView.findViewById(R.id.buttonPopUp);
-        popupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                PopUpClass popUpClass = new PopUpClass();
-                popUpClass.showPopupWindow(v);
-            }
-        });
+//        ImageButton popupButton = rootView.findViewById(R.id.buttonPopUp);
+//        popupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                PopUpClass popUpClass = new PopUpClass();
+//                popUpClass.showPopupWindow(v);
+//            }
+//        });
 
         return rootView;
     }
