@@ -7,4 +7,9 @@
     android:paddingTop="16dp"
     tools:context="com.cornellappdev.android.eatery.MenuFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menu_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="4px"/>
 </LinearLayout>
